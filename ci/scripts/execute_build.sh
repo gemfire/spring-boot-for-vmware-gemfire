@@ -37,13 +37,19 @@ SendEnv ORG_GRADLE_PROJECT_mavenPassword
 EOF
 
 
-cat <<EOF > gradle.properties
-gemfireRepoUsername=${COMMERCIAL_REPO_USERNAME}
-gemfireRepoPassword=${COMMERCIAL_REPO_PASSWORD}
+cat <<EOF > settings.xml
+<settings>
+    <servers>
+        <server>
+            <id>gemfire-release-repo</id>
+            <username>${COMMERCIAL_REPO_USERNAME}</username>
+            <password>${COMMERCIAL_REPO_PASSWORD}</password>
+        </server>
+    </servers>
+</settings>
 EOF
-ssh ${SSH_OPTIONS} geode@${INSTANCE_IP_ADDRESS} "set -x && mkdir -p /home/geode/.gradle"
-scp ${SSH_OPTIONS} gradle.properties geode@${INSTANCE_IP_ADDRESS}:.gradle/gradle.properties
-
+ssh ${SSH_OPTIONS} geode@${INSTANCE_IP_ADDRESS} "set -x && mkdir -p /home/geode/.m2"
+scp ${SSH_OPTIONS} settings.xml geode@${INSTANCE_IP_ADDRESS}:.m2/settings.xml
 GRADLE_COMMAND="./gradlew \
     ${DEFAULT_GRADLE_TASK_OPTIONS} \
     ${GRADLE_GLOBAL_ARGS} \
