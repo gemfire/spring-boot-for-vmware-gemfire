@@ -28,3 +28,4 @@ tmp
 **/.gradle
 **/.idea
 
+generated-pipeline.yml
