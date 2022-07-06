@@ -35,6 +35,14 @@ allprojects {
     maven {
       url "https://maven.apachegeode-ci.info/snapshots"
     }
+
+    maven {
+      credentials {
+        username "$gemfireRepoUsername"
+        password "$gemfireRepoPassword"
+      }
+      url = uri('https://commercial-repo.pivotal.io/data3/gemfire-release-repo/gemfire')
+    }
   }
 
   configurations.all {
