@@ -14,7 +14,7 @@ dependencies {
         exclude group:"org.springframework.geode", module:"apache-geode-extensions"
     }
 
-    api "com.vmware.tanzu.gemfire:spring-data-tanzu-gemfire:$springDataGemFireVersion"
+    api "com.vmware.gemfire:spring-data-gemfire:$springDataGemFireVersion"
 
     compileOnly "com.google.code.findbugs:jsr305"
 

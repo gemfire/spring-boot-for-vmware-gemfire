@@ -12,7 +12,7 @@ dependencies {
   }
   implementation "com.fasterxml.jackson.core:jackson-databind"
 
-  testImplementation "org.apache.geode:geode-membership"
+  testImplementation "com.vmware.gemfire:geode-membership"
   testImplementation "junit:junit"
   testImplementation "org.assertj:assertj-core"
   testImplementation "org.mockito:mockito-core"
