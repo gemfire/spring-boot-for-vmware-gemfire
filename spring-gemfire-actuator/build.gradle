@@ -12,8 +12,8 @@ dependencies {
 
     implementation "org.springframework.boot:spring-boot-starter-actuator"
 
-    runtimeOnly "com.vmware.gemfire:geode-logging"
-    runtimeOnly "com.vmware.gemfire:geode-serialization"
+    runtimeOnly "org.apache.geode:geode-logging"
+    runtimeOnly "org.apache.geode:geode-serialization"
 
     testImplementation "junit:junit"
     testImplementation "org.assertj:assertj-core"

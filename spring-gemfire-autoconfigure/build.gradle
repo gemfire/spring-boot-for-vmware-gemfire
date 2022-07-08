@@ -31,8 +31,8 @@ dependencies {
     testImplementation "org.springframework.boot:spring-boot-starter-web"
     testImplementation "org.springframework.data:spring-data-geode-test"
     testImplementation "edu.umd.cs.mtc:multithreadedtc"
-    testImplementation "com.vmware.gemfire:geode-http-service"
-    testImplementation "com.vmware.gemfire:geode-web"
+    testImplementation "org.apache.geode:geode-http-service"
+    testImplementation "org.apache.geode:geode-web"
     testImplementation "org.apache.httpcomponents:httpclient"
 
     testCompileOnly "com.google.code.findbugs:jsr305"

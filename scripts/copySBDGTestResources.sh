@@ -42,7 +42,7 @@ CopyTestResources() {
 
 RemoveClonedPath() {
   # Checkout correct branch
-  cd "/" || exit
+  cd  || exit
   rm -rf "$sbdgPath"
 }
 
