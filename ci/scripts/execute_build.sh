@@ -66,7 +66,7 @@ fi
 GRADLE_COMMAND="./gradlew \
     ${DEFAULT_GRADLE_TASK_OPTIONS} \
     ${GRADLE_GLOBAL_ARGS} \
-    clean build test publishToMavenLocal ${SDTG_VERSION_ARGUMENT} ${VERSION_ARGUMENT}"
+    clean build test publishToMavenLocal ${SDTG_VERSION_ARGUMENT} ${SSDG_VERSION_ARGUMENT} ${VERSION_ARGUMENT}"
 
 echo "${GRADLE_COMMAND}"
 ssh ${SSH_OPTIONS} geode@${INSTANCE_IP_ADDRESS} "set -x  && mkdir -p tmp && cd spring-boot-data-gemfire && ${SET_JAVA_HOME} && ${GRADLE_COMMAND}"

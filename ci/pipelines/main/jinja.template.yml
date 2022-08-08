@@ -340,6 +340,10 @@ jobs:
     - get: spring-boot-data-gemfire-build-version
       params:
         pre: ((semver-prerelease-token))
+    - get: spring-data-tanzu-gemfire-build-version
+      trigger: true
+    - get: spring-session-data-gemfire-build-version
+      trigger: true
     - get: linux-sdg-builder-image-family
   - do:
     - put: concourse-metadata-resource
