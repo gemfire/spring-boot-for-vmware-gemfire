@@ -169,6 +169,21 @@ resources:
     private_key: ((gemfire-ci-private-key))
     paths:
     - ci/*
+- name: spring-data-tanzu-gemfire-build-version
+  type: semver
+  source:
+    bucket: ((artifact-bucket))
+    driver: gcs
+    json_key: ((concourse-gcp-key))
+    key: semvers/{{repositories.springDataTanzuGemfire.pipelinePrefix}}{{ repositories.springDataTanzuGemfire.branch }}/number
+- name: spring-session-data-gemfire-build-version
+  type: semver
+  source:
+    bucket: ((artifact-bucket))
+    driver: gcs
+    initial_version: 1.0.0
+    json_key: ((concourse-gcp-key))
+    key: semvers/{{repositories.springSessionDataGemfire.pipelinePrefix}}{{ repositories.springSessionDataGemfire.branch }}/number
 
 jobs:
 # alpine-tools
@@ -426,6 +441,8 @@ jobs:
         COMMERCIAL_REPO_PASSWORD: ((commercial-repo-password))
         ORG_GRADLE_PROJECT_mavenPassword: ((pivotal-repo-password))
         ORG_GRADLE_PROJECT_mavenUser: ((pivotal-repo-username))
+        SDTG_ARTIFACT_PREFIX: {{ repositories.springDataTanzuGemfire.branch }}
+        SSDG_ARTIFACT_PREFIX: {{ repositories.springSessionDataGemfire.branch }}
       run:
         path: spring-boot-data-gemfire-ci/ci/scripts/execute_build.sh
       inputs:
@@ -434,6 +451,8 @@ jobs:
       - name: spring-boot-data-gemfire
       - name: instance-data
       - name: spring-boot-data-gemfire-build-version
+      - name: spring-session-data-gemfire-build-version
+      - name: spring-data-tanzu-gemfire-build-version
       outputs:
       - name: built-spring-boot-data-gemfire
       - name: results

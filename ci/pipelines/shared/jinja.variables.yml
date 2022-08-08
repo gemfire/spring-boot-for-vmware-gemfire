@@ -3,6 +3,16 @@ repositories:
     branch: 9.15_2.6
     fork: gemfire
     repo: spring-boot-data-gemfire
+  springDataTanzuGemfire:
+    branch: 9.15-SD26
+    fork: gemfire
+    repo: spring-data-tanzu-gemfire
+    pipelinePrefix: sdtg-9-15-sd26-
+  springSessionDataGemfire:
+    branch: 9.15-SD26
+    fork: gemfire
+    repo: spring-session-data-gemfire
+    pipelinePrefix: ssdg-9-15-sd26-
   gemfireAssembly:
     branch: support/9.15
     fork: gemfire

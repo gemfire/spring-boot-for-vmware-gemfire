@@ -17,6 +17,9 @@ if [[ -z "${GRADLE_TASK}" ]]; then
 fi
 
 GEMFIRE_VERSION=$(jq -r '.gemfire_test_semver'  gemfire-blessed-token/vmware-gemfire-*-passing-tokens.json)
+SDTG_VERSION=$(cat spring-data-tanzu-gemfire-build-version/number)
+SSDG_VERSION=$(cat spring-session-data-gemfire-build-version/number)
+VERSION=$(cat spring-boot-data-gemfire-build-version/number)
 
 ROOT_DIR=$(pwd)
 BUILD_DATE=$(date +%s)
@@ -37,29 +40,33 @@ SendEnv ORG_GRADLE_PROJECT_mavenPassword
 EOF
 
 
-cat <<EOF > settings.xml
-<settings>
-    <servers>
-        <server>
-            <id>gemfire-release-repo</id>
-            <username>${COMMERCIAL_REPO_USERNAME}</username>
-            <password>${COMMERCIAL_REPO_PASSWORD}</password>
-        </server>
-    </servers>
-</settings>
+cat <<EOF > gradle.properties
+gemfireRepoUsername=${COMMERCIAL_REPO_USERNAME}
+gemfireRepoPassword=${COMMERCIAL_REPO_PASSWORD}
 EOF
-ssh ${SSH_OPTIONS} geode@${INSTANCE_IP_ADDRESS} "set -x && mkdir -p /home/geode/.m2"
-scp ${SSH_OPTIONS} settings.xml geode@${INSTANCE_IP_ADDRESS}:.m2/settings.xml
-GRADLE_COMMAND="./gradlew \
-    ${DEFAULT_GRADLE_TASK_OPTIONS} \
-    ${GRADLE_GLOBAL_ARGS} \
-    clean build test publishToMavenLocal"
+ssh ${SSH_OPTIONS} geode@${INSTANCE_IP_ADDRESS} "set -x && mkdir -p /home/geode/.gradle"
+scp ${SSH_OPTIONS} gradle.properties geode@${INSTANCE_IP_ADDRESS}:.gradle/gradle.properties
 
 if [[ -n "${GEMFIRE_VERSION}" ]]; then
   GEMFIRE_VERSION_ARGUMENT="-Dtanzu.gemfire.version=${GEMFIRE_VERSION}"
 fi
 
-SCRIPT_COMMAND="./mvnw clean install ${GEMFIRE_VERSION_ARGUMENT}"
+if [[ -n "${SDTG_VERSION}" ]]; then
+  SDTG_VERSION_ARGUMENT="-PspringDataTanzuGemFireVersion=${SDTG_ARTIFACT_PREFIX}-${SDTG_VERSION}"
+fi
+
+if [[ -n "${SSDG_VERSION}" ]]; then
+  SSDG_VERSION_ARGUMENT="-PspringSessionDataGemFireVersion=${SSDG_ARTIFACT_PREFIX}-${SSDG_VERSION}"
+fi
+
+if [[ -n "${VERSION}" ]]; then
+  VERSION_ARGUMENT="-Pversion=${VERSION}"
+fi
+
+GRADLE_COMMAND="./gradlew \
+    ${DEFAULT_GRADLE_TASK_OPTIONS} \
+    ${GRADLE_GLOBAL_ARGS} \
+    clean build test publishToMavenLocal ${SDTG_VERSION_ARGUMENT} ${VERSION_ARGUMENT}"
+
 echo "${GRADLE_COMMAND}"
 ssh ${SSH_OPTIONS} geode@${INSTANCE_IP_ADDRESS} "set -x  && mkdir -p tmp && cd spring-boot-data-gemfire && ${SET_JAVA_HOME} && ${GRADLE_COMMAND}"
-#ssh ${SSH_OPTIONS} geode@${INSTANCE_IP_ADDRESS} "set -x  && mkdir -p tmp && cd spring-boot-data-gemfire && ${SET_JAVA_HOME} && ${SCRIPT_COMMAND}"
