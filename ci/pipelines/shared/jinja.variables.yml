@@ -1,6 +1,6 @@
 repositories:
   springBootDataGemfire:
-    branch: 9.15-SD26
+    branch: 9.15-SB26
     fork: gemfire
     repo: spring-boot-data-gemfire
   springDataTanzuGemfire:

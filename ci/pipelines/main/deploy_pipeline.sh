@@ -56,8 +56,8 @@ SDG_BRANCH=$(yq -r .repositories.springBootDataGemfire.branch \
 . ${SCRIPT_DIR}/../../scripts/utilities.sh
 SANITIZED_SDG_FORK=$(sanitizeName ${SDG_FORK})
 SANITIZED_SDG_BRANCH=$(getSanitizedBranch ${SDG_BRANCH})
-PIPELINE_PREFIX="sbdtg-${SANITIZED_SDG_BRANCH}-"
-PIPELINE_NAME="sbdtg-${SANITIZED_SDG_BRANCH}-main"
+PIPELINE_PREFIX="sbdg-${SANITIZED_SDG_BRANCH}-"
+PIPELINE_NAME="sbdg-${SANITIZED_SDG_BRANCH}-main"
 CONCOURSE_URL="https://${CONCOURSE_HOST}"
 CONCOURSE_TEAM="${CONCOURSE_TEAM:-main}"
 
