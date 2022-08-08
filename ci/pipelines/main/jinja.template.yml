@@ -147,7 +147,7 @@ resources:
   source:
     bucket: ((artifact-bucket))
     driver: gcs
-    initial_version: 0.0.0
+    initial_version: 1.0.0
     json_key: ((concourse-gcp-key))
     key: semvers/((pipeline-prefix)){{ repositories.springBootDataGemfire.branch }}/number
 
