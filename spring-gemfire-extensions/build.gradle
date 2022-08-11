@@ -1,7 +1,7 @@
 plugins {
   id 'java-library'
   id 'maven-publish'
-  id 'dependency-management'
+  id 'dependency-constraints'
 }
 description = "Spring Boot for VMware Tanzu GemFire Extensions"
 
