@@ -52,3 +52,30 @@ clean {
 test {
   dependsOn(":spring-gemfire-starter:test")
 }
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+
+    if (version.contains('-')) {
+        maven { url "https://repo.spring.io/milestone" }
+    }
+    if (version.endsWith('-SNAPSHOT')) {
+        maven { url "https://repo.spring.io/snapshot" }
+    }
+    maven {
+        url "gcs://gemfire-build-resources/maven/gemfire"
+    }
+
+    maven {
+        url "https://maven.apachegeode-ci.info/snapshots"
+    }
+
+    maven {
+        credentials {
+            username "$gemfireRepoUsername"
+            password "$gemfireRepoPassword"
+        }
+        url = uri("https://commercial-repo.pivotal.io/data3/gemfire-release-repo/gemfire")
+    }
+}

@@ -7,12 +7,13 @@ description = "Spring Boot for VMware Tanzu GemFire Extensions"
 
 dependencies {
   api("org.springframework.geode:apache-geode-extensions:$springBootDataGeodeVersion")
-  implementation("com.vmware.gemfire:gemfire-server-all:$gemfireVersion") {
-    exclude group: "org.apache.geode", module: "geode-log4j"
+  api(platform("com.vmware.gemfire:gemfire-server-bom:$gemfireVersion")) {
+    exclude group: 'org.apache.geode', module: 'geode-log4j'
   }
+
   implementation "com.fasterxml.jackson.core:jackson-databind"
 
-  testImplementation "org.apache.geode:geode-membership"
+  testImplementation "com.vmware.gemfire:geode-membership"
   testImplementation "junit:junit"
   testImplementation "org.assertj:assertj-core"
   testImplementation "org.mockito:mockito-core"

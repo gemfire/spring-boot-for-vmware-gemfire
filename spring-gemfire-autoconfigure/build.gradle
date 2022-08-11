@@ -11,6 +11,9 @@ dependencies {
     implementation("org.springframework.geode:spring-geode-autoconfigure:$springBootDataGeodeVersion") {
         exclude group:"org.springframework.geode", module:"spring-geode"
     }
+    api(platform("com.vmware.gemfire:gemfire-server-bom:$gemfireVersion")) {
+        exclude group: 'org.apache.geode', module: 'geode-log4j'
+    }
 
     implementation project(":spring-gemfire")
 
@@ -18,9 +21,8 @@ dependencies {
 
     implementation project(':spring-gemfire-extensions')
 
-    implementation "org.springframework.boot:spring-boot-autoconfigure-processor:$springBootVersion"
     implementation "org.springframework.boot:spring-boot-configuration-processor:$springBootVersion"
-    implementation "org.springframework.session:spring-session-data-geode:$springSessionDataGeodeVersion"
+    implementation "com.vmware.gemfire:spring-session-data-gemfire:$springSessionDataGemFireVersion"
 
     testImplementation "jakarta.servlet:jakarta.servlet-api"
     testImplementation "junit:junit"
@@ -31,8 +33,8 @@ dependencies {
     testImplementation "org.springframework.boot:spring-boot-starter-web"
     testImplementation "org.springframework.data:spring-data-geode-test"
     testImplementation "edu.umd.cs.mtc:multithreadedtc"
-    testImplementation "org.apache.geode:geode-http-service"
-    testImplementation "org.apache.geode:geode-web"
+    testImplementation "com.vmware.gemfire:geode-http-service"
+    testImplementation "com.vmware.gemfire:geode-web"
     testImplementation "org.apache.httpcomponents:httpclient"
 
     testCompileOnly "com.google.code.findbugs:jsr305"
@@ -91,3 +93,4 @@ clean{
 test{
     dependsOn(":spring-gemfire-starter:test")
 }
+
