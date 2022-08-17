@@ -53,4 +53,5 @@ include 'spring-gemfire-parent'
 include 'spring-gemfire-actuator'
 include 'spring-gemfire-actuator-autoconfigure'
 include 'spring-gemfire-starter-logging'
+include 'spring-gemfire-starter-session'
 

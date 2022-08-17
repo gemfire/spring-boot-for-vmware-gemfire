@@ -14,7 +14,7 @@ dependencies {
         exclude group:"org.springframework.geode", module:"apache-geode-extensions"
     }
 
-    api "com.vmware.gemfire:spring-data-gemfire:$springDataGemFireVersion"
+    api "com.vmware.gemfire:spring-data-gemfire:$springDataTanzuGemFireVersion"
 
     compileOnly "com.google.code.findbugs:jsr305"
 
@@ -26,6 +26,7 @@ dependencies {
     testImplementation "org.mockito:mockito-core"
     testImplementation "org.projectlombok:lombok"
     testImplementation "org.testcontainers:testcontainers"
+    testImplementation "org.testcontainers:cassandra"
     testImplementation "edu.umd.cs.mtc:multithreadedtc"
 
     testImplementation("org.springframework.boot:spring-boot-starter-test:$springBootVersion") {
@@ -47,6 +48,11 @@ publishing {
             version = project.version
 
             from components.java
+        }
+    }
+    repositories {
+        maven {
+        url = uri('gcs://gemfire-build-resources/maven/gemfire')
         }
     }
 }

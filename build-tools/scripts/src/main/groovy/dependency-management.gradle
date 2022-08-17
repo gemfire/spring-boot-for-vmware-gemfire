@@ -19,5 +19,6 @@ dependencyManagement {
 		dependency "org.springframework.boot:spring-boot-configuration-processor:$springBootVersion"
 		dependency "org.springframework.boot:spring-boot-autoconfigure-processor:$springBootVersion"
 		dependency "org.testcontainers:testcontainers:$testcontainersVersion"
+		dependency "org.testcontainers:cassandra:$testcontainersVersion"
 	}
 }

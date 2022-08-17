@@ -59,6 +59,11 @@ publishing {
             from components.java
         }
     }
+    repositories {
+        maven {
+            url = uri('gcs://gemfire-build-resources/maven/gemfire')
+        }
+    }
 }
 
 sourceSets{

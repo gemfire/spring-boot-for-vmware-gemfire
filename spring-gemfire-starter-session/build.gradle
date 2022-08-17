@@ -3,10 +3,10 @@ plugins {
   id 'maven-publish'
   id 'dependency-management'
 }
-description = "Spring Boot Logging Starter for VMware Tanzu GemFire with Logback as the logging provider and adaptation of Log4j to SLF4J"
+description = "Spring Boot Starter for Spring Session for VMware Tanzu GemFire"
 
 dependencies {
-  implementation "org.springframework.geode:spring-geode-starter-logging:$springBootDataGeodeVersion"
+  implementation "org.springframework.geode:spring-geode-starter-session:$springBootDataGeodeVersion"
   testImplementation "org.springframework.geode:spring-geode-starter-test:$springBootDataGeodeVersion"
 }
 
