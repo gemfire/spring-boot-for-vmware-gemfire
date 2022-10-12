@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+#
+# Copyright (c) VMware, Inc. 2022. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+#
+
 set -ex
 
 BASE_DIR=$(pwd)

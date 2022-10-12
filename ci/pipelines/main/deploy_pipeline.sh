@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 
 
+#
+# Copyright (c) VMware, Inc. 2022. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+#
+
 SOURCE="${BASH_SOURCE[0]}"
 SCRIPT_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 

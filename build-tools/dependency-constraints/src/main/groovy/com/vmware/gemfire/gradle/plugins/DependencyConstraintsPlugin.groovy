@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) VMware, Inc. 2022. All rights reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 package com.vmware.gemfire.gradle.plugins
 
 import org.gradle.api.Plugin

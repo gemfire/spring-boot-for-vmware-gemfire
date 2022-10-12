@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) VMware, Inc. 2022. All rights reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 package com.vmware.gemfire.gradle.plugins
 
 import org.gradle.api.Project
@@ -18,12 +23,12 @@ class DependencyConstraints {
     depVersionMapping.put("antlrVersion", "2.7.7")
     depVersionMapping.put("findbugsVersion", "3.0.2")
     depVersionMapping.put("multithreadedtcVersion", "1.01")
-    depVersionMapping.put("springBootVersion", "2.6.10")
-    depVersionMapping.put("springBootDataGeodeVersion", "1.6.8")
-    depVersionMapping.put("springDataGeodeTestVersion", "0.2.2-Q")
+    depVersionMapping.put("springBootVersion", "2.7.4")
+    depVersionMapping.put("springBootDataGeodeVersion", "1.7.4")
+    depVersionMapping.put("springDataGeodeTestVersion", "0.3.1-RAJ")
     depVersionMapping.put("springShellVersion", "1.2.0.RELEASE")
-    depVersionMapping.put("testcontainersVersion", "1.17.2")
-    depVersionMapping.put("gemfireVersion", "9.15.1")
+    depVersionMapping.put("testcontainersVersion", "1.17.3")
+    depVersionMapping.put("gemfireVersion", "9.15.2")
 
     return depVersionMapping
   }
