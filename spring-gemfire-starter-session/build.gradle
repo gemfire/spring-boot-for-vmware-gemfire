@@ -6,6 +6,7 @@ plugins {
 description = "Spring Boot Starter for Spring Session for VMware Tanzu GemFire"
 
 dependencies {
+  implementation(project(':spring-gemfire-starter'))
   implementation "org.springframework.geode:spring-geode-starter-session:$springBootDataGeodeVersion"
   testImplementation "org.springframework.geode:spring-geode-starter-test:$springBootDataGeodeVersion"
 }
@@ -14,7 +15,7 @@ publishing {
   publications {
     maven(MavenPublication) {
       groupId = project.group
-      artifactId = project.name
+      artifactId = "${project.name}-${gemfireBaseVersion}"
       version = project.version
 
       from components.java

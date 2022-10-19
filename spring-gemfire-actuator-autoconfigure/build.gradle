@@ -4,7 +4,7 @@ plugins {
     id 'dependency-constraints'
 }
 
-description = "Spring Boot Actuator Auto-Configuration for VMware Tanzu GemFire"
+description = "Spring Boot Actuator Auto-Configuration for VMware GemFire"
 
 dependencies {
     implementation project(":spring-gemfire-actuator")
@@ -27,7 +27,7 @@ publishing {
     publications {
         maven(MavenPublication) {
             groupId = project.group
-            artifactId = project.name
+            artifactId = "${project.name}-${gemfireBaseVersion}"
             version = project.version
 
             from components.java

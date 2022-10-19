@@ -16,7 +16,6 @@ plugins {
 allprojects {
 
   group = 'com.vmware.gemfire'
-  version = "${gemfireBaseVersion}-${springBootBaseVersion}-${version}"
 
   repositories {
     mavenLocal()

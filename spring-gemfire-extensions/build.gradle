@@ -25,7 +25,7 @@ publishing {
   publications {
     maven(MavenPublication) {
       groupId = project.group
-      artifactId = project.name
+      artifactId = "${project.name}-${gemfireBaseVersion}"
       version = project.version
 
       from components.java

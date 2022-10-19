@@ -1,0 +1,90 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'dependency-constraints'
+}
+description = "Spring Boot Actuator Starter for VMware GemFire"
+
+dependencies {
+    implementation project(":spring-gemfire-starter")
+    implementation project(":spring-gemfire-actuator-autoconfigure")
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = project.group
+            artifactId = "${project.name}-${gemfireBaseVersion}"
+            version = project.version
+
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            url = uri('gcs://gemfire-build-resources/maven/gemfire')
+        }
+    }
+}
+
+sourceSets {
+    test {
+        java {
+            srcDir file('src/test/java')
+            srcDir file('src/sbdg-test-read-only/java')
+        }
+        resources {
+            srcDir file('src/test/resources')
+            srcDir file('src/sbdg-test-read-only/resources')
+        }
+    }
+}
+
+task cleanSpringTestClasses(type:Exec)
+{
+    commandLine 'rm', '-rf', "${project.projectDir}/src/sbdg-test-read-only"
+}
+
+clean{
+    dependsOn("cleanSpringTestClasses")
+}
+
+test{
+    dependsOn(":spring-gemfire-starter:test")
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+
+    if (version.contains('-')) {
+        maven { url "https://repo.spring.io/milestone" }
+    }
+    if (version.endsWith('-SNAPSHOT')) {
+        maven { url "https://repo.spring.io/snapshot" }
+    }
+    maven {
+        url "gcs://gemfire-build-resources/maven/gemfire"
+    }
+
+    maven {
+        url "https://maven.apachegeode-ci.info/snapshots"
+    }
+
+    maven {
+        credentials {
+            username "$gemfireRepoUsername"
+            password "$gemfireRepoPassword"
+        }
+        url = uri("https://commercial-repo.pivotal.io/data3/gemfire-release-repo/gemfire")
+    }
+}
+
+
+description = "Spring Boot Actuator Starter for Apache Geode"
+
+dependencies {
+
+
+
+}

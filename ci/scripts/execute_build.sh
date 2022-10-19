@@ -57,11 +57,11 @@ if [[ -n "${GEMFIRE_VERSION}" ]]; then
 fi
 
 if [[ -n "${SDTG_VERSION}" ]]; then
-  SDTG_VERSION_ARGUMENT="-PspringDataTanzuGemFireVersion=${SDTG_ARTIFACT_PREFIX}-${SDTG_VERSION}"
+  SDTG_VERSION_ARGUMENT="-PspringDataTanzuGemFireVersion=${SDTG_VERSION}"
 fi
 
 if [[ -n "${SSDG_VERSION}" ]]; then
-  SSDG_VERSION_ARGUMENT="-PspringSessionDataGemFireVersion=${SSDG_ARTIFACT_PREFIX}-${SSDG_VERSION}"
+  SSDG_VERSION_ARGUMENT="-PspringSessionDataGemFireVersion=${SSDG_VERSION}"
 fi
 
 if [[ -n "${VERSION}" ]]; then

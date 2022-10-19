@@ -14,7 +14,7 @@ dependencies {
         exclude group:"org.springframework.geode", module:"apache-geode-extensions"
     }
 
-    api "com.vmware.gemfire:spring-data-gemfire:$springDataTanzuGemFireVersion"
+    api "com.vmware.gemfire:spring-data-gemfire-$gemfireBaseVersion:$springDataTanzuGemFireVersion"
 
     compileOnly "com.google.code.findbugs:jsr305"
 
@@ -44,7 +44,7 @@ publishing {
     publications {
         maven(MavenPublication) {
             groupId = project.group
-            artifactId = project.name
+            artifactId = "${project.name}-${gemfireBaseVersion}"
             version = project.version
 
             from components.java
