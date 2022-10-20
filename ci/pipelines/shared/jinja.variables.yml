@@ -29,8 +29,8 @@ storage:
   artifactBucket: gemfire-test-artifacts
   bucket: gemfire-build-resources
 java_build_version:
-  name: openjdk11
-  version: 11
+  name: openjdk8
+  version: 8
 instanceSettings:
   deleteInstance: true
 gemfireVersion: 9.15
