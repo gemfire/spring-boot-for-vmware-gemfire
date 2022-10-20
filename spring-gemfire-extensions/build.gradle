@@ -6,7 +6,12 @@ plugins {
 description = "Spring Boot for VMware Tanzu GemFire Extensions"
 
 dependencies {
-  api("org.springframework.geode:apache-geode-extensions:$springBootDataGeodeVersion")
+  api("org.springframework.geode:apache-geode-extensions:$springBootDataGeodeVersion"){
+    exclude group: 'org.apache.geode', module: 'geode-core'
+    exclude group: 'org.apache.geode', module: 'geode-cq'
+    exclude group: 'org.apache.geode', module: 'geode-lucene'
+    exclude group: 'org.apache.geode', module: 'geode-wan'
+  }
   api(platform("com.vmware.gemfire:gemfire-server-bom:$gemfireVersion")) {
     exclude group: 'org.apache.geode', module: 'geode-log4j'
   }

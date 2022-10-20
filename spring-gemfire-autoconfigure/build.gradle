@@ -22,7 +22,7 @@ dependencies {
     implementation project(':spring-gemfire-extensions')
 
     implementation "org.springframework.boot:spring-boot-configuration-processor:$springBootVersion"
-    implementation "com.vmware.gemfire:spring-session-data-gemfire:$springSessionDataGemFireVersion"
+    implementation "com.vmware.gemfire:spring-session-gemfire-${gemfireBaseVersion}:$springSessionDataGemFireVersion"
 
     testImplementation "jakarta.servlet:jakarta.servlet-api"
     testImplementation "junit:junit"

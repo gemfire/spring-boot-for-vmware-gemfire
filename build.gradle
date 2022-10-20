@@ -11,9 +11,13 @@ plugins {
   id 'org.springframework.boot' version "${springBootVersion}" apply false
   id 'idea'
   id 'eclipse'
+  id 'java'
 }
 
 allprojects {
+
+  sourceCompatibility = '1.8'
+  targetCompatibility = '1.8'
 
   group = 'com.vmware.gemfire'
 
