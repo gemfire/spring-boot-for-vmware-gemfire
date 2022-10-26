@@ -16,10 +16,10 @@ plugins {
 
 allprojects {
 
+  group = 'com.vmware.gemfire'
+
   sourceCompatibility = '1.8'
   targetCompatibility = '1.8'
-
-  group = 'com.vmware.gemfire'
 
   repositories {
     mavenLocal()

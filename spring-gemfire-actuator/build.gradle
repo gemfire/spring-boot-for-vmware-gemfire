@@ -1,10 +1,16 @@
 plugins {
-    id 'java-library'
-    id 'maven-publish'
-    id 'dependency-constraints'
+  id 'java-library'
+  id 'dependency-constraints'
+  id 'gemfire-repo-artifact-publishing'
+  id 'spring-java-jar'
 }
 
-description = "Spring Boot Actuator for VMware Tanzu GemFire"
+description = "Spring Boot Actuator for VMware GemFire"
+
+project.ext.set("pomProjectLongName", description)
+project.ext.set("pomProjectArtifactName", "spring-gemfire-actuator")
+project.ext.set("pomProjectDescription", description)
+
 
 dependencies {
     implementation project(":spring-gemfire")
@@ -23,23 +29,6 @@ dependencies {
     testImplementation "org.springframework.data:spring-data-geode-test"
     testImplementation "edu.umd.cs.mtc:multithreadedtc"
 
-}
-
-publishing {
-    publications {
-        maven(MavenPublication) {
-            groupId = project.group
-            artifactId = "${project.name}-${gemfireBaseVersion}"
-            version = project.version
-
-            from components.java
-        }
-    }
-    repositories {
-        maven {
-            url = uri('gcs://gemfire-build-resources/maven/gemfire')
-        }
-    }
 }
 
 sourceSets{

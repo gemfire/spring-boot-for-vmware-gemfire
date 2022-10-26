@@ -1,11 +1,17 @@
 plugins {
-    id 'java-library'
-    id 'maven-publish'
-    id "io.freefair.lombok" version "5.3.0"
-    id 'dependency-constraints'
+  id 'java-library'
+  id "io.freefair.lombok" version "5.3.0"
+  id 'dependency-constraints'
+  id 'gemfire-repo-artifact-publishing'
+  id 'spring-java-jar'
 }
 
-description = "Spring Boot Auto-Configuration for VMware Tanzu GemFire"
+description = "Spring GemFire base build for VMware GemFire"
+
+project.ext.set("pomProjectLongName", description)
+project.ext.set("pomProjectArtifactName", "spring-gemfire")
+project.ext.set("pomProjectDescription",description)
+
 
 dependencies {
     api project(':spring-gemfire-extensions')
@@ -38,23 +44,6 @@ dependencies {
     testImplementation "org.springframework.data:spring-data-geode-test"
 
     testRuntimeOnly "org.hsqldb:hsqldb"
-}
-
-publishing {
-    publications {
-        maven(MavenPublication) {
-            groupId = project.group
-            artifactId = "${project.name}-${gemfireBaseVersion}"
-            version = project.version
-
-            from components.java
-        }
-    }
-    repositories {
-        maven {
-        url = uri('gcs://gemfire-build-resources/maven/gemfire')
-        }
-    }
 }
 
 sourceSets{

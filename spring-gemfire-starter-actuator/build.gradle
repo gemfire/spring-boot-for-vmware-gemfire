@@ -1,30 +1,17 @@
 plugins {
     id 'java-library'
-    id 'maven-publish'
     id 'dependency-constraints'
+    id 'gemfire-repo-artifact-publishing'
+    id 'spring-java-jar'
 }
-description = "Spring Boot Actuator Starter for VMware GemFire"
+
+project.ext.set("pomProjectLongName","Spring Boot Actuator Starter for VMware GemFire")
+project.ext.set("pomProjectArtifactName","spring-gemfire-starter-actuator")
+project.ext.set("pomProjectDescription","Spring Boot Actuator Starter for VMware GemFire")
 
 dependencies {
     implementation project(":spring-gemfire-starter")
     implementation project(":spring-gemfire-actuator-autoconfigure")
-}
-
-publishing {
-    publications {
-        maven(MavenPublication) {
-            groupId = project.group
-            artifactId = "${project.name}-${gemfireBaseVersion}"
-            version = project.version
-
-            from components.java
-        }
-    }
-    repositories {
-        maven {
-            url = uri('gcs://gemfire-build-resources/maven/gemfire')
-        }
-    }
 }
 
 sourceSets {

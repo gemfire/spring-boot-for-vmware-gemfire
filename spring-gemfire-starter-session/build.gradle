@@ -1,31 +1,20 @@
 plugins {
-  id 'java-library'
-  id 'maven-publish'
-  id 'dependency-management'
+    id 'java-library'
+    id 'dependency-constraints'
+    id 'gemfire-repo-artifact-publishing'
+    id 'spring-java-jar'
 }
-description = "Spring Boot Starter for Spring Session for VMware Tanzu GemFire"
+
+description = "Spring Boot Starter for Spring Session using VMware GemFire"
+
+project.ext.set("pomProjectLongName","Spring Boot Starter for Spring Session using VMware GemFire")
+project.ext.set("pomProjectArtifactName","spring-gemfire-starter-session")
+project.ext.set("pomProjectDescription",description)
 
 dependencies {
   implementation(project(':spring-gemfire-starter'))
   implementation "org.springframework.geode:spring-geode-starter-session:$springBootDataGeodeVersion"
   testImplementation "org.springframework.geode:spring-geode-starter-test:$springBootDataGeodeVersion"
-}
-
-publishing {
-  publications {
-    maven(MavenPublication) {
-      groupId = project.group
-      artifactId = "${project.name}-${gemfireBaseVersion}"
-      version = project.version
-
-      from components.java
-    }
-  }
-  repositories {
-    maven {
-      url = uri('gcs://gemfire-build-resources/maven/gemfire')
-    }
-  }
 }
 
 sourceSets {

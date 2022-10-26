@@ -1,30 +1,18 @@
 plugins {
-  id 'java-library'
-  id 'maven-publish'
-  id 'dependency-management'
+    id 'java-library'
+    id 'dependency-constraints'
+    id 'gemfire-repo-artifact-publishing'
+    id 'spring-java-jar'
 }
-description = "Spring Boot Logging Starter for VMware Tanzu GemFire with Logback as the logging provider and adaptation of Log4j to SLF4J"
+
+project.ext.set("pomProjectLongName","Spring Boot Logging Starter for VMware GemFire")
+project.ext.set("pomProjectArtifactName","spring-gemfire-starter-logging")
+project.ext.set("pomProjectDescription","Spring Boot Logging Starter for VMware GemFire with Logback as the logging provider and adaptation of Log4j to SLF4J")
+
 
 dependencies {
   implementation "org.springframework.geode:spring-geode-starter-logging:$springBootDataGeodeVersion"
   testImplementation "org.springframework.geode:spring-geode-starter-test:$springBootDataGeodeVersion"
-}
-
-publishing {
-  publications {
-    maven(MavenPublication) {
-      groupId = project.group
-      artifactId = "${project.name}-${gemfireBaseVersion}"
-      version = project.version
-
-      from components.java
-    }
-  }
-  repositories {
-    maven {
-      url = uri('gcs://gemfire-build-resources/maven/gemfire')
-    }
-  }
 }
 
 sourceSets {

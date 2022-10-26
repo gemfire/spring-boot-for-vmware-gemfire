@@ -1,0 +1,71 @@
+plugins {
+  id 'maven-publish'
+  id 'signing'
+}
+
+// The published bom will constrain versions within geode of any subproject with this property set.
+project.ext.set('constrainVersionInBom', true)
+
+def license = '''
+  Copyright (c) VMware, Inc. 2022. All rights reserved.
+  SPDX-License-Identifier: Apache-2.0
+  '''
+
+publishing {
+  publications {
+    maven(MavenPublication) {
+      afterEvaluate {
+        from(components.java)
+        groupId 'com.vmware.gemfire'
+        artifactId project.ext.get("pomProjectArtifactName")+"-${gemfireBaseVersion}"
+        pom {
+          name = project.ext.has("pomProjectLongName") ? project.ext.get("pomProjectLongName") : ""
+          description = project.ext.has("pomProjectDescription") ? project.ext.get("pomProjectDescription") : ""
+          url = 'https://tanzu.vmware.com/gemfire'
+
+          withXml {
+            def providerAsElement = asElement()
+            providerAsElement.insertBefore(
+                    providerAsElement.ownerDocument().createComment(license),
+                    providerAsElement.firstChild)
+          }
+          scm {
+            connection = 'scm:git:https://github.com/gemfire/spring-boot-data-for-vmware-gemfire.git'
+            developerConnection = 'scm:git:https://github.com/gemfire/spring-boot-data-for-vmware-gemfire.git'
+            url = 'https://github.com/gemfire/spring-boot-data-for-vmware-gemfire.git'
+          }
+        }
+      }
+      repositories {
+        maven {
+          if (project.hasProperty("mavenPushRepository")) {
+            url = version.endsWith('SNAPSHOT') ? "https://repo.pivotal.io/gemfire-snapshot-local" : "https://repo.pivotal.io/gemfire-release-local"
+          } else {
+            url = uri('gcs://gemfire-build-resources/maven/gemfire')
+          }
+          if (url.toString().startsWith("http") || url.toString().startsWith("sftp")) {
+            // Username / password credentials are only supported for http, https, and sftp repos.
+            // See the Gradle documentation on Repository Types for more information.
+            credentials {
+              username project.findProperty("gemfireRepoUsername")
+              password project.findProperty("gemfireRepoPassword")
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+//signing {
+//  required({project.isReleaseVersion && project.hasProperty('signing.keyId') && project.hasProperty('signing.secretKeyRingFile')})
+//  sign publishing.publications.maven
+//}
+
+tasks.register('install') {
+  dependsOn tasks.named('publishToMavenLocal')
+}
+
+tasks.withType(GenerateModuleMetadata) {
+  enabled = false
+}
