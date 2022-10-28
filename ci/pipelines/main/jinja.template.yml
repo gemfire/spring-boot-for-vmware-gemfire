@@ -138,7 +138,7 @@ resources:
   icon: diamond-stone
   type: json-gcs-resource
   source:
-    bucket: blessed-geode
+    bucket: blessed-gemfire
     json_key: ((concourse-gcp-key))
     regexp: vmware-gemfire-({{ gemfireVersion }}.*)-passing-tokens.json
 
