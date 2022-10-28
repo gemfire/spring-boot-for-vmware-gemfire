@@ -1,0 +1,64 @@
+template_variables:
+  revdate: {localdate}
+  revnumber: {version}
+  doctype: book
+  hide-uri-scheme:
+  icons: font
+  include-dir: _includes
+  numbered:
+  source-highlighter: prettify
+  toc: left
+  toclevels: 1
+  java-version: 17
+  jdk-javadoc: https://docs.oracle.com/en/java/javase/{java-version}/docs/api/
+  apache-geode-name: Apache Geode
+  apache-geode-version: {apache-geode-artifact-version}
+  apache-geode-doc-version: {apache-geode-doc-version}
+  apache-geode-docs: https://geode.apache.org/docs/guide/{apache-geode-doc-version}
+  apache-geode-javadoc: https://geode.apache.org/releases/latest/javadoc
+  apache-geode-website: https://geode.apache.org/
+  apache-geode-wiki: https://cwiki.apache.org/confluence/display/GEODE
+  pivotal-cloudcache-name: VMware GemFire for Tanzu Application Service
+  pivotal-cloudcache-version: {pivotal-cloudcache-doc-version}
+  pivotal-cloudcache-docs: https://docs.pivotal.io/p-cloud-cache/{pivotal-cloudcache-version}
+  pivotal-cloudcache-website: https://pivotal.io/pivotal-cloud-cache
+  pivotal-cloudfoundry-name: VMware Tanzu Application Service (TAS)
+  pivotal-cloudfoundry-version: 2-11
+  pivotal-cloudfoundry-docs: https://docs.pivotal.io/platform/application-service/{pivotal-cloudfoundry-version}
+  pivotal-cloudfoundry-website: https://pivotal.io/platform
+  pivotal-gemfire-name: VMware GemFire
+  pivotal-gemfire-version: {pivotal-gemfire-doc-version}
+  pivotal-gemfire-docs: https://gemfire.docs.pivotal.io/{pivotal-gemfire-version}/geode/reference
+  pivotal-gemfire-javadoc: https://gemfire-{pivotal-gemfire-version}-javadocs.docs.pivotal.io/
+  pivotal-gemfire-website: https://pivotal.io/pivotal-gemfire
+  vmware-gemfire-name: VMware Tanzu GemFire for K8S
+  spring-boot-docs: https://docs.spring.io/spring-boot/docs/current/reference
+  spring-boot-docs-html: {spring-boot-docs}/html
+  spring-boot-javadoc: https://docs.spring.io/spring-boot/docs/current/api
+  spring-boot-website: https://spring.io/projects/spring-boot
+  spring-boot-data-geode-javadoc: https://docs.spring.io/spring-boot-data-geode-build/current/api/
+  spring-data-commons-docs: https://docs.spring.io/spring-data/commons/docs/current/reference
+  spring-data-commons-docs-html: {spring-data-commons-docs}/html
+  spring-data-commons-javadoc: https://docs.spring.io/spring-data/commons/docs/current/api
+  spring-data-commons-website: https://spring.io/projects/spring-data
+  spring-data-gemfire-docs: https://docs.spring.io/spring-data/gemfire/docs/current/reference
+  spring-data-gemfire-docs-html: {spring-data-gemfire-docs}/html
+  spring-data-gemfire-javadoc: https://docs.spring.io/spring-data/gemfire/docs/current/api
+  spring-data-gemfire-website: https://spring.io/projects/spring-data-gemfire
+  spring-data-geode-docs: https://docs.spring.io/spring-data/geode/docs/current/reference
+  spring-data-geode-docs-html: {spring-data-geode-docs}/html
+  spring-data-geode-javadoc: https://docs.spring.io/spring-data/geode/docs/current/api
+  spring-data-geode-website: https://spring.io/projects/spring-data-geode
+  spring-data-website: https://spring.io/projects/spring-data
+  spring-dependency-management-gradle-plugin-version: 1.0.10.RELEASE
+  spring-framework-docs: https://docs.spring.io/spring/docs/current/spring-framework-reference
+  spring-framework-javadoc: https://docs.spring.io/spring/docs/current/javadoc-api
+  spring-framework-website: https://spring.io/projects/spring-framework
+  spring-session-docs: https://docs.spring.io/spring-session/docs/current/reference/html5
+  spring-session-javadoc: https://docs.spring.io/spring-session/docs/current/api
+  spring-session-website: https://spring.io/projects/spring-session
+  spring-session-data-gemfire-docs: https://docs.spring.io/autorepo/docs/spring-session-data-geode-build/{spring-session-data-geode-version}/reference/html5
+  spring-session-data-gemfire-javadoc: https://docs.spring.io/autorepo/docs/spring-session-data-geode-build/{spring-session-data-geode-version}/api
+  spring-session-data-gemfire-website: https://spring.io/projects/spring-session-data-geode
+  spring-test-data-gemfire-website: https://github.com/spring-projects/spring-test-data-geode#spring-test-framework-for-apache-geode--vmware-tanzu-gemfire
+  wikipedia-docs: https://en.wikipedia.org/wiki
