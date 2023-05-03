@@ -14,6 +14,7 @@ title: Release Notes
 
 * Update to latest Spring Boot patch version (3.0.5, 2.7.10 and 2.6.14)
 * Update all dependencies to latest patch version
+* Fixed an issue with querying a Region whose name contains a hyphen (`-`). 
 
 ### 1.1.0
 
