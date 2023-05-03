@@ -196,7 +196,7 @@ For server applications:
 Your application may require more than one module if, for example, you need (HTTP) Session state management, or you need to enable Spring Boot Actuator endpoints for GemFire.
 
 
-You can declare and use any one of the Spring Boot for GemFire modules (in addition to the Spring Boot for GemFire library).  You can find a full list of modules and compatible Spring and GemFire versions [here](compatibility.html). 
+You can declare and use any one of the Spring Boot for GemFire modules (in addition to the Spring Boot for GemFire library).  You can find a full list of modules and compatible Spring and GemFire versions [here](compatibility-and-versions.html). 
 
 
 
