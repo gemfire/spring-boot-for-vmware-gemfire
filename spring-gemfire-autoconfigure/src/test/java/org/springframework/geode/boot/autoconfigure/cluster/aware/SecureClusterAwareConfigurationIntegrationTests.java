@@ -9,6 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.io.IOException;
 import java.security.KeyStore;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import javax.net.ssl.SSLContext;
@@ -111,9 +112,11 @@ public class SecureClusterAwareConfigurationIntegrationTests extends ForkingClie
 
 	@BeforeClass
 	public static void startGeodeServer() throws IOException {
+		int availableServerPort = findAndReserveAvailablePort();
 		startGemFireServer(TestGeodeServerConfiguration.class,
 			"-Dspring.profiles.active=cluster-aware-with-secure-server,ssl",
-			"-Dapache-geode.logback.log.level=INFO","-Dspring.data.gemfire.cache.server.port="+findAndReserveAvailablePort());
+			"-Dapache-geode.logback.log.level=INFO","-Dspring.data.gemfire.cache.server.port="+ availableServerPort);
+		waitForServerToStart("localhost",availableServerPort, TimeUnit.SECONDS.toMillis(60));
 	}
 
 	@BeforeClass @AfterClass
