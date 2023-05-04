@@ -113,7 +113,7 @@ public class SecureClusterAwareConfigurationIntegrationTests extends ForkingClie
 	public static void startGeodeServer() throws IOException {
 		startGemFireServer(TestGeodeServerConfiguration.class,
 			"-Dspring.profiles.active=cluster-aware-with-secure-server,ssl",
-			"-Dapache-geode.logback.log.level=INFO");
+			"-Dapache-geode.logback.log.level=INFO","-Dspring.data.gemfire.cache.server.port="+findAndReserveAvailablePort());
 	}
 
 	@BeforeClass @AfterClass
