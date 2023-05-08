@@ -43,6 +43,9 @@ In fact, Spring Boot for GemFire automatically applies *auto-configuration* to s
 - *HTTP Session state management*
 
 
+This initial set of documentation is meant to get users up and running quickly with Spring Boot for VMware GemFire.  For more in-depth discussion of features please refer to the [Spring Boot Data Geode documentation](https://docs.spring.io/spring-boot-data-geode-build/current/reference/html5/).
+
+
 
 
 

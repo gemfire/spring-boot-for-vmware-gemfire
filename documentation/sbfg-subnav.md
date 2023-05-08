@@ -1,4 +1,4 @@
-#  [spring-boot-gemfire-name] Documentation
+#  Spring Boot for VMware GemFire Documentation
 <!-- 
  Copyright (c) VMware, Inc. 2022. All rights reserved.
  Licensed to the Apache Software Foundation (ASF) under one or more contributor license
@@ -16,7 +16,7 @@
 -->
 
 
-* [ Spring Boot for VMware GemFire](index.html)
+* [Spring Boot for VMware GemFire](index.html)
   * [Release Notes](release-notes.html)
   * [Compatibility and Versions](compatibility-and-versions.html)
   * [Getting Started](getting-started.html)

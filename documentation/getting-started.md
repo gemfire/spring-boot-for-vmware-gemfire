@@ -82,8 +82,8 @@ The Spring Boot for VMware GemFire libraries are available from the [Pivotal Com
   * **Gradle**: Add the following to the local (`.gradle/gradle.properties`) or project `gradle.properties` file. Replace `MY-USERNAME@example` and `MY-DECRYPTED-PASSWORD` with your Pivotal Commercial Maven Repository credentials.
 
       ```
-      gemfireRepoUsername=MY-USERNAME@example.com 
-      gemfireRepoPassword=MY-DECRYPTED-PASSWORD
+      pivotalCommercialMavenRepoUsername=MY-USERNAME@example.com 
+      pivotalCommercialMavenRepoPassword=MY-DECRYPTED-PASSWORD
       ```
 
 ### Add The Libraries To The Project
