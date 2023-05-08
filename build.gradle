@@ -7,7 +7,6 @@ buildscript {
 }
 
 plugins {
-  id 'org.springframework.boot' version "${springBootVersion}" apply false
   id 'idea'
   id 'eclipse'
   id 'java'
@@ -40,7 +39,6 @@ subprojects {
       }
     }
     maven { url 'https://repo.spring.io/milestone' }
-
   }
 
   ext.testDependencies = [
