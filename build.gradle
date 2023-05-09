@@ -41,23 +41,6 @@ subprojects {
     maven { url 'https://repo.spring.io/milestone' }
   }
 
-  ext.testDependencies = [
-          "junit:junit",
-          "org.junit.jupiter:junit-jupiter-api",
-          "org.junit.vintage:junit-vintage-engine",
-          "org.assertj:assertj-core",
-          "org.mockito:mockito-core",
-          "org.projectlombok:lombok",
-          "org.springframework:spring-test",
-          "edu.umd.cs.mtc:multithreadedtc"
-  ]
-
-  plugins.withType(JavaPlugin) {
-    dependencies {
-      testImplementation testDependencies
-    }
-  }
-
   configurations.all {
     resolutionStrategy.cacheChangingModulesFor 0, "minutes"
   }

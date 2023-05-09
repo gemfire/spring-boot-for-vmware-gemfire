@@ -49,23 +49,5 @@ class DependencySetPlugin implements Plugin<Project> {
             "org.slf4j:log4j-over-slf4j",
             "ch.qos.logback:logback-classic"
     ]
-
-    project.ext.testDependencies = [
-            "junit:junit",
-            "org.junit.jupiter:junit-jupiter-api",
-            "org.junit.vintage:junit-vintage-engine",
-            "org.assertj:assertj-core",
-            "org.mockito:mockito-core",
-            "org.projectlombok:lombok",
-            "org.springframework:spring-test",
-            "com.vmware.gemfire:spring-test-gemfire-10.0-3.0",
-            "edu.umd.cs.mtc:multithreadedtc"
-    ]
-
-    project.plugins.withType(JavaPlugin) {
-      project.dependencies {
-        testImplementation project.testDependencies
-      }
-    }
   }
 }

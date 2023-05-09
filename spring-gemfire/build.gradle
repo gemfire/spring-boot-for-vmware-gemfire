@@ -39,6 +39,9 @@ dependencies {
   testImplementation "com.vmware.gemfire:spring-test-gemfire-$gemfireBaseVersion-3.1:$springTestGemFireVersion"
   testImplementation "org.testcontainers:testcontainers"
   testImplementation "org.testcontainers:cassandra"
+  testImplementation("org.mockito:mockito-core:4.8.1") {
+    force = true
+  }
 
   testRuntimeOnly "org.hsqldb:hsqldb"
 }
