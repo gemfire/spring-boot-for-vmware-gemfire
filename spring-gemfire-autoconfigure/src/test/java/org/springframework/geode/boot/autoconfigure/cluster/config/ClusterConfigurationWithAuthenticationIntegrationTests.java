@@ -9,6 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.io.IOException;
 import java.net.URI;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
@@ -94,8 +95,10 @@ public class ClusterConfigurationWithAuthenticationIntegrationTests extends Fork
 
 	@BeforeClass
 	public static void startGemFireServer() throws IOException {
+		int availableServerPort = findAndReserveAvailablePort();
 		startGemFireServer(GeodeServerConfiguration.class,
-			"-Dspring.profiles.active=cluster-configuration-with-auth-server");
+			"-Dspring.profiles.active=cluster-configuration-with-auth-server","-Dspring.data.gemfire.cache.server.port="+ availableServerPort);
+		waitForServerToStart("localhost",availableServerPort, TimeUnit.SECONDS.toMillis(60));
 	}
 
 	@Autowired
