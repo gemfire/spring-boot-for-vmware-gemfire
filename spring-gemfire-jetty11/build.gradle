@@ -12,6 +12,15 @@ project.ext.set("pomProjectDescription",description)
 
 description = "Apache Geode Integation with Eclipse Jetty declared and managed by Spring Boot"
 
+java {
+	withJavadocJar()
+	withSourcesJar()
+}
+
+javadoc{
+	failOnError=false
+}
+
 dependencies {
 
 	api project(':spring-gemfire-extensions')
