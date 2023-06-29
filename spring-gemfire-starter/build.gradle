@@ -9,6 +9,15 @@ project.ext.set("pomProjectDescription","Spring Boot For VMware GemFire")
 
 description = "Spring Boot Starter for VMware GemFire"
 
+java {
+  withJavadocJar()
+  withSourcesJar()
+}
+
+javadoc{
+  failOnError=false
+}
+
 dependencies {
   api "org.springframework.boot:spring-boot-starter:$springBootVersion"
 
