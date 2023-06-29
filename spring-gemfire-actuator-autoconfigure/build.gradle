@@ -12,6 +12,15 @@ project.ext.set("pomProjectDescription",description)
 
 description = "Spring Boot Actuator Auto-Configuration for VMware GemFire"
 
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+javadoc{
+    failOnError=false
+}
+
 dependencies {
     api project(":spring-gemfire-actuator")
     api project(":spring-gemfire-autoconfigure")
