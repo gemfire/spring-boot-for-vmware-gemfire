@@ -6,10 +6,10 @@ package org.springframework.geode.boot.autoconfigure.cluster.aware;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.io.File;
 import java.io.IOException;
 import java.security.KeyStore;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import javax.net.ssl.SSLContext;
@@ -108,8 +108,11 @@ public class SecureClusterAwareConfigurationIntegrationTests extends ForkingClie
 
 	@BeforeClass
 	public static void startGeodeServer() throws IOException {
+		int availableServerPort = findAndReserveAvailablePort();
 		startGemFireServer(TestGeodeServerConfiguration.class,
-			"-Dspring.profiles.active=cluster-aware-with-secure-server,ssl");
+			"-Dspring.profiles.active=cluster-aware-with-secure-server,ssl",
+			"-Dapache-geode.logback.log.level=INFO","-Dspring.data.gemfire.cache.server.port="+ availableServerPort);
+		waitForServerToStart("localhost",availableServerPort, TimeUnit.SECONDS.toMillis(60));
 	}
 
 	@BeforeClass @AfterClass
@@ -204,25 +207,12 @@ public class SecureClusterAwareConfigurationIntegrationTests extends ForkingClie
 	@Profile("cluster-aware-with-secure-server")
 	static class TestGeodeServerConfiguration {
 
-		private static final String GEODE_HOME_PROPERTY = GeodeConstants.GEMFIRE_PROPERTY_PREFIX + "home";
-
 		public static void main(String[] args) throws IOException {
-
-			resolveAndConfigureGeodeHome();
 
 			new SpringApplicationBuilder(TestGeodeServerConfiguration.class)
 				.web(WebApplicationType.NONE)
 				.build()
 				.run(args);
-		}
-
-		private static void resolveAndConfigureGeodeHome() throws IOException {
-
-			ClassPathResource resource = new ClassPathResource("/gemfire-home");
-
-			File resourceFile = resource.getFile();
-
-			System.setProperty(GEODE_HOME_PROPERTY, resourceFile.getAbsolutePath());
 		}
 
 		@Bean
