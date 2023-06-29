@@ -7,6 +7,15 @@ plugins {
 
 description = "Spring Boot Test Starter for VMware GemFire"
 
+java {
+	withJavadocJar()
+	withSourcesJar()
+}
+
+javadoc{
+	failOnError=false
+}
+
 dependencies {
 
 	api project(':spring-gemfire-starter')

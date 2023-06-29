@@ -5,7 +5,6 @@ plugins {
   id 'gemfire-repo-artifact-publishing'
   id 'spring-java-jar'
   id 'com.netflix.nebula.optional-base' version '8.0.0' // if you want optional-base
-//    id 'com.netflix.nebula.provided-base' version '8.0.0' // if you want provided-base
 }
 
 description = "Spring Boot Auto-Configuration for VMware GemFire"
@@ -13,6 +12,15 @@ description = "Spring Boot Auto-Configuration for VMware GemFire"
 project.ext.set("pomProjectLongName", "Spring Boot Auto-Configure for VMware GemFire")
 project.ext.set("pomProjectArtifactName", "spring-boot-2.7-gemfire-autoconfigure-${gemfireBaseVersion}")
 project.ext.set("pomProjectDescription", description)
+
+java {
+  withJavadocJar()
+  withSourcesJar()
+}
+
+javadoc{
+  failOnError=false
+}
 
 dependencies {
   api project(":spring-gemfire")
@@ -31,7 +39,7 @@ dependencies {
   testImplementation "junit:junit"
   testImplementation "org.assertj:assertj-core:3.24.1"
   testImplementation "org.mockito:mockito-core:4.11.0"
-  testImplementation "org.projectlombok:lombok:1.18.26"
+  testImplementation "org.projectlombok:lombok:1.18.28"
   testImplementation "org.springframework.boot:spring-boot-starter-test"
   testImplementation "org.springframework.boot:spring-boot-starter-web"
   testImplementation "com.vmware.gemfire:spring-test-gemfire-10.0-2.7:$springTestGemFireVersion"
@@ -46,13 +54,6 @@ dependencies {
   testRuntimeOnly "org.springframework.boot:spring-boot-starter-jetty"
   testRuntimeOnly "org.springframework.boot:spring-boot-starter-json"
   testRuntimeOnly "org.springframework.shell:spring-shell"
-
-
-  // Runtime Test dependency on Spring Cloud Services (SCS) to verify workaround to SCS problem!
-  //testRuntime("io.pivotal.spring.cloud:spring-cloud-services-starter-service-registry:2.0.3.RELEASE") {
-  //	exclude group: "org.apache.logging.log4j", module: "log4j-core"
-  //}
-
 }
 
 repositories {
