@@ -364,7 +364,7 @@ public class AsyncInlineCachingRegionConfigurer<T, ID> implements RegionConfigur
 
 	/**
 	 * Applies the user-defined {@link Function} to the framework constructed/provided {@link AsyncEventQueue}
-	 * for post processing.
+	 * for post-processing.
 	 *
 	 * @param asyncEventQueue {@link AsyncEventQueue} constructed by the framework and post processed by
 	 * end-user code encapsulated in the {@link #applyToQueue(Function) configured} {@link Function}.
