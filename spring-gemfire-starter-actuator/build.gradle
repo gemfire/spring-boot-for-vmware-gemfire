@@ -9,6 +9,15 @@ project.ext.set("pomProjectLongName","Spring Boot Actuator Starter for VMware Ge
 project.ext.set("pomProjectArtifactName","spring-boot-actuator-2.7-gemfire-${gemfireBaseVersion}")
 project.ext.set("pomProjectDescription","Spring Boot Actuator Starter for VMware GemFire")
 
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+javadoc{
+    failOnError=false
+}
+
 dependencies {
     api project(":spring-gemfire-starter")
     api project(":spring-gemfire-actuator-autoconfigure")

@@ -9,6 +9,14 @@ project.ext.set("pomProjectLongName","Spring Boot Logging Starter for VMware Gem
 project.ext.set("pomProjectArtifactName","spring-boot-logging-2.7-gemfire-${gemfireBaseVersion}")
 project.ext.set("pomProjectDescription","Spring Boot Logging Starter for VMware GemFire with Logback as the logging provider and adaptation of Log4j to SLF4J")
 
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+javadoc{
+    failOnError=false
+}
 
 dependencies {
 

@@ -12,6 +12,14 @@ project.ext.set("pomProjectLongName", description)
 project.ext.set("pomProjectArtifactName", "spring-boot-2.7-gemfire-core-${gemfireBaseVersion}")
 project.ext.set("pomProjectDescription", description)
 
+java {
+  withJavadocJar()
+  withSourcesJar()
+}
+
+javadoc{
+  failOnError=false
+}
 
 dependencies {
   implementation project(':spring-gemfire-extensions')
@@ -26,8 +34,8 @@ dependencies {
 
   runtimeOnly "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
 
-  implementation 'com.fasterxml.jackson.core:jackson-annotations:2.14.2'
-  implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.2'
+  implementation 'com.fasterxml.jackson.core:jackson-annotations:2.14.3'
+  implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.3'
 
   compileOnly "com.vmware.gemfire:geode-server-all:$gemfireVersion"
 

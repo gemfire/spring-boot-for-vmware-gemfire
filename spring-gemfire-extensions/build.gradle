@@ -11,6 +11,14 @@ project.ext.set("pomProjectLongName",description)
 project.ext.set("pomProjectArtifactName","spring-boot-2.7-gemfire-extensions-${gemfireBaseVersion}")
 project.ext.set("pomProjectDescription",description)
 
+java {
+  withJavadocJar()
+  withSourcesJar()
+}
+
+javadoc{
+  failOnError=false
+}
 
 dependencies {
   api "com.vmware.gemfire:geode-core:${gemfireVersion}"

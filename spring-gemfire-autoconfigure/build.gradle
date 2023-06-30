@@ -5,7 +5,6 @@ plugins {
   id 'gemfire-repo-artifact-publishing'
   id 'spring-java-jar'
   id 'com.netflix.nebula.optional-base' version '8.0.0' // if you want optional-base
-//    id 'com.netflix.nebula.provided-base' version '8.0.0' // if you want provided-base
 }
 
 description = "Spring Boot Auto-Configuration for VMware GemFire"
@@ -13,6 +12,15 @@ description = "Spring Boot Auto-Configuration for VMware GemFire"
 project.ext.set("pomProjectLongName", "Spring Boot Auto-Configure for VMware GemFire")
 project.ext.set("pomProjectArtifactName", "spring-boot-2.7-gemfire-autoconfigure-${gemfireBaseVersion}")
 project.ext.set("pomProjectDescription", description)
+
+java {
+  withJavadocJar()
+  withSourcesJar()
+}
+
+javadoc{
+  failOnError=false
+}
 
 dependencies {
   api project(":spring-gemfire")
@@ -25,7 +33,7 @@ dependencies {
   implementation "org.springframework.boot:spring-boot-autoconfigure-processor:$springBootVersion", optional
   implementation "com.vmware.gemfire:spring-session-2.7-gemfire-${gemfireBaseVersion}:$springSessionDataGemFireVersion", optional
 
-  implementation "org.aspectj:aspectjweaver:1.9.7"
+  implementation "org.aspectj:aspectjweaver:1.9.19"
 
   compileOnly "com.vmware.gemfire:geode-server-all:$gemfireVersion"
 
@@ -41,7 +49,7 @@ dependencies {
   testImplementation "org.projectlombok:lombok"
   testImplementation "org.springframework.boot:spring-boot-starter-test"
   testImplementation "org.springframework.boot:spring-boot-starter-web"
-  testImplementation "com.vmware.gemfire:spring-test-gemfire-9.15-2.7:1.0.0-build.5"
+  testImplementation "com.vmware.gemfire:spring-test-gemfire-9.15-2.7:$springTestGemFireVersion"
   testImplementation "edu.umd.cs.mtc:multithreadedtc"
   testImplementation "com.vmware.gemfire:geode-http-service:${gemfireVersion}"
   testImplementation "com.vmware.gemfire:geode-web:${gemfireVersion}"
@@ -53,11 +61,6 @@ dependencies {
   testRuntimeOnly "org.springframework.boot:spring-boot-starter-jetty"
   testRuntimeOnly "org.springframework.boot:spring-boot-starter-json"
   testRuntimeOnly "org.springframework.shell:spring-shell"
-
-  // Runtime Test dependency on Spring Cloud Services (SCS) to verify workaround to SCS problem!
-  //testRuntime("io.pivotal.spring.cloud:spring-cloud-services-starter-service-registry:2.0.3.RELEASE") {
-  //	exclude group: "org.apache.logging.log4j", module: "log4j-core"
-  //}
 
 }
 
