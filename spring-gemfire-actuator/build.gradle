@@ -48,7 +48,7 @@ dependencies {
   testImplementation "org.mockito:mockito-core"
   testImplementation "org.projectlombok:lombok"
   testImplementation "org.springframework.boot:spring-boot-starter-test"
-  testImplementation "com.vmware.gemfire:spring-test-gemfire-10.0-3.0:$springTestGemFireVersion"
+  testImplementation "com.vmware.gemfire:spring-test-gemfire-$gemfireBaseVersion-3.0:$springTestGemFireVersion"
   testImplementation "edu.umd.cs.mtc:multithreadedtc"
 }
 

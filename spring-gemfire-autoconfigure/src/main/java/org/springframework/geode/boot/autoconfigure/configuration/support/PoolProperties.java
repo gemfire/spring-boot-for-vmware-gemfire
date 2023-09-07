@@ -39,6 +39,8 @@ public class PoolProperties {
 	private int loadConditioningInterval = PoolFactory.DEFAULT_LOAD_CONDITIONING_INTERVAL;
 	private int maxConnections = PoolFactory.DEFAULT_MAX_CONNECTIONS;
 	private int minConnections = PoolFactory.DEFAULT_MIN_CONNECTIONS;
+	private int maxConnectionsPerServer = PoolFactory.DEFAULT_MAX_CONNECTIONS_PER_SERVER;
+	private int minConnectionsPerServer = PoolFactory.DEFAULT_MIN_CONNECTIONS_PER_SERVER;
 	private int readTimeout = PoolFactory.DEFAULT_READ_TIMEOUT;
 	private int retryAttempts = PoolFactory.DEFAULT_RETRY_ATTEMPTS;
 	private int socketBufferSize = PoolFactory.DEFAULT_SOCKET_BUFFER_SIZE;
@@ -101,6 +103,22 @@ public class PoolProperties {
 
 	public void setMinConnections(int minConnections) {
 		this.minConnections = minConnections;
+	}
+
+	public int getMaxConnectionsPerServer() {
+		return this.maxConnectionsPerServer;
+	}
+
+	public void setMaxConnectionsPerServer(int maxConnectionsPerServer) {
+		this.maxConnectionsPerServer = maxConnectionsPerServer;
+	}
+
+	public int getMinConnectionsPerServer() {
+		return this.minConnectionsPerServer;
+	}
+
+	public void setMinConnectionsPerServer(int minConnectionsPerServer) {
+		this.minConnectionsPerServer = minConnectionsPerServer;
 	}
 
 	public boolean isMultiUserAuthentication() {

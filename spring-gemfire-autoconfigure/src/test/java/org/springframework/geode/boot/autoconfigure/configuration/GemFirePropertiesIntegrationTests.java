@@ -285,6 +285,8 @@ public class GemFirePropertiesIntegrationTests extends IntegrationTestsSupport {
 		assertThat(poolProperties.getLocators()).containsExactly("boombox[10334]", "mailbox[11235]", "skullbox[20668]");
 		assertThat(poolProperties.getMaxConnections()).isEqualTo(100);
 		assertThat(poolProperties.getMinConnections()).isEqualTo(10);
+		assertThat(poolProperties.getMaxConnectionsPerServer()).isEqualTo(10);
+		assertThat(poolProperties.getMinConnectionsPerServer()).isEqualTo(2);
 		assertThat(poolProperties.isMultiUserAuthentication()).isTrue();
 		assertThat(poolProperties.getPingInterval()).isEqualTo(15000L);
 		assertThat(poolProperties.isPrSingleHopEnabled()).isFalse();
