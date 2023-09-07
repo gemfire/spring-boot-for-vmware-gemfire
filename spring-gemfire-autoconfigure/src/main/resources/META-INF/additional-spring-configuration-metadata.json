@@ -540,6 +540,17 @@
       "description": "Configures the minimum number of client to server connections that a Pool will maintain."
     },
     {
+      "name": "spring.data.gemfire.pool.max-connections-per-server",
+      "type": "java.lang.Integer",
+      "description": "Configures the maximum number of client to server connections that a Pool will create per server."
+    },
+    {
+      "name": "spring.data.gemfire.pool.min-connections-per-server",
+      "type": "java.lang.Integer",
+      "default": 1,
+      "description": "Configures the minimum number of client to server connections that a Pool will maintain per server."
+    },
+    {
       "name": "spring.data.gemfire.pool.multi-user-authentication",
       "type": "java.lang.Boolean",
       "default": false,

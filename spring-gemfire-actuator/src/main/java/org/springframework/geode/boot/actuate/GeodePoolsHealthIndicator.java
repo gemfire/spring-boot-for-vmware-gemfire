@@ -82,6 +82,8 @@ public class GeodePoolsHealthIndicator extends AbstractGeodeHealthIndicator {
 						.withDetail(poolKey(poolName, "locators"), toCommaDelimitedHostAndPortsString(pool.getLocators()))
 						.withDetail(poolKey(poolName, "max-connections"), pool.getMaxConnections())
 						.withDetail(poolKey(poolName, "min-connections"), pool.getMinConnections())
+						.withDetail(poolKey(poolName, "max-connections-per-server"), pool.getMaxConnectionsPerServer())
+						.withDetail(poolKey(poolName, "min-connections-per-server"), pool.getMinConnectionsPerServer())
 						.withDetail(poolKey(poolName, "multi-user-authentication"), toYesNoString(pool.getMultiuserAuthentication()))
 						.withDetail(poolKey(poolName, "online-locators"), toCommaDelimitedHostAndPortsString(pool.getOnlineLocators()))
 						.withDetail(poolKey(poolName, "ping-interval"), pool.getPingInterval())
