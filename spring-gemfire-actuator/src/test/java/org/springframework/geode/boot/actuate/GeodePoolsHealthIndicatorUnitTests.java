@@ -94,7 +94,7 @@ public class GeodePoolsHealthIndicatorUnitTests {
 				testSocketAddress("skullbox", 6789));
 
 		Pool mockPool = PoolMockObjects.mockPool("MockPool", false, 5000,
-			60000L, 1000, mockLocators, 500, 50,
+			60000L, 1000, mockLocators, 500, 50, 50, 5,
 			true, mockLocators.subList(0, 1), 75, 15000L,
 			true, null, 10000, 2, "TestGroup",
 			Collections.emptyList(), 65536, 30000, 5000,
@@ -124,6 +124,8 @@ public class GeodePoolsHealthIndicatorUnitTests {
 		assertThat(healthDetails).containsEntry("geode.pool.MockPool.locators", "mailbox:1234,skullbox:6789");
 		assertThat(healthDetails).containsEntry("geode.pool.MockPool.max-connections", 500);
 		assertThat(healthDetails).containsEntry("geode.pool.MockPool.min-connections", 50);
+		assertThat(healthDetails).containsEntry("geode.pool.MockPool.max-connections-per-server", 50);
+		assertThat(healthDetails).containsEntry("geode.pool.MockPool.min-connections-per-server", 5);
 		assertThat(healthDetails).containsEntry("geode.pool.MockPool.multi-user-authentication", "Yes");
 		assertThat(healthDetails).containsEntry("geode.pool.MockPool.online-locators", "mailbox:1234");
 		assertThat(healthDetails).containsEntry("geode.pool.MockPool.pending-event-count", 75);
