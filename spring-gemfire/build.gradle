@@ -30,6 +30,7 @@ dependencies {
 
   api "com.vmware.gemfire:spring-data-2.7-gemfire-$gemfireBaseVersion:$springDataGemFireVersion"
 
+  compileOnly "com.vmware.gemfire:gemfire-core:$gemfireVersion"
   compileOnly "com.google.code.findbugs:jsr305"
 
   runtimeOnly "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
@@ -59,6 +60,7 @@ dependencies {
   testImplementation "org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion"
   testImplementation "org.springframework.boot:spring-boot-starter-data-cassandra:$springBootVersion"
   testImplementation "com.vmware.gemfire:spring-test-gemfire-9.15-2.7:$springTestGemFireVersion"
+  testImplementation "com.vmware.gemfire:gemfire-core:$gemfireVersion"
 
   testRuntimeOnly "org.hsqldb:hsqldb"
 }
