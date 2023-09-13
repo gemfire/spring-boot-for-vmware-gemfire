@@ -23,6 +23,8 @@ javadoc{
 
 dependencies {
 
+	compileOnly "com.vmware.gemfire:gemfire-core:$gemfireVersion"
+
 	api project(':spring-gemfire-extensions')
 
 	api("org.springframework.boot:spring-boot-starter-jetty") {
