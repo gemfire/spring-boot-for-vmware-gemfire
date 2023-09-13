@@ -23,12 +23,15 @@ dependencies {
 
   api "org.springframework:spring-web"
 
-  api "com.vmware.gemfire:gemfire-core:$gemfireVersion"
-  api "com.vmware.gemfire:gemfire-cq:$gemfireVersion"
-  api "com.vmware.gemfire:gemfire-wan:$gemfireVersion"
+  compileOnly "com.vmware.gemfire:gemfire-core:$gemfireVersion"
+  compileOnly "com.vmware.gemfire:gemfire-cq:$gemfireVersion"
+  compileOnly "com.vmware.gemfire:gemfire-wan:$gemfireVersion"
 
   implementation "com.fasterxml.jackson.core:jackson-databind"
 
+  testImplementation "com.vmware.gemfire:gemfire-core:$gemfireVersion"
+  testImplementation "com.vmware.gemfire:gemfire-cq:$gemfireVersion"
+  testImplementation "com.vmware.gemfire:gemfire-wan:$gemfireVersion"
   testImplementation "com.vmware.gemfire:gemfire-membership:$gemfireVersion"
   testImplementation "com.vmware.gemfire:gemfire-serialization:$gemfireVersion"
   testImplementation "junit:junit"

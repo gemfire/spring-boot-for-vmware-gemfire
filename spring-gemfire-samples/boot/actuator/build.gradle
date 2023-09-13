@@ -12,6 +12,8 @@ dependencies {
 
 	implementation "org.springframework.boot:spring-boot-starter-web"
 
+	compileOnly "com.vmware.gemfire:gemfire-core:$gemfireVersion"
+
 }
 
 task runServer(type: JavaExec) {
