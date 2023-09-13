@@ -23,6 +23,7 @@ javadoc{
 
 dependencies {
     api project(":spring-gemfire")
+    compileOnly "com.vmware.gemfire:gemfire-core:$gemfireVersion"
     compileOnly "com.google.code.findbugs:jsr305:$findbugsVersion"
     implementation "jakarta.annotation:jakarta.annotation-api"
 
@@ -32,6 +33,8 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-autoconfigure-processor:$springBootVersion", optional
     implementation "com.vmware.gemfire:spring-session-3.0-gemfire-${gemfireBaseVersion}:$springSessionDataGemFireVersion", optional
 
+    testImplementation "com.vmware.gemfire:gemfire-core:$gemfireVersion"
+    testImplementation "com.vmware.gemfire:gemfire-cq:$gemfireVersion"
     testImplementation "jakarta.servlet:jakarta.servlet-api"
     testImplementation "org.apache.httpcomponents.client5:httpclient5"
     testImplementation "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
