@@ -25,6 +25,7 @@ javadoc{
 dependencies {
   api project(":spring-gemfire")
 
+  compileOnly "com.vmware.gemfire:gemfire-core:$gemfireVersion"
   compileOnly "com.google.code.findbugs:jsr305:$findbugsVersion"
 
   implementation project(':spring-gemfire-extensions'), optional

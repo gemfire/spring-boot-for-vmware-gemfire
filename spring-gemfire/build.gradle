@@ -29,6 +29,7 @@ dependencies {
   api "org.springframework.boot:spring-boot-starter:$springBootVersion"
 
   api "com.vmware.gemfire:spring-data-2.7-gemfire-$gemfireBaseVersion:$springDataGemFireVersion"
+  compileOnly "com.vmware.gemfire:gemfire-core:$gemfireVersion"
 
   compileOnly "com.google.code.findbugs:jsr305"
 
@@ -48,6 +49,7 @@ dependencies {
   testImplementation "org.assertj:assertj-core"
   testImplementation "org.mockito:mockito-core"
   testImplementation "org.projectlombok:lombok:1.18.28"
+  testImplementation "com.vmware.gemfire:gemfire-core:$gemfireVersion"
   testImplementation "org.testcontainers:testcontainers"
   testImplementation "org.testcontainers:cassandra"
   testImplementation "edu.umd.cs.mtc:multithreadedtc"
