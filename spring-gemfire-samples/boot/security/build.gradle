@@ -7,7 +7,8 @@ description = "Spring Geode Sample demonstrating Apache Geode security configure
 
 dependencies {
 
-	implementation "com.vmware.gemfire:gemfire-core:${gemfireVersion}"
+	compileOnly "com.vmware.gemfire:gemfire-core:$gemfireVersion"
+
 	implementation project(":spring-gemfire-starter")
 	implementation project(":spring-gemfire-starter-test")
 
@@ -15,4 +16,5 @@ dependencies {
 	implementation "org.projectlombok:lombok"
 	implementation "org.springframework.boot:spring-boot-starter-web"
 
+	testImplementation "com.vmware.gemfire:gemfire-core:$gemfireVersion"
 }

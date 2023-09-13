@@ -7,7 +7,7 @@ description = "Spring Geode Sample demonstrating Spring's Cache Abstraction usin
 
 dependencies {
 
-	implementation "com.vmware.gemfire:gemfire-core:${gemfireVersion}"
+	compileOnly "com.vmware.gemfire:gemfire-core:$gemfireVersion"
 
 	implementation(project(":spring-gemfire-starter")) {
 		exclude group: "com.sun.xml.bind", module: "jaxb-impl"
@@ -19,8 +19,7 @@ dependencies {
 
 	runtimeOnly "org.hsqldb:hsqldb"
 
+	testImplementation "com.vmware.gemfire:gemfire-core:$gemfireVersion"
 	testImplementation project(":spring-gemfire-starter-test")
-
 	testImplementation "org.springframework.boot:spring-boot-starter-test"
-
 }

@@ -6,7 +6,8 @@ description = "Spring Geode Sample demonstrating Spring Session with Apache Geod
 
 dependencies {
 
-	implementation "com.vmware.gemfire:gemfire-core:${gemfireVersion}"
+	compileOnly "com.vmware.gemfire:gemfire-core:$gemfireVersion"
+
 	implementation project(":spring-gemfire-starter")
 
 	implementation "org.springframework.boot:spring-boot-starter-web"
@@ -15,7 +16,6 @@ dependencies {
 
 	testImplementation project(":spring-gemfire-starter-session")
 	testImplementation project(":spring-gemfire-starter-test")
-
+	testImplementation "com.vmware.gemfire:gemfire-core:$gemfireVersion"
 	testImplementation "org.springframework.boot:spring-boot-starter-test"
-
 }
