@@ -11,10 +11,13 @@ dependencies {
 	implementation project(':spring-gemfire-starter')
 	//implementation project(':spring-gemfire-starter-logging')
 
+	compileOnly "com.vmware.gemfire:gemfire-core:$gemfireVersion"
+
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
 
 	testImplementation project(":spring-gemfire-starter-test")
+	testImplementation "com.vmware.gemfire:gemfire-core:$gemfireVersion"
 
 }
