@@ -8,7 +8,9 @@ description = "Spring Geode Sample demonstrating Spring's Cache Abstraction usin
 
 dependencies {
 
-	implementation project(":apache-geode-extensions")
+	compileOnly "com.vmware.gemfire:geode-core:$gemfireVersion"
+
+	implementation project(":spring-geode-extensions")
 	implementation project(":spring-geode-starter")
 
 	implementation "org.assertj:assertj-core"
@@ -17,8 +19,8 @@ dependencies {
 
 	runtimeOnly "org.springframework.boot:spring-boot-starter-jetty"
 
+	testImplementation "com.vmware.gemfire:geode-core:$gemfireVersion"
 	testImplementation project (":spring-geode-starter-test")
-
 	testImplementation "org.springframework.boot:spring-boot-starter-test"
 
 }

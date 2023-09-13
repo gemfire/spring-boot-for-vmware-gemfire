@@ -23,15 +23,20 @@ dependencies {
 
   api "org.springframework:spring-web"
 
-  api "com.vmware.gemfire:geode-core:$gemfireVersion"
-  api "com.vmware.gemfire:geode-cq:$gemfireVersion"
-  api "com.vmware.gemfire:geode-lucene:$gemfireVersion"
-  api "com.vmware.gemfire:geode-wan:$gemfireVersion"
+  compileOnly "com.vmware.gemfire:geode-core:$gemfireVersion"
+  compileOnly "com.vmware.gemfire:geode-cq:$gemfireVersion"
+  compileOnly "com.vmware.gemfire:geode-lucene:$gemfireVersion"
+  compileOnly "com.vmware.gemfire:geode-wan:$gemfireVersion"
 
   implementation "com.fasterxml.jackson.core:jackson-databind"
 
   testImplementation "com.vmware.gemfire:geode-membership:$gemfireVersion"
   testImplementation "com.vmware.gemfire:geode-serialization:$gemfireVersion"
+  testImplementation "com.vmware.gemfire:geode-core:$gemfireVersion"
+  testImplementation "com.vmware.gemfire:geode-cq:$gemfireVersion"
+  testImplementation "com.vmware.gemfire:geode-lucene:$gemfireVersion"
+  testImplementation "com.vmware.gemfire:geode-wan:$gemfireVersion"
+
   testImplementation "junit:junit"
   testImplementation "org.assertj:assertj-core"
   testImplementation "org.mockito:mockito-core"
