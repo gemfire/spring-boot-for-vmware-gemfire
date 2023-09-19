@@ -29,6 +29,7 @@ dependencies {
   api "org.springframework.boot:spring-boot-starter"
   api "com.vmware.gemfire:spring-data-3.1-gemfire-${gemfireBaseVersion}:${springDataGemFireVersion}"
 
+  compileOnly "com.vmware.gemfire:gemfire-core:$gemfireVersion"
   compileOnly "com.google.code.findbugs:jsr305:$findbugsVersion"
 
   implementation "org.springframework:spring-test", optional
@@ -45,6 +46,7 @@ dependencies {
   testImplementation "org.springframework.boot:spring-boot-starter-data-jpa"
   testImplementation "org.springframework.boot:spring-boot-starter-data-cassandra"
   testImplementation "com.vmware.gemfire:spring-test-gemfire-$gemfireBaseVersion-3.1:$springTestGemFireVersion"
+  testImplementation "com.vmware.gemfire:gemfire-core:$gemfireVersion"
   testImplementation "org.testcontainers:testcontainers"
   testImplementation "org.testcontainers:cassandra"
   testImplementation("org.mockito:mockito-core:4.8.1") {
