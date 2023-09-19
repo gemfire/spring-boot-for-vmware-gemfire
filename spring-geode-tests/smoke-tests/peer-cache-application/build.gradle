@@ -6,6 +6,8 @@ description = "Smoke Tests asserting the proper function of a Spring Boot config
 
 dependencies {
 
+	compileOnly "com.vmware.gemfire:gemfire-core:$gemfireVersion"
+
 	implementation "org.assertj:assertj-core"
 
 	implementation project(":spring-gemfire-extensions")
@@ -16,6 +18,7 @@ dependencies {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
 
+	testImplementation "com.vmware.gemfire:gemfire-core:$gemfireVersion"
 	testImplementation project(":spring-gemfire-starter-test")
 
 }
