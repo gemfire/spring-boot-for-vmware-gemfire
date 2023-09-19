@@ -6,10 +6,14 @@ description = "Spring Geode Sample demonstrating Spring's Cache Abstraction usin
 
 dependencies {
 
+	compileOnly "com.vmware.gemfire:gemfire-core:$gemfireVersion"
+
 	implementation project(":spring-gemfire-starter")
 
 	implementation "com.vmware.gemfire:gemfire-core:${gemfireVersion}"
 	implementation "org.springframework.boot:spring-boot-starter-web"
+
+	testImplementation "com.vmware.gemfire:gemfire-core:$gemfireVersion"
 
 	testImplementation project(":spring-gemfire-starter-test")
 
