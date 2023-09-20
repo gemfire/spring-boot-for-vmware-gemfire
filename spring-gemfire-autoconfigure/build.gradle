@@ -36,6 +36,7 @@ dependencies {
 
     testImplementation "com.vmware.gemfire:gemfire-core:$gemfireVersion"
     testImplementation "com.vmware.gemfire:gemfire-cq:$gemfireVersion"
+    testImplementation "com.vmware.gemfire:gemfire-wan:$gemfireVersion"
     testImplementation "jakarta.servlet:jakarta.servlet-api"
     testImplementation "org.apache.httpcomponents.client5:httpclient5"
     testImplementation "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
