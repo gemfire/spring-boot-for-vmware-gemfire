@@ -12,6 +12,7 @@ dependencies {
 	implementation project(":spring-gemfire-starter-logging")
 	implementation project(':spring-gemfire-starter')
 
+	testImplementation "com.vmware.gemfire:gemfire-core:$gemfireVersion"
 	testImplementation project(":spring-gemfire-starter-test")
 
 }
