@@ -24,8 +24,8 @@ dependencies {
 
   api "org.springframework.boot:spring-boot-starter-actuator"
 
-  runtimeOnly "com.vmware.gemfire:geode-logging"
-  runtimeOnly "com.vmware.gemfire:geode-serialization"
+  runtimeOnly "com.vmware.gemfire:gemfire-logging:$gemfireVersion"
+  runtimeOnly "com.vmware.gemfire:gemfire-serialization:$gemfireVersion"
 
   compileOnly "com.vmware.gemfire:geode-core:$gemfireVersion"
   compileOnly "com.vmware.gemfire:geode-logging:$gemfireVersion"
