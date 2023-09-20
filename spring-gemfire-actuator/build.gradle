@@ -23,9 +23,9 @@ dependencies {
     api project(":spring-gemfire")
 
     api "org.springframework.boot:spring-boot-starter-actuator"
-
-    runtimeOnly "com.vmware.gemfire:gemfire-logging"
-    runtimeOnly "com.vmware.gemfire:gemfire-serialization"
+    
+    runtimeOnly "com.vmware.gemfire:gemfire-logging:$gemfireVersion"
+    runtimeOnly "com.vmware.gemfire:gemfire-serialization:$gemfireVersion"
 
     compileOnly "com.vmware.gemfire:gemfire-core:$gemfireVersion"
     compileOnly "com.vmware.gemfire:gemfire-logging:$gemfireVersion"
