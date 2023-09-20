@@ -15,6 +15,7 @@ dependencies {
 	implementation "org.projectlombok:lombok"
 	implementation "org.springframework.boot:spring-boot-starter-web"
 
+	testImplementation "com.vmware.gemfire:gemfire-wan:$gemfireVersion"
 	testImplementation "com.vmware.gemfire:gemfire-core:$gemfireVersion"
 	testImplementation project(":spring-gemfire-starter-test")
 	testImplementation "org.springframework.boot:spring-boot-starter-test"

@@ -47,6 +47,9 @@ dependencies {
   testImplementation "edu.umd.cs.mtc:multithreadedtc"
   testImplementation "com.vmware.gemfire:gemfire-http-service:${gemfireVersion}"
   testImplementation "com.vmware.gemfire:gemfire-web:${gemfireVersion}"
+  testImplementation "com.vmware.gemfire:gemfire-core:$gemfireVersion"
+  testImplementation "com.vmware.gemfire:gemfire-cq:$gemfireVersion"
+  testImplementation "com.vmware.gemfire:gemfire-wan:$gemfireVersion"
   testImplementation "org.apache.httpcomponents:httpclient"
 
   testCompileOnly "com.google.code.findbugs:jsr305"
