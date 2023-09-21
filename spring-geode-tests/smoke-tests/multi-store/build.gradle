@@ -7,7 +7,7 @@ description = "Smoke Tests to assert that a multi-store Spring Data project usin
 
 dependencies {
 
-	compileOnly "com.vmware.gemfire:gemfire-core:$gemfireVersion"
+	compileOnly "com.vmware.gemfire:geode-core:$gemfireVersion"
 
 	implementation(project(":spring-gemfire-starter")) {
 		exclude group: "com.sun.xml.bind", module: "jaxb-impl"
@@ -25,7 +25,7 @@ dependencies {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
 
-	testImplementation "com.vmware.gemfire:gemfire-core:$gemfireVersion"
+	testImplementation "com.vmware.gemfire:geode-core:$gemfireVersion"
 	testImplementation project(':spring-gemfire-starter-test')
 
 }

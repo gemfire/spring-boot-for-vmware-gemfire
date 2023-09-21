@@ -18,7 +18,7 @@ dependencies {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
 
-	testImplementation "com.vmware.gemfire:gemfire-core:$gemfireVersion"
+	testImplementation "com.vmware.gemfire:geode-core:$gemfireVersion"
 	testImplementation project(":spring-gemfire-starter-test")
 
 }

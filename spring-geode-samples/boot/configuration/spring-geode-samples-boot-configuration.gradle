@@ -9,7 +9,7 @@ apply plugin: 'io.spring.convention.spring-sample-boot'
 description = "Spring Geode Sample demonstrating the use of Spring Boot Auto-Configuration for Apache Geode."
 
 dependencies {
-	compileOnly "com.vmware.gemfire:gemfire-core:$gemfireVersion"
+	compileOnly "com.vmware.gemfire:geode-core:$gemfireVersion"
 
 	implementation project(":spring-geode-starter")
 	implementation project(":spring-geode-starter-test")
@@ -20,7 +20,7 @@ dependencies {
 	testCompileOnly "com.google.code.findbugs:jsr305:$findbugsVersion"
 
 	testImplementation "org.springframework.boot:spring-boot-starter-test"
-	testImplementation "com.vmware.gemfire:gemfire-core:$gemfireVersion"
+	testImplementation "com.vmware.gemfire:geode-core:$gemfireVersion"
 }
 
 processResources {

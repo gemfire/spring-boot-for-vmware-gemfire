@@ -23,7 +23,7 @@ javadoc{
 
 dependencies {
 
-	compileOnly "com.vmware.gemfire:gemfire-core:$gemfireVersion"
+	compileOnly "com.vmware.gemfire:geode-core:$gemfireVersion"
 
 	api project(':spring-gemfire-extensions')
 
