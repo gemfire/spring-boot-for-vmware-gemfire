@@ -7,7 +7,7 @@ plugins {
 description = "Spring Boot Actuator for VMware GemFire"
 
 project.ext.set("pomProjectLongName", description)
-project.ext.set("pomProjectArtifactName", "spring-boot-3.1-gemfire-actuator-${gemfireBaseVersion}")
+project.ext.set("pomProjectArtifactName", "spring-boot-3.1-gemfire-actuator-${getGemFireBaseVersion()}")
 project.ext.set("pomProjectDescription", description)
 
 java {
@@ -50,7 +50,7 @@ dependencies {
     }
     testImplementation "org.projectlombok:lombok"
     testImplementation "org.springframework.boot:spring-boot-starter-test"
-    testImplementation "com.vmware.gemfire:spring-test-gemfire-$gemfireBaseVersion-3.1:$springTestGemFireVersion"
+    testImplementation "com.vmware.gemfire:spring-test-gemfire-${getGemFireBaseVersion()}-3.1:$springTestGemFireVersion"
     testImplementation "edu.umd.cs.mtc:multithreadedtc"
 }
 
