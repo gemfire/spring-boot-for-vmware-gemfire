@@ -26,7 +26,7 @@ import org.springframework.lang.Nullable;
 public abstract class AbstractResourceWriter implements ResourceWriter {
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void write(@NonNull Resource resource, byte[] data) {

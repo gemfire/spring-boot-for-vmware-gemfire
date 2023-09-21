@@ -40,7 +40,7 @@ public class SpringSessionSubstitutingSpyRequestPostProcessor implements Request
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	public MockHttpServletRequest postProcessRequest(MockHttpServletRequest request) {
