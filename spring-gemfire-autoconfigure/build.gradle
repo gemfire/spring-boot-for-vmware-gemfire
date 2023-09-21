@@ -10,7 +10,7 @@ plugins {
 description = "Spring Boot Auto-Configuration for VMware GemFire"
 
 project.ext.set("pomProjectLongName", "Spring Boot Auto-Configure for VMware GemFire")
-project.ext.set("pomProjectArtifactName", "spring-boot-2.7-gemfire-autoconfigure-${gemfireBaseVersion}")
+project.ext.set("pomProjectArtifactName", "spring-boot-2.7-gemfire-autoconfigure-${getGemFireBaseVersion()}")
 project.ext.set("pomProjectDescription", description)
 
 java {
@@ -32,7 +32,7 @@ dependencies {
 
   implementation "org.springframework.boot:spring-boot-configuration-processor:$springBootVersion", optional
   implementation "org.springframework.boot:spring-boot-autoconfigure-processor:$springBootVersion", optional
-  implementation "com.vmware.gemfire:spring-session-2.7-gemfire-${gemfireBaseVersion}:$springSessionDataGemFireVersion", optional
+  implementation "com.vmware.gemfire:spring-session-2.7-gemfire-${getGemFireBaseVersion()}:$springSessionDataGemFireVersion", optional
 
   implementation "org.aspectj:aspectjweaver:1.9.19"
 
@@ -52,7 +52,7 @@ dependencies {
   testImplementation "org.projectlombok:lombok"
   testImplementation "org.springframework.boot:spring-boot-starter-test"
   testImplementation "org.springframework.boot:spring-boot-starter-web"
-  testImplementation "com.vmware.gemfire:spring-test-gemfire-9.15-2.7:$springTestGemFireVersion"
+  testImplementation "com.vmware.gemfire:spring-test-gemfire-${getGemFireBaseVersion()}-2.7:$springTestGemFireVersion"
   testImplementation "edu.umd.cs.mtc:multithreadedtc"
   testImplementation "com.vmware.gemfire:geode-http-service:${gemfireVersion}"
   testImplementation "com.vmware.gemfire:geode-web:${gemfireVersion}"
@@ -64,7 +64,6 @@ dependencies {
   testRuntimeOnly "org.springframework.boot:spring-boot-starter-jetty"
   testRuntimeOnly "org.springframework.boot:spring-boot-starter-json"
   testRuntimeOnly "org.springframework.shell:spring-shell"
-
 }
 
 repositories {

@@ -9,7 +9,7 @@ plugins {
 description = "Spring GemFire base build for VMware GemFire"
 
 project.ext.set("pomProjectLongName", description)
-project.ext.set("pomProjectArtifactName", "spring-boot-2.7-gemfire-core-${gemfireBaseVersion}")
+project.ext.set("pomProjectArtifactName", "spring-boot-2.7-gemfire-core-${getGemFireBaseVersion()}")
 project.ext.set("pomProjectDescription", description)
 
 java {
@@ -28,7 +28,7 @@ dependencies {
   api "org.springframework:spring-jcl"
   api "org.springframework.boot:spring-boot-starter:$springBootVersion"
 
-  api "com.vmware.gemfire:spring-data-2.7-gemfire-$gemfireBaseVersion:$springDataGemFireVersion"
+  api "com.vmware.gemfire:spring-data-2.7-gemfire-${getGemFireBaseVersion()}:$springDataGemFireVersion"
 
   compileOnly "com.vmware.gemfire:geode-core:$gemfireVersion"
   compileOnly "com.google.code.findbugs:jsr305"
@@ -59,7 +59,7 @@ dependencies {
 
   testImplementation "org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion"
   testImplementation "org.springframework.boot:spring-boot-starter-data-cassandra:$springBootVersion"
-  testImplementation "com.vmware.gemfire:spring-test-gemfire-9.15-2.7:$springTestGemFireVersion"
+  testImplementation "com.vmware.gemfire:spring-test-gemfire-${getGemFireBaseVersion()}-2.7:$springTestGemFireVersion"
   testImplementation "com.vmware.gemfire:geode-core:$gemfireVersion"
 
   testRuntimeOnly "org.hsqldb:hsqldb"
