@@ -34,7 +34,7 @@ public class MemberJoinedEvent extends MembershipEvent<MemberJoinedEvent> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Type getType() {

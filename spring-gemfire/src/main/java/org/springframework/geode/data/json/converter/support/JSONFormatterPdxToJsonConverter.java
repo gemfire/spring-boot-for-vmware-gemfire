@@ -42,7 +42,7 @@ import org.springframework.util.StringUtils;
 public class JSONFormatterPdxToJsonConverter extends JacksonObjectToJsonConverter {
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Nullable @Override
 	public final String convert(@Nullable Object source) {
