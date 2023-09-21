@@ -48,3 +48,11 @@ allprojects {
     resolutionStrategy.cacheChangingModulesFor 0, "minutes"
   }
 }
+
+String getGemFireBaseVersion() {
+  def split = "${gemfireVersion}".split("\\.")
+  if (split.length < 2) {
+    throw new RuntimeException("gemfireVersion is malformed")
+  }
+  return "${split[0]}.${split[1]}"
+}
