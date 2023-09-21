@@ -144,7 +144,7 @@ public class ClusterAwareConfiguration extends AbstractAnnotationConfigSupport i
 	private static final Logger logger = LoggerFactory.getLogger(ClusterAwareConfiguration.class);
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected @NonNull Class<? extends Annotation> getAnnotationType() {
@@ -157,7 +157,7 @@ public class ClusterAwareConfiguration extends AbstractAnnotationConfigSupport i
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void setImportMetadata(@NonNull AnnotationMetadata importMetadata) {
@@ -234,7 +234,7 @@ public class ClusterAwareConfiguration extends AbstractAnnotationConfigSupport i
 		}
 
 		/**
-		 * @inheritDoc
+		 * {@inheritDoc}
 		 */
 		@Override
 		public synchronized boolean matches(@NonNull ConditionContext conditionContext,
@@ -702,7 +702,7 @@ public class ClusterAwareConfiguration extends AbstractAnnotationConfigSupport i
 		}
 
 		/**
-		 * @inheritDoc
+		 * {@inheritDoc}
 		 */
 		@Override
 		public boolean equals(Object obj) {
@@ -722,7 +722,7 @@ public class ClusterAwareConfiguration extends AbstractAnnotationConfigSupport i
 		}
 
 		/**
-		 * @inheritDoc
+		 * {@inheritDoc}
 		 */
 		@Override
 		public int hashCode() {
@@ -735,7 +735,7 @@ public class ClusterAwareConfiguration extends AbstractAnnotationConfigSupport i
 		}
 
 		/**
-		 * @inheritDoc
+		 * {@inheritDoc}
 		 */
 		@Override
 		public String toString() {

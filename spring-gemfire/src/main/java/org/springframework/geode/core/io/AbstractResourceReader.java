@@ -25,7 +25,7 @@ import org.springframework.lang.Nullable;
 public abstract class AbstractResourceReader implements ResourceReader {
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	public @NonNull byte[] read(@NonNull Resource resource) {

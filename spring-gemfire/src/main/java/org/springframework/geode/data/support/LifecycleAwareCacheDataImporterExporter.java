@@ -36,7 +36,7 @@ import org.springframework.util.Assert;
 /**
  * A {@link CacheDataImporterExporter} implementation using the {@literal Decorator Software Design Pattern} to wrap
  * an existing {@link CacheDataImporterExporter} in order to {@literal decorate} the cache (i.e. {@link Region}) data
- * import & export operations, making them Spring {@link ApplicationContext}, {@link Environment}, {@link Lifecycle},
+ * import &amp; export operations, making them Spring {@link ApplicationContext}, {@link Environment}, {@link Lifecycle},
  * {@link ResourceLoader} aware and capable.
  *
  * This wrapper {@literal decorates} the Apache Geode cache {@link Region} data import operation enabling it
@@ -87,7 +87,7 @@ public class LifecycleAwareCacheDataImporterExporter implements CacheDataImporte
 	/**
 	 * Constructs a new instance of the {@link LifecycleAwareCacheDataImporterExporter} initialized with the given,
 	 * target {@link CacheDataImporterExporter} that is wrapped by this implementation to decorate all cache import
-	 * & export data operations in order to make them {@link Lifecycle} aware and capable.
+	 * and export data operations in order to make them {@link Lifecycle} aware and capable.
 	 *
 	 * @param importerExporter {@link CacheDataImporterExporter} wrapped by this implementation to {@literal decorate}
 	 * the cache data import/export operations to be {@link Lifecycle} aware and capable; must not be {@literal null}.
@@ -232,7 +232,7 @@ public class LifecycleAwareCacheDataImporterExporter implements CacheDataImporte
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	public int getPhase() {
@@ -251,7 +251,7 @@ public class LifecycleAwareCacheDataImporterExporter implements CacheDataImporte
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void setResourceLoader(ResourceLoader resourceLoader) {
@@ -311,7 +311,7 @@ public class LifecycleAwareCacheDataImporterExporter implements CacheDataImporte
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@NonNull @Override
 	public Region exportFrom(@NonNull Region region) {
@@ -319,7 +319,7 @@ public class LifecycleAwareCacheDataImporterExporter implements CacheDataImporte
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@NonNull @Override
 	public Region importInto(@NonNull Region region) {
