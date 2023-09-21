@@ -8,7 +8,7 @@ plugins {
 description = "Spring Boot Auto-Configuration for VMware GemFire"
 
 project.ext.set("pomProjectLongName","Spring Boot Auto-Configure for VMware GemFire")
-project.ext.set("pomProjectArtifactName","spring-boot-2.7-gemfire-actuator-autoconfigure-${gemfireBaseVersion}")
+project.ext.set("pomProjectArtifactName","spring-boot-2.7-gemfire-actuator-autoconfigure-${getGemFireBaseVersion()}")
 project.ext.set("pomProjectDescription",description)
 
 description = "Spring Boot Actuator Auto-Configuration for VMware GemFire"
@@ -40,9 +40,8 @@ dependencies {
     testImplementation "org.mockito:mockito-core"
     testImplementation "org.projectlombok:lombok"
     testImplementation "org.springframework.boot:spring-boot-starter-test"
-    testImplementation "com.vmware.gemfire:spring-test-gemfire-10.0-2.7:$springTestGemFireVersion"
+    testImplementation "com.vmware.gemfire:spring-test-gemfire-${getGemFireBaseVersion()}-2.7:$springTestGemFireVersion"
     testImplementation "edu.umd.cs.mtc:multithreadedtc"
-
 }
 
 repositories {
