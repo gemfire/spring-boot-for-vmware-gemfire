@@ -93,7 +93,7 @@ public class MemberSuspectEvent extends MembershipEvent<MemberSuspectEvent> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	public final Type getType() {

@@ -40,7 +40,7 @@ public abstract class MembershipListenerAdapter<T extends MembershipListenerAdap
 		implements EventListener, MembershipListener {
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	public final void memberDeparted(DistributionManager manager, InternalDistributedMember member, boolean crashed) {
@@ -55,7 +55,7 @@ public abstract class MembershipListenerAdapter<T extends MembershipListenerAdap
 	public void handleMemberDeparted(MemberDepartedEvent event) { }
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	public final void memberJoined(DistributionManager manager, InternalDistributedMember member) {
@@ -69,7 +69,7 @@ public abstract class MembershipListenerAdapter<T extends MembershipListenerAdap
 	public void handleMemberJoined(MemberJoinedEvent event) { }
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	public final void memberSuspect(DistributionManager manager, InternalDistributedMember member,
@@ -86,7 +86,7 @@ public abstract class MembershipListenerAdapter<T extends MembershipListenerAdap
 	public void handleMemberSuspect(MemberSuspectEvent event) { }
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	public final void quorumLost(DistributionManager manager, Set<InternalDistributedMember> failedMembers,
