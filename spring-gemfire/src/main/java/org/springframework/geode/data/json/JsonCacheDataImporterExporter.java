@@ -100,7 +100,7 @@ public class JsonCacheDataImporterExporter extends ResourceCapableCacheDataImpor
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@NonNull @Override
 	public Region doExportFrom(@NonNull Region region) {
@@ -122,7 +122,7 @@ public class JsonCacheDataImporterExporter extends ResourceCapableCacheDataImpor
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@NonNull @Override
 	public Region doImportInto(@NonNull Region region) {

@@ -308,7 +308,7 @@ public class RepositoryAsyncEventListener<T, ID> implements AsyncEventListener {
 		}
 
 		/**
-		 * @inheritDoc
+		 * {@inheritDoc}
 		 */
 		@Override
 		public String toString() {
@@ -527,7 +527,7 @@ public class RepositoryAsyncEventListener<T, ID> implements AsyncEventListener {
 		}
 
 		/**
-		 * @inheritDoc
+		 * {@inheritDoc}
 		 */
 		@Override
 		public boolean canProcess(@Nullable AsyncEvent<ID, T> event) {
@@ -538,7 +538,7 @@ public class RepositoryAsyncEventListener<T, ID> implements AsyncEventListener {
 		}
 
 		/**
-		 * @inheritDoc
+		 * {@inheritDoc}
 		 */
 		@Override
 		@SuppressWarnings("unchecked")
@@ -571,7 +571,7 @@ public class RepositoryAsyncEventListener<T, ID> implements AsyncEventListener {
 		}
 
 		/**
-		 * @inheritDoc
+		 * {@inheritDoc}
 		 */
 		@Override
 		public boolean canProcess(@Nullable AsyncEvent<ID, T> event) {
@@ -582,7 +582,7 @@ public class RepositoryAsyncEventListener<T, ID> implements AsyncEventListener {
 		}
 
 		/**
-		 * @inheritDoc
+		 * {@inheritDoc}
 		 */
 		@Override
 		protected <R> R doRepositoryOp(T entity) {

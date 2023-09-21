@@ -39,7 +39,7 @@ public class TestRefreshableApplicationContextLoader extends AbstractContextLoad
 	private Class<?> testClass;
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void processContextConfiguration(ContextConfigurationAttributes configAttributes) {
@@ -50,7 +50,7 @@ public class TestRefreshableApplicationContextLoader extends AbstractContextLoad
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	public ApplicationContext loadContext(MergedContextConfiguration mergedConfig) {
@@ -122,7 +122,7 @@ public class TestRefreshableApplicationContextLoader extends AbstractContextLoad
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	public ApplicationContext loadContext(String... locations) {
@@ -131,7 +131,7 @@ public class TestRefreshableApplicationContextLoader extends AbstractContextLoad
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected String getResourceSuffix() {
