@@ -36,7 +36,7 @@ public class SmartEnvironmentAccessor implements PropertyAccessor {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Nullable @Override
 	public Class<?>[] getSpecificTargetClasses() {
@@ -53,7 +53,7 @@ public class SmartEnvironmentAccessor implements PropertyAccessor {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean canRead(EvaluationContext context, @Nullable Object target, String name) {
@@ -64,7 +64,7 @@ public class SmartEnvironmentAccessor implements PropertyAccessor {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	public TypedValue read(EvaluationContext context, @Nullable Object target, String name) {
@@ -77,7 +77,7 @@ public class SmartEnvironmentAccessor implements PropertyAccessor {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 * @return {@literal false}.
 	 */
 	@Override
@@ -86,7 +86,7 @@ public class SmartEnvironmentAccessor implements PropertyAccessor {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void write(EvaluationContext context, @Nullable Object target, String name, @Nullable Object newValue) { }

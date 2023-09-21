@@ -45,7 +45,7 @@ public class JSONFormatterJsonToPdxConverter implements JsonToPdxConverter {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	public final @NonNull PdxInstance convert(@NonNull String json) {
