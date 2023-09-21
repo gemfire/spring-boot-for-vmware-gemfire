@@ -55,7 +55,7 @@ class DependencyConstraints {
         api(group: 'org.springframework.security', name: 'spring-security-core', version: get('springSecurityVersion'))
         api(group: 'org.springframework.security', name: 'spring-security-web', version: get('springSecurityVersion'))
         api(group: 'org.testcontainers', name: 'testcontainers', version: get('testcontainersVersion'))
-        api(group: 'com.vmware.gemfire', name: 'spring-test-gemfire-9.15-3.0', version: get("springTestGemFire"))
+        api(group: 'com.vmware.gemfire', name: 'spring-test-gemfire-${getGemFireBaseVersion()}-3.0', version: get("springTestGemFire"))
         api(group: 'com.vmware.gemfire', name: 'geode-web', version: get("gemfireVersion"))
       }
 

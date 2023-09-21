@@ -9,7 +9,7 @@ plugins {
 description = "Spring GemFire base build for VMware GemFire"
 
 project.ext.set("pomProjectLongName", description)
-project.ext.set("pomProjectArtifactName", "spring-boot-3.0-gemfire-core-${gemfireBaseVersion}")
+project.ext.set("pomProjectArtifactName", "spring-boot-3.0-gemfire-core-${getGemFireBaseVersion()}")
 project.ext.set("pomProjectDescription", description)
 
 java {
@@ -27,7 +27,7 @@ dependencies {
   api "org.springframework:spring-context-support"
   api "org.springframework:spring-jcl"
   api "org.springframework.boot:spring-boot-starter"
-  api "com.vmware.gemfire:spring-data-3.0-gemfire-${gemfireBaseVersion}:${springDataGemFireVersion}"
+  api "com.vmware.gemfire:spring-data-3.0-gemfire-${getGemFireBaseVersion()}:${springDataGemFireVersion}"
 
   compileOnly "com.vmware.gemfire:geode-core:$gemfireVersion"
   compileOnly "com.google.code.findbugs:jsr305:$findbugsVersion"
@@ -45,7 +45,7 @@ dependencies {
   testImplementation "jakarta.persistence:jakarta.persistence-api"
   testImplementation "org.springframework.boot:spring-boot-starter-data-jpa"
   testImplementation "org.springframework.boot:spring-boot-starter-data-cassandra"
-  testImplementation "com.vmware.gemfire:spring-test-gemfire-$gemfireBaseVersion-3.0:$springTestGemFireVersion"
+  testImplementation "com.vmware.gemfire:spring-test-gemfire-${getGemFireBaseVersion()}-3.0:$springTestGemFireVersion"
   testImplementation "com.vmware.gemfire:geode-core:$gemfireVersion"
   testImplementation "com.vmware.gemfire:geode-lucene:$gemfireVersion"
   testImplementation "org.testcontainers:testcontainers"

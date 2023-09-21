@@ -9,7 +9,7 @@ plugins {
 description = "Spring Boot Auto-Configuration for VMware GemFire"
 
 project.ext.set("pomProjectLongName","Spring Boot Auto-Configure for VMware GemFire")
-project.ext.set("pomProjectArtifactName","spring-boot-3.0-gemfire-autoconfigure-${gemfireBaseVersion}")
+project.ext.set("pomProjectArtifactName","spring-boot-3.0-gemfire-autoconfigure-${getGemFireBaseVersion()}")
 project.ext.set("pomProjectDescription",description)
 
 java {
@@ -31,7 +31,7 @@ dependencies {
 
     implementation "org.springframework.boot:spring-boot-configuration-processor:$springBootVersion", optional
     implementation "org.springframework.boot:spring-boot-autoconfigure-processor:$springBootVersion", optional
-    implementation "com.vmware.gemfire:spring-session-3.0-gemfire-${gemfireBaseVersion}:$springSessionDataGemFireVersion", optional
+    implementation "com.vmware.gemfire:spring-session-3.0-gemfire-${getGemFireBaseVersion()}:$springSessionDataGemFireVersion", optional
 
     testImplementation "com.vmware.gemfire:geode-core:$gemfireVersion"
     testImplementation "com.vmware.gemfire:geode-cq:$gemfireVersion"
@@ -50,7 +50,7 @@ dependencies {
     testRuntimeOnly "org.springframework.boot:spring-boot-starter-jetty"
     testRuntimeOnly "org.springframework.boot:spring-boot-starter-json"
     testRuntimeOnly "org.springframework.shell:spring-shell:$springShellVersion"
-    testImplementation 'com.vmware.gemfire:spring-test-gemfire-9.15-3.0'
+    testImplementation 'com.vmware.gemfire:spring-test-gemfire-${getGemFireBaseVersion()}-3.0'
 }
 
 repositories {
