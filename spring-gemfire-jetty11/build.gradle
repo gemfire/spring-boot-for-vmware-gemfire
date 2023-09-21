@@ -7,7 +7,7 @@ plugins {
 description = "VMware GemFire Integation with Eclipse Jetty declared and managed by Spring Boot"
 
 project.ext.set("pomProjectLongName",description)
-project.ext.set("pomProjectArtifactName","spring-boot-3.1-gemfire-jetty11-${gemfireBaseVersion}")
+project.ext.set("pomProjectArtifactName","spring-boot-3.1-gemfire-jetty11-${getGemFireBaseVersion()}")
 project.ext.set("pomProjectDescription",description)
 
 description = "Apache Geode Integation with Eclipse Jetty declared and managed by Spring Boot"
