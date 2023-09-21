@@ -58,7 +58,7 @@ class DependencySetPlugin implements Plugin<Project> {
             "org.mockito:mockito-core",
             "org.projectlombok:lombok",
             "org.springframework:spring-test",
-            "com.vmware.gemfire:spring-test-gemfire-10.0-3.0",
+            "com.vmware.gemfire:spring-test-gemfire-${getGemFireBaseVersion()}-3.0",
             "edu.umd.cs.mtc:multithreadedtc"
     ]
 
