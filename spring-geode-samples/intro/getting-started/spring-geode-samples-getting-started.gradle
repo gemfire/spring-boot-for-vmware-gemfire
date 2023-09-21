@@ -17,7 +17,7 @@ dependencies {
 	implementation "org.springframework.boot:spring-boot-starter-web"
 
 	testImplementation project(":spring-geode-starter-test")
-	testImplementation "com.vmware.gemfire:gemfire-core:$gemfireVersion"
+	testImplementation "com.vmware.gemfire:geode-core:$gemfireVersion"
 
 	testImplementation "org.springframework.boot:spring-boot-starter-test"
 }

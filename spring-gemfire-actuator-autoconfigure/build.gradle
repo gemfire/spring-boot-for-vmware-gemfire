@@ -25,10 +25,10 @@ dependencies {
     api project(":spring-gemfire-actuator")
     api project(":spring-gemfire-autoconfigure")
 
-    compileOnly "com.vmware.gemfire:gemfire-core:$gemfireVersion"
+    compileOnly "com.vmware.gemfire:geode-core:$gemfireVersion"
     compileOnly "com.google.code.findbugs:jsr305:$findbugsVersion"
 
-    testImplementation "com.vmware.gemfire:gemfire-core:$gemfireVersion"
+    testImplementation "com.vmware.gemfire:geode-core:$gemfireVersion"
     testImplementation "junit:junit"
     testImplementation "org.assertj:assertj-core"
     testImplementation "org.mockito:mockito-core"
