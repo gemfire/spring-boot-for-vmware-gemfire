@@ -36,7 +36,7 @@ public class SingleResourceResolver implements ResourceResolver {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Optional<Resource> resolve(@NonNull String location) {

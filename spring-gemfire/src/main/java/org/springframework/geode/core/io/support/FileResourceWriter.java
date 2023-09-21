@@ -46,7 +46,7 @@ public class FileResourceWriter extends AbstractResourceWriter {
 	private final ThreadLocal<Resource> resource = new ThreadLocal<>();
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected void doWrite(OutputStream resourceOutputStream, byte[] data) {
@@ -78,7 +78,7 @@ public class FileResourceWriter extends AbstractResourceWriter {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected boolean isAbleToHandle(@Nullable Resource resource) {
