@@ -104,7 +104,7 @@ public class EnvironmentMapAdapter extends AbstractMap<String, String> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Set<Entry<String, String>> entrySet() {
@@ -197,7 +197,7 @@ public class EnvironmentMapAdapter extends AbstractMap<String, String> {
 		}
 
 		/**
-		 * @inheritDoc
+		 * {@inheritDoc}
 		 * @throws UnsupportedOperationException
 		 */
 		@Override

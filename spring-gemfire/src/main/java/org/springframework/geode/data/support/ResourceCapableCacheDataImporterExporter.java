@@ -283,7 +283,7 @@ public abstract class ResourceCapableCacheDataImporterExporter extends AbstractC
 		Optional<Resource> resolve(@NonNull Region<?, ?> region);
 
 		/**
-		 * @inheritDoc
+		 * {@inheritDoc}
 		 */
 		@Override
 		default Optional<Resource> resolve(@NonNull String location) {
@@ -320,7 +320,7 @@ public abstract class ResourceCapableCacheDataImporterExporter extends AbstractC
 		 *
 		 * This constructor initializes the SpEL objects used to parse and evaluate SpEL expressions in order to
 		 * fully qualify and resolve {@link Resource} {@link String locations} defined as properties
-		 * in Spring Boot {@literal application.properties} for Import & Export {@link Resource Resources}.
+		 * in Spring Boot {@literal application.properties} for Import &amp; Export {@link Resource Resources}.
 		 *
 		 * @see #newExpressionParser()
 		 * @see #newEvaluationContextBuilder()
@@ -446,7 +446,7 @@ public abstract class ResourceCapableCacheDataImporterExporter extends AbstractC
 		}
 
 		/**
-		 * @inheritDoc
+		 * {@inheritDoc}
 		 */
 		@Override
 		protected boolean isQualified(@Nullable Resource resource) {
@@ -587,7 +587,7 @@ public abstract class ResourceCapableCacheDataImporterExporter extends AbstractC
 			implements ExportResourceResolver {
 
 		/**
-		 * @inheritDoc
+		 * {@inheritDoc}
 		 */
 		@Override
 		public Optional<Resource> resolve(@NonNull Region<?, ?> region) {
@@ -609,7 +609,7 @@ public abstract class ResourceCapableCacheDataImporterExporter extends AbstractC
 		}
 
 		/**
-		 * @inheritDoc
+		 * {@inheritDoc}
 		 */
 		@Override
 		protected @Nullable Resource onMissingResource(@Nullable Resource resource, @NonNull String location) {
@@ -653,7 +653,7 @@ public abstract class ResourceCapableCacheDataImporterExporter extends AbstractC
 			implements ImportResourceResolver {
 
 		/**
-		 * @inheritDoc
+		 * {@inheritDoc}
 		 */
 		@Override
 		public Optional<Resource> resolve(@NonNull Region<?, ?> region) {

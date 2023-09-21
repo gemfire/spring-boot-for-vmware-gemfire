@@ -287,7 +287,7 @@ public class ObjectPdxInstanceAdapter implements PdxInstance {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	public WritablePdxInstance createWriter() {

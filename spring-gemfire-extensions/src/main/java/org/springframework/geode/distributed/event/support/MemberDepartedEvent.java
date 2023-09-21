@@ -61,7 +61,7 @@ public class MemberDepartedEvent extends MembershipEvent<MemberDepartedEvent> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	public final Type getType() {

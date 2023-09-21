@@ -49,7 +49,7 @@ public class EnvironmentLoggingApplicationListener implements ApplicationListene
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void onApplicationEvent(@NonNull ContextRefreshedEvent contextRefreshedEvent) {
