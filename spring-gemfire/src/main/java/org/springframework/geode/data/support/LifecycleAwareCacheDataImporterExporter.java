@@ -232,7 +232,7 @@ public class LifecycleAwareCacheDataImporterExporter implements CacheDataImporte
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	public int getPhase() {
@@ -251,7 +251,7 @@ public class LifecycleAwareCacheDataImporterExporter implements CacheDataImporte
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void setResourceLoader(ResourceLoader resourceLoader) {
@@ -311,7 +311,7 @@ public class LifecycleAwareCacheDataImporterExporter implements CacheDataImporte
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@NonNull @Override
 	public Region exportFrom(@NonNull Region region) {
@@ -319,7 +319,7 @@ public class LifecycleAwareCacheDataImporterExporter implements CacheDataImporte
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@NonNull @Override
 	public Region importInto(@NonNull Region region) {

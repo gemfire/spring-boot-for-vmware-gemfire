@@ -308,7 +308,7 @@ public class RefreshableAnnotationConfigApplicationContext extends AbstractRefre
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void register(Class<?>... componentClasses) {
@@ -319,7 +319,7 @@ public class RefreshableAnnotationConfigApplicationContext extends AbstractRefre
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void scan(String... basePackages) {
