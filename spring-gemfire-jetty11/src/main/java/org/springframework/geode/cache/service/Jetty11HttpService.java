@@ -119,7 +119,7 @@ public class Jetty11HttpService implements HttpService {
 	private volatile Server server;
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Class<? extends CacheService> getInterface() {
@@ -137,7 +137,7 @@ public class Jetty11HttpService implements HttpService {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	public CacheServiceMBeanBase getMBean() {
@@ -619,7 +619,7 @@ public class Jetty11HttpService implements HttpService {
 		}
 
 		/**
-		 * @inheritDoc
+		 * {@inheritDoc}
 		 */
 		@Override
 		public Logger getLogger() {

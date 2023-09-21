@@ -141,7 +141,7 @@ public class QuorumLostEvent extends MembershipEvent<QuorumLostEvent> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	public final Type getType() {

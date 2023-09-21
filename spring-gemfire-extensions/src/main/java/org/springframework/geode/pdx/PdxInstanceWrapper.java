@@ -171,7 +171,7 @@ public class PdxInstanceWrapper implements PdxInstance, Sendable {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	public String getClassName() {
@@ -179,7 +179,7 @@ public class PdxInstanceWrapper implements PdxInstance, Sendable {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean isDeserializable() {
@@ -187,7 +187,7 @@ public class PdxInstanceWrapper implements PdxInstance, Sendable {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean isEnum() {
@@ -195,7 +195,7 @@ public class PdxInstanceWrapper implements PdxInstance, Sendable {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Object getField(String fieldName) {
@@ -203,7 +203,7 @@ public class PdxInstanceWrapper implements PdxInstance, Sendable {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	public List<String> getFieldNames() {
@@ -307,7 +307,7 @@ public class PdxInstanceWrapper implements PdxInstance, Sendable {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean isIdentityField(String fieldName) {
@@ -364,7 +364,7 @@ public class PdxInstanceWrapper implements PdxInstance, Sendable {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	public WritablePdxInstance createWriter() {
@@ -372,7 +372,7 @@ public class PdxInstanceWrapper implements PdxInstance, Sendable {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean hasField(String fieldName) {
@@ -380,7 +380,7 @@ public class PdxInstanceWrapper implements PdxInstance, Sendable {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void sendTo(DataOutput out) throws IOException {
