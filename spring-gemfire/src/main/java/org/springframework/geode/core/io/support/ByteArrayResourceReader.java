@@ -42,7 +42,7 @@ public class ByteArrayResourceReader extends AbstractResourceReader {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected @NonNull byte[] doRead(@NonNull InputStream resourceInputStream) throws IOException {
