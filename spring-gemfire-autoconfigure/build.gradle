@@ -25,7 +25,7 @@ javadoc{
 dependencies {
   api project(":spring-gemfire")
 
-  compileOnly "com.vmware.gemfire:gemfire-core:$gemfireVersion"
+  compileOnly "com.vmware.gemfire:geode-core:$gemfireVersion"
   compileOnly "com.google.code.findbugs:jsr305:$findbugsVersion"
 
   implementation project(':spring-gemfire-extensions'), optional
@@ -42,9 +42,9 @@ dependencies {
     exclude group: 'com.vmware.gemfire', module: 'geode-log4j'
   }
 
-  testImplementation "com.vmware.gemfire:gemfire-core:$gemfireVersion"
-  testImplementation "com.vmware.gemfire:gemfire-cq:$gemfireVersion"
-  testImplementation "com.vmware.gemfire:gemfire-wan:$gemfireVersion"
+  testImplementation "com.vmware.gemfire:geode-core:$gemfireVersion"
+  testImplementation "com.vmware.gemfire:geode-cq:$gemfireVersion"
+  testImplementation "com.vmware.gemfire:geode-wan:$gemfireVersion"
   testImplementation "jakarta.servlet:jakarta.servlet-api"
   testImplementation "junit:junit"
   testImplementation "org.assertj:assertj-core"
