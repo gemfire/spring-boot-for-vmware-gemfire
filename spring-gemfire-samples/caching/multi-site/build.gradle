@@ -17,6 +17,7 @@ dependencies {
 
 	testImplementation "com.vmware.gemfire:gemfire-wan:$gemfireVersion"
 	testImplementation "com.vmware.gemfire:gemfire-core:$gemfireVersion"
+	testImplementation "com.vmware.gemfire:gemfire-wan:$gemfireVersion"
 	testImplementation project(":spring-gemfire-starter-test")
 	testImplementation "org.springframework.boot:spring-boot-starter-test"
 
