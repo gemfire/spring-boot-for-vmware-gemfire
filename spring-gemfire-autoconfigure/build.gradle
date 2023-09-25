@@ -50,7 +50,7 @@ dependencies {
     testRuntimeOnly "org.springframework.boot:spring-boot-starter-jetty"
     testRuntimeOnly "org.springframework.boot:spring-boot-starter-json"
     testRuntimeOnly "org.springframework.shell:spring-shell:$springShellVersion"
-    testImplementation 'com.vmware.gemfire:spring-test-gemfire-${getGemFireBaseVersion()}-3.0'
+    testImplementation "com.vmware.gemfire:spring-test-gemfire-${getGemFireBaseVersion()}-3.0:$springTestGemFireVersion"
 }
 
 repositories {
