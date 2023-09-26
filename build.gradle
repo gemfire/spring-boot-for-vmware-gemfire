@@ -54,30 +54,3 @@ String getGemFireBaseVersion() {
   return "${split[0]}.${split[1]}"
 }
 
-def exportedProjects= [
-        ":spring-gemfire",
-        ":spring-gemfire-actuator",
-        ":spring-gemfire-actuator-autoconfigure",
-        ":spring-gemfire-autoconfigure",
-        ":spring-gemfire-extensions",
-        ":spring-gemfire-jetty11",
-        ":spring-gemfire-starter",
-        ":spring-gemfire-starter-logging",
-        ":spring-gemfire-starter-session",
-        ":spring-gemfire-starter-test",
-]
-
-tasks.register('combinedJavadoc', Javadoc)  {
-  source exportedProjects.collect { project(it).sourceSets.main.allJava }
-  title = "Spring Boot for VMware GemFire Java API Reference"
-  classpath = files(exportedProjects.collect {
-    project(it).sourceSets.main.compileClasspath
-  })
-  destinationDir = file("${buildDir}/docs/javadoc")
-}
-
-tasks.register('combinedJavadocJar', Jar) {
-  dependsOn combinedJavadoc
-  archiveClassifier = 'javadoc'
-  from combinedJavadoc.destinationDir
-}
