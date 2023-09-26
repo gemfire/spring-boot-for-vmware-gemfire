@@ -33,7 +33,7 @@ dependencies {
     testImplementation "org.assertj:assertj-core"
     testImplementation "org.mockito:mockito-core"
     testImplementation "org.projectlombok:lombok"
-    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation project(":spring-gemfire-starter-test")
     testImplementation "edu.umd.cs.mtc:multithreadedtc"
 }
 
