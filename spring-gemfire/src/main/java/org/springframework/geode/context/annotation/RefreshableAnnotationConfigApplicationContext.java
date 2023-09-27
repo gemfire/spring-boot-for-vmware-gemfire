@@ -41,7 +41,7 @@ import org.springframework.util.StringUtils;
  * providing the ability to reload/refresh the context at some point later during runtime.
  *
  * DISCLAIMER: Currently, this {@link ApplicationContext} implementation (and extension) is being used exclusively for
- * testing and experimental (R&D) purposes. It was designed around Apache Geode's forced-disconnect / auto-reconnect
+ * testing and experimental (R&amp;D) purposes. It was designed around Apache Geode's forced-disconnect / auto-reconnect
  * functionality, providing support for this behavior inside a Spring context. Specifically, this concern is only
  * applicable when using Spring Boot to configure and bootstrap Apache Geode peer member
  * {@link org.apache.geode.cache.Cache} applications, such as when annotating your Spring Boot application with
