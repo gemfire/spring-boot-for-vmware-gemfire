@@ -23,9 +23,10 @@ class DependencyConstraints {
     depVersionMapping.put("antlrVersion", "2.7.7")
     depVersionMapping.put("findbugsVersion", "3.0.2")
     depVersionMapping.put("multithreadedtcVersion", "1.01")
-    depVersionMapping.put("springBootVersion", "2.7.13")
+    depVersionMapping.put("springBootVersion", "2.7.16")
     depVersionMapping.put("springShellVersion", "1.2.0.RELEASE")
-    depVersionMapping.put("springFrameworkVersion", "5.3.28")
+    depVersionMapping.put("springFrameworkVersion", "5.3.30")
+    depVersionMapping.put("springSecurityVersion", "5.7.10")
     depVersionMapping.put("testcontainersVersion", "1.17.6")
 
     return depVersionMapping
@@ -46,8 +47,8 @@ class DependencyConstraints {
         api(group: 'org.springframework.shell', name: 'spring-shell', version: get('springShellVersion'))
         api(group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: get('springBootVersion'))
         api(group: 'org.springframework.boot', name: 'spring-boot-autoconfigure-processor', version: get('springBootVersion'))
-        api(group: 'org.springframework.security', name: 'spring-security-core', version: '5.7.7' )
-        api(group: 'org.springframework.security', name: 'spring-security-web', version: '5.7.7' )
+        api(group: 'org.springframework.security', name: 'spring-security-core', version: get('springSecurityVersion'))
+        api(group: 'org.springframework.security', name: 'spring-security-web', version: get('springSecurityVersion'))
         api(group: 'org.testcontainers', name: 'testcontainers', version: get('testcontainersVersion'))
       }
 
