@@ -22,6 +22,7 @@ import org.apache.geode.cache.DataPolicy;
 import org.apache.geode.cache.Region;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.websocket.servlet.WebSocketServletAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.annotation.Bean;
@@ -137,7 +138,7 @@ public class AutoConfiguredSessionLocalCachingIntegrationTests extends Integrati
 		assertThat(response.getBody()).isEqualTo("TEST");
 	}
 
-	@SpringBootApplication
+	@SpringBootApplication(exclude = WebSocketServletAutoConfiguration.class)
 	@EnableClusterAware
 	static class TestConfiguration {
 
