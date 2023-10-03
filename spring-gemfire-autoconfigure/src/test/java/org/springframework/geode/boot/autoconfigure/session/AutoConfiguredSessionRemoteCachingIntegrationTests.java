@@ -25,6 +25,7 @@ import org.apache.geode.cache.client.ClientCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.websocket.servlet.WebSocketServletAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -158,7 +159,7 @@ public class AutoConfiguredSessionRemoteCachingIntegrationTests extends ForkingC
 		assertThat(response.getBody()).isEqualTo("TEST");
 	}
 
-	@SpringBootApplication
+	@SpringBootApplication(exclude = WebSocketServletAutoConfiguration.class)
 	static class SessionGemFireClientConfiguration {
 
 		@Bean
