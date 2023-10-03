@@ -31,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.websocket.servlet.WebSocketServletAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
@@ -203,7 +204,7 @@ public class RestServiceCacheDataImportExportIntegrationTests extends Integratio
 	}
 
 	@Profile("NET-IMPORT-EXPORT")
-	@SpringBootApplication
+	@SpringBootApplication(exclude = WebSocketServletAutoConfiguration.class)
 	@EnableGemFireMockObjects
 	@EnableEntityDefinedRegions(basePackageClasses = Golfer.class, clientRegionShortcut = ClientRegionShortcut.LOCAL)
 	static class TestGeodeConfiguration implements WebMvcConfigurer {
