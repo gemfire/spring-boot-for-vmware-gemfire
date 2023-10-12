@@ -15,9 +15,9 @@ project.ext.set("pomProjectDescription",description)
 
 dependencies {
   implementation project(':spring-gemfire-extensions')
-  api "org.springframework:spring-context:5.3.26"
-  implementation "org.springframework:spring-context-support:5.3.26"
-  implementation "org.springframework:spring-jcl:5.3.26"
+  api "org.springframework:spring-context:5.3.28"
+  implementation "org.springframework:spring-context-support:5.3.28"
+  implementation "org.springframework:spring-jcl:5.3.28"
   api "org.springframework.boot:spring-boot-starter:$springBootVersion"
 
   api "com.vmware.gemfire:spring-data-2.6-gemfire-$gemfireBaseVersion:$springDataGemFireVersion"
@@ -35,7 +35,7 @@ dependencies {
     exclude group: 'com.vmware.gemfire', module: 'geode-log4j'
   }
 
-  testImplementation "org.springframework:spring-test:5.3.26"
+  testImplementation "org.springframework:spring-test:5.3.28"
   testImplementation "junit:junit"
   testImplementation "org.assertj:assertj-core"
   testImplementation "org.mockito:mockito-core"
