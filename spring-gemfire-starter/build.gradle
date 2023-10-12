@@ -54,7 +54,7 @@ def exportedProjects= [
 
 tasks.register('combinedJavadoc', Javadoc)  {
   source exportedProjects.collect { project(it).sourceSets.main.allJava }
-  title = "Spring Boot for VMware GemFire Java API Reference"
+  title = "Spring Boot $springBootBaseVersion for VMware GemFire ${getGemFireBaseVersion()} Java API Reference"
   classpath = files(exportedProjects.collect {
     project(it).sourceSets.main.compileClasspath
   })
