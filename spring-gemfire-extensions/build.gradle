@@ -7,7 +7,7 @@ plugins {
 description = "Spring Boot for VMware GemFire Extensions"
 
 project.ext.set("pomProjectLongName",description)
-project.ext.set("pomProjectArtifactName","spring-boot-3.1-gemfire-extensions-${getGemFireBaseVersion()}")
+project.ext.set("pomProjectArtifactName","spring-boot-3.2-gemfire-extensions-${getGemFireBaseVersion()}")
 project.ext.set("pomProjectDescription",description)
 
 java {

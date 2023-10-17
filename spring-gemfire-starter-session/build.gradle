@@ -7,7 +7,7 @@ plugins {
 description = "Spring Boot Starter for Spring Session using VMware GemFire"
 
 project.ext.set("pomProjectLongName", "Spring Boot Starter for Spring Session using VMware GemFire")
-project.ext.set("pomProjectArtifactName", "spring-boot-session-3.1-gemfire-${getGemFireBaseVersion()}")
+project.ext.set("pomProjectArtifactName", "spring-boot-session-3.2-gemfire-${getGemFireBaseVersion()}")
 project.ext.set("pomProjectDescription", description)
 
 java {
@@ -22,7 +22,7 @@ javadoc{
 dependencies {
   api(project(':spring-gemfire-starter'))
 
-  api "com.vmware.gemfire:spring-session-3.1-gemfire-${getGemFireBaseVersion()}:$springSessionDataGemFireVersion"
+  api "com.vmware.gemfire:spring-session-3.2-gemfire-${getGemFireBaseVersion()}:$springSessionDataGemFireVersion"
 
 }
 
