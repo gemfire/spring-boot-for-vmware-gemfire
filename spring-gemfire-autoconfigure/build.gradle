@@ -43,7 +43,7 @@ dependencies {
     testImplementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
     testCompileOnly "com.google.code.findbugs:jsr305:$findbugsVersion"
 
-    testRuntimeOnly project(':spring-gemfire-jetty11')
+    testRuntimeOnly project(':spring-gemfire-jetty12')
 
     testRuntimeOnly "javax.cache:cache-api"
     testRuntimeOnly "com.vmware.gemfire:gemfire-web:$gemfireVersion"

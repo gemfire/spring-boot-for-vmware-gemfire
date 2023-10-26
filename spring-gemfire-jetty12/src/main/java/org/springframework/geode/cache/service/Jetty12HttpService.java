@@ -35,6 +35,11 @@ import org.apache.geode.management.internal.beans.CacheServiceMBeanBase;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import org.eclipse.jetty.ee10.webapp.ClassMatcher;
+import org.eclipse.jetty.ee10.webapp.WebAppContext;
+import org.eclipse.jetty.server.Handler;
+import org.eclipse.jetty.server.handler.ContextHandlerCollection;
+import org.eclipse.jetty.util.resource.ResourceFactory;
 import org.springframework.geode.cache.service.support.JakartaEEMigrationService;
 import org.springframework.geode.util.CacheUtils;
 
@@ -47,14 +52,10 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.SslConnectionFactory;
 import org.eclipse.jetty.server.SymlinkAllowedResourceAliasChecker;
-import org.eclipse.jetty.server.handler.HandlerCollection;
-import org.eclipse.jetty.util.resource.PathResource;
 import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 import org.eclipse.jetty.util.thread.ThreadPool;
-import org.eclipse.jetty.webapp.ClassMatcher;
-import org.eclipse.jetty.webapp.WebAppContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.helpers.MessageFormatter;
@@ -72,10 +73,10 @@ import org.slf4j.helpers.MessageFormatter;
  * @see org.apache.geode.internal.security.SecurableCommunicationChannel
  * @see org.eclipse.jetty.server.HttpConfiguration
  * @see org.eclipse.jetty.server.Server
- * @see org.eclipse.jetty.webapp.WebAppContext
+ * @see org.eclipse.jetty.ee10.webapp.WebAppContext
  * @since 2.0.0
  */
-public class Jetty11HttpService implements HttpService {
+public class Jetty12HttpService implements HttpService {
 
 	private static final boolean JETTY_WEBAPP_PARENT_LOADER_PRIORITY = false;
 	private static final boolean SKIP_SSL_VERIFICATION = false;
@@ -177,7 +178,7 @@ public class Jetty11HttpService implements HttpService {
 	 *
 	 * @return a reference to the {@link List} of {@link WebAppContext Web applications} being run on
 	 * this Jetty HTTP server.
-	 * @see org.eclipse.jetty.webapp.WebAppContext
+	 * @see org.eclipse.jetty.ee10.webapp.WebAppContext
 	 * @see java.util.List
 	 */
 	protected List<WebAppContext> getWebApplications() {
@@ -235,7 +236,7 @@ public class Jetty11HttpService implements HttpService {
 
 		server.addConnector(newConnector(configuration, server));
 		server.setAttribute(APACHE_GEODE_CONFIGURATION_ATTRIBUTE_NAME, configuration);
-		server.setHandler(new HandlerCollection(true));
+		server.setHandler(new ContextHandlerCollection(true));
 
 		logInfo("Initializing Apache Geode's embedded HTTP service with the Jetty {} Server...",
 			toSupplier(Server::getVersion));
@@ -347,7 +348,7 @@ public class Jetty11HttpService implements HttpService {
 	 * @param warFilePath {@link Path} to the Java Web Application Archive (WAR) file.
 	 * @param attributeNameValuePairs {@link Map} of Web application, {@link jakarta.servlet.ServletContext}
 	 * attributes to set in the {@link WebAppContext}.
-	 * @see org.eclipse.jetty.webapp.WebAppContext
+	 * @see org.eclipse.jetty.ee10.webapp.WebAppContext
 	 * @see org.eclipse.jetty.server.Server
 	 * @see #getOptionalServer()
 	 */
@@ -371,7 +372,7 @@ public class Jetty11HttpService implements HttpService {
 			nullSafeMap(attributeNameValuePairs)
 				.forEach(webAppContext::setAttribute);
 
-			((HandlerCollection) server.getHandler()).addHandler(webAppContext);
+			((Handler.Collection) server.getHandler()).addHandler(webAppContext);
 
 			startWebApplication(server, webAppContext);
 
@@ -388,8 +389,11 @@ public class Jetty11HttpService implements HttpService {
 
 	private WebAppContext newWebAppContext(Server server, Path warFilePath, String contextPath) {
 
-		Resource webApp = new PathResource(requireObject(warFilePath,
-			String.format("WAR file path of the Web application [%s] to add must not be null", contextPath)));
+		Resource webApp;
+		try (ResourceFactory.Closeable resourceFactory = ResourceFactory.closeable()) {
+			webApp = resourceFactory.newResource(requireObject(warFilePath,
+					String.format("WAR file path of the Web application [%s] to add must not be null", contextPath)));
+		}
 
 		WebAppContext webAppContext = new WebAppContext(webApp, contextPath);
 
@@ -417,7 +421,9 @@ public class Jetty11HttpService implements HttpService {
 
 		File workingDirectory = new File(System.getProperty("user.dir")).getAbsoluteFile();
 
-		webAppContext.setExtraClasspath(Collections.singletonList(new PathResource(workingDirectory)));
+		try (ResourceFactory.Closeable resourceFactory = ResourceFactory.closeable()) {
+			webAppContext.setExtraClasspath(Collections.singletonList(resourceFactory.newResource(workingDirectory.toPath())));
+		}
 
 		return webAppContext;
 	}
@@ -547,7 +553,7 @@ public class Jetty11HttpService implements HttpService {
 			return new SafeServerWrapper(server);
 		}
 
-		private final Logger logger = LoggerFactory.getLogger(Jetty11HttpService.class);
+		private final Logger logger = LoggerFactory.getLogger(Jetty12HttpService.class);
 
 		private final Server server;
 
@@ -610,7 +616,7 @@ public class Jetty11HttpService implements HttpService {
 			return new SafeWebApplicationWrapper(webAppContext);
 		}
 
-		private final Logger logger = LoggerFactory.getLogger(Jetty11HttpService.class);
+		private final Logger logger = LoggerFactory.getLogger(Jetty12HttpService.class);
 
 		private final WebAppContext webAppContext;
 

@@ -7,7 +7,7 @@ plugins {
 description = "VMware GemFire Integation with Eclipse Jetty declared and managed by Spring Boot"
 
 project.ext.set("pomProjectLongName",description)
-project.ext.set("pomProjectArtifactName","spring-boot-3.2-gemfire-jetty11-${getGemFireBaseVersion()}")
+project.ext.set("pomProjectArtifactName","spring-boot-3.2-gemfire-jetty12-${getGemFireBaseVersion()}")
 project.ext.set("pomProjectDescription",description)
 
 description = "Apache Geode Integation with Eclipse Jetty declared and managed by Spring Boot"
@@ -37,6 +37,6 @@ dependencies {
 	implementation "org.eclipse.jetty:jetty-server"
 	implementation "org.slf4j:slf4j-api"
 
-	runtimeOnly "org.eclipse.jetty:apache-jsp"
+	runtimeOnly "org.eclipse.jetty.ee10:jetty-ee10-apache-jsp"
 
 }

@@ -3,4 +3,4 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-org.springframework.geode.cache.service.Jetty11HttpService
+org.springframework.geode.cache.service.Jetty12HttpService

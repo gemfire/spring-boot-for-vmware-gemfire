@@ -28,7 +28,7 @@ include 'spring-gemfire-starter-logging'
 include 'spring-gemfire-starter-session'
 include 'spring-gemfire-starter-actuator'
 include 'spring-gemfire-starter-test'
-include 'spring-gemfire-jetty11'
+include 'spring-gemfire-jetty12'
 
 include 'spring-geode-tests:smoke-tests:function-execution-on-region'
 include 'spring-geode-tests:smoke-tests:locator-application'
