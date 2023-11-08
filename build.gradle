@@ -44,6 +44,10 @@ subprojects {
   configurations.all {
     resolutionStrategy.cacheChangingModulesFor 0, "minutes"
   }
+
+  tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs << '-parameters'
+  }
 }
 
 String getGemFireBaseVersion() {
