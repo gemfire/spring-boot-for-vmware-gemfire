@@ -1,3 +1,14 @@
+import com.google.cloud.storage.BlobId
+import com.google.cloud.storage.BlobInfo
+import com.google.cloud.storage.Storage
+import com.google.cloud.storage.StorageOptions
+
+buildscript {
+  dependencies {
+    classpath 'com.google.cloud:google-cloud-storage:2.29.1'
+  }
+}
+
 plugins {
   id 'java-library'
   id 'gemfire-repo-artifact-publishing'
@@ -65,4 +76,14 @@ tasks.register('combinedJavadocJar', Jar) {
   dependsOn combinedJavadoc
   archiveClassifier = 'javadoc'
   from combinedJavadoc.destinationDir
+}
+
+tasks.register('copyJavadocsToBucket') {
+  dependsOn combinedJavadocJar
+  doLast {
+    Storage storage = StorageOptions.newBuilder().setProjectId(project.findProperty('docsGCSProject')).build().getService()
+    BlobId blobId = BlobId.of(project.findProperty("docsGCSBucket"), "${project.findProperty('pomProjectArtifactName')}/${project.version}/${combinedJavadocJar.outputs.files.singleFile.name}")
+    BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build()
+    storage.createFrom(blobInfo, combinedJavadocJar.outputs.files.singleFile.toPath())
+  }
 }
