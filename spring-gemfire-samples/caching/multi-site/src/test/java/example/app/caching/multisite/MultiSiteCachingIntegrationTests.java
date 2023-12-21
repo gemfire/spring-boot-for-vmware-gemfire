@@ -35,6 +35,7 @@ import org.apache.geode.cache.util.CacheListenerAdapter;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -130,6 +131,7 @@ public class MultiSiteCachingIntegrationTests extends ForkingClientServerIntegra
 
 		SpringApplication springApplication =
 			new SpringApplicationBuilder(BootGeodeMultiSiteCachingClientApplication.class)
+				.web(WebApplicationType.NONE)
 				.headless(true)
 				.profiles(springProfiles)
 				//.properties(configuration)
