@@ -33,7 +33,7 @@ import org.springframework.web.servlet.ModelAndView;
  * and the number of HTTP Sessions.
  *
  * @author John Blum
- * @see javax.servlet.http.HttpSession
+ * @see jakarta.servlet.http.HttpSession
  * @see org.springframework.stereotype.Controller
  * @see org.springframework.web.bind.annotation.GetMapping
  * @see org.springframework.web.bind.annotation.ResponseBody

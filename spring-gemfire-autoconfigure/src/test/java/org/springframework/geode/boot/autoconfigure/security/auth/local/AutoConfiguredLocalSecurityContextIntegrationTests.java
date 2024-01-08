@@ -6,6 +6,7 @@ package org.springframework.geode.boot.autoconfigure.security.auth.local;
 
 import java.io.IOException;
 
+import org.awaitility.Awaitility;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 
