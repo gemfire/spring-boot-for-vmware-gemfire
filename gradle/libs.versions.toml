@@ -1,5 +1,6 @@
 [versions]
 antlrVersion = "2.7.7"
+awaitilityVersion="4.2.0"
 aspectjToolsVersion = "1.9.19"
 findbugsVersion = "3.0.2"
 mockitoCoreVersion = { strictly = "4.8.1" }
@@ -14,6 +15,7 @@ lombokPlugin = "8.4"
 [libraries]
 antlr = { module = "antlr:antlr", version.ref = "antlrVersion" }
 aspectj-tools = { module = "org.aspectj:aspectjtools", version.ref = "aspectjToolsVersion" }
+awaitility={module="org.awaitility:awaitility",version.ref="awaitilityVersion"}
 findbugs-jsr305 = { module = "com.google.code.findbugs:jsr305", version.ref = "findbugsVersion" }
 multithreadedtc = { module = "edu.umd.cs.mtc:multithreadedtc", version.ref = "multithreadedtcVersion" }
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoCoreVersion" }
