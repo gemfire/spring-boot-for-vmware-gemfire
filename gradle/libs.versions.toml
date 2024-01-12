@@ -30,6 +30,7 @@ gemfire-gfsh = { module = "com.vmware.gemfire:gemfire-gfsh", version.ref = "gemf
 gemfire-web = { module = "com.vmware.gemfire:gemfire-web", version.ref = "gemfireVersion" }
 gemfire-http-service = { module = "com.vmware.gemfire:gemfire-http-service", version.ref = "gemfireVersion" }
 gemfire-logging = { module = "com.vmware.gemfire:gemfire-logging", version.ref = "gemfireVersion" }
+gemfire-lucene = { module = "com.vmware.gemfire:gemfire-lucene", version.ref = "gemfireVersion" }
 gemfire-cq = { module = "com.vmware.gemfire:gemfire-cq", version.ref = "gemfireVersion" }
 gemfire-wan = { module = "com.vmware.gemfire:gemfire-wan", version.ref = "gemfireVersion" }
 gemfire-membership = { module = "com.vmware.gemfire:gemfire-membership", version.ref = "gemfireVersion" }
