@@ -19,6 +19,7 @@ dependencies {
     compileOnly(libs.gemfire.core)
     compileOnly(libs.findbugs.jsr305)
 
+    testImplementation(project(":spring-gemfire-starter-logging"))
     testImplementation(libs.gemfire.core)
     testImplementation("junit:junit")
     testImplementation("org.assertj:assertj-core")
