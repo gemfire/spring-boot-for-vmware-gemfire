@@ -16,6 +16,7 @@ import java.util.stream.StreamSupport;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.awaitility.Awaitility;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -85,6 +86,8 @@ public class CacheDataExportAutoConfigurationIntegrationTests extends ClientServ
 		assertThat(process).isNotNull();
 
 		waitOn(() -> !process.isRunning(), Duration.ofSeconds(20).toMillis(), Duration.ofSeconds(2).toMillis());
+
+		Awaitility.await().untilAsserted(()->assertThat(GEODE_WORKING_DIRECTORY).exists());
 	}
 
 	@AfterClass
