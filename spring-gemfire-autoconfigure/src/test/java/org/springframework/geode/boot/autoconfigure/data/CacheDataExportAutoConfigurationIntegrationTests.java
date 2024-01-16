@@ -87,6 +87,10 @@ public class CacheDataExportAutoConfigurationIntegrationTests extends ClientServ
 
 		waitOn(() -> !process.isRunning(), Duration.ofSeconds(20).toMillis(), Duration.ofSeconds(2).toMillis());
 
+		if(!GEODE_WORKING_DIRECTORY.exists()){
+			GEODE_WORKING_DIRECTORY.mkdirs();
+		}
+
 		Awaitility.await().untilAsserted(() -> assertThat(GEODE_WORKING_DIRECTORY.getAbsoluteFile()).exists());
 	}
 
