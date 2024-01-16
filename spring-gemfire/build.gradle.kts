@@ -35,7 +35,7 @@ dependencies {
   testImplementation("org.springframework.boot:spring-boot-starter-data-jpa")
   testImplementation("org.springframework.boot:spring-boot-starter-data-cassandra")
   testImplementation(libs.spring.test.gemfire)
-  testImplementation(libs.gemfire.core)
+  testImplementation(libs.gemfire.server.all)
   testImplementation(project(":spring-gemfire-starter-logging"))
   testImplementation("org.testcontainers:testcontainers")
   testImplementation("org.testcontainers:cassandra")

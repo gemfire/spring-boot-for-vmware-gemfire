@@ -25,6 +25,7 @@ spring-boot-autoconfigure-processor = { module = "org.springframework.boot:sprin
 spring-shell = { module = "org.springframework.shell:spring-shell", version.ref = "springShellVersion" }
 tomcat-jakartaee-migration={module="org.apache.tomcat:jakartaee-migration",version.ref="tomcatMigrationVersion"}
 
+gemfire-server-all = { module = "com.vmware.gemfire:gemfire-server-all", version.ref = "gemfireVersion" }
 gemfire-core = { module = "com.vmware.gemfire:gemfire-core", version.ref = "gemfireVersion" }
 gemfire-gfsh = { module = "com.vmware.gemfire:gemfire-gfsh", version.ref = "gemfireVersion" }
 gemfire-web = { module = "com.vmware.gemfire:gemfire-web", version.ref = "gemfireVersion" }
