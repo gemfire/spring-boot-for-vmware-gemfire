@@ -33,6 +33,8 @@ dependencies {
     exclude(group = "org.skyscreamer", module = "jsonassert")
   }
 
+  testImplementation("ch.qos.logback:logback-classic")
+  testImplementation("org.apache.logging.log4j:log4j-to-slf4j")
   testImplementation("jakarta.persistence:jakarta.persistence-api")
   testImplementation("org.springframework.boot:spring-boot-starter-data-jpa")
   testImplementation("org.springframework.boot:spring-boot-starter-data-cassandra")
