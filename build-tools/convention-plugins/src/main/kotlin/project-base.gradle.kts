@@ -10,7 +10,7 @@ java {
   withJavadocJar()
   withSourcesJar()
   toolchain {
-    languageVersion = JavaLanguageVersion.of(17)
+    languageVersion = JavaLanguageVersion.of(8)
   }
 }
 
@@ -43,10 +43,6 @@ repositories {
 
 configurations.all {
   resolutionStrategy.cacheChangingModulesFor(0, "minutes")
-}
-
-tasks.withType<JavaCompile>().configureEach {
-  options.compilerArgs.add("-parameters")
 }
 
 fun getGemFireBaseVersion(): String {
