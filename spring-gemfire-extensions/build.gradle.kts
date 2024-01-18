@@ -1,0 +1,33 @@
+plugins {
+  id("project-base")
+  id("gemfire-repo-artifact-publishing")
+}
+
+description = "Spring Boot for VMware GemFire Extensions"
+
+publishingDetails {
+  artifactName.set("spring-boot-2.7-gemfire-extensions-${ProjectUtils.getGemFireBaseVersion(property("gemfireVersion").toString())}")
+  longName.set(project.description)
+  description.set(project.description)
+}
+
+dependencies {
+  api("org.springframework:spring-web")
+
+  compileOnly(libs.gemfire.core)
+  compileOnly(libs.gemfire.cq)
+  compileOnly(libs.gemfire.wan)
+
+  implementation("com.fasterxml.jackson.core:jackson-databind")
+
+  testImplementation(libs.gemfire.core)
+  testImplementation(libs.gemfire.cq)
+  testImplementation(libs.gemfire.wan)
+  testImplementation(libs.gemfire.membership)
+  testImplementation(libs.gemfire.serialization)
+  testImplementation("junit:junit")
+  testImplementation("org.assertj:assertj-core")
+  testImplementation(libs.mockito.core)
+  testImplementation("org.projectlombok:lombok")
+  testImplementation(libs.multithreadedtc)
+}
