@@ -13,19 +13,21 @@ publishingDetails {
 }
 
 dependencies {
-    api(project(":spring-gemfire-actuator"))
-    api(project(":spring-gemfire-autoconfigure"))
+  api(project(":spring-gemfire-actuator"))
+  api(project(":spring-gemfire-autoconfigure"))
 
-    compileOnly(libs.gemfire.core)
-    compileOnly(libs.findbugs.jsr305)
+  compileOnly(libs.gemfire.core)
+  compileOnly(libs.findbugs.jsr305)
 
-    testImplementation(libs.gemfire.core)
-    testImplementation("junit:junit")
-    testImplementation("org.assertj:assertj-core")
-    testImplementation(libs.mockito.core)
-    testImplementation("org.projectlombok:lombok")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation(libs.spring.test.gemfire)
-    testImplementation(libs.multithreadedtc)
+  testImplementation(libs.gemfire.core)
+  testImplementation("ch.qos.logback:logback-classic")
+  testImplementation("org.apache.logging.log4j:log4j-to-slf4j")
+  testImplementation("junit:junit")
+  testImplementation("org.assertj:assertj-core")
+  testImplementation(libs.mockito.core)
+  testImplementation("org.projectlombok:lombok")
+  testImplementation("org.springframework.boot:spring-boot-starter-test")
+  testImplementation(libs.spring.test.gemfire)
+  testImplementation(libs.multithreadedtc)
 }
 
