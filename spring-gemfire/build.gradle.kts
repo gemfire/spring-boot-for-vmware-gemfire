@@ -35,7 +35,9 @@ dependencies {
   testImplementation("org.springframework.boot:spring-boot-starter-data-jpa")
   testImplementation("org.springframework.boot:spring-boot-starter-data-cassandra")
   testImplementation(libs.spring.test.gemfire)
-  testImplementation(libs.gemfire.core)
+  testImplementation(libs.gemfire.server.all){
+    exclude(group="com.vmware.gemfire",module="gemfire-log4j")
+  }
   testImplementation("ch.qos.logback:logback-classic")
   testImplementation("org.apache.logging.log4j:log4j-to-slf4j")
   testImplementation(project(":spring-gemfire-starter-logging"))
