@@ -28,6 +28,8 @@ dependencies {
   testImplementation(libs.gemfire.cq)
   testImplementation(libs.gemfire.wan)
   testImplementation(libs.gemfire.lucene)
+  testImplementation("ch.qos.logback:logback-classic")
+  testImplementation("org.apache.logging.log4j:log4j-to-slf4j")
   testImplementation("jakarta.servlet:jakarta.servlet-api")
   testImplementation("org.apache.httpcomponents:httpclient")
   testImplementation("org.springframework.boot:spring-boot-starter-test")
