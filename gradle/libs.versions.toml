@@ -1,7 +1,7 @@
 [versions]
 antlrVersion = "2.7.7"
 awaitilityVersion="4.2.0"
-aspectjToolsVersion = "1.9.21"
+aspectjWeaverVersion = "1.9.21"
 findbugsVersion = "3.0.2"
 mockitoCoreVersion = { strictly = "4.8.1" }
 multithreadedtcVersion = "1.01"
@@ -15,7 +15,7 @@ lombokPlugin = "8.4"
 
 [libraries]
 antlr = { module = "antlr:antlr", version.ref = "antlrVersion" }
-aspectj-tools = { module = "org.aspectj:aspectjtools", version.ref = "aspectjToolsVersion" }
+aspectjwaever = { module = "org.aspectj:aspectjweaver", version.ref = "aspectjWeaverVersion" }
 awaitility={module="org.awaitility:awaitility",version.ref="awaitilityVersion"}
 findbugs-jsr305 = { module = "com.google.code.findbugs:jsr305", version.ref = "findbugsVersion" }
 multithreadedtc = { module = "edu.umd.cs.mtc:multithreadedtc", version.ref = "multithreadedtcVersion" }
@@ -35,6 +35,7 @@ gemfire-wan = { module = "com.vmware.gemfire:geode-wan", version.ref = "gemfireV
 gemfire-membership = { module = "com.vmware.gemfire:geode-membership", version.ref = "gemfireVersion" }
 gemfire-tcp-server = { module = "com.vmware.gemfire:geode-tcp-server", version.ref = "gemfireVersion" }
 gemfire-serialization = { module = "com.vmware.gemfire:geode-serialization", version.ref = "gemfireVersion" }
+gemfire-http-service = { module = "com.vmware.gemfire:geode-http-service", version.ref = "gemfireVersion" }
 gemfire-deployment-legacy-classloader = { module = "com.vmware.gemfire:geode-deployment-legacy", version.ref = "gemfireVersion" }
 
 spring-data-gemfire = { module = "com.vmware.gemfire:spring-data-2.7-gemfire-9.15", version.ref = "springDataGemFireVersion" }
