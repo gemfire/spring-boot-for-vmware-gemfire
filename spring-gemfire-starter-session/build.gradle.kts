@@ -12,6 +12,10 @@ publishingDetails {
 }
 
 dependencies {
+  implementation(platform(bom.spring.framework.bom))
+  implementation(platform(bom.spring.boot.dependencies.bom))
+  implementation(platform(bom.spring.security.bom))
+  implementation(platform(bom.testcontainers.dependencies.bom))
   api(project(":spring-gemfire-starter"))
 
   api(libs.spring.session.gemfire)

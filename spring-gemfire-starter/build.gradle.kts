@@ -24,6 +24,10 @@ publishingDetails {
 }
 
 dependencies {
+  implementation(platform(bom.spring.framework.bom))
+  implementation(platform(bom.spring.boot.dependencies.bom))
+  implementation(platform(bom.spring.security.bom))
+  implementation(platform(bom.testcontainers.dependencies.bom))
   api("org.springframework.boot:spring-boot-starter")
 
   api(project(":spring-gemfire"))
@@ -47,7 +51,7 @@ val exportedProjects = arrayOf(
 
 
 tasks {
-  register("combinedJavadoc", Javadoc::class.java) {
+  register<Javadoc>("combinedJavadoc") {
     source(exportedProjects.map { project(it).sourceSets["main"].allJava })
     title = "Spring Boot 3.2 for VMware GemFire $gemfireVersion Java API Reference"
     classpath = files(exportedProjects.map { project(it).sourceSets["main"].compileClasspath })
