@@ -13,7 +13,10 @@ publishingDetails {
 }
 
 dependencies {
-  implementation(platform("com.vmware.gemfire.spring.boot:platform-constraints"))
+  implementation(platform(bom.spring.framework.bom))
+  implementation(platform(bom.spring.boot.dependencies.bom))
+  implementation(platform(bom.spring.security.bom))
+  implementation(platform(bom.testcontainers.dependencies.bom))
   api(project(":spring-gemfire-extensions"))
 
   api("org.springframework:spring-context-support")
@@ -32,7 +35,6 @@ dependencies {
     exclude(group = "org.skyscreamer", module = "jsonassert")
   }
 
-  testImplementation(platform("com.vmware.gemfire.spring.boot:platform-constraints"))
   testImplementation("org.springframework:spring-test")
   testImplementation("ch.qos.logback:logback-classic")
 //  testImplementation("jakarta.persistence:jakarta.persistence-api")

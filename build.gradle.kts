@@ -16,12 +16,6 @@ plugins {
 
 group = "com.vmware.gemfire"
 
-allprojects {
-  configurations.all {
-    resolutionStrategy.cacheChangingModulesFor(0, "minutes")
-  }
-}
-
 versionCatalogUpdate {
   // These options will be set as default for all version catalogs
   sortByKey = true

@@ -27,6 +27,9 @@ dependencyResolutionManagement {
       properties.load(FileInputStream("gradle.properties"))
       versionOverrideFromProperties(this, properties)
     }
+    create("bom") {
+      from(files("gradle/bom.versions.toml"))
+    }
   }
 }
 

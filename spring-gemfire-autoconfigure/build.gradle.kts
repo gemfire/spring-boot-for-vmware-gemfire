@@ -13,6 +13,10 @@ publishingDetails {
 }
 
 dependencies {
+  implementation(platform(bom.spring.framework.bom))
+  implementation(platform(bom.spring.boot.dependencies.bom))
+  implementation(platform(bom.spring.security.bom))
+  implementation(platform(bom.testcontainers.dependencies.bom))
   api(project(":spring-gemfire"))
   implementation(project(":spring-gemfire-extensions"))
   compileOnly(libs.gemfire.core)
@@ -22,8 +26,7 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-configuration-processor")
   implementation("org.springframework.boot:spring-boot-autoconfigure-processor")
   implementation(libs.spring.session.gemfire)
-  implementation("org.aspectj:aspectjweaver:1.9.19")
-//  implementation(libs.aspectj.tools)
+  implementation(libs.aspectjwaever)
 
   testImplementation(libs.gemfire.core)
   testImplementation(libs.gemfire.cq)

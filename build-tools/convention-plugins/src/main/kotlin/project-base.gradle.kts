@@ -19,8 +19,6 @@ tasks.named<Javadoc>("javadoc") {
 }
 
 dependencies{
-  implementation(platform("com.vmware.gemfire.spring.boot:platform-constraints"))
-  testImplementation(platform("com.vmware.gemfire.spring.boot:platform-constraints"))
 }
 
 repositories {
