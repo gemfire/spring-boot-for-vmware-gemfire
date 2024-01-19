@@ -26,16 +26,16 @@ dependencies {
 
   compileOnly(libs.findbugs.jsr305)
 
-  implementation("org.springframework:spring-test")
   implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 
   testImplementation("org.springframework.boot:spring-boot-starter-test") {
     exclude(group = "org.skyscreamer", module = "jsonassert")
   }
 
+  testImplementation(platform("com.vmware.gemfire.spring.boot:platform-constraints"))
+  testImplementation("org.springframework:spring-test")
   testImplementation("ch.qos.logback:logback-classic")
-  testImplementation("org.apache.logging.log4j:log4j-to-slf4j")
-  testImplementation("jakarta.persistence:jakarta.persistence-api")
+//  testImplementation("jakarta.persistence:jakarta.persistence-api")
   testImplementation("org.springframework.boot:spring-boot-starter-data-jpa")
   testImplementation("org.springframework.boot:spring-boot-starter-data-cassandra")
   testImplementation(libs.spring.test.gemfire)
