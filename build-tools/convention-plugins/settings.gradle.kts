@@ -12,5 +12,4 @@ plugins {
 
 dependencyResolutionManagement {
   repositories.mavenCentral()
-  includeBuild("../platform-constraints")
 }
