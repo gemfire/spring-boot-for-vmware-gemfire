@@ -106,7 +106,7 @@ public class CacheDataExportAutoConfigurationIntegrationTests extends ClientServ
 
 		File dataGolferJson = new File(GEODE_WORKING_DIRECTORY, DATA_GOLFERS_JSON);
 
-		assertThat(dataGolferJson).isFile();
+		Awaitility.await().untilAsserted(() -> assertThat(dataGolferJson).isFile());
 
 		String actualJson = FileUtils.read(dataGolferJson);
 
