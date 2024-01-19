@@ -6,7 +6,10 @@ plugins {
 description = "Spring Geode Sample demonstrating Apache Geode security configured with Spring."
 
 dependencies {
-
+	implementation(platform(bom.spring.framework.bom))
+	implementation(platform(bom.spring.boot.dependencies.bom))
+	implementation(platform(bom.spring.security.bom))
+	implementation(platform(bom.testcontainers.dependencies.bom))
 	compileOnly(libs.gemfire.core)
 
 	implementation(project(":spring-gemfire-starter"))
