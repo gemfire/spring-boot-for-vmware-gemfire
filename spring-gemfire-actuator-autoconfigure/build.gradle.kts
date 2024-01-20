@@ -13,19 +13,23 @@ publishingDetails {
 }
 
 dependencies {
-    api(project(":spring-gemfire-actuator"))
-    api(project(":spring-gemfire-autoconfigure"))
+  implementation(platform(bom.spring.framework.bom))
+  implementation(platform(bom.spring.boot.dependencies.bom))
+  implementation(platform(bom.spring.security.bom))
+  implementation(platform(bom.testcontainers.dependencies.bom))
+  api(project(":spring-gemfire-actuator"))
+  api(project(":spring-gemfire-autoconfigure"))
 
-    compileOnly(libs.gemfire.core)
-    compileOnly(libs.findbugs.jsr305)
+  compileOnly(libs.gemfire.core)
+  compileOnly(libs.findbugs.jsr305)
 
-    testImplementation(libs.gemfire.core)
-    testImplementation("junit:junit")
-    testImplementation("org.assertj:assertj-core")
-    testImplementation(libs.mockito.core)
-    testImplementation("org.projectlombok:lombok")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation(libs.spring.test.gemfire)
-    testImplementation(libs.multithreadedtc)
+  testImplementation(libs.gemfire.core)
+  testImplementation("junit:junit")
+  testImplementation("org.assertj:assertj-core")
+  testImplementation(libs.mockito.core)
+  testImplementation("org.projectlombok:lombok")
+  testImplementation("org.springframework.boot:spring-boot-starter-test")
+  testImplementation(libs.spring.test.gemfire)
+  testImplementation(libs.multithreadedtc)
 }
 
