@@ -6,7 +6,10 @@ plugins {
 description = "Quick Start for Spring Boot for Apache Geode"
 
 dependencies {
-
+  implementation(platform(bom.spring.framework.bom))
+  implementation(platform(bom.spring.boot.dependencies.bom))
+  implementation(platform(bom.spring.security.bom))
+  implementation(platform(bom.testcontainers.dependencies.bom))
   implementation(project(":spring-gemfire-starter"))
 
   implementation("org.assertj:assertj-core")

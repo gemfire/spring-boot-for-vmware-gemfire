@@ -44,10 +44,14 @@ include("spring-geode-tests:smoke-tests:peer-cache-application")
 
 dependencyResolutionManagement {
   versionCatalogs {
+    val projectRootPath = layout.rootDirectory.asFile.toPath()
     create("libs") {
       val properties = Properties()
-      properties.load(FileInputStream("gradle.properties"))
+      properties.load(FileInputStream(projectRootPath.resolve("gradle.properties").toString()))
       versionOverrideFromProperties(this, properties)
+    }
+    create("bom") {
+      from(files(projectRootPath.resolve("gradle").resolve("bom.versions.toml").toString()))
     }
   }
 }
