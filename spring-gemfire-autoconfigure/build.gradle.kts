@@ -21,11 +21,11 @@ dependencies {
   implementation(project(":spring-gemfire-extensions"))
   compileOnly(libs.gemfire.core)
   compileOnly(libs.findbugs.jsr305)
+  compileOnly(libs.spring.session.gemfire)
   implementation("jakarta.annotation:jakarta.annotation-api")
 
   implementation("org.springframework.boot:spring-boot-configuration-processor")
   implementation("org.springframework.boot:spring-boot-autoconfigure-processor")
-  implementation(libs.spring.session.gemfire)
   implementation(libs.aspectjwaever)
 
   testImplementation(libs.gemfire.core)
@@ -33,6 +33,7 @@ dependencies {
   testImplementation(libs.gemfire.wan)
   testImplementation(libs.gemfire.lucene)
   testImplementation(libs.gemfire.http.service)
+  testImplementation(libs.spring.session.gemfire)
   testImplementation("ch.qos.logback:logback-classic")
   testImplementation("org.apache.logging.log4j:log4j-to-slf4j")
   testImplementation("jakarta.servlet:jakarta.servlet-api")
