@@ -13,6 +13,10 @@ publishingDetails {
 }
 
 dependencies {
+  api(platform(bom.spring.framework.bom))
+  api(platform(bom.spring.boot.dependencies.bom))
+  api(platform(bom.spring.security.bom))
+  api(platform(bom.testcontainers.dependencies.bom))
   api(project(":spring-gemfire"))
   implementation(project(":spring-gemfire-extensions"))
   compileOnly(libs.gemfire.core)
@@ -21,13 +25,14 @@ dependencies {
 
   implementation("org.springframework.boot:spring-boot-configuration-processor")
   implementation("org.springframework.boot:spring-boot-autoconfigure-processor")
-  implementation(libs.spring.session.gemfire)
+  compileOnly(libs.spring.session.gemfire)
   implementation(libs.aspectj.tools)
 
   testImplementation(libs.gemfire.core)
   testImplementation(libs.gemfire.cq)
   testImplementation(libs.gemfire.wan)
   testImplementation(libs.gemfire.lucene)
+  testImplementation(libs.spring.session.gemfire)
   testImplementation("jakarta.servlet:jakarta.servlet-api")
   testImplementation("org.apache.httpcomponents.client5:httpclient5")
   testImplementation("org.springframework.boot:spring-boot-starter-test")
