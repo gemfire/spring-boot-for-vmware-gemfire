@@ -24,7 +24,7 @@ dependencies {
 
   implementation("org.springframework.boot:spring-boot-configuration-processor")
   implementation("org.springframework.boot:spring-boot-autoconfigure-processor")
-  implementation(libs.spring.session.gemfire)
+  compileOnly(libs.spring.session.gemfire)
   implementation(libs.aspectj.tools)
   implementation("org.aspectj:aspectjweaver:1.9.19")
 
@@ -34,6 +34,7 @@ dependencies {
   testImplementation(libs.gemfire.http.service)
 
   testCompileOnly(libs.findbugs.jsr305)
+  testImplementation(libs.spring.session.gemfire)
   testImplementation("org.springframework.boot:spring-boot-starter-test")
   testImplementation("org.springframework.boot:spring-boot-starter-web")
   testImplementation("jakarta.servlet:jakarta.servlet-api")
