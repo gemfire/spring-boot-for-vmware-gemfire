@@ -29,7 +29,7 @@ dependencies {
   testImplementation(libs.gemfire.wan)
   testImplementation(libs.gemfire.membership)
   testImplementation(libs.gemfire.serialization)
-  testImplementation("ch.qos.logback:logback-classic")
+  testImplementation(libs.logback.classic)
   testImplementation("org.apache.logging.log4j:log4j-to-slf4j")
   testImplementation("junit:junit")
   testImplementation("org.assertj:assertj-core")

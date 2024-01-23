@@ -38,7 +38,7 @@ dependencies {
   }
 
   testImplementation("org.springframework:spring-test")
-  testImplementation("ch.qos.logback:logback-classic")
+  testImplementation(libs.logback.classic)
   testImplementation("org.springframework.boot:spring-boot-starter-data-jpa")
   testImplementation("org.springframework.boot:spring-boot-starter-data-cassandra")
   testImplementation(libs.spring.test.gemfire)

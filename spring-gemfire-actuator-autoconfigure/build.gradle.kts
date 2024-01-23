@@ -24,7 +24,7 @@ dependencies {
   compileOnly(libs.findbugs.jsr305)
 
   testImplementation(libs.gemfire.core)
-  testImplementation("ch.qos.logback:logback-classic")
+  testImplementation(libs.logback.classic)
   testImplementation("org.apache.logging.log4j:log4j-to-slf4j")
   testImplementation("junit:junit")
   testImplementation("org.assertj:assertj-core")

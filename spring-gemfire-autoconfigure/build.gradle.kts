@@ -34,7 +34,7 @@ dependencies {
   testImplementation(libs.gemfire.lucene)
   testImplementation(libs.gemfire.http.service)
   testImplementation(libs.spring.session.gemfire)
-  testImplementation("ch.qos.logback:logback-classic")
+  testImplementation(libs.logback.classic)
   testImplementation("org.apache.logging.log4j:log4j-to-slf4j")
   testImplementation("jakarta.servlet:jakarta.servlet-api")
   testImplementation("org.apache.httpcomponents:httpclient")

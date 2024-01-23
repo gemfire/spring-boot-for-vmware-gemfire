@@ -38,7 +38,7 @@ dependencies {
   testImplementation(libs.gemfire.gfsh)
   testImplementation(libs.gemfire.tcp.server)
   testImplementation(libs.gemfire.deployment.legacy.classloader)
-  testImplementation("ch.qos.logback:logback-classic")
+  testImplementation(libs.logback.classic)
   testImplementation("org.apache.logging.log4j:log4j-to-slf4j")
   testImplementation("junit:junit")
   testImplementation("org.assertj:assertj-core")
