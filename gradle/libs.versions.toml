@@ -5,11 +5,11 @@ aspectjToolsVersion = "1.9.19"
 findbugsVersion = "3.0.2"
 mockitoCoreVersion = { strictly = "4.8.1" }
 multithreadedtcVersion = "1.01"
-springBootVersion = "3.2.0"
+springBootVersion = "3.2.2"
 springShellVersion = "1.2.0.RELEASE"
 
 benManesVersions = "0.50.0"
-littlerobotsVersionCatalogUpdate = "0.8.3"
+littlerobotsVersionCatalogUpdate = "0.8.4"
 lombokPlugin = "8.4"
 
 [libraries]
