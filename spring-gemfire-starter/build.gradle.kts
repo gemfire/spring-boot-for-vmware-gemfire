@@ -52,7 +52,7 @@ val exportedProjects = arrayOf(
 tasks {
   register("combinedJavadoc", Javadoc::class.java) {
     source(exportedProjects.map { project(it).sourceSets["main"].allJava })
-    title = "Spring Boot 2.7 for VMware GemFire $gemfireVersion Java API Reference"
+    title = "Spring Boot 2.6 for VMware GemFire $gemfireVersion Java API Reference"
     classpath = files(exportedProjects.map { project(it).sourceSets["main"].compileClasspath })
     setDestinationDir(file("${layout.buildDirectory}/docs/javadoc"))
   }
@@ -65,12 +65,12 @@ tasks {
     val javadocJarTask = named("combinedJavadocJar")
     dependsOn(javadocJarTask)
     doLast {
-      val storage = StorageOptions.newBuilder().setProjectId(property("docsGCSProject").toString())
+      val storage = StorageOptions.newBuilder().setProjectId(project.properties["docsGCSProject"].toString())
         .build().getService()
       val javadocJarFiles = javadocJarTask.get().outputs.files
       val blobId = BlobId.of(
-        property("docsGCSBucket").toString(),
-        "${property("pomProjectArtifactName")}/${project.version}/${javadocJarFiles.singleFile.name}"
+        project.properties["docsGCSBucket"].toString(),
+        "${publishingDetails.artifactName.get()}/${project.version}/${javadocJarFiles.singleFile.name}"
       )
       val blobInfo = BlobInfo.newBuilder(blobId).build()
       storage.createFrom(blobInfo, javadocJarFiles.singleFile.toPath())

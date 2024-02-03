@@ -2,7 +2,7 @@
 springVersion = "5.3.31"
 springBootVersion="2.6.15"
 springSecurityVersion="5.6.12"
-testcontainersVersion="1.19.3"
+testcontainersVersion="1.19.4"
 
 [libraries]
 spring-boot-dependencies-bom={module="org.springframework.boot:spring-boot-dependencies", version.ref="springBootVersion"}

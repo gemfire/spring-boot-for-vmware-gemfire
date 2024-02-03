@@ -12,7 +12,7 @@ springShellVersion = "1.2.0.RELEASE"
 tomcatMigrationVersion="1.0.7"
 
 benManesVersions = "0.50.0"
-littlerobotsVersionCatalogUpdate = "0.8.3"
+littlerobotsVersionCatalogUpdate = "0.8.4"
 lombokPlugin = "8.4"
 
 [libraries]
