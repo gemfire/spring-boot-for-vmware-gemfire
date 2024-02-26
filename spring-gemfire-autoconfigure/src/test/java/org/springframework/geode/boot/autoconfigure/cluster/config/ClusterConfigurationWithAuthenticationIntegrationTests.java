@@ -4,42 +4,32 @@
  */
 package org.springframework.geode.boot.autoconfigure.cluster.config;
 
+import static com.vmware.gemfire.testcontainers.GemFireCluster.ALL_GLOB;
 import static org.assertj.core.api.Assertions.assertThat;
+
+import example.app.books.model.Book;
+import example.app.books.model.ISBN;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
 
+import org.apache.geode.cache.DataPolicy;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import org.apache.geode.cache.DataPolicy;
-import org.apache.geode.cache.GemFireCache;
-import org.apache.geode.cache.Region;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.ApplicationRunner;
-import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.gemfire.GemfireTemplate;
-import org.springframework.data.gemfire.GemfireUtils;
-import org.springframework.data.gemfire.config.annotation.CacheServerApplication;
 import org.springframework.data.gemfire.config.annotation.EnableClusterConfiguration;
 import org.springframework.data.gemfire.config.annotation.EnableEntityDefinedRegions;
-import org.springframework.data.gemfire.config.annotation.EnableManager;
-import org.springframework.data.gemfire.tests.integration.ForkingClientServerIntegrationTestsSupport;
-import org.springframework.geode.security.TestSecurityManager;
+import org.springframework.geode.boot.autoconfigure.security.TestSecurityManager;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.client.ClientHttpRequest;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
@@ -48,8 +38,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import example.app.books.model.Book;
-import example.app.books.model.ISBN;
+import com.vmware.gemfire.testcontainers.GemFireCluster;
 
 /**
  * Integration Tests testing the SDG {@link EnableClusterConfiguration} annotation functionality when the Apache Geode
@@ -79,31 +68,35 @@ import example.app.books.model.ISBN;
 @ActiveProfiles("cluster-configuration-with-auth-client")
 @DirtiesContext
 @RunWith(SpringRunner.class)
-@SpringBootTest(
-	classes = ClusterConfigurationWithAuthenticationIntegrationTests.GeodeClientConfiguration.class,
-	webEnvironment = SpringBootTest.WebEnvironment.NONE,
-	properties = {
-		"spring.data.gemfire.security.username=test",
-		"spring.data.gemfire.security.password=test"
-	}
-)
+@SpringBootTest(classes = ClusterConfigurationWithAuthenticationIntegrationTests.GeodeClientConfiguration.class,
+		webEnvironment = SpringBootTest.WebEnvironment.NONE,
+		properties = { "spring.data.gemfire.security.username=test", "spring.data.gemfire.security.password=test" })
 @SuppressWarnings("unused")
-public class ClusterConfigurationWithAuthenticationIntegrationTests extends ForkingClientServerIntegrationTestsSupport {
+public class ClusterConfigurationWithAuthenticationIntegrationTests {
 
-	private static final AtomicBoolean REDIRECTING_CLIENT_HTTP_REQUEST_INTERCEPTOR_INVOKED =
-		new AtomicBoolean(false);
+	private static final AtomicBoolean REDIRECTING_CLIENT_HTTP_REQUEST_INTERCEPTOR_INVOKED = new AtomicBoolean(false);
 
 	@BeforeClass
 	public static void startGemFireServer() throws IOException {
-		int availableServerPort = findAndReserveAvailablePort();
-		startGemFireServer(GeodeServerConfiguration.class,
-			"-Dspring.profiles.active=cluster-configuration-with-auth-server","-Dspring.data.gemfire.cache.server.port="+ availableServerPort);
-		waitForServerToStart("localhost",availableServerPort, TimeUnit.SECONDS.toMillis(60));
+		String dockerImage = System.getProperty("spring.test.gemfire.docker.image");
+
+		GemFireCluster gemFireCluster = new GemFireCluster(dockerImage, 1, 1);
+		gemFireCluster.withPdx("example\\.app\\.books\\.model\\..*", true)
+				.withGemFireProperty(GemFireCluster.ALL_GLOB, "security-manager", TestSecurityManager.class.getName())
+				.withClasspath(GemFireCluster.ALL_GLOB, System.getProperty("TEST_JAR_PATH"))
+				.withGemFireProperty(ALL_GLOB, "security-username", "cluster")
+				.withGemFireProperty(ALL_GLOB, "security-password", "cluster");
+
+		gemFireCluster.acceptLicense().start();
+
+		System.setProperty("spring.data.gemfire.pool.locators", "localhost[" + gemFireCluster.getLocatorPort() + "]");
+		System.setProperty("spring.data.gemfire.pool.locator.port", String.valueOf(gemFireCluster.getLocatorPort()));
+		System.setProperty("spring.data.gemfire.management.http.port",
+				String.valueOf(gemFireCluster.getHttpPorts().get(0)));
 	}
 
 	@Autowired
-	@Qualifier("booksTemplate")
-	private GemfireTemplate booksTemplate;
+	@Qualifier("booksTemplate") private GemfireTemplate booksTemplate;
 
 	@Before
 	public void setup() {
@@ -123,9 +116,8 @@ public class ClusterConfigurationWithAuthenticationIntegrationTests extends Fork
 	@Test
 	public void clusterConfigurationAndRegionDataAccessOperationsAreSuccessful() {
 
-		Book expectedSeriesOfUnfortunateEvents = Book
-			.newBook("A Series of Unfortunate Events")
-			.identifiedBy(ISBN.autoGenerated());
+		Book expectedSeriesOfUnfortunateEvents = Book.newBook("A Series of Unfortunate Events")
+				.identifiedBy(ISBN.autoGenerated());
 
 		this.booksTemplate.put(expectedSeriesOfUnfortunateEvents.getIsbn(), expectedSeriesOfUnfortunateEvents);
 
@@ -155,56 +147,15 @@ public class ClusterConfigurationWithAuthenticationIntegrationTests extends Fork
 
 				URI originalUri = request.getURI();
 				URI redirectedUri = URI.create(String.format(urlPattern, originalUri.getScheme(), "nonExistingHost",
-					originalUri.getPort(), originalUri.getPath()));
+						originalUri.getPort(), originalUri.getPath()));
 
 				HttpMethod httpMethod = request.getMethod();
 
 				httpMethod = httpMethod != null ? httpMethod : HttpMethod.GET;
 
-				ClientHttpRequest newRequest =
-					new SimpleClientHttpRequestFactory().createRequest(redirectedUri, httpMethod);
+				ClientHttpRequest newRequest = new SimpleClientHttpRequestFactory().createRequest(redirectedUri, httpMethod);
 
 				return execution.execute(newRequest, body);
-			};
-		}
-	}
-
-	@SpringBootApplication
-	@Profile("cluster-configuration-with-auth-server")
-	@CacheServerApplication(name = "ClusterConfigurationWithAuthenticationIntegrationTests")
-	@EnableManager(start = true)
-	static class GeodeServerConfiguration {
-
-		public static void main(String[] args) throws IOException {
-
-			new SpringApplicationBuilder(GeodeServerConfiguration.class)
-				.web(WebApplicationType.NONE)
-				.build()
-				.run(args);
-		}
-
-		@Bean
-		org.apache.geode.security.SecurityManager testSecurityManager() {
-			return new TestSecurityManager();
-		}
-
-		@Bean
-		ApplicationRunner peerCacheVerifier(GemFireCache cache) {
-
-			return args -> {
-
-				assertThat(cache).isNotNull();
-				assertThat(GemfireUtils.isPeer(cache)).isTrue();
-				assertThat(cache.getName())
-					.isEqualTo(ClusterConfigurationWithAuthenticationIntegrationTests.class.getSimpleName());
-
-				List<String> regionNames = cache.rootRegions().stream()
-					.map(Region::getName)
-					.collect(Collectors.toList());
-
-				assertThat(regionNames)
-					.describedAs("Expected no Regions; but was [%s]", regionNames)
-					.isEmpty();
 			};
 		}
 	}

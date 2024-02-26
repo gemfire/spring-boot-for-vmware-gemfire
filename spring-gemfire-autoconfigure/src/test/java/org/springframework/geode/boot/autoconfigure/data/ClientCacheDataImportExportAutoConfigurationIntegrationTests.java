@@ -4,6 +4,7 @@
  */
 package org.springframework.geode.boot.autoconfigure.data;
 
+import static com.vmware.gemfire.testcontainers.GemFireCluster.ALL_GLOB;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
@@ -15,6 +16,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import com.vmware.gemfire.testcontainers.GemFireCluster;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -33,6 +35,7 @@ import org.springframework.data.gemfire.config.annotation.CacheServerApplication
 import org.springframework.data.gemfire.config.annotation.EnableEntityDefinedRegions;
 import org.springframework.data.gemfire.tests.integration.ForkingClientServerIntegrationTestsSupport;
 import org.springframework.geode.boot.autoconfigure.DataImportExportAutoConfiguration;
+import org.springframework.geode.boot.autoconfigure.security.TestSecurityManager;
 import org.springframework.geode.config.annotation.ClusterAwareConfiguration;
 import org.springframework.geode.config.annotation.EnableClusterAware;
 import org.springframework.geode.core.util.ObjectUtils;
@@ -71,18 +74,26 @@ import example.app.books.model.ISBN;
 	classes = ClientCacheDataImportExportAutoConfigurationIntegrationTests.TestGeodeClientConfiguration.class,
 	properties = {
 		"spring.application.name=ClientCacheDataImportExportAutoConfigurationIntegrationTestsClient",
-		"spring.data.gemfire.management.use-http=false",
+		"spring.data.gemfire.management.use-http=true",
 		"spring.boot.data.gemfire.cache.data.import.active-profiles=IMPORT-CLIENT",
 		"spring.boot.data.gemfire.cache.region.advice.enabled=true"
 	}
 )
 @SuppressWarnings("unused")
-public class ClientCacheDataImportExportAutoConfigurationIntegrationTests
-		extends ForkingClientServerIntegrationTestsSupport {
+public class ClientCacheDataImportExportAutoConfigurationIntegrationTests {
 
 	@BeforeClass
 	public static void startGeodeServer() throws IOException {
-		startGemFireServer(TestGeodeServerConfiguration.class,"-Dspring.profiles.active=IMPORT-SERVER");
+		String dockerImage = System.getProperty("spring.test.gemfire.docker.image");
+
+		GemFireCluster gemFireCluster = new GemFireCluster(dockerImage, 1, 1);
+
+		gemFireCluster.acceptLicense().start();
+
+		System.setProperty("spring.data.gemfire.pool.locators", "localhost[" + gemFireCluster.getLocatorPort() + "]");
+		System.setProperty("spring.data.gemfire.pool.locator.port", String.valueOf(gemFireCluster.getLocatorPort()));
+		System.setProperty("spring.data.gemfire.management.http.port",
+				String.valueOf(gemFireCluster.getHttpPorts().get(0)));
 	}
 
 	@BeforeClass @AfterClass
@@ -166,17 +177,4 @@ public class ClientCacheDataImportExportAutoConfigurationIntegrationTests
 	@EnableClusterAware
 	@EnableEntityDefinedRegions(basePackageClasses = Book.class)
 	static class TestGeodeClientConfiguration { }
-
-	@Profile("IMPORT-SERVER")
-	@CacheServerApplication(name = "ClientCacheDataImportExportAutoConfigurationIntegrationTestsServer")
-	static class TestGeodeServerConfiguration {
-
-		public static void main(String[] args) {
-
-			AnnotationConfigApplicationContext applicationContext =
-				new AnnotationConfigApplicationContext(TestGeodeServerConfiguration.class);
-
-			applicationContext.registerShutdownHook();
-		}
-	}
 }

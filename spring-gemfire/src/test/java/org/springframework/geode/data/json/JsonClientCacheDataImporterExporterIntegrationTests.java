@@ -13,6 +13,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import com.vmware.gemfire.testcontainers.GemFireCluster;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -68,13 +69,12 @@ import example.app.crm.model.Customer;
  * @see org.springframework.data.gemfire.client.ClientRegionFactoryBean
  * @see org.springframework.data.gemfire.config.annotation.CacheServerApplication
  * @see org.springframework.data.gemfire.config.annotation.ClientCacheApplication
- * @see org.springframework.data.gemfire.tests.integration.ForkingClientServerIntegrationTestsSupport
  * @see org.springframework.data.gemfire.util.PropertiesBuilder
  * @see org.springframework.geode.data.json.JsonCacheDataImporterExporter
  * @since 1.3.0
  */
 @SuppressWarnings("unused")
-public class JsonClientCacheDataImporterExporterIntegrationTests extends ForkingClientServerIntegrationTestsSupport {
+public class JsonClientCacheDataImporterExporterIntegrationTests{
 
 	private static final AtomicBoolean applicationContextClosed = new AtomicBoolean(false);
 
@@ -138,7 +138,13 @@ public class JsonClientCacheDataImporterExporterIntegrationTests extends Forking
 
 	@BeforeClass
 	public static void startGeodeServer() throws IOException {
-		startGemFireServer(TestGeodeServerConfiguration.class);
+		String dockerImage = System.getProperty("spring.test.gemfire.docker.image");
+
+		GemFireCluster gemFireCluster = new GemFireCluster(dockerImage,1,1);
+		gemFireCluster.acceptLicense().start();
+		gemFireCluster.gfsh(false,"create region --name=Customers --type=REPLICATE");
+
+		System.setProperty("spring.data.gemfire.pool.locators", "127.0.0.1["+gemFireCluster.getLocatorPort()+"]");
 	}
 
 	public void assertCustomersRegion(Region<?, ?> customers) {

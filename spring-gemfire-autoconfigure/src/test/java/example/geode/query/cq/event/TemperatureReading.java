@@ -7,10 +7,7 @@ package example.geode.query.cq.event;
 
 import java.time.LocalDateTime;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 /**
  * The {@link TemperatureReading} class is an Abstract Data Type (ADT) modeling a temperature event,
@@ -25,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 @Data
 @EqualsAndHashCode(of = { "temperature", "temperatureUnit" })
 @RequiredArgsConstructor(staticName = "of")
+@NoArgsConstructor
 public class TemperatureReading {
 
 	@NonNull

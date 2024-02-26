@@ -8,6 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
 
+import com.vmware.gemfire.testcontainers.GemFireCluster;
 import jakarta.annotation.Resource;
 
 import org.junit.AfterClass;
@@ -21,21 +22,17 @@ import org.apache.geode.cache.GemFireCache;
 import org.apache.geode.cache.Region;
 import org.apache.geode.cache.client.ClientCache;
 import org.apache.geode.cache.client.ClientRegionShortcut;
-import org.apache.geode.cache.server.CacheServer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.gemfire.client.ClientRegionFactoryBean;
 import org.springframework.data.gemfire.config.admin.GemfireAdminOperations;
 import org.springframework.data.gemfire.config.admin.remote.RestHttpGemfireAdminTemplate;
-import org.springframework.data.gemfire.config.annotation.CacheServerApplication;
 import org.springframework.data.gemfire.config.annotation.ClientCacheApplication;
 import org.springframework.data.gemfire.config.annotation.EnableCachingDefinedRegions;
 import org.springframework.data.gemfire.config.annotation.EnableEntityDefinedRegions;
 import org.springframework.data.gemfire.config.annotation.EnablePdx;
-import org.springframework.data.gemfire.tests.integration.ForkingClientServerIntegrationTestsSupport;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import example.app.crm.model.Customer;
@@ -56,7 +53,6 @@ import example.app.crm.service.CustomerService;
  * @see org.springframework.data.gemfire.config.annotation.ClientCacheApplication
  * @see org.springframework.data.gemfire.config.annotation.EnableCachingDefinedRegions
  * @see org.springframework.data.gemfire.config.annotation.EnableEntityDefinedRegions
- * @see org.springframework.data.gemfire.tests.integration.ForkingClientServerIntegrationTestsSupport
  * @see org.springframework.geode.config.annotation.ClusterAvailableConfiguration
  * @see org.springframework.geode.config.annotation.EnableClusterAware
  * @see org.springframework.test.context.junit4.SpringRunner
@@ -65,17 +61,23 @@ import example.app.crm.service.CustomerService;
 @RunWith(SpringRunner.class)
 @SpringBootTest(
 	classes = ClusterAvailableConfigurationIntegrationTests.GeodeClientApplication.class,
-	properties = { "spring.data.gemfire.management.use-http=false" },
+	properties = { "spring.data.gemfire.management.use-http=true" },
 	webEnvironment = SpringBootTest.WebEnvironment.NONE
 )
 @SuppressWarnings("unused")
-public class ClusterAvailableConfigurationIntegrationTests extends ForkingClientServerIntegrationTestsSupport {
+public class ClusterAvailableConfigurationIntegrationTests {
 
 	private static final String LOG_LEVEL = "error";
+	private static GemFireCluster gemFireCluster;
 
 	@BeforeClass
 	public static void runGemFireServer() throws IOException {
-		startGemFireServer(GeodeServerApplication.class);
+		String dockerImage = System.getProperty("spring.test.gemfire.docker.image");
+		gemFireCluster = new GemFireCluster(dockerImage,1,1);
+		gemFireCluster.acceptLicense();
+		gemFireCluster.start();
+		System.setProperty("spring.data.gemfire.pool.locators", "127.0.0.1["+gemFireCluster.getLocatorPort()+"]");
+		System.setProperty("spring.data.gemfire.management.http.port", String.valueOf(gemFireCluster.getHttpPorts().get(0)));
 	}
 
 	@AfterClass
@@ -105,17 +107,11 @@ public class ClusterAvailableConfigurationIntegrationTests extends ForkingClient
 
 	@Before
 	public void assertRegionConfigurationOnServers() {
+		String regions = gemFireCluster.gfsh(false,"list regions");
 
-		GemfireAdminOperations adminOperations = new RestHttpGemfireAdminTemplate.Builder()
-			.with(this.clientCache)
-			.on("localhost")
-			.listenOn(Integer.getInteger(GEMFIRE_CACHE_SERVER_PORT_PROPERTY, CacheServer.DEFAULT_PORT))
-			.build();
-
-		assertThat(adminOperations).isNotNull();
-
-		assertThat(adminOperations.getAvailableServerRegions())
-			.containsExactlyInAnyOrder("Customers", "CustomersByName", "Example");
+		assertThat(regions).contains("CustomersByName");
+		assertThat(regions).contains("Customers");
+		assertThat(regions).contains("Example");
 	}
 
 	private void assertRegion(Region<?, ?> region, String name, DataPolicy dataPolicy, String poolName) {
@@ -150,18 +146,6 @@ public class ClusterAvailableConfigurationIntegrationTests extends ForkingClient
 
 		assertThat(this.example.put(1, "TEST")).isNull();
 		assertThat(this.example.get(1)).isEqualTo("TEST");
-	}
-
-	@CacheServerApplication(name = "ClusterAvailableConfigurationIntegrationTestsServer", logLevel = LOG_LEVEL)
-	static class GeodeServerApplication {
-
-		public static void main(String[] args) {
-
-			AnnotationConfigApplicationContext applicationContext =
-				new AnnotationConfigApplicationContext(GeodeServerApplication.class);
-
-			applicationContext.registerShutdownHook();
-		}
 	}
 
 	@EnableClusterAware

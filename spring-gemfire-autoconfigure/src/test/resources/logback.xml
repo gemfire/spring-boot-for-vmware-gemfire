@@ -16,34 +16,34 @@
 
 	<appender name="testAppender" class="org.springframework.data.gemfire.tests.logging.slf4j.logback.TestAppender"/>
 
-	<logger name="ch.qos.logback" level="${logback.log.level:-ERROR}"/>
+	<logger name="ch.qos.logback" level="${logback.log.level:-INFO}"/>
 
-	<logger name="org.apache" level="${apache.logback.log.level:-ERROR}"/>
+	<logger name="org.apache" level="${apache.logback.log.level:-INFO}"/>
 
-	<logger name="org.apache.geode" level="${apache-geode.logback.log.level:-ERROR}"/>
+	<logger name="org.apache.geode" level="${apache-geode.logback.log.level:-INFO}"/>
 
-	<logger name="org.eclipse" level="${eclipse.logback.log.level:-ERROR}"/>
+	<logger name="org.eclipse" level="${eclipse.logback.log.level:-INFO}"/>
 
-	<logger name="org.eclipse.jetty" level="${eclipse-jetty.logback.log.level:-ERROR}"/>
+	<logger name="org.eclipse.jetty" level="${eclipse-jetty.logback.log.level:-INFO}"/>
 
-	<logger name="org.springframework" level="${spring.logback.log.level:-ERROR}"/>
+	<logger name="org.springframework" level="${spring.logback.log.level:-INFO}"/>
 
-	<logger name="org.springframework.geode" level="${spring-geode.logback.log.level:-ERROR}"/>
+	<logger name="org.springframework.geode" level="${spring-geode.logback.log.level:-INFO}"/>
 
 	<logger name="org.springframework.geode.cache.service"
-			level="${spring-geode.cache-services.logback.log.level:-ERROR}"/>
+			level="${spring-geode.cache-services.logback.log.level:-INFO}"/>
 
 	<logger name="org.springframework.geode.config"
-			level="${spring-geode.config.logback.log.level:-ERROR}"/>
+			level="${spring-geode.config.logback.log.level:-INFO}"/>
 
 	<logger name="org.springframework.geode.config.annotation.ClusterAwareConfiguration"
-			level="${spring-geode.cluster-config.logback.log.level:-ERROR}"/>
+			level="${spring-geode.cluster-config.logback.log.level:-INFO}"/>
 
-	<logger name="org.springframework.geode.boot.autoconfigure.ClientSecurityAutoConfiguration" level="WARN">
+	<logger name="org.springframework.geode.boot.autoconfigure.ClientSecurityAutoConfiguration" level="INFO">
 		<appender-ref ref="testAppender"/>
 	</logger>
 
-	<root level="${logback.log.level:-ERROR}">
+	<root level="${logback.log.level:-INFO}">
 		<appender-ref ref="console"/>
 	</root>
 
