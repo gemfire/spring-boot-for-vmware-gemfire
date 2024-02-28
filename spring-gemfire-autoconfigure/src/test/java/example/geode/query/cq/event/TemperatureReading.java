@@ -5,9 +5,15 @@
 
 package example.geode.query.cq.event;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+
 import java.time.LocalDateTime;
 
-import lombok.*;
+
 
 /**
  * The {@link TemperatureReading} class is an Abstract Data Type (ADT) modeling a temperature event,
