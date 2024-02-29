@@ -6,22 +6,24 @@ package org.springframework.geode.boot.autoconfigure.data;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import example.app.golf.model.Golfer;
+
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.time.Duration;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.StreamSupport;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import org.apache.geode.cache.Region;
-
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -32,13 +34,13 @@ import org.springframework.data.gemfire.GemfireTemplate;
 import org.springframework.data.gemfire.config.annotation.EnableEntityDefinedRegions;
 import org.springframework.data.gemfire.tests.integration.ClientServerIntegrationTestsSupport;
 import org.springframework.data.gemfire.tests.process.ProcessWrapper;
-import org.springframework.data.gemfire.tests.util.FileSystemUtils;
 import org.springframework.data.gemfire.tests.util.FileUtils;
 import org.springframework.geode.boot.autoconfigure.DataImportExportAutoConfiguration;
 import org.springframework.geode.config.annotation.ClusterAwareConfiguration;
 import org.springframework.geode.config.annotation.EnableClusterAware;
 
-import example.app.golf.model.Golfer;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Integration Tests for {@link DataImportExportAutoConfiguration}, which specifically tests the export of
@@ -62,55 +64,48 @@ import example.app.golf.model.Golfer;
  */
 public class CacheDataExportAutoConfigurationIntegrationTests extends ClientServerIntegrationTestsSupport {
 
-	private static final File GEODE_WORKING_DIRECTORY =
-		new File(String.format("cache-data-export-%d", System.currentTimeMillis()));
+	@Rule public TemporaryFolder temporaryFolder = new TemporaryFolder();
+
+	private File workingDirectory;
 
 	private static ProcessWrapper process;
 
 	private static final String DATA_GOLFERS_JSON = "data-golfers.json";
 
-	@BeforeClass @AfterClass
+	public CacheDataExportAutoConfigurationIntegrationTests() throws IOException {}
+
+	@BeforeClass
+	@AfterClass
 	public static void resetClusterAwareCondition() {
 		ClusterAwareConfiguration.ClusterAwareCondition.reset();
 	}
 
-	@BeforeClass
-	public static void runGeodeProcess() throws IOException {
-
-		System.setProperty(DIRECTORY_DELETE_ON_EXIT_PROPERTY, Boolean.FALSE.toString());
-
-		process = run(GEODE_WORKING_DIRECTORY, TestGeodeConfiguration.class,
-			"-Dspring.profiles.active=EXPORT", "-Dspring.boot.data.gemfire.cache.data.export.enabled=true");
+	@Before
+	public void runGeodeProcess() throws IOException {
+		workingDirectory = temporaryFolder.newFolder(String.format("cache-data-export-%d", System.currentTimeMillis()));
+		process = run(workingDirectory, TestGeodeConfiguration.class, "-Dspring.profiles.active=EXPORT",
+				"-Dspring.boot.data.gemfire.cache.data.export.enabled=true");
 
 		assertThat(process).isNotNull();
 
 		waitOn(() -> !process.isRunning(), Duration.ofSeconds(20).toMillis(), Duration.ofSeconds(2).toMillis());
 	}
 
-	@AfterClass
-	public static void cleanup() {
-		System.clearProperty(DIRECTORY_DELETE_ON_EXIT_PROPERTY);
-		FileSystemUtils.deleteRecursive(GEODE_WORKING_DIRECTORY);
+	@After
+	public void cleanup() {
 		stop(process);
 	}
 
 	@Test
 	public void exportedJsonIsCorrect() throws Exception {
 
-		File dataGolferJson = new File(GEODE_WORKING_DIRECTORY, DATA_GOLFERS_JSON);
+		Path filePath = workingDirectory.toPath().resolve(DATA_GOLFERS_JSON);
+		assertThat(workingDirectory.exists()).isTrue();
+		File dataGolferJson = filePath.toFile();
 
 		assertThat(dataGolferJson).isFile();
 
 		String actualJson = FileUtils.read(dataGolferJson);
-
-		/*
-		String expectedJson = "["
-			+ "{\"@type\":\"example.app.golf.model.Golfer\",\"handicap\":9,\"id\":1,\"name\":\"John Blum\"},"
-			+ "{\"@type\":\"example.app.golf.model.Golfer\",\"handicap\":10,\"id\":2,\"name\":\"Moe Haroon\"}"
-			+ "]";
-
-		assertThat(actualJson).isEqualTo(expectedJson);
-		*/
 
 		Set<Golfer> expectedGolfers = mapFromJsonToGolfers(actualJson);
 
@@ -122,11 +117,8 @@ public class CacheDataExportAutoConfigurationIntegrationTests extends ClientServ
 
 	private void assertContains(Iterable<Golfer> golfers, Golfer golfer) {
 
-		assertThat(StreamSupport.stream(golfers.spliterator(), false)
-			.anyMatch(it -> it.getId().equals(golfer.getId())
-				&& it.getName().equals(golfer.getName())
-				&& it.getHandicap().equals(golfer.getHandicap())))
-			.isTrue();
+		assertThat(StreamSupport.stream(golfers.spliterator(), false).anyMatch(it -> it.getId().equals(golfer.getId())
+				&& it.getName().equals(golfer.getName()) && it.getHandicap().equals(golfer.getHandicap()))).isTrue();
 	}
 
 	private Set<Golfer> mapFromJsonToGolfers(String json) throws Exception {
@@ -135,9 +127,8 @@ public class CacheDataExportAutoConfigurationIntegrationTests extends ClientServ
 
 	private ObjectMapper newObjectMapper() {
 
-		return new ObjectMapper()
-			.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false)
-			.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		return new ObjectMapper().configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false)
+				.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 	}
 
 	@Profile("EXPORT")
@@ -149,10 +140,7 @@ public class CacheDataExportAutoConfigurationIntegrationTests extends ClientServ
 
 		public static void main(String[] args) {
 
-			new SpringApplicationBuilder(TestGeodeConfiguration.class)
-				.web(WebApplicationType.NONE)
-				.build()
-				.run(args);
+			new SpringApplicationBuilder(TestGeodeConfiguration.class).web(WebApplicationType.NONE).build().run(args);
 		}
 
 		private static void log(String message, Object... args) {
