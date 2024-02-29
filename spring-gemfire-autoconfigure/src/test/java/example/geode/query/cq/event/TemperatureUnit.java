@@ -23,12 +23,8 @@ public enum TemperatureUnit {
 	KELVIN("K");
 
 	public static TemperatureUnit defaultTemperatureUnit() {
-
-		return Optional.of(Locale.getDefault())
-			.map(Locale::getISO3Country)
-			.filter(Locale.US.getISO3Country()::equalsIgnoreCase)
-			.map(it -> TemperatureUnit.FAHRENHEIT)
-			.orElse(TemperatureUnit.CELSIUS);
+		//Always use Fahrenheit
+		return TemperatureUnit.FAHRENHEIT;
 	}
 
 	private final String symbol;
