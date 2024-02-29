@@ -1,7 +1,10 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 plugins {
   alias(libs.plugins.lombok)
   id("project-base")
   id("gemfire-repo-artifact-publishing")
+  id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 description = "Spring Boot Auto-Configuration for VMware GemFire"
@@ -45,4 +48,35 @@ dependencies {
   testRuntimeOnly("org.springframework.boot:spring-boot-starter-json")
   testRuntimeOnly(libs.spring.shell)
   testImplementation(libs.spring.test.gemfire)
+  testImplementation(libs.gemfire.testcontainers)
+}
+
+tasks.register<Jar>("testJar") {
+  from(sourceSets.test.get().output)
+  from(sourceSets.main.get().output)
+
+  archiveFileName = "testJar.jar"
+  duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+tasks.getByName<ShadowJar>("shadowJar") {
+  archiveBaseName.set("shadow")
+  archiveClassifier.set("")
+  archiveVersion.set("")
+  from(sourceSets.main.get().output)
+  from(sourceSets.test.get().output)
+}
+
+tasks.getByName<Test>("test") {
+  dependsOn(tasks.named<Jar>("testJar"))
+  forkEvery = 1
+  maxParallelForks = 4
+  val springTestGemfireDockerImage: String by project
+  systemProperty("spring.test.gemfire.docker.image", springTestGemfireDockerImage)
+  systemProperty("TEST_JAR_PATH", tasks.getByName<Jar>("testJar").outputs.files.singleFile.canonicalPath)
+}
+
+repositories{
+  mavenCentral()
+  mavenLocal()
 }

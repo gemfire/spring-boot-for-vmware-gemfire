@@ -4,26 +4,18 @@
  */
 package org.springframework.geode.boot.autoconfigure.cluster.aware;
 
+import static com.vmware.gemfire.testcontainers.GemFireCluster.ALL_GLOB;
 import static org.assertj.core.api.Assertions.assertThat;
+
+import example.app.books.model.Book;
+import example.app.books.model.ISBN;
 
 import java.io.IOException;
 import java.security.KeyStore;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 import javax.net.ssl.SSLContext;
 
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import org.apache.geode.cache.DataPolicy;
-import org.apache.geode.cache.GemFireCache;
-import org.apache.geode.cache.Region;
-
 import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder;
@@ -33,13 +25,14 @@ import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
 import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactoryBuilder;
 import org.apache.hc.client5.http.ssl.TrustAllStrategy;
 import org.apache.hc.core5.ssl.SSLContexts;
-
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.ApplicationRunner;
-import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
@@ -47,23 +40,19 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.env.Profiles;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.gemfire.GemfireTemplate;
-import org.springframework.data.gemfire.GemfireUtils;
-import org.springframework.data.gemfire.config.annotation.CacheServerApplication;
 import org.springframework.data.gemfire.config.annotation.EnableEntityDefinedRegions;
-import org.springframework.data.gemfire.config.annotation.EnableManager;
 import org.springframework.data.gemfire.config.support.RestTemplateConfigurer;
-import org.springframework.data.gemfire.tests.integration.ForkingClientServerIntegrationTestsSupport;
+import org.springframework.geode.boot.autoconfigure.security.TestSecurityManager;
 import org.springframework.geode.config.annotation.ClusterAwareConfiguration;
 import org.springframework.geode.config.annotation.EnableClusterAware;
-import org.springframework.geode.security.TestSecurityManager;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.testcontainers.utility.MountableFile;
 
-import example.app.books.model.Book;
-import example.app.books.model.ISBN;
+import com.vmware.gemfire.testcontainers.GemFireCluster;
 
 /**
  * Integration Tests testing the {@link EnableClusterAware} annotation configuration when the Apache Geode cluster
@@ -95,44 +84,59 @@ import example.app.books.model.ISBN;
 @ActiveProfiles({ "cluster-aware-with-secure-client", "ssl" })
 @DirtiesContext
 @RunWith(SpringRunner.class)
-@SpringBootTest(
-	classes = SecureClusterAwareConfigurationIntegrationTests.TestGeodeClientConfiguration.class,
-	properties = {
-		"spring.data.gemfire.management.require-https=true",
-		"spring.data.gemfire.security.username=test",
-		"spring.data.gemfire.security.password=test"
-	},
-	webEnvironment = SpringBootTest.WebEnvironment.NONE
-)
+@SpringBootTest(classes = SecureClusterAwareConfigurationIntegrationTests.TestGeodeClientConfiguration.class,
+		properties = { "spring.data.gemfire.management.require-https=true", "spring.data.gemfire.security.username=test",
+				"spring.data.gemfire.security.password=test" },
+		webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @SuppressWarnings("unused")
-public class SecureClusterAwareConfigurationIntegrationTests extends ForkingClientServerIntegrationTestsSupport {
+public class SecureClusterAwareConfigurationIntegrationTests {
 
-	private static final String SPRING_DATA_GEMFIRE_CACHE_CLIENT_REGION_SHORTCUT_PROPERTY =
-		"spring.data.gemfire.cache.client.region.shortcut";
+	private static final String SPRING_DATA_GEMFIRE_CACHE_CLIENT_REGION_SHORTCUT_PROPERTY = "spring.data.gemfire.cache.client.region.shortcut";
 
 	@BeforeClass
 	public static void startGeodeServer() throws IOException {
-		int availableServerPort = findAndReserveAvailablePort();
-		startGemFireServer(TestGeodeServerConfiguration.class,
-			"-Dspring.profiles.active=cluster-aware-with-secure-server,ssl",
-			"-Dapache-geode.logback.log.level=INFO","-Dspring.data.gemfire.cache.server.port="+ availableServerPort);
-		waitForServerToStart("localhost",availableServerPort, TimeUnit.SECONDS.toMillis(60));
+		String dockerImage = System.getProperty("spring.test.gemfire.docker.image");
+
+		GemFireCluster gemFireCluster = new GemFireCluster(dockerImage, 1, 1);
+		gemFireCluster.withPdx("example\\.app\\.books\\.model\\..*", true);
+
+		gemFireCluster.withClasspath(GemFireCluster.ALL_GLOB, System.getProperty("TEST_JAR_PATH"));
+		gemFireCluster.withPreStart(GemFireCluster.ALL_GLOB, container -> {
+			container.copyFileToContainer(MountableFile.forClasspathResource("test-trusted.keystore"),
+					"/test-trusted.keystore");
+		});
+
+		gemFireCluster.withGemFireProperty(GemFireCluster.ALL_GLOB, "ssl-enabled-components", "web,locator,server")
+				.withGemFireProperty(GemFireCluster.ALL_GLOB, "ssl-keystore", "/test-trusted.keystore")
+				.withGemFireProperty(GemFireCluster.ALL_GLOB, "ssl-truststore", "/test-trusted.keystore")
+				.withGemFireProperty(GemFireCluster.ALL_GLOB, "ssl-keystore-password", "s3cr3t")
+				.withGemFireProperty(GemFireCluster.ALL_GLOB, "ssl-truststore-password", "s3cr3t");
+
+		gemFireCluster.withGemFireProperty(ALL_GLOB, "security-manager", TestSecurityManager.class.getName())
+				.withGemFireProperty(ALL_GLOB, "security-username", "cluster")
+				.withGemFireProperty(ALL_GLOB, "security-password", "cluster");
+
+		gemFireCluster.acceptLicense().start();
+		gemFireCluster.gfsh(true, "create region --name=Customers --type=REPLICATE");
+
+		System.setProperty("spring.data.gemfire.pool.locators", "localhost[" + gemFireCluster.getLocatorPort() + "]");
+		System.setProperty("spring.data.gemfire.management.http.port",
+				String.valueOf(gemFireCluster.getHttpPorts().get(0)));
 	}
 
-	@BeforeClass @AfterClass
+	@BeforeClass
+	@AfterClass
 	public static void resetClusterAwareCondition() {
 		ClusterAwareConfiguration.ClusterAwareCondition.reset();
 	}
 
 	@Autowired
-	@Qualifier("booksTemplate")
-	private GemfireTemplate booksTemplate;
+	@Qualifier("booksTemplate") private GemfireTemplate booksTemplate;
 
 	@Before
 	public void assertBooksClientRegionIsProxy() {
 
-		assertThat(System.getProperties())
-			.doesNotContainKeys(SPRING_DATA_GEMFIRE_CACHE_CLIENT_REGION_SHORTCUT_PROPERTY);
+		assertThat(System.getProperties()).doesNotContainKeys(SPRING_DATA_GEMFIRE_CACHE_CLIENT_REGION_SHORTCUT_PROPERTY);
 
 		assertThat(this.booksTemplate).isNotNull();
 		assertThat(this.booksTemplate.getRegion()).isNotNull();
@@ -144,8 +148,7 @@ public class SecureClusterAwareConfigurationIntegrationTests extends ForkingClie
 	@Test
 	public void clientServerConfigurationAndConfigurationIsSuccessful() {
 
-		Book book = Book.newBook("Book of Job")
-			.identifiedBy(ISBN.autoGenerated());
+		Book book = Book.newBook("Book of Job").identifiedBy(ISBN.autoGenerated());
 
 		this.booksTemplate.put(book.getIsbn(), book);
 
@@ -167,43 +170,33 @@ public class SecureClusterAwareConfigurationIntegrationTests extends ForkingClie
 		static final String TEST_TRUSTED_KEYSTORE_FILENAME = "test-trusted.keystore";
 
 		@Bean
-		RestTemplateConfigurer secureClientHttpRequestConfigurer(Environment environment)  {
+		RestTemplateConfigurer secureClientHttpRequestConfigurer(Environment environment) {
 
 			return restTemplate -> {
 
 				if (areProfilesActive(environment, SSL_PROFILE)) {
 					try {
 
-						char[] trustStorePassword =
-							environment.getProperty("spring.data.gemfire.security.ssl.truststore.password",
-								DEFAULT_TRUSTSTORE_PASSWORD).toCharArray();
+						char[] trustStorePassword = environment
+								.getProperty("spring.data.gemfire.security.ssl.truststore.password", DEFAULT_TRUSTSTORE_PASSWORD)
+								.toCharArray();
 
 						KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
 
-						keyStore.load(new ClassPathResource(TEST_TRUSTED_KEYSTORE_FILENAME).getInputStream(),
-							trustStorePassword);
+						keyStore.load(new ClassPathResource(TEST_TRUSTED_KEYSTORE_FILENAME).getInputStream(), trustStorePassword);
 
-						SSLContext sslContext = SSLContexts.custom()
-							.loadTrustMaterial(keyStore, TrustAllStrategy.INSTANCE)
-							.build();
+						SSLContext sslContext = SSLContexts.custom().loadTrustMaterial(keyStore, TrustAllStrategy.INSTANCE).build();
 
-						SSLConnectionSocketFactory sslSocketFactory =
-							SSLConnectionSocketFactoryBuilder.create()
-								.setHostnameVerifier(new NoopHostnameVerifier())
-								.setSslContext(sslContext)
-								.build();
+						SSLConnectionSocketFactory sslSocketFactory = SSLConnectionSocketFactoryBuilder.create()
+								.setHostnameVerifier(new NoopHostnameVerifier()).setSslContext(sslContext).build();
 
 						HttpClientConnectionManager connectionManager = PoolingHttpClientConnectionManagerBuilder.create()
-							.setSSLSocketFactory(sslSocketFactory)
-							.build();
+								.setSSLSocketFactory(sslSocketFactory).build();
 
-						HttpClient httpClient = HttpClients.custom()
-							.setConnectionManager(connectionManager)
-							.build();
+						HttpClient httpClient = HttpClients.custom().setConnectionManager(connectionManager).build();
 
 						restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(httpClient));
-					}
-					catch (Exception cause) {
+					} catch (Exception cause) {
 						throw new RuntimeException(cause);
 					}
 				}
@@ -212,45 +205,6 @@ public class SecureClusterAwareConfigurationIntegrationTests extends ForkingClie
 
 		private boolean areProfilesActive(@NonNull Environment environment, @NonNull String... profiles) {
 			return environment.acceptsProfiles(Profiles.of(profiles));
-		}
-	}
-
-	@SpringBootApplication
-	@CacheServerApplication(name = "SecureClusterAwareConfigurationIntegrationTestsServer")
-	@EnableManager(start = true)
-	@Profile("cluster-aware-with-secure-server")
-	static class TestGeodeServerConfiguration {
-
-		public static void main(String[] args) throws IOException {
-
-			new SpringApplicationBuilder(TestGeodeServerConfiguration.class)
-				.web(WebApplicationType.NONE)
-				.build()
-				.run(args);
-		}
-
-		@Bean
-		TestSecurityManager securityManager() {
-			return new TestSecurityManager();
-		}
-
-		@Bean
-		ApplicationRunner peerCacheVerifier(GemFireCache cache) {
-
-			return args -> {
-
-				assertThat(cache).isNotNull();
-				assertThat(GemfireUtils.isPeer(cache)).isTrue();
-				assertThat(cache.getName()).isEqualTo("SecureClusterAwareConfigurationIntegrationTestsServer");
-
-				List<String> regionNames = cache.rootRegions().stream()
-					.map(Region::getName)
-					.collect(Collectors.toList());
-
-				assertThat(regionNames)
-					.describedAs("Expected no Regions; but was [%s]", regionNames)
-					.isEmpty();
-			};
 		}
 	}
 }

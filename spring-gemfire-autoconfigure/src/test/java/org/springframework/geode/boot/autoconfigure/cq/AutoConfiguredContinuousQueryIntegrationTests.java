@@ -4,10 +4,12 @@
  */
 package org.springframework.geode.boot.autoconfigure.cq;
 
+import static com.vmware.gemfire.testcontainers.GemFireCluster.ALL_GLOB;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
 
+import com.vmware.gemfire.testcontainers.GemFireCluster;
 import jakarta.annotation.Resource;
 
 import org.junit.Before;
@@ -36,6 +38,7 @@ import org.springframework.data.gemfire.config.annotation.CacheServerApplication
 import org.springframework.data.gemfire.config.annotation.EnablePdx;
 import org.springframework.data.gemfire.tests.integration.ForkingClientServerIntegrationTestsSupport;
 import org.springframework.data.gemfire.tests.integration.config.ClientServerIntegrationTestsConfiguration;
+import org.springframework.geode.boot.autoconfigure.security.TestSecurityManager;
 import org.springframework.geode.config.annotation.ClusterAwareConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -71,14 +74,26 @@ import example.geode.query.cq.event.TemperatureReadingsContinuousQueriesHandler;
 	webEnvironment = SpringBootTest.WebEnvironment.NONE
 )
 @SuppressWarnings("unused")
-public class AutoConfiguredContinuousQueryIntegrationTests extends ForkingClientServerIntegrationTestsSupport {
+public class AutoConfiguredContinuousQueryIntegrationTests {
 
 	@BeforeClass
 	public static void startGemFireServer() throws IOException {
 
 		ClusterAwareConfiguration.ClusterAwareCondition.reset();
 
-		startGemFireServer(GemFireServerConfiguration.class);
+		String dockerImage = System.getProperty("spring.test.gemfire.docker.image");
+
+		GemFireCluster gemFireCluster = new GemFireCluster(dockerImage, 1, 1);
+		gemFireCluster.withPdx("example\\.geode\\.query\\.cq\\.event\\..*", true)
+				.withClasspath(GemFireCluster.ALL_GLOB, System.getProperty("TEST_JAR_PATH"));
+
+		gemFireCluster.acceptLicense().start();
+
+		gemFireCluster.gfsh(false,"create region --name=TemperatureReadings --type=REPLICATE --cache-loader=org.springframework.geode.boot.autoconfigure.cq.TemperatureReadingsCacheLoader");
+
+		System.setProperty("spring.data.gemfire.pool.locators", "localhost[" + gemFireCluster.getLocatorPort() + "]");
+		System.setProperty("spring.data.gemfire.management.http.port",
+				String.valueOf(gemFireCluster.getHttpPorts().get(0)));
 	}
 
 	@Autowired
@@ -92,7 +107,6 @@ public class AutoConfiguredContinuousQueryIntegrationTests extends ForkingClient
 
 	@Before
 	public void setup() {
-
 		assertThat(this.temperatureReadingsTemplate.<Long, TemperatureReading>get(1L))
 			.isEqualTo(TemperatureReading.of(99));
 
@@ -111,7 +125,7 @@ public class AutoConfiguredContinuousQueryIntegrationTests extends ForkingClient
 	}
 
 	@SpringBootApplication
-	@Import(ClientServerIntegrationTestsConfiguration.class)
+	@EnablePdx
 	public static class GemFireClientConfiguration {
 
 		@Bean("TemperatureReadings")
@@ -136,77 +150,6 @@ public class AutoConfiguredContinuousQueryIntegrationTests extends ForkingClient
 		@DependsOn("TemperatureReadings")
 		TemperatureReadingsContinuousQueriesHandler temperatureReadingsHandler() {
 			return new TemperatureReadingsContinuousQueriesHandler();
-		}
-	}
-
-	@EnablePdx
-	@CacheServerApplication(name = "AutoConfiguredContinuousQueryIntegrationTestsServer")
-	public static class GemFireServerConfiguration {
-
-		public static void main(String[] args) {
-
-			AnnotationConfigApplicationContext applicationContext =
-				new AnnotationConfigApplicationContext(GemFireServerConfiguration.class);
-
-			applicationContext.registerShutdownHook();
-		}
-
-		@Bean("TemperatureReadings")
-		public PartitionedRegionFactoryBean<Long, TemperatureReading> temperatureReadingsRegion(GemFireCache gemfireCache) {
-
-			PartitionedRegionFactoryBean<Long, TemperatureReading> temperatureReadingsRegion =
-				new PartitionedRegionFactoryBean<>();
-
-			temperatureReadingsRegion.setCache(gemfireCache);
-			temperatureReadingsRegion.setCacheLoader(temperatureReadingsLoader());
-			temperatureReadingsRegion.setPersistent(false);
-
-			return temperatureReadingsRegion;
-		}
-
-		private CacheLoader<Long, TemperatureReading> temperatureReadingsLoader() {
-
-			return new CacheLoader<Long, TemperatureReading>() {
-
-				@Override
-				public TemperatureReading load(LoaderHelper<Long, TemperatureReading> helper)
-						throws CacheLoaderException {
-
-					long key = helper.getKey();
-
-					Region<Long, TemperatureReading> temperatureReadings = helper.getRegion();
-
-					recordTemperature(temperatureReadings, ++key, 72);
-					recordTemperature(temperatureReadings, ++key, 16);
-					recordTemperature(temperatureReadings, ++key, 101);
-					recordTemperature(temperatureReadings, ++key, 300);
-					recordTemperature(temperatureReadings, ++key, -51);
-					recordTemperature(temperatureReadings, ++key, 242);
-					recordTemperature(temperatureReadings, ++key, 112);
-
-					return TemperatureReading.of(99);
-				}
-
-				private void recordTemperature(Region<Long, TemperatureReading> temperatureReadings,
-						long key, int temperature) {
-
-					sleep(50);
-					temperatureReadings.put(key, TemperatureReading.of(temperature));
-				}
-
-				private void sleep(long milliseconds) {
-
-					try {
-						Thread.sleep(milliseconds);
-					}
-					catch (InterruptedException ignore) {
-					}
-				}
-
-				@Override
-				public void close() { }
-
-			};
 		}
 	}
 }

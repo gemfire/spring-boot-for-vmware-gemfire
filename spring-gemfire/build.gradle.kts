@@ -43,5 +43,14 @@ dependencies {
   testImplementation("org.testcontainers:testcontainers")
   testImplementation("org.testcontainers:cassandra")
   testImplementation(libs.mockito.core)
+  testImplementation(libs.gemfire.testcontainers)
   testRuntimeOnly("org.hsqldb:hsqldb")
+
+}
+
+tasks.getByName<Test>("test") {
+  forkEvery = 1
+  maxParallelForks = 4
+  val springTestGemfireDockerImage: String by project
+  systemProperty("spring.test.gemfire.docker.image", springTestGemfireDockerImage)
 }

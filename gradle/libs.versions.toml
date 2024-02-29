@@ -3,6 +3,7 @@ antlrVersion = "2.7.7"
 awaitilityVersion="4.2.0"
 aspectjToolsVersion = "1.9.19"
 findbugsVersion = "3.0.2"
+gemFireTestContainersVersion = "2.0.0"
 mockitoCoreVersion = { strictly = "4.8.1" }
 multithreadedtcVersion = "1.01"
 springBootVersion = "3.2.2"
@@ -17,6 +18,7 @@ antlr = { module = "antlr:antlr", version.ref = "antlrVersion" }
 aspectj-tools = { module = "org.aspectj:aspectjtools", version.ref = "aspectjToolsVersion" }
 awaitility={module="org.awaitility:awaitility",version.ref="awaitilityVersion"}
 findbugs-jsr305 = { module = "com.google.code.findbugs:jsr305", version.ref = "findbugsVersion" }
+gemfire-testcontainers = { module = "com.vmware.gemfire:gemfire-testcontainers", version.ref = "gemFireTestContainersVersion" }
 multithreadedtc = { module = "edu.umd.cs.mtc:multithreadedtc", version.ref = "multithreadedtcVersion" }
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoCoreVersion" }
 spring-boot-configuration-processor = { module = "org.springframework.boot:spring-boot-configuration-processor", version.ref = "springBootVersion" }
