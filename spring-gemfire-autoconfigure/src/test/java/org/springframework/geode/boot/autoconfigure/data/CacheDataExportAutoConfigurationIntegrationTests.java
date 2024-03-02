@@ -17,6 +17,7 @@ import java.util.Set;
 import java.util.stream.StreamSupport;
 
 import org.apache.geode.cache.Region;
+import org.awaitility.Awaitility;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -103,7 +104,7 @@ public class CacheDataExportAutoConfigurationIntegrationTests extends ClientServ
 		assertThat(workingDirectory.exists()).isTrue();
 		File dataGolferJson = filePath.toFile();
 
-		assertThat(dataGolferJson).isFile();
+		Awaitility.await().atMost(Duration.ofSeconds(5)).untilAsserted(() -> assertThat(dataGolferJson).isFile());
 
 		String actualJson = FileUtils.read(dataGolferJson);
 
