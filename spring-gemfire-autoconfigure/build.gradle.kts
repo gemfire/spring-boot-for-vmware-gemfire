@@ -59,14 +59,6 @@ tasks.register<Jar>("testJar") {
   duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
-tasks.getByName<ShadowJar>("shadowJar") {
-  archiveBaseName.set("shadow")
-  archiveClassifier.set("")
-  archiveVersion.set("")
-  from(sourceSets.main.get().output)
-  from(sourceSets.test.get().output)
-}
-
 tasks.getByName<Test>("test") {
   dependsOn(tasks.named<Jar>("testJar"))
   forkEvery = 1
