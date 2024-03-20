@@ -1,3 +1,8 @@
+/*
+ * Copyright 2024 Broadcom. All rights reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 INSERT INTO calculations (operand, operator, result) VALUES (5, 'FACTORIAL', 120);
 INSERT INTO calculations (operand, operator, result) VALUES (7, 'FACTORIAL', 5040);
 INSERT INTO calculations (operand, operator, result) VALUES (9, 'FACTORIAL', 362880);
