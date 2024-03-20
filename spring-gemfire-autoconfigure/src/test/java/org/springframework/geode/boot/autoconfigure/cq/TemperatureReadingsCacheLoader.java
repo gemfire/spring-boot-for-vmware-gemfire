@@ -1,3 +1,8 @@
+/*
+ * Copyright 2024 Broadcom. All rights reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 package org.springframework.geode.boot.autoconfigure.cq;
 
 import example.geode.query.cq.event.TemperatureReading;
