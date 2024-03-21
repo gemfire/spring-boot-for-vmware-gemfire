@@ -1,6 +1,6 @@
 [versions]
 antlrVersion = "2.7.7"
-awaitilityVersion="4.2.0"
+awaitilityVersion="4.2.1"
 aspectjToolsVersion = "1.9.21"
 findbugsVersion = "3.0.2"
 mockitoCoreVersion = { strictly = "4.8.1" }
