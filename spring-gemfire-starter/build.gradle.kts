@@ -23,7 +23,7 @@ description = "Spring Boot Starter for VMware GemFire"
 val gemfireVersion = ProjectUtils.getGemFireBaseVersion(property("gemfireVersion").toString())
 
 publishingDetails {
-  artifactName.set("spring-boot-3.0-gemfire-$gemfireVersion")
+  artifactName.set("spring-boot-2.7-gemfire-$gemfireVersion")
   longName.set(project.description)
   description.set(project.description)
 }
