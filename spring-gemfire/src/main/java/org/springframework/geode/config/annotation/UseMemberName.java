@@ -33,12 +33,14 @@ import org.springframework.core.annotation.AliasFor;
  * @see AliasFor
  * @see MemberNameConfiguration
  * @since 1.0.0
+ * @deprecated to be removed in 2.0 release
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 @Documented
 @Import(MemberNameConfiguration.class)
+@Deprecated(forRemoval = true)
 public @interface UseMemberName {
 
 	/**
