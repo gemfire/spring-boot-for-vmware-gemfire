@@ -40,7 +40,7 @@ import org.springframework.core.annotation.AliasFor;
 @Inherited
 @Documented
 @Import(MemberNameConfiguration.class)
-@Deprecated(forRemoval = true)
+@Deprecated
 public @interface UseMemberName {
 
 	/**
