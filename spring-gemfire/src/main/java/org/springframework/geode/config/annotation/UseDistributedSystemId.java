@@ -41,7 +41,7 @@ import org.springframework.core.annotation.AliasFor;
 @Inherited
 @Documented
 @Import(DistributedSystemIdConfiguration.class)
-@Deprecated(forRemoval = true)
+@Deprecated
 @SuppressWarnings("unused")
 public @interface UseDistributedSystemId {
 

@@ -40,7 +40,7 @@ import org.springframework.core.annotation.AliasFor;
 @Inherited
 @Documented
 @Import(GroupsConfiguration.class)
-@Deprecated(forRemoval = true)
+@Deprecated
 @SuppressWarnings("unused")
 public @interface UseGroups {
 

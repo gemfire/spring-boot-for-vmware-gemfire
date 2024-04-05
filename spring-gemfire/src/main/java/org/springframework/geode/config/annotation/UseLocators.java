@@ -41,7 +41,7 @@ import org.springframework.core.annotation.AliasFor;
 @Inherited
 @Documented
 @Import(LocatorsConfiguration.class)
-@Deprecated(forRemoval = true)
+@Deprecated
 @SuppressWarnings("unused")
 public @interface UseLocators {
 
