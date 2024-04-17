@@ -1,5 +1,5 @@
 [versions]
-springVersion = "6.0.18"
+springVersion = "6.0.19"
 springBootVersion="3.0.13"
 springSecurityVersion="6.0.8"
 testcontainersVersion="1.19.7"
