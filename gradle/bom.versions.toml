@@ -1,7 +1,7 @@
 [versions]
-springVersion = "6.1.5"
+springVersion = "6.1.6"
 springBootVersion="3.2.4"
-springSecurityVersion="6.2.3"
+springSecurityVersion="6.2.4"
 testcontainersVersion="1.19.7"
 
 [libraries]
