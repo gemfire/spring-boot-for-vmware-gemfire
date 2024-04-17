@@ -11,7 +11,7 @@ tomcatMigrationVersion="1.0.7"
 
 benManesVersions = "0.50.0"
 littlerobotsVersionCatalogUpdate = "0.8.4"
-lombokPlugin = "8.4"
+lombokPlugin = "8.6"
 
 [libraries]
 antlr = { module = "antlr:antlr", version.ref = "antlrVersion" }
