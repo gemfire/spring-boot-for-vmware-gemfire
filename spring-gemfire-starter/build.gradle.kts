@@ -6,7 +6,6 @@
 import com.google.cloud.storage.BlobId
 import com.google.cloud.storage.BlobInfo
 import com.google.cloud.storage.StorageOptions
-import gradle.kotlin.dsl.accessors._47bddfe2709b17d87106a3017b4e6c2a.java
 
 buildscript {
   dependencies {
@@ -54,12 +53,6 @@ val exportedProjects = arrayOf(
   ":spring-gemfire-starter-session",
   ":spring-gemfire-starter-test"
 )
-
-java {
-   toolchain {
-    languageVersion = JavaLanguageVersion.of(17)
-  }
-}
 
 tasks {
   register("combinedJavadoc", Javadoc::class.java) {
