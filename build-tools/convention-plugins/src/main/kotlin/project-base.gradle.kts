@@ -28,6 +28,7 @@ dependencies{
 
 repositories {
   mavenCentral()
+  maven { url = uri("https://repo.spring.io/milestone") }
   maven {
     credentials {
       username = property("gemfireRepoUsername") as String

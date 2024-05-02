@@ -11,7 +11,7 @@ plugins {
 description = "VMware GemFire Integration with Eclipse Jetty declared and managed by Spring Boot"
 
 publishingDetails {
-    artifactName.set("spring-boot-3.2-gemfire-jetty12-${ProjectUtils.getGemFireBaseVersion(property("gemfireVersion").toString())}")
+    artifactName.set("spring-boot-3.3-gemfire-jetty12-${ProjectUtils.getGemFireBaseVersion(property("gemfireVersion").toString())}")
     longName.set(project.description)
     description.set(project.description)
 }

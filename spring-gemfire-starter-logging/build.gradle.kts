@@ -10,7 +10,7 @@ plugins {
 description="Spring Boot Logging Starter for VMware GemFire"
 
 publishingDetails {
-    artifactName.set("spring-boot-logging-3.2-gemfire-${ProjectUtils.getGemFireBaseVersion(property("gemfireVersion").toString())}")
+    artifactName.set("spring-boot-logging-3.3-gemfire-${ProjectUtils.getGemFireBaseVersion(property("gemfireVersion").toString())}")
     longName.set(project.description)
     description.set("Spring Boot Logging Starter for VMware GemFire with Logback as the logging provider and adaptation of Log4j to SLF4J")
 }

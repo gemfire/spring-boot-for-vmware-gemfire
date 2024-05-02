@@ -11,7 +11,7 @@ plugins {
 description = "Spring Boot for VMware GemFire Extensions"
 
 publishingDetails {
-  artifactName.set("spring-boot-3.2-gemfire-extensions-${ProjectUtils.getGemFireBaseVersion(property("gemfireVersion").toString())}")
+  artifactName.set("spring-boot-3.3-gemfire-extensions-${ProjectUtils.getGemFireBaseVersion(property("gemfireVersion").toString())}")
   longName.set(project.description)
   description.set(project.description)
 }

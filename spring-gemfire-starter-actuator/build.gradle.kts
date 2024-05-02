@@ -11,7 +11,7 @@ plugins {
 description = "Spring Boot Actuator Starter for VMware GemFire"
 
 publishingDetails {
-    artifactName.set("spring-boot-actuator-3.2-gemfire-${ProjectUtils.getGemFireBaseVersion(property("gemfireVersion").toString())}")
+    artifactName.set("spring-boot-actuator-3.3-gemfire-${ProjectUtils.getGemFireBaseVersion(property("gemfireVersion").toString())}")
     longName.set(project.description)
     description.set(project.description)
 }
