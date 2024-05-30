@@ -67,6 +67,7 @@ public class DiskStoreProperties {
 		private int compactionThreshold = DiskStoreFactory.DEFAULT_COMPACTION_THRESHOLD;
 		private int queueSize = DiskStoreFactory.DEFAULT_QUEUE_SIZE;
 		private int writeBufferSize = DiskStoreFactory.DEFAULT_WRITE_BUFFER_SIZE;
+		private int segments = DiskStoreFactory.DEFAULT_SEGMENTS;
 
 		private long maxOplogSize = DiskStoreFactory.DEFAULT_MAX_OPLOG_SIZE;
 		private long timeInterval = DiskStoreFactory.DEFAULT_TIME_INTERVAL;
@@ -151,6 +152,14 @@ public class DiskStoreProperties {
 
 		public void setWriteBufferSize(int writeBufferSize) {
 			this.writeBufferSize = writeBufferSize;
+		}
+
+		public int getSegments() {
+			return this.segments;
+		}
+
+		public void setSegments(int segments) {
+			this.segments = segments;
 		}
 	}
 }
