@@ -186,6 +186,7 @@ public class GemFirePropertiesIntegrationTests extends IntegrationTestsSupport {
 		assertThat(storeProperties.getQueueSize()).isEqualTo(1000);
 		assertThat(storeProperties.getTimeInterval()).isEqualTo(2000L);
 		assertThat(storeProperties.getWriteBufferSize()).isEqualTo(65535);
+		assertThat(storeProperties.getSegments()).isEqualTo(2);
 	}
 
 	@Test
