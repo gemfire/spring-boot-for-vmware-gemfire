@@ -100,7 +100,8 @@ public class GeodeDiskStoresHealthIndicator extends AbstractGeodeHealthIndicator
 					.withDetail(diskStoreKey(diskStoreName, "queue-size"), diskStore.getQueueSize())
 					.withDetail(diskStoreKey(diskStoreName, "time-interval"), diskStore.getTimeInterval())
 					.withDetail(diskStoreKey(diskStoreName, "uuid"), diskStore.getDiskStoreUUID().toString())
-					.withDetail(diskStoreKey(diskStoreName, "write-buffer-size"), diskStore.getWriteBufferSize());
+					.withDetail(diskStoreKey(diskStoreName, "write-buffer-size"), diskStore.getWriteBufferSize())
+					.withDetail(diskStoreKey(diskStoreName, "segments"), diskStore.getSegments());
 			});
 
 			builder.up();

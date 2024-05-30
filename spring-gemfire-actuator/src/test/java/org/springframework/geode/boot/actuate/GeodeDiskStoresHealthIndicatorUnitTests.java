@@ -73,12 +73,12 @@ public class GeodeDiskStoresHealthIndicatorUnitTests {
 		mockDiskStores.put("MockDiskStoreOne", DiskStoreMockObjects.mockDiskStore("MockDiskStoreOne",
 			true, true, 90,
 			ArrayUtils.asArray(mockDirectoryOne, mockDirectoryTwo), diskDirectorySizes, 0.95f,
-			0.90f, 1024000L, 16384, 5000L, 32768));
+			0.90f, 1024000L, 16384, 5000L, 32768, 2));
 
 		mockDiskStores.put("MockDiskStoreTwo", DiskStoreMockObjects.mockDiskStore("MockDiskStoreTwo",
 			false, true, 50,null, null,
 			0.90f,0.80f, 2048000L, 4096,
-			15000L, 8192));
+			15000L, 8192, 2));
 
 		when(this.mockApplicationContext.getBeansOfType(DiskStore.class)).thenReturn(mockDiskStores);
 
@@ -108,6 +108,7 @@ public class GeodeDiskStoresHealthIndicatorUnitTests {
 		assertThat(healthDetails).containsEntry("geode.disk-store.MockDiskStoreOne.time-interval", 5000L);
 		assertThat(healthDetails).containsKey("geode.disk-store.MockDiskStoreOne.uuid");
 		assertThat(healthDetails).containsEntry("geode.disk-store.MockDiskStoreOne.write-buffer-size", 32768);
+		assertThat(healthDetails).containsEntry("geode.disk-store.MockDiskStoreOne.segments", 2);
 		assertThat(healthDetails).containsEntry("geode.disk-store.MockDiskStoreTwo.allow-force-compaction", "No");
 		assertThat(healthDetails).containsEntry("geode.disk-store.MockDiskStoreTwo.auto-compact", "Yes");
 		assertThat(healthDetails).containsEntry("geode.disk-store.MockDiskStoreTwo.compaction-threshold", 50);
@@ -120,6 +121,7 @@ public class GeodeDiskStoresHealthIndicatorUnitTests {
 		assertThat(healthDetails).containsEntry("geode.disk-store.MockDiskStoreTwo.time-interval", 15000L);
 		assertThat(healthDetails).containsKey("geode.disk-store.MockDiskStoreOne.uuid");
 		assertThat(healthDetails).containsEntry("geode.disk-store.MockDiskStoreTwo.write-buffer-size", 8192);
+		assertThat(healthDetails).containsEntry("geode.disk-store.MockDiskStoreTwo.segments", 2);
 
 		verify(this.mockApplicationContext, times(1)).getBeansOfType(eq(DiskStore.class));
 	}
