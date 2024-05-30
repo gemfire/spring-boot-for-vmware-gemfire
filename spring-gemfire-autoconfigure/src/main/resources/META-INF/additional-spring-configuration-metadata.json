@@ -386,6 +386,12 @@
       "description": "Configures the write buffer size in bytes."
     },
     {
+      "name": "spring.data.gemfire.disk.store.segments",
+      "type": "java.lang.Integer",
+      "default": 0,
+      "description": "Configures the number of segments a DiskStore is divided into."
+    },
+    {
       "name": "spring.data.gemfire.entities.base-packages",
       "type": "java.lang.String",
       "description": "Comma-delimited list of package names indicating the start points for the entity scan."
