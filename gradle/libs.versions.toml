@@ -6,7 +6,7 @@ findbugsVersion = "3.0.2"
 gemFireTestContainersVersion = "2.0.0"
 mockitoCoreVersion = { strictly = "4.8.1" }
 multithreadedtcVersion = "1.01"
-springBootVersion = "3.3.0-RC1"
+springBootVersion = "3.3.1"
 springShellVersion = "1.2.0.RELEASE"
 
 benManesVersions = "0.50.0"
