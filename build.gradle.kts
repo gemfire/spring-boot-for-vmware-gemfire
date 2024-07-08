@@ -38,10 +38,10 @@ versionCatalogUpdate {
   }
   versionCatalogs{
     create("bom"){
-      catalogFile = file("gradle/bom.versions.toml")
+      catalogFile.set(file("gradle/bom.versions.toml"))
     }
     create("publish"){
-      catalogFile = file("gradle/publish.versions.toml")
+      catalogFile.set(file("gradle/publish.versions.toml"))
     }
   }
 

@@ -3,13 +3,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 plugins {
   alias(libs.plugins.lombok)
   id("project-base")
   id("gemfire-repo-artifact-publishing")
-  id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 description = "Spring Boot Auto-Configuration for VMware GemFire"

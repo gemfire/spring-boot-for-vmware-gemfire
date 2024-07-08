@@ -3,10 +3,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import java.nio.file.Path
+
 plugins {
   id("java-library")
   id("idea")
   id("eclipse")
+  id("commercial-repositories")
 }
 
 group = "com.vmware.gemfire"
@@ -23,18 +26,17 @@ tasks.named<Javadoc>("javadoc") {
   isFailOnError = false
 }
 
-dependencies{
+dependencies {
+  api(platform("org.springframework.boot:spring-boot-dependencies:${project.ext.get("spring-boot.version")}"))
+  api(platform("org.springframework.data:spring-data-bom:${project.ext.get("spring-data-bom.version")}"))
+  api(platform("org.springframework:spring-framework-bom:${project.ext.get("spring-framework.version")}"))
+  api(platform("org.springframework.security:spring-security-bom:${project.ext.get("spring-security.version")}"))
+  api(platform("org.springframework.session:spring-session-bom:${project.ext.get("spring-session.version")}"))
 }
 
 repositories {
+  mavenLocal()
   mavenCentral()
-  maven {
-    credentials {
-      username = property("gemfireRepoUsername") as String
-      password = property("gemfireRepoPassword") as String
-    }
-    url = uri("https://commercial-repo.pivotal.io/data3/gemfire-release-repo/gemfire")
-  }
   val additionalMavenRepoURLs = project.findProperty("additionalMavenRepoURLs").toString()
   if (!additionalMavenRepoURLs.isNullOrBlank() && additionalMavenRepoURLs.isNotEmpty()) {
     additionalMavenRepoURLs.split(",").forEach {
