@@ -6,13 +6,10 @@ package org.springframework.geode.boot.autoconfigure.session;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
-
+import org.apache.geode.cache.client.ClientCache;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import org.apache.geode.cache.GemFireCache;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,7 +31,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  *
  * @author John Blum
  * @see org.junit.Test
- * @see org.apache.geode.cache.GemFireCache
+ * @see org.apache.geode.cache.client.ClientCache
  * @see org.springframework.boot.autoconfigure.SpringBootApplication
  * @see org.springframework.boot.test.context.SpringBootTest
  * @see org.springframework.context.ApplicationContext
@@ -73,7 +70,7 @@ public class ManuallyConfiguredSessionCachingIntegrationTests extends Integratio
 		assertThat(this.applicationContext.containsBean(GemFireHttpSessionConfiguration.DEFAULT_SESSION_REGION_NAME))
 			.isFalse();
 
-		GemFireCache gemfireCache = this.applicationContext.getBean(GemFireCache.class);
+		ClientCache gemfireCache = this.applicationContext.getBean(ClientCache.class);
 
 		assertThat(gemfireCache).isNotNull();
 		assertThat(gemfireCache.rootRegions()).isEmpty();

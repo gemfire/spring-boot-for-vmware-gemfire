@@ -6,37 +6,29 @@ package org.springframework.geode.config.annotation;
 
 import java.lang.annotation.Annotation;
 import java.util.Optional;
-
-import org.apache.geode.cache.Cache;
 import org.apache.geode.cache.client.ClientCache;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportAware;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.AnnotationMetadata;
-import org.springframework.data.gemfire.CacheFactoryBean;
+import org.springframework.data.gemfire.client.ClientCacheFactoryBean;
 import org.springframework.data.gemfire.config.annotation.ClientCacheConfigurer;
-import org.springframework.data.gemfire.config.annotation.PeerCacheConfigurer;
 import org.springframework.data.gemfire.config.annotation.support.AbstractAnnotationConfigSupport;
 import org.springframework.util.StringUtils;
 
 /**
  * The {@link GroupsConfiguration} class is a Spring {@link Configuration} class used to configure the {@literal groups}
- * in which is member belongs in an Apache Geode distributed system, whether the member is a {@link ClientCache} in a
- * client/server topology or a {@link Cache peer Cache} in a cluster using the P2P topology.
+ * in which a client belongs in a GemFire distributed system.
  *
  * @author John Blum
- * @see Cache
  * @see ClientCache
  * @see Bean
  * @see Configuration
  * @see ImportAware
  * @see AnnotationAttributes
  * @see AnnotationMetadata
- * @see CacheFactoryBean
  * @see ClientCacheConfigurer
- * @see PeerCacheConfigurer
  * @see AbstractAnnotationConfigSupport
  * @see UseGroups
  * @since 1.0.0
@@ -87,12 +79,7 @@ public class GroupsConfiguration extends AbstractAnnotationConfigSupport impleme
 		return (beaName, clientCacheFactoryBean) -> configureGroups(clientCacheFactoryBean);
 	}
 
-	@Bean
-	PeerCacheConfigurer peerCacheGroupsConfigurer() {
-		return (beaName, peerCacheFactoryBean) -> configureGroups(peerCacheFactoryBean);
-	}
-
-	private void configureGroups(CacheFactoryBean cacheFactoryBean) {
+	private void configureGroups(ClientCacheFactoryBean cacheFactoryBean) {
 		getGroups().ifPresent(groups -> cacheFactoryBean.getProperties()
 			.setProperty(GEMFIRE_GROUPS_PROPERTY, StringUtils.arrayToCommaDelimitedString(groups)));
 	}

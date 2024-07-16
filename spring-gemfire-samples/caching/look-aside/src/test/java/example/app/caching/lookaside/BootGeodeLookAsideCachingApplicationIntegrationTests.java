@@ -52,7 +52,7 @@ import example.app.caching.lookaside.service.CounterService;
 // tag::class[]
 @RunWith(SpringRunner.class)
 @SpringBootTest(
-	properties = { "spring.boot.data.gemfire.security.ssl.environment.post-processor.enabled=false" },
+	properties = { "spring.boot.data.gemfire.security.ssl.environment.post-processor.enabled=false"},
 	webEnvironment = SpringBootTest.WebEnvironment.MOCK
 )
 @SuppressWarnings("unused")

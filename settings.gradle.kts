@@ -27,7 +27,6 @@ include("spring-gemfire-starter-logging")
 include("spring-gemfire-starter-session")
 include("spring-gemfire-starter-actuator")
 include("spring-gemfire-starter-test")
-include("spring-gemfire-jetty12")
 
 include("spring-gemfire-samples")
 include("spring-gemfire-samples:boot:actuator")
@@ -43,11 +42,9 @@ include("spring-gemfire-samples:intro:getting-started")
 include("spring-gemfire-samples:intro:quick-start")
 //
 include("spring-geode-tests:smoke-tests:function-execution-on-region")
-include("spring-geode-tests:smoke-tests:locator-application")
 include("spring-geode-tests:smoke-tests:logging")
 include("spring-geode-tests:smoke-tests:mock-session-caching")
 include("spring-geode-tests:smoke-tests:multi-store")
-include("spring-geode-tests:smoke-tests:peer-cache-application")
 
 dependencyResolutionManagement {
   versionCatalogs {

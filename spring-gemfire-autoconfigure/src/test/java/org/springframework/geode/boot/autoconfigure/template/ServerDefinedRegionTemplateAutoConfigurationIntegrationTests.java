@@ -5,29 +5,21 @@
 package org.springframework.geode.boot.autoconfigure.template;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
-import java.io.IOException;
+import com.vmware.gemfire.testcontainers.GemFireCluster;
 import java.util.stream.Collectors;
-
+import org.apache.geode.cache.DataPolicy;
+import org.apache.geode.cache.Region;
+import org.apache.geode.cache.client.ClientCache;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import org.apache.geode.cache.DataPolicy;
-import org.apache.geode.cache.GemFireCache;
-import org.apache.geode.cache.Region;
-import org.apache.geode.cache.client.ClientCache;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.gemfire.GemfireTemplate;
-import org.springframework.data.gemfire.LocalRegionFactoryBean;
-import org.springframework.data.gemfire.config.annotation.CacheServerApplication;
 import org.springframework.data.gemfire.config.annotation.EnableClusterDefinedRegions;
 import org.springframework.data.gemfire.tests.integration.ForkingClientServerIntegrationTestsSupport;
 import org.springframework.data.gemfire.util.CollectionUtils;
@@ -40,7 +32,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  *
  * @author John Blum
  * @see org.junit.Test
- * @see org.apache.geode.cache.GemFireCache
+ * @see org.apache.geode.cache.client.ClientCache
  * @see org.apache.geode.cache.Region
  * @see org.apache.geode.cache.client.ClientCache
  * @see org.springframework.boot.autoconfigure.SpringBootApplication
@@ -49,8 +41,6 @@ import org.springframework.test.context.junit4.SpringRunner;
  * @see org.springframework.context.annotation.AnnotationConfigApplicationContext
  * @see org.springframework.context.annotation.Bean
  * @see org.springframework.data.gemfire.GemfireTemplate
- * @see org.springframework.data.gemfire.LocalRegionFactoryBean
- * @see org.springframework.data.gemfire.config.annotation.CacheServerApplication
  * @see org.springframework.data.gemfire.config.annotation.EnableClusterDefinedRegions
  * @see org.springframework.data.gemfire.tests.integration.ForkingClientServerIntegrationTestsSupport
  * @see org.springframework.geode.boot.autoconfigure.RegionTemplateAutoConfiguration
@@ -66,9 +56,16 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class ServerDefinedRegionTemplateAutoConfigurationIntegrationTests
 		extends ForkingClientServerIntegrationTestsSupport {
 
+	private static GemFireCluster gemFireCluster;
+
 	@BeforeClass
-	public static void startGemFireServer() throws IOException {
-		startGemFireServer(GemFireServerConfiguration.class);
+	public static void runGemFireServer() {
+		String dockerImage = System.getProperty("spring.test.gemfire.docker.image");
+		gemFireCluster = new GemFireCluster(dockerImage,1,1)
+				.withGfsh(false, "create region --name=ExampleServerRegion --type=REPLICATE");
+		gemFireCluster.acceptLicense().start();
+
+		System.setProperty("spring.data.gemfire.pool.locators", "localhost[" + gemFireCluster.getLocatorPort() + "]");
 	}
 
 	@Autowired
@@ -116,29 +113,6 @@ public class ServerDefinedRegionTemplateAutoConfigurationIntegrationTests
 		@Bean("TestBean")
 		Object testBean(@Qualifier("exampleServerRegionTemplate") GemfireTemplate exampleServerRegionTemplate) {
 			return "TEST";
-		}
-	}
-
-	@CacheServerApplication(name = "ServerDefinedRegionTemplateAutoConfigurationIntegrationTestsServer")
-	static class GemFireServerConfiguration {
-
-		public static void main(String[] args) {
-
-			AnnotationConfigApplicationContext applicationContext =
-				new AnnotationConfigApplicationContext(GemFireServerConfiguration.class);
-
-			applicationContext.registerShutdownHook();
-		}
-
-		@Bean("ExampleServerRegion")
-		LocalRegionFactoryBean<Object, Object> exampleServerRegion(GemFireCache gemfireCache) {
-
-			LocalRegionFactoryBean<Object, Object> exampleServerRegion = new LocalRegionFactoryBean<>();
-
-			exampleServerRegion.setCache(gemfireCache);
-			exampleServerRegion.setPersistent(false);
-
-			return exampleServerRegion;
 		}
 	}
 }

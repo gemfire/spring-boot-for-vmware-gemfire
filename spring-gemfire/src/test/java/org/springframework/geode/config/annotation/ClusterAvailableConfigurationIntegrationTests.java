@@ -5,38 +5,29 @@
 package org.springframework.geode.config.annotation;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
-import java.io.IOException;
-
 import com.vmware.gemfire.testcontainers.GemFireCluster;
+import example.app.crm.model.Customer;
+import example.app.crm.service.CustomerService;
 import jakarta.annotation.Resource;
-
+import java.io.IOException;
+import org.apache.geode.cache.DataPolicy;
+import org.apache.geode.cache.Region;
+import org.apache.geode.cache.client.ClientCache;
+import org.apache.geode.cache.client.ClientRegionShortcut;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import org.apache.geode.cache.DataPolicy;
-import org.apache.geode.cache.GemFireCache;
-import org.apache.geode.cache.Region;
-import org.apache.geode.cache.client.ClientCache;
-import org.apache.geode.cache.client.ClientRegionShortcut;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.gemfire.client.ClientRegionFactoryBean;
-import org.springframework.data.gemfire.config.admin.GemfireAdminOperations;
-import org.springframework.data.gemfire.config.admin.remote.RestHttpGemfireAdminTemplate;
 import org.springframework.data.gemfire.config.annotation.ClientCacheApplication;
 import org.springframework.data.gemfire.config.annotation.EnableCachingDefinedRegions;
 import org.springframework.data.gemfire.config.annotation.EnableEntityDefinedRegions;
 import org.springframework.data.gemfire.config.annotation.EnablePdx;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import example.app.crm.model.Customer;
-import example.app.crm.service.CustomerService;
 
 /**
  * Integration Tests asserting the functionality and behavior of {@link EnableClusterAware}
@@ -49,7 +40,6 @@ import example.app.crm.service.CustomerService;
  * @see org.springframework.context.annotation.AnnotationConfigApplicationContext
  * @see org.springframework.context.annotation.Bean
  * @see org.springframework.data.gemfire.client.ClientRegionFactoryBean
- * @see org.springframework.data.gemfire.config.annotation.CacheServerApplication
  * @see org.springframework.data.gemfire.config.annotation.ClientCacheApplication
  * @see org.springframework.data.gemfire.config.annotation.EnableCachingDefinedRegions
  * @see org.springframework.data.gemfire.config.annotation.EnableEntityDefinedRegions
@@ -73,7 +63,11 @@ public class ClusterAvailableConfigurationIntegrationTests {
 	@BeforeClass
 	public static void runGemFireServer() throws IOException {
 		String dockerImage = System.getProperty("spring.test.gemfire.docker.image");
-		gemFireCluster = new GemFireCluster(dockerImage,1,1);
+		gemFireCluster = new GemFireCluster(dockerImage,1,1)
+				.withGfsh(false,
+						"create region --type=REPLICATE --name=CustomersByName",
+						"create region --type=REPLICATE --name=Customers",
+						"create region --type=REPLICATE --name=Example");
 		gemFireCluster.acceptLicense();
 		gemFireCluster.start();
 		System.setProperty("spring.data.gemfire.pool.locators", "127.0.0.1["+gemFireCluster.getLocatorPort()+"]");
@@ -156,7 +150,7 @@ public class ClusterAvailableConfigurationIntegrationTests {
 	static class GeodeClientApplication {
 
 		@Bean("Example")
-		ClientRegionFactoryBean<Object, Object> exampleRegion(GemFireCache cache) {
+		ClientRegionFactoryBean<Object, Object> exampleRegion(ClientCache cache) {
 
 			ClientRegionFactoryBean<Object, Object> exampleRegion = new ClientRegionFactoryBean<>();
 

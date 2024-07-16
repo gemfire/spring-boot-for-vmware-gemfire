@@ -22,9 +22,27 @@ dependencies {
 
 	testImplementation(project(":spring-gemfire-starter-test"))
 	testImplementation(libs.gemfire.core)
+	testImplementation(libs.gemfire.testcontainers)
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {
 		exclude(group="org.junit.vintage", module="junit-vintage-engine")
 	}
 
+}
+
+tasks.register<Jar>("testJar") {
+	from(sourceSets.test.get().output)
+	from(sourceSets.main.get().output)
+
+	archiveFileName = "testJar.jar"
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+tasks.getByName<Test>("test") {
+	dependsOn(tasks.named<Jar>("testJar"))
+	forkEvery = 1
+	maxParallelForks = 4
+	val springTestGemfireDockerImage: String by project
+	systemProperty("spring.test.gemfire.docker.image", springTestGemfireDockerImage)
+	systemProperty("TEST_JAR_PATH", tasks.getByName<Jar>("testJar").outputs.files.singleFile.canonicalPath)
 }

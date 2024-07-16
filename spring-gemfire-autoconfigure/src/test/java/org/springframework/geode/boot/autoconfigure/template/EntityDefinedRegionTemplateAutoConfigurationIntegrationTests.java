@@ -5,19 +5,17 @@
 package org.springframework.geode.boot.autoconfigure.template;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.stream.Collectors;
-
+import example.app.books.model.Author;
+import example.app.books.model.Book;
+import example.app.books.model.ISBN;
 import jakarta.annotation.Resource;
-
+import java.util.stream.Collectors;
+import org.apache.geode.cache.Region;
+import org.apache.geode.cache.client.ClientCache;
+import org.apache.geode.cache.client.ClientRegionShortcut;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import org.apache.geode.cache.GemFireCache;
-import org.apache.geode.cache.Region;
-import org.apache.geode.cache.client.ClientRegionShortcut;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -30,10 +28,6 @@ import org.springframework.data.gemfire.tests.mock.annotation.EnableGemFireMockO
 import org.springframework.geode.boot.autoconfigure.RegionTemplateAutoConfiguration;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import example.app.books.model.Author;
-import example.app.books.model.Book;
-import example.app.books.model.ISBN;
 
 /**
  * Integration Tests for {@link RegionTemplateAutoConfiguration} using SDG's {@link EnableEntityDefinedRegions}
@@ -60,7 +54,7 @@ import example.app.books.model.ISBN;
 public class EntityDefinedRegionTemplateAutoConfigurationIntegrationTests extends IntegrationTestsSupport {
 
 	@Autowired
-	public GemFireCache gemfireCache;
+	public ClientCache gemfireCache;
 
 	@Autowired
 	@Qualifier("authorsTemplate")

@@ -6,40 +6,30 @@ package org.springframework.geode.boot.autoconfigure.security.ssl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.data.gemfire.util.ArrayUtils.nullSafeArray;
-
+import com.vmware.gemfire.testcontainers.GemFireCluster;
+import example.echo.config.EchoClientConfiguration;
 import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
 import org.springframework.data.gemfire.GemfireTemplate;
-import org.springframework.data.gemfire.config.annotation.CacheServerApplication;
-import org.springframework.data.gemfire.tests.integration.ForkingClientServerIntegrationTestsSupport;
 import org.springframework.data.gemfire.tests.integration.config.ClientServerIntegrationTestsConfiguration;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import example.echo.config.EchoClientConfiguration;
-import example.echo.config.EchoServerConfiguration;
 
 /**
  * Integration Tests testing the auto-configuration of Apache Geode SSL.
@@ -52,15 +42,12 @@ import example.echo.config.EchoServerConfiguration;
  * @see org.springframework.context.annotation.Import
  * @see org.springframework.core.env.ConfigurableEnvironment
  * @see org.springframework.data.gemfire.GemfireTemplate
- * @see org.springframework.data.gemfire.config.annotation.CacheServerApplication
  * @see org.springframework.data.gemfire.config.annotation.EnableSsl
- * @see org.springframework.data.gemfire.tests.integration.ForkingClientServerIntegrationTestsSupport
  * @see org.springframework.test.annotation.DirtiesContext
  * @see org.springframework.test.context.ActiveProfiles
  * @see org.springframework.test.context.junit4.SpringRunner
  * @since 1.0.0
  */
-@ActiveProfiles("ssl")
 @DirtiesContext
 @RunWith(SpringRunner.class)
 @SpringBootTest(
@@ -68,13 +55,23 @@ import example.echo.config.EchoServerConfiguration;
 	webEnvironment = SpringBootTest.WebEnvironment.NONE
 )
 @SuppressWarnings("unused")
-public class AutoConfiguredSslIntegrationTests extends ForkingClientServerIntegrationTestsSupport {
+public class AutoConfiguredSslIntegrationTests {
 
 	private static final String TRUSTED_KEYSTORE_FILENAME = "test-trusted.keystore";
 
+	private static GemFireCluster gemFireCluster;
+
 	@BeforeClass
-	public static void startGemFireServer() throws IOException {
-		startGemFireServer(GemFireServerConfiguration.class, "-Dspring.profiles.active=ssl");
+	public static void runGemFireServer() {
+		String dockerImage = System.getProperty("spring.test.gemfire.docker.image");
+		gemFireCluster = new GemFireCluster(dockerImage,1,1)
+				.withGfsh(false, "create region --name=Echo --type=REPLICATE",
+						"put --key=Hello --value=Hello --region=Echo",
+						"put --key=Test --value=Test --region=Echo",
+						"put --key=Good-Bye --value=Good-Bye --region=Echo");
+		gemFireCluster.acceptLicense().start();
+
+		System.setProperty("spring.data.gemfire.cache.server.port", String.valueOf(gemFireCluster.getServerPorts().get(0)));
 	}
 
 	@AfterClass
@@ -142,18 +139,7 @@ public class AutoConfiguredSslIntegrationTests extends ForkingClientServerIntegr
 
 	@SpringBootApplication
 	@Import(EchoClientConfiguration.class)
-	static class GemFireClientConfiguration extends ClientServerIntegrationTestsConfiguration { }
+	static class GemFireClientConfiguration extends ClientServerIntegrationTestsConfiguration {
 
-	@SpringBootApplication
-	@CacheServerApplication(name = "AutoConfiguredSslIntegrationTestsServer")
-	@Import(EchoServerConfiguration.class)
-	static class GemFireServerConfiguration {
-
-		public static void main(String[] args) {
-			new SpringApplicationBuilder(GemFireServerConfiguration.class)
-				.web(WebApplicationType.NONE)
-				.build()
-				.run(args);
-		}
 	}
 }

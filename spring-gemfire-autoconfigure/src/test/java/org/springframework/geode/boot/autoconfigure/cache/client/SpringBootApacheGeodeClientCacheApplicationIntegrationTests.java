@@ -5,23 +5,15 @@
 package org.springframework.geode.boot.autoconfigure.cache.client;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.data.gemfire.util.RuntimeExceptionFactory.newIllegalStateException;
-
-import java.util.Optional;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import org.apache.geode.cache.GemFireCache;
 import org.apache.geode.cache.Region;
 import org.apache.geode.cache.client.ClientCache;
 import org.apache.geode.cache.client.ClientRegionShortcut;
-
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.gemfire.GemfireUtils;
 import org.springframework.data.gemfire.client.ClientRegionFactoryBean;
 import org.springframework.data.gemfire.tests.integration.IntegrationTestsSupport;
 import org.springframework.data.gemfire.util.RegionUtils;
@@ -32,7 +24,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  *
  * @author John Blum
  * @see org.junit.Test
- * @see org.apache.geode.cache.GemFireCache
+ * @see org.apache.geode.cache.client.ClientCache
  * @see org.apache.geode.cache.Region
  * @see org.apache.geode.cache.client.ClientCache
  * @see org.springframework.boot.autoconfigure.SpringBootApplication
@@ -55,9 +47,7 @@ public class SpringBootApacheGeodeClientCacheApplicationIntegrationTests extends
 	@Test
 	public void clientCacheAndClientRegionAreAvailable() {
 
-		Optional.ofNullable(this.clientCache)
-			.map(it -> assertThat(GemfireUtils.isClient(it)).isTrue())
-			.orElseThrow(() -> newIllegalStateException("ClientCache was null"));
+		assertThat(this.clientCache).isNotNull();
 
 		Region<Object, Object> example = this.clientCache.getRegion("Example");
 
@@ -74,7 +64,7 @@ public class SpringBootApacheGeodeClientCacheApplicationIntegrationTests extends
 	static class TestConfiguration {
 
 		@Bean("Example")
-		public ClientRegionFactoryBean<Object, Object> exampleRegion(GemFireCache gemfireCache) {
+		public ClientRegionFactoryBean<Object, Object> exampleRegion(ClientCache gemfireCache) {
 
 			ClientRegionFactoryBean<Object, Object> clientRegion = new ClientRegionFactoryBean<>();
 

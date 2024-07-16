@@ -10,18 +10,10 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.data.gemfire.util.CollectionUtils.asSet;
-
 import java.util.Arrays;
 import java.util.Currency;
 import java.util.Map;
 import java.util.Set;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-
 import org.apache.geode.cache.CacheStatistics;
 import org.apache.geode.cache.DataPolicy;
 import org.apache.geode.cache.EvictionAction;
@@ -29,11 +21,15 @@ import org.apache.geode.cache.EvictionAlgorithm;
 import org.apache.geode.cache.EvictionAttributes;
 import org.apache.geode.cache.ExpirationAction;
 import org.apache.geode.cache.ExpirationAttributes;
-import org.apache.geode.cache.GemFireCache;
 import org.apache.geode.cache.PartitionAttributes;
 import org.apache.geode.cache.Region;
 import org.apache.geode.cache.Scope;
-
+import org.apache.geode.cache.client.ClientCache;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.data.gemfire.tests.mock.CacheMockObjects;
@@ -47,7 +43,7 @@ import org.springframework.data.gemfire.tests.mock.CacheMockObjects;
  * @see org.mockito.Mockito
  * @see org.mockito.junit.MockitoJUnitRunner
  * @see org.apache.geode.cache.CacheStatistics
- * @see org.apache.geode.cache.GemFireCache
+ * @see org.apache.geode.cache.client.ClientCache
  * @see org.apache.geode.cache.Region
  * @see org.springframework.boot.actuate.health.Health
  * @see org.springframework.boot.actuate.health.HealthIndicator
@@ -59,7 +55,7 @@ import org.springframework.data.gemfire.tests.mock.CacheMockObjects;
 public class GeodeRegionsHealthIndicatorUnitTests {
 
 	@Mock
-	private GemFireCache mockGemFireCache;
+	private ClientCache mockGemFireCache;
 
 	private GeodeRegionsHealthIndicator regionsHealthIndicator;
 

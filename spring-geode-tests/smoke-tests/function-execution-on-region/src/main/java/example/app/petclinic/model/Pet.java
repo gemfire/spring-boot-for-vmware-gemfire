@@ -5,15 +5,15 @@
 package example.app.petclinic.model;
 
 import java.time.LocalDateTime;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.gemfire.mapping.annotation.Region;
-
+import java.time.ZoneOffset;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.gemfire.mapping.annotation.Region;
 
 /**
  * Abstract Data Type (ADT) modeling a pet.
@@ -23,6 +23,8 @@ import lombok.ToString;
  * @see org.springframework.data.gemfire.mapping.annotation.Region
  * @since 1.2.1
  */
+@Getter
+@NoArgsConstructor
 @Region("Pets")
 @ToString(of = "name")
 @EqualsAndHashCode(of = "name")
@@ -30,13 +32,11 @@ import lombok.ToString;
 @SuppressWarnings("unused")
 public class Pet {
 
-	@Getter
 	private LocalDateTime vaccinationDateTime;
 
-	@Id @NonNull @Getter
-	private String name;
+	@Id @NonNull
+  private String name;
 
-	@Getter
 	private Type petType;
 
 	public Pet as(Type petType) {
@@ -45,7 +45,7 @@ public class Pet {
 	}
 
 	public void vaccinate() {
-		this.vaccinationDateTime = LocalDateTime.now();
+		this.vaccinationDateTime = LocalDateTime.now(ZoneOffset.UTC);
 	}
 
 	public enum Type {

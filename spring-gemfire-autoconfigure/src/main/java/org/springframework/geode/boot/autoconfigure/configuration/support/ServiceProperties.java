@@ -5,9 +5,7 @@
 package org.springframework.geode.boot.autoconfigure.configuration.support;
 
 import java.util.Properties;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.data.gemfire.config.annotation.EnableMemcachedServer;
 
 /**
  * Spring Boot {@link ConfigurationProperties} used to configure Apache Geode embedded services.
@@ -19,7 +17,7 @@ import org.springframework.data.gemfire.config.annotation.EnableMemcachedServer;
  *
  * @author John Blum
  * @see java.util.Properties
- * @see org.apache.geode.cache.Cache
+ * @see org.apache.geode.cache.client.ClientCache
  * @see org.springframework.boot.context.properties.ConfigurationProperties
  * @since 1.0.0
  */
@@ -102,22 +100,12 @@ public class ServiceProperties {
 
 		private int port = DEFAULT_PORT;
 
-		private EnableMemcachedServer.MemcachedProtocol protocol = EnableMemcachedServer.MemcachedProtocol.ASCII;
-
 		public int getPort() {
 			return this.port;
 		}
 
 		public void setPort(int port) {
 			this.port = port;
-		}
-
-		public EnableMemcachedServer.MemcachedProtocol getProtocol() {
-			return this.protocol;
-		}
-
-		public void setProtocol(EnableMemcachedServer.MemcachedProtocol protocol) {
-			this.protocol = protocol;
 		}
 	}
 }

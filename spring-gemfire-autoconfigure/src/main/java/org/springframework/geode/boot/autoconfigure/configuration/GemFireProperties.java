@@ -18,7 +18,6 @@ import org.springframework.geode.boot.autoconfigure.configuration.support.Manage
 import org.springframework.geode.boot.autoconfigure.configuration.support.ManagerProperties;
 import org.springframework.geode.boot.autoconfigure.configuration.support.PdxProperties;
 import org.springframework.geode.boot.autoconfigure.configuration.support.PoolProperties;
-import org.springframework.geode.boot.autoconfigure.configuration.support.SecurityProperties;
 import org.springframework.geode.boot.autoconfigure.configuration.support.ServiceProperties;
 
 /**
@@ -42,7 +41,6 @@ import org.springframework.geode.boot.autoconfigure.configuration.support.Servic
  * @see org.springframework.geode.boot.autoconfigure.configuration.support.ManagerProperties
  * @see org.springframework.geode.boot.autoconfigure.configuration.support.PdxProperties
  * @see org.springframework.geode.boot.autoconfigure.configuration.support.PoolProperties
- * @see org.springframework.geode.boot.autoconfigure.configuration.support.SecurityProperties
  * @see org.springframework.geode.boot.autoconfigure.configuration.support.ServiceProperties
  * @since 1.0.0
  */
@@ -83,9 +81,6 @@ public class GemFireProperties {
 
 	@NestedConfigurationProperty
 	private final PoolProperties pool = new PoolProperties();
-
-	@NestedConfigurationProperty
-	private final SecurityProperties security = new SecurityProperties();
 
 	@NestedConfigurationProperty
 	private final ServiceProperties service = new ServiceProperties();
@@ -148,10 +143,6 @@ public class GemFireProperties {
 
 	public PoolProperties getPool() {
 		return this.pool;
-	}
-
-	public SecurityProperties getSecurity() {
-		return this.security;
 	}
 
 	public ServiceProperties getService() {

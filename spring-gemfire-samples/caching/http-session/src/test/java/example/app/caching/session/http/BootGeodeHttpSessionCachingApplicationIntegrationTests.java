@@ -59,7 +59,8 @@ import org.springframework.test.context.junit4.SpringRunner;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(
-	properties = { "spring.boot.data.gemfire.security.ssl.environment.post-processor.enabled=false" },
+	properties = { "spring.boot.data.gemfire.security.ssl.environment.post-processor.enabled=false",
+			"spring.session.data.gemfire.cache.client.region.shortcut=LOCAL" },
 	webEnvironment = SpringBootTest.WebEnvironment.MOCK
 )
 @SuppressWarnings("unused")

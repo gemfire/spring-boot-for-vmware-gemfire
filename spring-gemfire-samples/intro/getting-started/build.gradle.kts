@@ -16,12 +16,12 @@ dependencies {
   implementation(platform(bom.spring.security.bom))
   implementation(platform(bom.testcontainers.dependencies.bom))
   implementation(project(":spring-gemfire-starter"))
+  implementation(libs.gemfire.core)
 
   implementation("org.assertj:assertj-core")
   implementation("org.projectlombok:lombok")
   implementation("org.springframework.boot:spring-boot-starter-web")
 
-  testImplementation(libs.gemfire.core)
   testImplementation(project(":spring-gemfire-starter-test"))
   testImplementation("org.springframework.boot:spring-boot-starter-test")
 

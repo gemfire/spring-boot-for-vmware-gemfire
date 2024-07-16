@@ -12,8 +12,7 @@ import org.apache.geode.cache.RegionEvent;
 /**
  * Class supporting the implementation of Apache Geode {@link CacheWriter CacheWriters}.
  *
- * @author John Blum
- * @see CacheWriter
+ * @author John BlumWriter
  * @since 1.1.0
  */
 @SuppressWarnings("unused")

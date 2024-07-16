@@ -5,12 +5,10 @@
 package org.springframework.geode.cache;
 
 import java.util.function.Supplier;
-
 import org.apache.geode.cache.CacheLoader;
 import org.apache.geode.cache.CacheLoaderException;
 import org.apache.geode.cache.CacheRuntimeException;
 import org.apache.geode.cache.LoaderHelper;
-
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.geode.cache.support.RepositoryCacheLoaderWriterSupport;
 
@@ -18,8 +16,7 @@ import org.springframework.geode.cache.support.RepositoryCacheLoaderWriterSuppor
  * A {@link CacheLoader} implementation backed by a Spring Data {@link CrudRepository} used to load an entity
  * from an external data source.
  *
- * @author John Blum
- * @see CacheLoader
+ * @author John BlumLoader
  * @see CrudRepository
  * @see org.springframework.geode.cache.support.CacheLoaderSupport
  * @since 1.1.0

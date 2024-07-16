@@ -12,17 +12,14 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
-
 import java.util.Arrays;
-
+import org.apache.geode.cache.RegionService;
+import org.apache.geode.cache.client.ClientCache;
+import org.apache.geode.pdx.PdxInstance;
+import org.apache.geode.pdx.PdxInstanceFactory;
 import org.junit.Test;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
-
-import org.apache.geode.cache.GemFireCache;
-import org.apache.geode.cache.RegionService;
-import org.apache.geode.pdx.PdxInstance;
-import org.apache.geode.pdx.PdxInstanceFactory;
 
 /**
  * Unit Tests for {@link PdxInstanceBuilder}.
@@ -30,7 +27,7 @@ import org.apache.geode.pdx.PdxInstanceFactory;
  * @author John Blum
  * @see org.junit.Test
  * @see org.mockito.Mockito
- * @see org.apache.geode.cache.GemFireCache
+ * @see org.apache.geode.cache.client.ClientCache
  * @see org.apache.geode.cache.RegionService
  * @see org.apache.geode.pdx.PdxInstance
  * @see org.apache.geode.pdx.PdxInstanceFactory
@@ -88,7 +85,7 @@ public class PdxInstanceBuilderUnitTests {
 		}
 		catch (IllegalStateException expected) {
 
-			assertThat(expected).hasMessage("GemFireCache not found");
+			assertThat(expected).hasMessage("ClientCache not found");
 			assertThat(expected).hasNoCause();
 
 			throw expected;
@@ -192,7 +189,7 @@ public class PdxInstanceBuilderUnitTests {
 
 		Object source = new Object();
 
-		GemFireCache mockCache = mock(GemFireCache.class);
+		ClientCache mockCache = mock(ClientCache.class);
 
 		PdxInstance mockPdxInstanceHolder = mock(PdxInstance.class);
 		PdxInstance mockPdxInstanceSource = mock(PdxInstance.class);
@@ -265,7 +262,7 @@ public class PdxInstanceBuilderUnitTests {
 	@Test(expected = IllegalStateException.class)
 	public void fromNonNullSourceObjectWhenCachePdxReadSerializedIsFalse() {
 
-		GemFireCache mockCache = mock(GemFireCache.class);
+		ClientCache mockCache = mock(ClientCache.class);
 
 		doReturn(false).when(mockCache).getPdxReadSerialized();
 
@@ -289,7 +286,7 @@ public class PdxInstanceBuilderUnitTests {
 
 		Object source = new Object();
 
-		GemFireCache mockCache = mock(GemFireCache.class);
+		ClientCache mockCache = mock(ClientCache.class);
 
 		PdxInstance mockPdxInstanceHolder = mock(PdxInstance.class);
 
@@ -333,7 +330,7 @@ public class PdxInstanceBuilderUnitTests {
 
 		Object source = mock(Object.class);
 
-		GemFireCache mockCache = mock(GemFireCache.class);
+		ClientCache mockCache = mock(ClientCache.class);
 
 		PdxInstanceFactory mockPdxInstanceFactory = mock(PdxInstanceFactory.class);
 

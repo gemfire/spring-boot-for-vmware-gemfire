@@ -16,17 +16,12 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
 import java.util.function.Predicate;
-
+import org.apache.geode.cache.CacheWriter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import org.apache.geode.cache.CacheWriter;
-
-import org.springframework.data.gemfire.PeerRegionFactoryBean;
 import org.springframework.data.gemfire.client.ClientRegionFactoryBean;
 import org.springframework.data.repository.CrudRepository;
 
@@ -39,7 +34,7 @@ import org.springframework.data.repository.CrudRepository;
  * @see org.mockito.Mockito
  * @see org.mockito.junit.MockitoJUnitRunner
  * @see org.apache.geode.cache.CacheWriter
- * @see org.springframework.data.gemfire.PeerRegionFactoryBean
+ * @see org.springframework.data.gemfire.client.ClientRegionFactoryBean
  * @see org.springframework.data.gemfire.client.ClientRegionFactoryBean
  * @see org.springframework.data.repository.CrudRepository
  * @see org.springframework.geode.cache.RepositoryCacheWriter
@@ -132,7 +127,7 @@ public class RepositoryCacheWriterRegionConfigurerUnitTests {
 	@SuppressWarnings("unchecked")
 	public void configuresPeerRegionFactoryBeanWithRepositoryCacheWriterWhenPredicateReturnsTrue() {
 
-		PeerRegionFactoryBean<?, ?> peerRegionFactoryBean = mock(PeerRegionFactoryBean.class);
+		ClientRegionFactoryBean<?, ?> peerRegionFactoryBean = mock(ClientRegionFactoryBean.class);
 
 		doAnswer(answer -> {
 
@@ -164,7 +159,7 @@ public class RepositoryCacheWriterRegionConfigurerUnitTests {
 
 		when(this.mockPredicate.test(anyString())).thenReturn(false);
 
-		PeerRegionFactoryBean<?, ?> peerRegionFactoryBean = mock(PeerRegionFactoryBean.class);
+		ClientRegionFactoryBean<?, ?> peerRegionFactoryBean = mock(ClientRegionFactoryBean.class);
 
 		RepositoryCacheWriterRegionConfigurer regionConfigurer =
 			new RepositoryCacheWriterRegionConfigurer(this.mockRepository, this.mockPredicate);

@@ -5,15 +5,12 @@
 package org.springframework.geode.cache;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
 import java.util.Optional;
-
+import org.apache.geode.cache.client.ClientCache;
+import org.apache.geode.cache.client.ClientCacheFactory;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import org.apache.geode.cache.client.ClientCache;
-import org.apache.geode.cache.client.ClientCacheFactory;
 
 /**
  * Integration Tests for {@link SimpleCacheResolver} using an Apache Geode {@link ClientCache}.
@@ -49,11 +46,6 @@ public class SimpleClientCacheResolverIntegrationTests {
 	@Test
 	public void resolveClientCacheReturnsClientCache() {
 		assertThat(SimpleCacheResolver.getInstance().resolveClientCache().orElse(null)).isSameAs(clientCache);
-	}
-
-	@Test
-	public void resolvePeerCacheReturnsEmptyOptional() {
-		assertThat(SimpleCacheResolver.getInstance().resolvePeerCache().orElse(null)).isNull();
 	}
 
 	@Test
