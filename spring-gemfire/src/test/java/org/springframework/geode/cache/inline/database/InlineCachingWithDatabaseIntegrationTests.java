@@ -4,13 +4,12 @@
  */
 package org.springframework.geode.cache.inline.database;
 
+import example.app.crm.model.Customer;
+import example.app.crm.repo.CustomerRepository;
 import java.util.function.Predicate;
-
-import org.junit.runner.RunWith;
-
-import org.apache.geode.cache.GemFireCache;
+import org.apache.geode.cache.client.ClientCache;
 import org.apache.geode.cache.client.ClientRegionShortcut;
-
+import org.junit.runner.RunWith;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.cassandra.CassandraAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.cassandra.CassandraDataAutoConfiguration;
@@ -27,15 +26,12 @@ import org.springframework.geode.cache.inline.AbstractInlineCachingWithExternalD
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import example.app.crm.model.Customer;
-import example.app.crm.repo.CustomerRepository;
-
 /**
  * Spring Boot Integration Tests testing the Inline Caching support using a RDBMS (HSQLDB Database).
  *
  * @author John Blum
  * @see org.junit.Test
- * @see org.apache.geode.cache.GemFireCache
+ * @see org.apache.geode.cache.client.ClientCache
  * @see org.springframework.boot.autoconfigure.SpringBootApplication
  * @see org.springframework.boot.autoconfigure.domain.EntityScan
  * @see org.springframework.boot.test.context.SpringBootTest
@@ -65,7 +61,7 @@ public class InlineCachingWithDatabaseIntegrationTests
 
 		@Bean
 		@DependsOn("Customers")
-		GemfireTemplate customersTemplate(GemFireCache gemfireCache) {
+		GemfireTemplate customersTemplate(ClientCache gemfireCache) {
 			return new GemfireTemplate(gemfireCache.getRegion("/Customers"));
 		}
 

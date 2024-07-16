@@ -20,12 +20,19 @@ dependencies {
 
   implementation("org.springframework.boot:spring-boot-starter-web")
 
-  compileOnly(libs.gemfire.core)
+  implementation(libs.gemfire.core)
+  implementation(libs.gemfire.cq)
 
+  testImplementation(libs.gemfire.testcontainers)
 }
 
-tasks.register("runServer", JavaExec::class.java) {
+tasks.getByName<Test>("test") {
+  val springTestGemfireDockerImage: String by project
+  systemProperty("spring.test.gemfire.docker.image", springTestGemfireDockerImage)
+}
+
+// Before running the application, start a GemFire server with a TemperatureReadings region.
+tasks.register("runSample", JavaExec::class.java) {
   classpath = sourceSets["main"].runtimeClasspath
-  jvmArgs = listOf("-Dspring.profiles.active=server")
-  this.mainClass = "example.app.temp.geode.server.BootGeodeServerApplication"
+  this.mainClass = "example.app.temp.geode.client.BootGeodeClientApplication"
 }

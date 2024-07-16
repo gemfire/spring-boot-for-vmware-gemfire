@@ -8,9 +8,9 @@ import java.util.Arrays;
 import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import org.apache.geode.cache.GemFireCache;
-
+import org.apache.geode.cache.client.ClientCache;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -21,17 +21,13 @@ import org.springframework.core.annotation.Order;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.EnumerablePropertySource;
 import org.springframework.core.env.MutablePropertySources;
-import org.springframework.data.gemfire.CacheFactoryBean;
 import org.springframework.data.gemfire.GemFireProperties;
+import org.springframework.data.gemfire.client.ClientCacheFactoryBean;
 import org.springframework.data.gemfire.config.annotation.ClientCacheConfigurer;
-import org.springframework.data.gemfire.config.annotation.PeerCacheConfigurer;
 import org.springframework.data.gemfire.util.ArrayUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Spring Boot {@link EnableAutoConfiguration auto-configuration} enabling the processing of
@@ -39,7 +35,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author John Blum
  * @see java.util.Properties
- * @see org.apache.geode.cache.GemFireCache
+ * @see org.apache.geode.cache.client.ClientCache
  * @see org.springframework.boot.SpringBootConfiguration
  * @see org.springframework.boot.autoconfigure.EnableAutoConfiguration
  * @see org.springframework.context.annotation.Bean
@@ -48,15 +44,14 @@ import org.slf4j.LoggerFactory;
  * @see org.springframework.core.env.ConfigurableEnvironment
  * @see org.springframework.core.env.EnumerablePropertySource
  * @see org.springframework.core.env.MutablePropertySources
- * @see org.springframework.data.gemfire.CacheFactoryBean
+ * @see org.springframework.data.gemfire.client.ClientCacheFactoryBean
  * @see org.springframework.data.gemfire.GemFireProperties
  * @see org.springframework.data.gemfire.config.annotation.ClientCacheConfigurer
- * @see org.springframework.data.gemfire.config.annotation.PeerCacheConfigurer
  * @see <a href="https://geode.apache.org/docs/guide/112/reference/topics/gemfire_properties.html">Geode Properties</a>
  * @since 1.3.0
  */
 @SpringBootConfiguration
-@ConditionalOnClass({ GemFireCache.class, CacheFactoryBean.class })
+@ConditionalOnClass({ ClientCache.class, ClientCacheFactoryBean.class })
 @AutoConfigureBefore({ ClientCacheAutoConfiguration.class })
 @SuppressWarnings("unused")
 public class EnvironmentSourcedGemFirePropertiesAutoConfiguration {
@@ -72,18 +67,11 @@ public class EnvironmentSourcedGemFirePropertiesAutoConfiguration {
 		return (beanName, bean) -> configureGemFireProperties(environment, bean);
 	}
 
-	@Bean
-	@Order(Ordered.LOWEST_PRECEDENCE)
-	@SuppressWarnings("all")
-	public PeerCacheConfigurer peerCacheGemFirePropertiesConfigurer(ConfigurableEnvironment environment) {
-		return (beanName, bean) -> configureGemFireProperties(environment, bean);
-	}
-
 	protected void configureGemFireProperties(@NonNull ConfigurableEnvironment environment,
-			@NonNull CacheFactoryBean cache) {
+			@NonNull ClientCacheFactoryBean cache) {
 
 		Assert.notNull(environment, "Environment must not be null");
-		Assert.notNull(cache, "CacheFactoryBean must not be null");
+		Assert.notNull(cache, "ClientCacheFactoryBean must not be null");
 
 		MutablePropertySources propertySources = environment.getPropertySources();
 

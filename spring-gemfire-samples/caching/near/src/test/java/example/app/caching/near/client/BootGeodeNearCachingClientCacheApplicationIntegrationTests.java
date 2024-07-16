@@ -21,24 +21,19 @@
 package example.app.caching.near.client;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
-import java.io.IOException;
-
+import com.vmware.gemfire.testcontainers.GemFireCluster;
+import example.app.caching.near.client.model.Person;
+import example.app.caching.near.client.service.YellowPagesService;
 import org.apache.geode.cache.client.ClientCache;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.gemfire.tests.integration.ForkingClientServerIntegrationTestsSupport;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.gemfire.config.annotation.ClientCacheConfigurer;
+import org.springframework.data.gemfire.support.ConnectionEndpoint;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import example.app.caching.near.client.model.Person;
-import example.app.caching.near.client.service.YellowPagesService;
-import example.app.caching.near.server.BootGeodeNearCachingCacheServerApplication;
 
 /**
  * Integration Tests for the Spring Boot, {@link ClientCache} application example for {@literal Near Caching}.
@@ -51,29 +46,35 @@ import example.app.caching.near.server.BootGeodeNearCachingCacheServerApplicatio
  * @see org.springframework.test.context.junit4.SpringRunner
  * @see example.app.caching.near.client.model.Person
  * @see example.app.caching.near.client.service.YellowPagesService
- * @see example.app.caching.near.server.BootGeodeNearCachingCacheServerApplication
  * @since 1.1.0
  */
-@ActiveProfiles("client")
 @RunWith(SpringRunner.class)
 @SpringBootTest(
 	properties = { "spring.boot.data.gemfire.security.ssl.environment.post-processor.enabled=false" },
 	webEnvironment = SpringBootTest.WebEnvironment.MOCK
 )
 @SuppressWarnings("unused")
-public class BootGeodeNearCachingClientCacheApplicationIntegrationTests
-		extends ForkingClientServerIntegrationTestsSupport {
+public class BootGeodeNearCachingClientCacheApplicationIntegrationTests {
+
+	private static GemFireCluster gemFireCluster;
 
 	@BeforeClass
-	public static void startGemFireServer() throws IOException {
+	public static void runGemFireServer() {
+		String dockerImage = System.getProperty("spring.test.gemfire.docker.image");
+		gemFireCluster = new GemFireCluster(dockerImage,1,1)
+				.withGfsh(false, "create region --name=YellowPages --type=REPLICATE");
+		gemFireCluster.acceptLicense().start();
 
-		startGemFireServer(BootGeodeNearCachingCacheServerApplication.class,
-			"-Dspring.boot.data.gemfire.security.ssl.environment.post-processor.enabled=false",
-						"-Dspring.profiles.active=server");
+		System.setProperty("spring.data.gemfire.pool.locators", "localhost[" + gemFireCluster.getLocatorPort() + "]");
 	}
 
 	@Autowired
 	private YellowPagesService yellowPagesService;
+
+	@Bean
+	ClientCacheConfigurer clientCacheConfigurer() {
+		return (beanName, bean) -> bean.addLocators(new ConnectionEndpoint("localhost", gemFireCluster.getLocatorPort()));
+  }
 
 	@Test
 	public void cachingIsInEffect() {

@@ -6,22 +6,18 @@ package org.springframework.geode.config.annotation;
 
 import static org.springframework.geode.config.annotation.LocatorsConfiguration.DEFAULT_LOCATORS;
 import static org.springframework.geode.config.annotation.LocatorsConfiguration.DEFAULT_REMOTE_LOCATORS;
-
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import org.apache.geode.cache.Cache;
-
 import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.AliasFor;
 
 /**
  * The {@link UseLocators} annotation configures the {@literal locators} and/or {@literal remote-locators} Apache Geode
- * properties used by a {@link Cache peer Cache member} to join a cluster of servers when using the P2P topology
+ * properties used by a peer Cache member to join a cluster of servers when using the P2P topology
  * as well as when configuring the multi-site, WAN topology.
  *
  * @author John Blum
@@ -29,7 +25,6 @@ import org.springframework.core.annotation.AliasFor;
  * @see Inherited
  * @see Retention
  * @see Target
- * @see Cache
  * @see Import
  * @see AliasFor
  * @see MemberNameConfiguration

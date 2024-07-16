@@ -5,19 +5,17 @@
 package org.springframework.geode.config.annotation;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
+import example.app.crm.model.Customer;
+import example.app.crm.service.CustomerService;
 import jakarta.annotation.Resource;
-
+import org.apache.geode.cache.DataPolicy;
+import org.apache.geode.cache.Region;
+import org.apache.geode.cache.client.ClientCache;
+import org.apache.geode.cache.client.ClientRegionShortcut;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import org.apache.geode.cache.DataPolicy;
-import org.apache.geode.cache.GemFireCache;
-import org.apache.geode.cache.Region;
-import org.apache.geode.cache.client.ClientRegionShortcut;
-
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.gemfire.client.ClientRegionFactoryBean;
@@ -26,9 +24,6 @@ import org.springframework.data.gemfire.config.annotation.EnableCachingDefinedRe
 import org.springframework.data.gemfire.config.annotation.EnableEntityDefinedRegions;
 import org.springframework.data.gemfire.tests.integration.IntegrationTestsSupport;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import example.app.crm.model.Customer;
-import example.app.crm.service.CustomerService;
 
 /**
  * Integration Tests asserting the functionality and behavior of {@link EnableClusterAware}
@@ -123,7 +118,7 @@ public class ClusterNotAvailableConfigurationIntegrationTests extends Integratio
 	static class GeodeClientApplication {
 
 		@Bean("Example")
-		ClientRegionFactoryBean<Object, Object> exampleRegion(GemFireCache cache) {
+		ClientRegionFactoryBean<Object, Object> exampleRegion(ClientCache cache) {
 
 			ClientRegionFactoryBean<Object, Object> exampleRegion = new ClientRegionFactoryBean<>();
 

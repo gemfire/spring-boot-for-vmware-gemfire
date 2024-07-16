@@ -23,7 +23,7 @@ package example.app.crm.support;
 import java.util.Arrays;
 import java.util.Optional;
 
-import org.apache.geode.cache.GemFireCache;
+import org.apache.geode.cache.client.ClientCache;
 import org.apache.geode.distributed.internal.InternalDistributedSystem;
 import org.apache.geode.internal.net.SSLConfig;
 import org.apache.geode.internal.net.SSLConfigurationFactory;
@@ -67,9 +67,9 @@ public class GemFireDebugConfiguration {
 			public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
 
 				Optional.ofNullable(bean)
-					.filter(GemFireCache.class::isInstance)
-					.map(GemFireCache.class::cast)
-					.map(GemFireCache::getDistributedSystem)
+					.filter(ClientCache.class::isInstance)
+					.map(ClientCache.class::cast)
+					.map(ClientCache::getDistributedSystem)
 					.filter(InternalDistributedSystem.class::isInstance)
 					.map(InternalDistributedSystem.class::cast)
 					.map(InternalDistributedSystem::getConfig)

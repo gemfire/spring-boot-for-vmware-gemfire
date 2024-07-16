@@ -5,16 +5,12 @@
 package org.springframework.geode.boot.autoconfigure.configuration;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
+import org.apache.geode.cache.RegionShortcut;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import org.apache.geode.cache.RegionShortcut;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.gemfire.config.annotation.EnableMemcachedServer;
 import org.springframework.data.gemfire.config.annotation.EnableSsl;
 import org.springframework.data.gemfire.server.SubscriptionEvictionPolicy;
 import org.springframework.data.gemfire.tests.integration.IntegrationTestsSupport;
@@ -355,8 +351,8 @@ public class GemFirePropertiesIntegrationTests extends IntegrationTestsSupport {
 		PeerSecurityProperties peerSecurityProperties = this.gemfireProperties.getSecurity().getPeer();
 
 		assertThat(peerSecurityProperties).isNotNull();
-		assertThat(peerSecurityProperties.getAuthenticationInitializer()).isEqualTo("TestPeerAuthenticationInitializer");
-		assertThat(peerSecurityProperties.getAuthenticator()).isEqualTo("TestPeerAuthenticator");
+		assertThat(peerSecurityProperties.getAuthenticationInitializer()).isEqualTo("TestAuthenticationInitializer");
+		assertThat(peerSecurityProperties.getAuthenticator()).isEqualTo("TestAuthenticator");
 	}
 
 	@Test
@@ -457,17 +453,6 @@ public class GemFirePropertiesIntegrationTests extends IntegrationTestsSupport {
 
 		assertThat(developerRestApiProperties).isNotNull();
 		assertThat(developerRestApiProperties.isStart()).isTrue();
-	}
-
-	@Test
-	public void serviceMemcachedConfigurationIsCorrect() {
-
-		ServiceProperties.MemcachedServerProperties memcachedProperties =
-			this.gemfireProperties.getService().getMemcached();
-
-		assertThat(memcachedProperties).isNotNull();
-		assertThat(memcachedProperties.getPort()).isEqualTo(22422);
-		assertThat(memcachedProperties.getProtocol()).isEqualTo(EnableMemcachedServer.MemcachedProtocol.BINARY);
 	}
 
 	@SpringBootApplication

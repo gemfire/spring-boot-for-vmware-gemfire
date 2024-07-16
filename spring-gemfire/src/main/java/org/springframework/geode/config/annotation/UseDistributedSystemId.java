@@ -10,18 +10,15 @@ import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import org.apache.geode.cache.Cache;
 import org.apache.geode.cache.client.ClientCache;
-
 import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.AliasFor;
 
 /**
  * The {@link UseDistributedSystemId} annotation configures the {@literal distributed-system-id} property
- * of a {@link Cache peer Cache member} in an Apache Geode P2P topology.
+ * of a peer Cache member in an Apache Geode P2P topology.
  *
- * This configuration annotation is only applicable on {@link Cache peer Cache members}
+ * This configuration annotation is only applicable on peer Cache members
  * and has no effect on {@link ClientCache} instances.
  *
  * @author John Blum
@@ -29,7 +26,6 @@ import org.springframework.core.annotation.AliasFor;
  * @see Inherited
  * @see Retention
  * @see Target
- * @see Cache
  * @see Import
  * @see AliasFor
  * @see DistributedSystemIdConfiguration

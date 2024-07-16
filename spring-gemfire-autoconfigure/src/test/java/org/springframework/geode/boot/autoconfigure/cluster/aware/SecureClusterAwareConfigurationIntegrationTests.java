@@ -61,7 +61,7 @@ import com.vmware.gemfire.testcontainers.GemFireCluster;
  * @author John Blum
  * @see java.security.KeyStore
  * @see org.junit.Test
- * @see org.apache.geode.cache.GemFireCache
+ * @see org.apache.geode.cache.client.ClientCache
  * @see org.apache.geode.cache.Region
  * @see org.springframework.boot.ApplicationRunner
  * @see org.springframework.boot.autoconfigure.SpringBootApplication
@@ -94,17 +94,15 @@ public class SecureClusterAwareConfigurationIntegrationTests {
 	private static final String SPRING_DATA_GEMFIRE_CACHE_CLIENT_REGION_SHORTCUT_PROPERTY = "spring.data.gemfire.cache.client.region.shortcut";
 
 	@BeforeClass
-	public static void startGeodeServer() throws IOException {
+	public static void startGeodeServer() {
 		String dockerImage = System.getProperty("spring.test.gemfire.docker.image");
 
 		GemFireCluster gemFireCluster = new GemFireCluster(dockerImage, 1, 1);
 		gemFireCluster.withPdx("example\\.app\\.books\\.model\\..*", true);
 
 		gemFireCluster.withClasspath(GemFireCluster.ALL_GLOB, System.getProperty("TEST_JAR_PATH"));
-		gemFireCluster.withPreStart(GemFireCluster.ALL_GLOB, container -> {
-			container.copyFileToContainer(MountableFile.forClasspathResource("test-trusted.keystore"),
-					"/test-trusted.keystore");
-		});
+		gemFireCluster.withPreStart(GemFireCluster.ALL_GLOB, container -> container.copyFileToContainer(MountableFile.forClasspathResource("test-trusted.keystore"),
+        "/test-trusted.keystore"));
 
 		gemFireCluster.withGemFireProperty(GemFireCluster.ALL_GLOB, "ssl-enabled-components", "web,locator,server")
 				.withGemFireProperty(GemFireCluster.ALL_GLOB, "ssl-keystore", "/test-trusted.keystore")
@@ -117,7 +115,7 @@ public class SecureClusterAwareConfigurationIntegrationTests {
 				.withGemFireProperty(ALL_GLOB, "security-password", "cluster");
 
 		gemFireCluster.acceptLicense().start();
-		gemFireCluster.gfsh(true, "create region --name=Customers --type=REPLICATE");
+		gemFireCluster.gfsh(true, "create region --name=Books --type=REPLICATE");
 
 		System.setProperty("spring.data.gemfire.pool.locators", "localhost[" + gemFireCluster.getLocatorPort() + "]");
 		System.setProperty("spring.data.gemfire.management.http.port",

@@ -47,7 +47,6 @@ val exportedProjects = arrayOf(
   ":spring-gemfire-actuator-autoconfigure",
   ":spring-gemfire-autoconfigure",
   ":spring-gemfire-extensions",
-  ":spring-gemfire-jetty12",
   ":spring-gemfire-starter",
   ":spring-gemfire-starter-logging",
   ":spring-gemfire-starter-session",

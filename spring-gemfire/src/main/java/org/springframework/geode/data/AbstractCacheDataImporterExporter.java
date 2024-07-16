@@ -5,7 +5,6 @@
 package org.springframework.geode.data;
 
 import static org.springframework.data.gemfire.util.RuntimeExceptionFactory.newIllegalStateException;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
@@ -13,9 +12,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
 import org.apache.geode.cache.Region;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.EnvironmentAware;
@@ -27,9 +26,6 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * Abstract base class implementing the {@link CacheDataImporter} and {@link CacheDataExporter} interfaces in order to
  * simplify import/export data access operation implementations in a consistent way.
@@ -40,8 +36,6 @@ import org.slf4j.LoggerFactory;
  * @see ApplicationContext
  * @see ApplicationContextAware
  * @see EnvironmentAware
- * @see Environment
- * @see CacheDataImporterExporter
  * @since 1.3.0
  */
 @SuppressWarnings({ "rawtypes", "unused" })

@@ -11,8 +11,6 @@ import org.apache.geode.cache.CacheLoader;
  * useful in Lambda expressions.
  *
  * @author John Blum
- * @see FunctionalInterface
- * @see CacheLoader
  * @since 1.0.0
  */
 @FunctionalInterface

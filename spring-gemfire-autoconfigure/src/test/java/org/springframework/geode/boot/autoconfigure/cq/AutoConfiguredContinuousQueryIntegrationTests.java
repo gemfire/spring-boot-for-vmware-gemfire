@@ -4,46 +4,29 @@
  */
 package org.springframework.geode.boot.autoconfigure.cq;
 
-import static com.vmware.gemfire.testcontainers.GemFireCluster.ALL_GLOB;
 import static org.assertj.core.api.Assertions.assertThat;
-
-import java.io.IOException;
-
 import com.vmware.gemfire.testcontainers.GemFireCluster;
+import example.geode.query.cq.event.TemperatureReading;
+import example.geode.query.cq.event.TemperatureReadingsContinuousQueriesHandler;
 import jakarta.annotation.Resource;
-
+import java.io.IOException;
+import org.apache.geode.cache.Region;
+import org.apache.geode.cache.client.ClientCache;
+import org.apache.geode.cache.client.ClientRegionShortcut;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import org.apache.geode.cache.CacheLoader;
-import org.apache.geode.cache.CacheLoaderException;
-import org.apache.geode.cache.GemFireCache;
-import org.apache.geode.cache.LoaderHelper;
-import org.apache.geode.cache.Region;
-import org.apache.geode.cache.client.ClientRegionShortcut;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.DependsOn;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.gemfire.GemfireTemplate;
-import org.springframework.data.gemfire.PartitionedRegionFactoryBean;
 import org.springframework.data.gemfire.client.ClientRegionFactoryBean;
-import org.springframework.data.gemfire.config.annotation.CacheServerApplication;
 import org.springframework.data.gemfire.config.annotation.EnablePdx;
-import org.springframework.data.gemfire.tests.integration.ForkingClientServerIntegrationTestsSupport;
-import org.springframework.data.gemfire.tests.integration.config.ClientServerIntegrationTestsConfiguration;
-import org.springframework.geode.boot.autoconfigure.security.TestSecurityManager;
 import org.springframework.geode.config.annotation.ClusterAwareConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import example.geode.query.cq.event.TemperatureReading;
-import example.geode.query.cq.event.TemperatureReadingsContinuousQueriesHandler;
 
 /**
  * Integration Tests testing the auto-configuration of Apache Geode Continuous Query.
@@ -51,7 +34,7 @@ import example.geode.query.cq.event.TemperatureReadingsContinuousQueriesHandler;
  * @author John Blum
  * @see org.junit.Test
  * @see org.apache.geode.cache.CacheLoader
- * @see org.apache.geode.cache.GemFireCache
+ * @see org.apache.geode.cache.client.ClientCache
  * @see org.apache.geode.cache.Region
  * @see org.springframework.boot.autoconfigure.SpringBootApplication
  * @see org.springframework.boot.test.context.SpringBootTest
@@ -59,7 +42,6 @@ import example.geode.query.cq.event.TemperatureReadingsContinuousQueriesHandler;
  * @see org.springframework.context.annotation.Bean
  * @see org.springframework.context.annotation.Import
  * @see org.springframework.data.gemfire.GemfireTemplate
- * @see org.springframework.data.gemfire.config.annotation.CacheServerApplication
  * @see org.springframework.data.gemfire.config.annotation.EnablePdx
  * @see org.springframework.data.gemfire.tests.integration.ForkingClientServerIntegrationTestsSupport
  * @see org.springframework.geode.boot.autoconfigure.ContinuousQueryAutoConfiguration
@@ -129,7 +111,7 @@ public class AutoConfiguredContinuousQueryIntegrationTests {
 	public static class GemFireClientConfiguration {
 
 		@Bean("TemperatureReadings")
-		public ClientRegionFactoryBean<Long, TemperatureReading> temperatureReadingsRegion(GemFireCache gemfireCache) {
+		public ClientRegionFactoryBean<Long, TemperatureReading> temperatureReadingsRegion(ClientCache gemfireCache) {
 
 			ClientRegionFactoryBean<Long, TemperatureReading> temperatureReadingsRegion =
 				new ClientRegionFactoryBean<>();
@@ -142,7 +124,7 @@ public class AutoConfiguredContinuousQueryIntegrationTests {
 
 		@Bean
 		@DependsOn("TemperatureReadings")
-		GemfireTemplate temperatureReadingsTemplate(GemFireCache gemfireCache) {
+		GemfireTemplate temperatureReadingsTemplate(ClientCache gemfireCache) {
 			return new GemfireTemplate(gemfireCache.getRegion("/TemperatureReadings"));
 		}
 

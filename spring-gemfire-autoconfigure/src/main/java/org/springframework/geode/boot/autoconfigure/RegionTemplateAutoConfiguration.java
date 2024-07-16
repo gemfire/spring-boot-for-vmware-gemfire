@@ -12,10 +12,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
-
-import org.apache.geode.cache.GemFireCache;
 import org.apache.geode.cache.Region;
-
+import org.apache.geode.cache.client.ClientCache;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.PropertyValue;
 import org.springframework.beans.factory.BeanFactory;
@@ -58,7 +56,7 @@ import org.springframework.util.StringUtils;
  * in order to perform {@link Region} data access operations.
  *
  * @author John Blum
- * @see org.apache.geode.cache.GemFireCache
+ * @see org.apache.geode.cache.client.ClientCache
  * @see org.apache.geode.cache.Region
  * @see org.springframework.beans.factory.BeanFactory
  * @see org.springframework.beans.factory.config.BeanDefinition
@@ -82,7 +80,7 @@ import org.springframework.util.StringUtils;
  */
 @SpringBootConfiguration
 @AutoConfigureAfter(ClientCacheAutoConfiguration.class)
-@ConditionalOnBean(GemFireCache.class)
+@ConditionalOnBean(ClientCache.class)
 @ConditionalOnClass(GemfireTemplate.class)
 @SuppressWarnings("unused")
 public class RegionTemplateAutoConfiguration extends TypelessAnnotationConfigSupport {
@@ -238,7 +236,7 @@ public class RegionTemplateAutoConfiguration extends TypelessAnnotationConfigSup
 			@Override
 			public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
 
-				if (bean instanceof GemFireCache cache) {
+				if (bean instanceof ClientCache cache) {
 					registerRegionTemplatesForCacheRegions(applicationContext, cache);
 				}
 
@@ -264,14 +262,14 @@ public class RegionTemplateAutoConfiguration extends TypelessAnnotationConfigSup
 
 		if (applicationContext instanceof ConfigurableApplicationContext configurableApplicationContext) {
 
-			GemFireCache cache = configurableApplicationContext.getBean(GemFireCache.class);
+			ClientCache cache = configurableApplicationContext.getBean(ClientCache.class);
 
 			registerRegionTemplatesForCacheRegions(configurableApplicationContext, cache);
 		}
 	}
 
 	private void registerRegionTemplatesForCacheRegions(@NonNull ConfigurableApplicationContext applicationContext,
-			@NonNull GemFireCache cache) {
+			@NonNull ClientCache cache) {
 
 		for (Region<?, ?> region : CollectionUtils.nullSafeSet(cache.rootRegions())) {
 

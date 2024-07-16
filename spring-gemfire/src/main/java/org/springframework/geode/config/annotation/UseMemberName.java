@@ -10,24 +10,20 @@ import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import org.apache.geode.cache.Cache;
 import org.apache.geode.cache.client.ClientCache;
-
 import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.AliasFor;
 
 /**
  * The {@link UseMemberName} annotation configures the {@literal name} of the member in the Apache Geode
  * distributed system, whether the member is a {@link ClientCache client} in the client/server topology
- * or a {@link Cache peer Cache member} in the cluster using the P2P topology.
+ * or a peer Cache member in the cluster using the P2P topology.
  *
  * @author John Blum
  * @see Documented
  * @see Inherited
  * @see Retention
  * @see Target
- * @see Cache
  * @see ClientCache
  * @see Import
  * @see AliasFor

@@ -5,15 +5,11 @@
 package org.springframework.geode.boot.autoconfigure.template;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
 import java.util.stream.Collectors;
-
+import org.apache.geode.cache.Region;
+import org.apache.geode.cache.client.ClientCache;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import org.apache.geode.cache.GemFireCache;
-import org.apache.geode.cache.Region;
-
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -53,7 +49,7 @@ public class NativeDefinedRegionTemplateAutoConfigurationIntegrationTests extend
 	private ApplicationContext applicationContext;
 
 	@Autowired
-	private GemFireCache cache;
+	private ClientCache cache;
 
 	@Autowired
 	private GemfireTemplate exampleTemplate;

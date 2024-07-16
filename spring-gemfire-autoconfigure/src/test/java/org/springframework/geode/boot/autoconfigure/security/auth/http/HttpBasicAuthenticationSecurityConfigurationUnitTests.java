@@ -7,31 +7,20 @@ package org.springframework.geode.boot.autoconfigure.security.auth.http;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
-
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.net.Authenticator;
 import java.net.InetAddress;
 import java.net.PasswordAuthentication;
 import java.util.concurrent.atomic.AtomicReference;
-
 import org.junit.Test;
-
-import org.apache.geode.cache.GemFireCache;
-import org.apache.geode.cache.client.ClientCache;
-
-import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.core.env.Environment;
-import org.springframework.data.gemfire.config.admin.remote.RestHttpGemfireAdminTemplate;
-import org.springframework.data.gemfire.config.annotation.ClusterConfigurationConfiguration;
 import org.springframework.geode.boot.autoconfigure.support.HttpBasicAuthenticationSecurityConfiguration;
 import org.springframework.geode.util.GeodeConstants;
 import org.springframework.http.HttpHeaders;
@@ -98,58 +87,6 @@ public class HttpBasicAuthenticationSecurityConfigurationUnitTests {
 
 		verify(mockEnvironment, times(1))
 			.getProperty(eq("spring.data.gemfire.security.password"), eq("test"));
-	}
-
-	@Test
-	public void schemaObjectInitializerPostProcessorDoesNotProcessNonClusterSchemaObjectInitializerBeans() {
-
-		Object bean = new Object();
-
-		Environment mockEnvironment = mock(Environment.class);
-
-		BeanPostProcessor beanPostProcessor =
-			this.httpSecurityConfiguration.schemaObjectInitializerPostProcessor(mockEnvironment);
-
-		assertThat(beanPostProcessor).isNotNull();
-		assertThat(beanPostProcessor.postProcessBeforeInitialization(bean, "testBean")).isEqualTo(bean);
-		assertThat(beanPostProcessor.postProcessAfterInitialization(bean, "testBean")).isEqualTo(bean);
-
-		verifyNoMoreInteractions(mockEnvironment);
-	}
-
-	@Test
-	public void schemaObjectInitializerPostProcessorProcessesClusterSchemaObjectInitializerBeans() throws Exception {
-
-		Environment mockEnvironment = mock(Environment.class);
-
-		ClientCache mockClientCache = mock(ClientCache.class);
-
-		ClusterConfigurationConfiguration.SchemaObjectContext schemaObjectContextSpy =
-			spy(constructInstance(ClusterConfigurationConfiguration.SchemaObjectContext.class,
-				new Class[] { GemFireCache.class }, mockClientCache));
-
-		assertThat(schemaObjectContextSpy).isNotNull();
-		assertThat(schemaObjectContextSpy.<ClientCache>getGemfireCache()).isEqualTo(mockClientCache);
-
-		doReturn(new RestHttpGemfireAdminTemplate(mockClientCache))
-			.when(schemaObjectContextSpy).getGemfireAdminOperations();
-
-		ClusterConfigurationConfiguration.ClusterSchemaObjectInitializer clusterSchemaObjectInitializer =
-			constructInstance(ClusterConfigurationConfiguration.ClusterSchemaObjectInitializer.class,
-				new Class[] { ClusterConfigurationConfiguration.SchemaObjectContext.class }, schemaObjectContextSpy);
-
-		BeanPostProcessor beanPostProcessor =
-			this.httpSecurityConfiguration.schemaObjectInitializerPostProcessor(mockEnvironment);
-
-		assertThat(beanPostProcessor).isNotNull();
-		assertThat(beanPostProcessor.postProcessBeforeInitialization(clusterSchemaObjectInitializer,
-			"mockClusterSchemaObjectInitializer")).isEqualTo(clusterSchemaObjectInitializer);
-		assertThat(beanPostProcessor.postProcessAfterInitialization(clusterSchemaObjectInitializer,
-			"mockClusterSchemaObjectInitializer")).isEqualTo(clusterSchemaObjectInitializer);
-		assertThat(this.httpSecurityConfiguration.restTemplateReference.get()).isNotNull();
-		assertThat(this.httpSecurityConfiguration.restTemplateReference.get().getInterceptors()).isNotEmpty();
-		assertThat(this.httpSecurityConfiguration.restTemplateReference.get().getInterceptors().stream()
-			.anyMatch(ClientHttpRequestInterceptor.class::isInstance)).isTrue();
 	}
 
 	@Test

@@ -1,11 +1,6 @@
 {
   "groups": [
     {
-      "name": "cache",
-      "type": "org.springframework.geode.boot.autoconfigure.configuration.support.CacheProperties",
-      "description": "General configuration properties for a GemFireCache."
-    },
-    {
       "name": "cache-server",
       "type": "org.springframework.geode.boot.autoconfigure.configuration.support.CacheServerProperties",
       "description": "Configuration properties for a CacheServer."
@@ -59,16 +54,6 @@
       "name": "pdx",
       "type": "org.springframework.geode.boot.autoconfigure.configuration.support.PdxProperties",
       "description": "Configuration properties for PDX serialization."
-    },
-    {
-      "name": "peer-cache",
-      "type": "org.springframework.geode.boot.autoconfigure.configuration.support.PeerCacheProperties",
-      "description": "Configuration properties for a (peer) Cache."
-    },
-    {
-      "name": "peer-security",
-      "type": "org.springframework.geode.boot.autoconfigure.configuration.support.PeerSecurityProperties",
-      "description": "Configuration properties for peer (cluster member) security."
     },
     {
       "name": "pool",
@@ -192,134 +177,6 @@
       "name": "spring.data.gemfire.cache.off-heap.region-names",
       "type": "java.lang.String",
       "description": "Comma-delimited list of Region names for which off-heap will be configured."
-    },
-    {
-      "name": "spring.data.gemfire.cache.peer.enable-auto-reconnect",
-      "type": "java.lang.Boolean",
-      "default": false,
-      "description": "Configure whether member (Locators & Servers) will attempt to reconnect and reinitialize the cache after it has been forced out of the cluster by a network partition event or has otherwise been shunned by other members."
-    },
-    {
-      "name": "spring.data.gemfire.cache.peer.lock-lease",
-      "type": "java.lang.Integer",
-      "default": 120,
-      "description": "Configures the length, in seconds, of distributed lock leases obtained by this cache."
-    },
-    {
-      "name": "spring.data.gemfire.cache.peer.lock-timeout",
-      "type": "java.lang.Integer",
-      "default": 60,
-      "description": "Configures the number of seconds a cache operation will wait to obtain a distributed lock lease."
-    },
-    {
-      "name": "spring.data.gemfire.cache.peer.message-sync-interval",
-      "type": "java.lang.Integer",
-      "default": 1,
-      "description": "Configures the frequency (in seconds) at which a message will be sent by the primary cache-server to all the secondary cache-server nodes to remove the events which have already been dispatched from the queue."
-    },
-    {
-      "name": "spring.data.gemfire.cache.peer.search-timeout",
-      "type": "java.lang.Integer",
-      "default": 300,
-      "description": "Configures the number of seconds a cache get operation can spend searching for a value."
-    },
-    {
-      "name": "spring.data.gemfire.cache.peer.use-cluster-configuration",
-      "type": "java.lang.Boolean",
-      "default": false,
-      "description": "Configures whether this GemFire cache member node would pull it's configuration meta-data from the cluster-based Cluster Configuration Service."
-    },
-    {
-      "name": "spring.data.gemfire.cache.server.auto-startup",
-      "type": "java.lang.Boolean",
-      "default": true,
-      "description": "Configures whether the CacheServer should be started automatically at runtime."
-    },
-    {
-      "name": "spring.data.gemfire.cache.server.bind-address",
-      "type": "java.lang.String",
-      "description": "Configures the IP address or hostname that this cache server will listen on."
-    },
-    {
-      "name": "spring.data.gemfire.cache.server.hostname-for-clients",
-      "type": "java.lang.String",
-      "description": "Configures the IP address or hostname that server locators will tell clients that this cache server is listening on."
-    },
-    {
-      "name": "spring.data.gemfire.cache.server.load-poll-interval",
-      "type": "java.lang.Long",
-      "default": 5000,
-      "description": "Configures the frequency in milliseconds to poll the load probe on this cache server."
-    },
-    {
-      "name": "spring.data.gemfire.cache.server.max-connections",
-      "type": "java.lang.Integer",
-      "default": 800,
-      "description": "Configures the maximum client connections allowed."
-    },
-    {
-      "name": "spring.data.gemfire.cache.server.max-message-count",
-      "type": "java.lang.Integer",
-      "default": 230000,
-      "description": "Configures the maximum number of messages that can be enqueued in a client queue."
-    },
-    {
-      "name": "spring.data.gemfire.cache.server.max-threads",
-      "type": "java.lang.Integer",
-      "description": "Configures the maximum number of threads allowed in this cache server to service client requests."
-    },
-    {
-      "name": "spring.data.gemfire.cache.server.max-time-between-pings",
-      "type": "java.lang.Integer",
-      "default": 60000,
-      "description": "Configures the maximum amount of time between client pings."
-    },
-    {
-      "name": "spring.data.gemfire.cache.server.message-time-to-live",
-      "type": "java.lang.Integer",
-      "default": 180,
-      "description": "Configures the time (in seconds) after which a message in the client queue will expire."
-    },
-    {
-      "name": "spring.data.gemfire.cache.server.port",
-      "type": "java.lang.Integer",
-      "default": 40404,
-      "description": "Configures the port on which this cache server listens for clients."
-    },
-    {
-      "name": "spring.data.gemfire.cache.server.socket-buffer-size",
-      "type": "java.lang.Integer",
-      "default": 32768,
-      "description": "Configures buffer size of the socket connection to this CacheServer."
-    },
-    {
-      "name": "spring.data.gemfire.cache.server.subscription-capacity",
-      "type": "java.lang.Integer",
-      "default": 1,
-      "description": "Configures the capacity of the client queue."
-    },
-    {
-      "name": "spring.data.gemfire.cache.server.subscription-disk-store-name",
-      "type": "java.lang.String",
-      "description": "Configures the name of the DiskStore for client subscription queue overflow."
-    },
-    {
-      "name": "spring.data.gemfire.cache.server.subscription-eviction-policy",
-      "type": "org.springframework.data.gemfire.server.SubscriptionEvictionPolicy",
-      "default": "NONE",
-      "description": "Configures the eviction policy that is executed when capacity of the client subscription queue is reached."
-    },
-    {
-      "name": "spring.data.gemfire.cache.server.tcp-no-delay",
-      "type": "java.lang.Boolean",
-      "default": true,
-      "description": "Configures the outgoing Socket connection tcp-no-delay setting."
-    },
-    {
-      "name": "spring.data.gemfire.cluster.region.type",
-      "type": "org.apache.geode.cache.RegionShortcut",
-      "default": "PARTITION",
-      "description": "Configuration setting used to specify the data management policy used when creating Regions on the servers in the cluster."
     },
     {
       "name": "spring.data.gemfire.disk.store.allow-force-compaction",
@@ -710,29 +567,6 @@
       "name": "spring.data.gemfire.security.manager.class-name",
       "type": "java.lang.String",
       "description": "Configures name of a class implementing org.apache.geode.security.SecurityManager."
-    },
-    {
-      "name": "spring.data.gemfire.security.peer.authentication-initializer",
-      "type": "java.lang.String",
-      "description": "Static creation method returning an AuthInitialize object, which obtains credentials for peers in a cluster.",
-      "deprecation": {
-        "reason": "Used by GemFire/Geode's old Auth framework, which has now been replaced by the GemFire/Geode SecurityManager interface.",
-        "replacement": "spring.data.gemfire.security.manager"
-      }
-    },
-    {
-      "name": "spring.data.gemfire.security.peer.authenticator",
-      "type": "java.lang.String",
-      "description": "Static creation method returning an Authenticator object, which is used by a peer to verify the credentials of a connecting node.",
-      "deprecation": {
-        "reason": "Used by GemFire/Geode's old Auth framework, which has now been replaced by the GemFire/Geode SecurityManager interface.",
-        "replacement": "spring.data.gemfire.security.manager"
-      }
-    },
-    {
-      "name": "spring.data.gemfire.security.peer.verify-member-timeout",
-      "type": "java.lang.String",
-      "description": "Configures the timeout in milliseconds used by a peer to verify membership of an unknown authenticated peer requesting a secure connection."
     },
     {
       "name": "spring.data.gemfire.security.post-processor.class-name",

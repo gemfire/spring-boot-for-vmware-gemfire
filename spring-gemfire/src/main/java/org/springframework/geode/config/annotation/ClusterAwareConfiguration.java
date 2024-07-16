@@ -26,13 +26,13 @@ import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-
 import org.apache.geode.cache.client.ClientCache;
 import org.apache.geode.cache.client.ClientRegionShortcut;
 import org.apache.geode.cache.client.Pool;
 import org.apache.geode.cache.client.PoolManager;
 import org.apache.geode.cache.server.CacheServer;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.ApplicationListener;
@@ -63,9 +63,6 @@ import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.util.StringUtils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * The {@link ClusterAwareConfiguration} class is a Spring {@link Configuration @Configuration} class imported by
  * {@link EnableClusterAware} used to determine whether a Spring Boot application using Apache Geode should run
@@ -79,8 +76,6 @@ import org.slf4j.LoggerFactory;
  * @see ClientCache
  * @see ClientRegionShortcut
  * @see Pool
- * @see PoolManager
- * @see CacheServer
  * @see ApplicationListener
  * @see ConfigurableApplicationContext
  * @see Condition

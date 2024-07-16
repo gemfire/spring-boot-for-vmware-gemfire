@@ -6,24 +6,17 @@ package org.springframework.geode.cache;
 
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
-
-import org.apache.geode.cache.Cache;
-import org.apache.geode.cache.CacheFactory;
-import org.apache.geode.cache.GemFireCache;
-import org.apache.geode.cache.RegionService;
 import org.apache.geode.cache.client.ClientCache;
 import org.apache.geode.cache.client.ClientCacheFactory;
 
-import org.springframework.geode.util.CacheUtils;
-
 /**
  * The {@link SimpleCacheResolver} abstract class contains utility functions for resolving Apache Geode
- * {@link GemFireCache} instances, such as a {@link ClientCache} or a {@literal peer} {@link Cache}.
+ * {@link ClientCache} instances, such as a {@link ClientCache}.
  *
  * @author John Blum
- * @see org.apache.geode.cache.Cache
+ * @see org.apache.geode.cache.client.ClientCache
  * @see org.apache.geode.cache.CacheFactory
- * @see org.apache.geode.cache.GemFireCache
+ * @see org.apache.geode.cache.client.ClientCache
  * @see org.apache.geode.cache.RegionService
  * @see org.apache.geode.cache.client.ClientCache
  * @see org.apache.geode.cache.client.ClientCacheFactory
@@ -53,9 +46,9 @@ public abstract class SimpleCacheResolver {
 	}
 
 	/**
-	 * 	The 1st {@code resolve():Optional<? extends GemFireCache>} method signature avoids the cast
+	 * 	The 1st {@code resolve():Optional<? extends ClientCache>} method signature avoids the cast
 	 * 	  and the @SuppressWarnings("unchecked") annotation, but puts the burden on the caller.
-	 * 	The 2nd {@code resolve():Optional<T extends GemFireCache>} method signature requires a cast
+	 * 	The 2nd {@code resolve():Optional<T extends ClientCache>} method signature requires a cast
 	 * 	  and the @SuppressWarnings("unchecked") annotation, but avoids putting the burden on the caller.
 	 */
 	private static void testCallResolve() {
@@ -63,34 +56,30 @@ public abstract class SimpleCacheResolver {
 	}
 
 	/**
-	 * The resolution algorithm first tries to resolve an {@link Optional} {@link ClientCache} instance
-	 * then a {@literal peer} {@link Cache} instance if a {@link ClientCache} is not present.
+	 * The resolution algorithm first tries to resolve an {@link Optional} {@link ClientCache} instance.
 	 *
-	 * If neither a {@link ClientCache} or {@literal peer} {@link Cache} is available, then {@link Optional#empty()}
+	 * If a {@link ClientCache}, then {@link Optional#empty()}
 	 * is returned.  No {@link Throwable Exception} is thrown.
 	 *
-	 * @param <T> {@link Class subclass} of {@link GemFireCache}.
-	 * @return a {@link ClientCache} or then a {@literal peer} {@link Cache} instance if present.
+	 * @param <T> {@link Class subclass} of {@link ClientCache}.
+	 * @return a {@link ClientCache} instance if present.
 	 * @see org.apache.geode.cache.client.ClientCache
-	 * @see org.apache.geode.cache.Cache
 	 * @see Optional
 	 * @see #resolveClientCache()
-	 * @see #resolvePeerCache()
 	 */
-	//public static Optional<? extends GemFireCache> resolve() {
+	//public static Optional<? extends ClientCache> resolve() {
 	@SuppressWarnings("unchecked")
-	public <T extends GemFireCache> Optional<T> resolve() {
+	public <T extends ClientCache> Optional<T> resolve() {
 
 		Optional<ClientCache> clientCache = resolveClientCache();
 
-		return (Optional<T>) (clientCache.isPresent() ? clientCache : resolvePeerCache());
+		return (Optional<T>) (clientCache.isPresent() ? clientCache: Optional.empty());
 	}
 
 	/**
 	 * Attempts to resolve an {@link Optional} {@link ClientCache} instance.
 	 *
 	 * @return an {@link Optional} {@link ClientCache} instance.
-	 * @see CacheUtils#isClientCache(RegionService)
 	 * @see org.apache.geode.cache.client.ClientCacheFactory#getAnyInstance()
 	 * @see org.apache.geode.cache.client.ClientCache
 	 * @see Optional
@@ -98,8 +87,7 @@ public abstract class SimpleCacheResolver {
 	public Optional<ClientCache> resolveClientCache() {
 
 		try {
-			return Optional.ofNullable(ClientCacheFactory.getAnyInstance())
-				.filter(CacheUtils::isClientCache);
+			return Optional.ofNullable(ClientCacheFactory.getAnyInstance());
 		}
 		catch (Throwable ignore) {
 			return Optional.empty();
@@ -107,38 +95,18 @@ public abstract class SimpleCacheResolver {
 	}
 
 	/**
-	 * Attempts to resolve an {@link Optional} {@link Cache} instance.
+	 * Requires an instance of either a {@link ClientCache}.
 	 *
-	 * @return an {@link Optional} {@link Cache} instance.
-	 * @see CacheUtils#isPeerCache(RegionService)
-	 * @see org.apache.geode.cache.CacheFactory#getAnyInstance()
-	 * @see org.apache.geode.cache.Cache
-	 * @see Optional
-	 */
-	public Optional<Cache> resolvePeerCache() {
-
-		try {
-			return Optional.ofNullable(CacheFactory.getAnyInstance())
-				.filter(CacheUtils::isPeerCache);
-		}
-		catch (Throwable ignore) {
-			return Optional.empty();
-		}
-	}
-
-	/**
-	 * Requires an instance of either a {@link ClientCache} or a {@literal peer} {@link Cache}.
-	 *
-	 * @param <T> {@link Class subclass} of {@link GemFireCache} to resolve.
-	 * @return an instance of either a {@link ClientCache} or a {@literal peer} {@link Cache}.
+	 * @param <T> {@link Class subclass} of {@link ClientCache} to resolve.
+	 * @return an instance of either a {@link ClientCache}.
 	 * @throws IllegalStateException if a cache instance cannot be resolved.
 	 * @see org.apache.geode.cache.client.ClientCache
-	 * @see org.apache.geode.cache.Cache
-	 * @see org.apache.geode.cache.GemFireCache
+	 * @see org.apache.geode.cache.client.ClientCache
+	 * @see org.apache.geode.cache.client.ClientCache
 	 * @see #resolve()
 	 */
-	public <T extends GemFireCache> T require() {
+	public <T extends ClientCache> T require() {
 		return this.<T>resolve()
-			.orElseThrow(() -> new IllegalStateException("GemFireCache not found"));
+			.orElseThrow(() -> new IllegalStateException("ClientCache not found"));
 	}
 }

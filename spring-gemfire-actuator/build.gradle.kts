@@ -31,7 +31,6 @@ dependencies {
 
   compileOnly(libs.gemfire.core)
   compileOnly(libs.gemfire.cq)
-  compileOnly(libs.gemfire.wan)
   compileOnly(libs.gemfire.gfsh)
   compileOnly(libs.gemfire.tcp.server)
   compileOnly(libs.gemfire.deployment.chained.classloader)
@@ -39,7 +38,6 @@ dependencies {
   testImplementation(libs.gemfire.core)
   testImplementation(libs.gemfire.logging)
   testImplementation(libs.gemfire.cq)
-  testImplementation(libs.gemfire.wan)
   testImplementation(libs.gemfire.gfsh)
   testImplementation(libs.gemfire.tcp.server)
   testImplementation(libs.gemfire.deployment.chained.classloader)

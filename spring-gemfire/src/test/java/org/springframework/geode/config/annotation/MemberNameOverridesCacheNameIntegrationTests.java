@@ -5,15 +5,11 @@
 package org.springframework.geode.config.annotation;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
-import org.apache.geode.cache.GemFireCache;
-
+import org.apache.geode.cache.client.ClientCache;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.gemfire.config.annotation.ClientCacheApplication;
-import org.springframework.data.gemfire.config.annotation.PeerCacheApplication;
 import org.springframework.data.gemfire.tests.integration.IntegrationTestsSupport;
 import org.springframework.data.gemfire.tests.mock.annotation.EnableGemFireMockObjects;
 import org.springframework.test.context.ContextConfiguration;
@@ -22,11 +18,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 /**
  * Integration tests for {@link UseMemberName} and {@link MemberNameConfiguration} asserting that {@link UseMemberName}
  * overrides the cache name specified using the {@literal name} attribute of the corresponding caching annotation
- * (e.g. {@link ClientCacheApplication#name()} or {@link PeerCacheApplication#name()}.
+ * (e.g. {@link ClientCacheApplication#name()}.
  *
  * @author John Blum
  * @see org.junit.Test
- * @see org.apache.geode.cache.GemFireCache
+ * @see org.apache.geode.cache.client.ClientCache
  * @see org.springframework.data.gemfire.config.annotation.ClientCacheApplication
  * @see org.springframework.data.gemfire.tests.integration.IntegrationTestsSupport
  * @see org.springframework.data.gemfire.tests.mock.annotation.EnableGemFireMockObjects
@@ -41,7 +37,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class MemberNameOverridesCacheNameIntegrationTests extends IntegrationTestsSupport {
 
 	@Autowired
-	private GemFireCache gemfireCache;
+	private ClientCache gemfireCache;
 
 	@Test
 	public void gemfireNameIsMemberName() {

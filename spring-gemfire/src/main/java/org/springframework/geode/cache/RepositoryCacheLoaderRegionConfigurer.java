@@ -5,11 +5,8 @@
 package org.springframework.geode.cache;
 
 import java.util.function.Predicate;
-
 import org.apache.geode.cache.CacheLoader;
 import org.apache.geode.cache.Region;
-
-import org.springframework.data.gemfire.PeerRegionFactoryBean;
 import org.springframework.data.gemfire.client.ClientRegionFactoryBean;
 import org.springframework.data.gemfire.config.annotation.RegionConfigurer;
 import org.springframework.data.repository.CrudRepository;
@@ -24,10 +21,7 @@ import org.springframework.util.Assert;
  * @author John Blum
  * @param <T> {@link Class type} of the persistent entity.
  * @param <ID> {@link Class type} of the persistent entity identifier (ID).
- * @see Predicate
- * @see CacheLoader
  * @see Region
- * @see PeerRegionFactoryBean
  * @see ClientRegionFactoryBean
  * @see RegionConfigurer
  * @see CrudRepository
@@ -133,15 +127,6 @@ public class RepositoryCacheLoaderRegionConfigurer<T, ID> implements RegionConfi
 	@Override
 	@SuppressWarnings("unchecked")
 	public void configure(String beanName, ClientRegionFactoryBean<?, ?> bean) {
-
-		if (getRegionBeanName().test(beanName)) {
-			bean.setCacheLoader(newRepositoryCacheLoader());
-		}
-	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-	public void configure(String beanName, PeerRegionFactoryBean<?, ?> bean) {
 
 		if (getRegionBeanName().test(beanName)) {
 			bean.setCacheLoader(newRepositoryCacheLoader());

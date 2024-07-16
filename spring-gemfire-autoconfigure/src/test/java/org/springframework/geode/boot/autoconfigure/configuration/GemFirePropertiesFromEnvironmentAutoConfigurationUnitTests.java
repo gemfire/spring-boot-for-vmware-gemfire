@@ -29,10 +29,8 @@ import org.springframework.core.env.EnumerablePropertySource;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertySource;
-import org.springframework.data.gemfire.CacheFactoryBean;
 import org.springframework.data.gemfire.client.ClientCacheFactoryBean;
 import org.springframework.data.gemfire.config.annotation.ClientCacheConfigurer;
-import org.springframework.data.gemfire.config.annotation.PeerCacheConfigurer;
 import org.springframework.data.gemfire.tests.support.MapBuilder;
 import org.springframework.geode.boot.autoconfigure.EnvironmentSourcedGemFirePropertiesAutoConfiguration;
 import org.springframework.lang.NonNull;
@@ -66,7 +64,7 @@ public class GemFirePropertiesFromEnvironmentAutoConfigurationUnitTests {
 		ConfigurableEnvironment mockEnvironment = mock(ConfigurableEnvironment.class);
 
 		doNothing().when(this.configuration)
-			.configureGemFireProperties(any(ConfigurableEnvironment.class), any(CacheFactoryBean.class));
+			.configureGemFireProperties(any(ConfigurableEnvironment.class), any(ClientCacheFactoryBean.class));
 
 		ClientCacheConfigurer clientCacheConfigurer =
 			this.configuration.clientCacheGemFirePropertiesConfigurer(mockEnvironment);
@@ -77,27 +75,6 @@ public class GemFirePropertiesFromEnvironmentAutoConfigurationUnitTests {
 
 		verify(this.configuration, times(1))
 			.configureGemFireProperties(eq(mockEnvironment), eq(mockClientCacheFactoryBean));
-	}
-
-	@Test
-	public void peerCacheGemFirePropertiesConfigurerCallsConfigureGemFireProperties() {
-
-		CacheFactoryBean mockPeerCacheFactoryBean = mock(CacheFactoryBean.class);
-
-		ConfigurableEnvironment mockEnvironment = mock(ConfigurableEnvironment.class);
-
-		doNothing().when(this.configuration)
-			.configureGemFireProperties(any(ConfigurableEnvironment.class), any(CacheFactoryBean.class));
-
-		PeerCacheConfigurer peerCacheConfigurer =
-			this.configuration.peerCacheGemFirePropertiesConfigurer(mockEnvironment);
-
-		assertThat(peerCacheConfigurer).isNotNull();
-
-		peerCacheConfigurer.configure("MockCacheBeanName", mockPeerCacheFactoryBean);
-
-		verify(this.configuration, times(1))
-			.configureGemFireProperties(eq(mockEnvironment), eq(mockPeerCacheFactoryBean));
 	}
 
 	@Test
@@ -121,7 +98,7 @@ public class GemFirePropertiesFromEnvironmentAutoConfigurationUnitTests {
 			.put("", "EMPTY")
 			.build();
 
-		CacheFactoryBean mockCacheFactoryBean = mock(CacheFactoryBean.class);
+		ClientCacheFactoryBean mockCacheFactoryBean = mock(ClientCacheFactoryBean.class);
 
 		ConfigurableEnvironment mockEnvironment = mock(ConfigurableEnvironment.class);
 
@@ -178,8 +155,6 @@ public class GemFirePropertiesFromEnvironmentAutoConfigurationUnitTests {
 
 		verify(mockLogger, times(1))
 			.warn(eq("[gemfire.non-existing-property] is not a valid Apache Geode property"));
-		verify(mockLogger, times(1))
-			.warn(eq("Apache Geode Property [{}] was not set"), eq("mcast-port"));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -190,7 +165,7 @@ public class GemFirePropertiesFromEnvironmentAutoConfigurationUnitTests {
 		}
 		catch (IllegalArgumentException expected) {
 
-			assertThat(expected).hasMessage("CacheFactoryBean must not be null");
+			assertThat(expected).hasMessage("ClientCacheFactoryBean must not be null");
 			assertThat(expected).hasNoCause();
 
 			throw expected;
@@ -201,7 +176,7 @@ public class GemFirePropertiesFromEnvironmentAutoConfigurationUnitTests {
 	public void configureGemFirePropertiesWithNullEnvironment() {
 
 		try {
-			this.configuration.configureGemFireProperties(null, mock(CacheFactoryBean.class));
+			this.configuration.configureGemFireProperties(null, mock(ClientCacheFactoryBean.class));
 		}
 		catch (IllegalArgumentException expected) {
 
@@ -216,7 +191,7 @@ public class GemFirePropertiesFromEnvironmentAutoConfigurationUnitTests {
 
 		@Override
 		protected void configureGemFireProperties(@NonNull ConfigurableEnvironment environment,
-				@NonNull CacheFactoryBean bean) {
+				@NonNull ClientCacheFactoryBean bean) {
 
 			super.configureGemFireProperties(environment, bean);
 		}

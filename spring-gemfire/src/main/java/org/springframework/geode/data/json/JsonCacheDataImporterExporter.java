@@ -5,10 +5,8 @@
 package org.springframework.geode.data.json;
 
 import java.util.Arrays;
-
 import org.apache.geode.cache.Region;
 import org.apache.geode.pdx.PdxInstance;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.data.gemfire.util.ArrayUtils;
@@ -34,9 +32,6 @@ import org.springframework.util.Assert;
  * @author John Blum
  * @see Region
  * @see PdxInstance
- * @see Resource
- * @see CacheDataExporter
- * @see CacheDataImporter
  * @see JsonToPdxArrayConverter
  * @see org.springframework.geode.data.json.converter.ObjectArrayToJsonConverter
  * @see JacksonJsonToPdxConverter

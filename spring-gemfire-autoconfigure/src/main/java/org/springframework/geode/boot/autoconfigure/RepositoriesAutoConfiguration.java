@@ -4,10 +4,7 @@
  */
 package org.springframework.geode.boot.autoconfigure;
 
-import org.apache.geode.cache.Cache;
-import org.apache.geode.cache.GemFireCache;
 import org.apache.geode.cache.client.ClientCache;
-
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -24,7 +21,7 @@ import org.springframework.data.gemfire.repository.support.GemfireRepositoryFact
 /**
  * Spring Boot {@link EnableAutoConfiguration auto-configuration} for Spring Data for Apache Geode (SDG) Repositories.
  *
- * Activates when there is a bean of type {@link Cache} or {@link ClientCache} configured in the Spring context,
+ * Activates when there is a bean of type Cache or {@link ClientCache} configured in the Spring context,
  * the Spring Data Geode {@link GemfireRepository} type is on the classpath, and no other existing
  * {@link GemfireRepository GemfireRepositories} are configured.
  *
@@ -32,8 +29,6 @@ import org.springframework.data.gemfire.repository.support.GemfireRepositoryFact
  * {@link EnableGemfireRepositories} annotation.
  *
  * @author John Blum
- * @see org.apache.geode.cache.Cache
- * @see org.apache.geode.cache.GemFireCache
  * @see org.apache.geode.cache.client.ClientCache
  * @see org.springframework.boot.SpringBootConfiguration
  * @see org.springframework.boot.autoconfigure.EnableAutoConfiguration
@@ -48,7 +43,7 @@ import org.springframework.data.gemfire.repository.support.GemfireRepositoryFact
  */
 @SpringBootConfiguration
 @AutoConfigureAfter(ClientCacheAutoConfiguration.class)
-@ConditionalOnBean(GemFireCache.class)
+@ConditionalOnBean(ClientCache.class)
 @ConditionalOnClass(GemfireRepository.class)
 @ConditionalOnMissingBean({ GemfireRepositoryConfigurationExtension.class, GemfireRepositoryFactoryBean.class })
 @ConditionalOnProperty(prefix = "spring.data.gemfire.repositories", name = "enabled", havingValue = "true",

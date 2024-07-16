@@ -5,42 +5,31 @@
 package example.app.petclinic;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
+import com.vmware.gemfire.testcontainers.GemFireCluster;
+import example.app.petclinic.function.PetServiceFunctionExecutions;
+import example.app.petclinic.model.Pet;
+import example.app.petclinic.repo.PetRepository;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Optional;
 import java.util.Set;
-
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import org.apache.geode.cache.Region;
 import org.apache.geode.cache.execute.Function;
 import org.apache.geode.cache.execute.FunctionContext;
 import org.apache.geode.cache.execute.RegionFunctionContext;
-
 import org.apache.shiro.util.CollectionUtils;
-
+import org.awaitility.Awaitility;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Profile;
-import org.springframework.data.gemfire.config.annotation.CacheServerApplication;
 import org.springframework.data.gemfire.config.annotation.EnableEntityDefinedRegions;
-import org.springframework.data.gemfire.config.annotation.EnablePdx;
-import org.springframework.data.gemfire.config.annotation.PeerCacheApplication;
-import org.springframework.data.gemfire.function.annotation.GemfireFunction;
-import org.springframework.data.gemfire.function.config.EnableGemfireFunctions;
-import org.springframework.data.gemfire.tests.integration.ForkingClientServerIntegrationTestsSupport;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.data.gemfire.function.config.EnableGemfireFunctionExecutions;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import example.app.petclinic.function.PetServiceFunctionExecutions;
-import example.app.petclinic.model.Pet;
-import example.app.petclinic.repo.PetRepository;
+import org.testcontainers.utility.MountableFile;
 
 /**
  * Smoke Tests asserting the proper injection and execution of an Apache Geode {@link Function} using Spring Data
@@ -54,8 +43,6 @@ import example.app.petclinic.repo.PetRepository;
  * @see org.springframework.context.annotation.AnnotationConfigApplicationContext
  * @see org.springframework.context.annotation.Bean
  * @see org.springframework.context.annotation.Profile
- * @see org.springframework.data.gemfire.config.annotation.CacheServerApplication
- * @see org.springframework.data.gemfire.config.annotation.PeerCacheApplication
  * @see org.springframework.data.gemfire.tests.integration.ForkingClientServerIntegrationTestsSupport
  * @see org.springframework.test.context.ActiveProfiles
  * @see org.springframework.test.context.junit4.SpringRunner
@@ -64,16 +51,24 @@ import example.app.petclinic.repo.PetRepository;
  * @see example.app.petclinic.repo.PetRepository
  * @since 1.2.1
  */
-@ActiveProfiles("petclinic-client-function-execution")
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @SuppressWarnings("unused")
-public class PetClinicApplicationSmokeTests extends ForkingClientServerIntegrationTestsSupport {
+public class PetClinicApplicationSmokeTests {
+
+	private static GemFireCluster gemFireCluster;
 
 	@BeforeClass
-	public static void startGeodeServer() throws Exception {
-		startGemFireServer(GeodeServerTestConfiguration.class,
-			"-Dspring.profiles.active=petclinic-server-function-execution");
+	public static void runGemFireServer() {
+		String dockerImage = System.getProperty("spring.test.gemfire.docker.image");
+		gemFireCluster = new GemFireCluster(dockerImage,1,1)
+				.withPreStart(GemFireCluster.ALL_GLOB, container -> container.copyFileToContainer(MountableFile.forHostPath(System.getProperty("TEST_JAR_PATH")), "/testJar.jar"))
+				.withGfsh(false, "deploy --jar=/testJar.jar", "create region --name=Pets --type=REPLICATE")
+				.withClasspath(GemFireCluster.ALL_GLOB, System.getProperty("TEST_JAR_PATH"))
+				.withPdx("example\\.app\\.petclinic\\.model\\.Pet", false);
+		gemFireCluster.acceptLicense().start();
+
+		System.setProperty("spring.data.gemfire.pool.locators", "localhost[" + gemFireCluster.getLocatorPort() + "]");
 	}
 
 	private final Pet castle = Pet.newPet("Castle").as(Pet.Type.CAT);
@@ -103,73 +98,64 @@ public class PetClinicApplicationSmokeTests extends ForkingClientServerIntegrati
 	@Test
 	public void administerPetVaccinationsIsSuccessful() {
 
-		LocalDateTime beforeVaccinations = LocalDateTime.now();
+		LocalDateTime beforeVaccinations = LocalDateTime.now(ZoneOffset.UTC);
 
 		this.petServiceFunctions.administerPetVaccinations();
 
-		LocalDateTime afterVaccinations = LocalDateTime.now();
+		Awaitility.await().untilAsserted(() -> {
+			LocalDateTime afterVaccinations = LocalDateTime.now(ZoneOffset.UTC);
+			this.petRepository.findAll().forEach(pet -> {
+				assertThat(pet.getVaccinationDateTime())
+						.describedAs("Vaccinations [%s] for Pet [%s] was not correct", pet.getVaccinationDateTime(), pet)
+						.isAfterOrEqualTo(beforeVaccinations);
 
-		this.petRepository.findAll().forEach(pet -> {
-
-			assertThat(pet.getVaccinationDateTime())
-				.describedAs("Vaccinations [%s] for Pet [%s] was not correct", pet.getVaccinationDateTime(), pet)
-				.isAfterOrEqualTo(beforeVaccinations);
-
-			assertThat(pet.getVaccinationDateTime()).isBeforeOrEqualTo(afterVaccinations);
+				assertThat(pet.getVaccinationDateTime()).isBeforeOrEqualTo(afterVaccinations);
+			});
 		});
 	}
 
-	@Profile("petclinic-client-function-execution")
 	@EnableEntityDefinedRegions(basePackageClasses = Pet.class)
+	@EnableGemfireFunctionExecutions
 	@SpringBootApplication(scanBasePackageClasses = PetClinicApplicationSmokeTests.class)
 	static class GeodeClientTestConfiguration { }
 
-	@Profile("petclinic-peer-function-execution")
-	@PeerCacheApplication(name = "PetClinicApplicationSmokeTests")
-	@EnableEntityDefinedRegions(basePackageClasses = Pet.class)
-	@SpringBootApplication(scanBasePackageClasses = PetClinicApplicationSmokeTests.class)
-	static class GeodePeerTestConfiguration { }
+	public static class PetServiceFunctions implements Function {
 
-	@Profile("petclinic-server-function-execution")
-	@CacheServerApplication(name = "PetClinicApplicationSmokeTestsServer")
-	@EnableEntityDefinedRegions(basePackageClasses = Pet.class)
-	@EnableGemfireFunctions
-	@EnablePdx
-	static class GeodeServerTestConfiguration {
-
-		public static void main(String[] args) {
-
-			AnnotationConfigApplicationContext applicationContext =
-				new AnnotationConfigApplicationContext(GeodeServerTestConfiguration.class);
-
-			applicationContext.registerShutdownHook();
+		@Override
+		public String getId() {
+			return "AdministerPetVaccinations";
 		}
 
-		@Bean
-		PetServiceFunctions petServiceFunctions() {
-			return new PetServiceFunctions();
-		}
-	}
-
-	public static class PetServiceFunctions {
-
-		@SuppressWarnings("rawtypes")
-		@GemfireFunction(id = "AdministerPetVaccinations", optimizeForWrite = true)
-		public void administerPetVaccinations(FunctionContext functionContext) {
-
+		@Override
+		public void execute(FunctionContext functionContext) {
 			Optional.ofNullable(functionContext)
-				.filter(RegionFunctionContext.class::isInstance)
-				.map(RegionFunctionContext.class::cast)
-				.map(RegionFunctionContext::getDataSet)
-				.map(Region::values)
-				.ifPresent(pets -> pets.forEach(pet -> {
+					.filter(RegionFunctionContext.class::isInstance)
+					.map(RegionFunctionContext.class::cast)
+					.map(RegionFunctionContext::getDataSet)
+					.map(Region::values)
+					.ifPresent(pets -> pets.forEach(pet -> {
 
-					Pet resolvedPet = (Pet) pet;
+						Pet resolvedPet = (Pet) pet;
 
-					resolvedPet.vaccinate();
+						resolvedPet.vaccinate();
 
-					((RegionFunctionContext) functionContext).getDataSet().put(resolvedPet.getName(), resolvedPet);
-				}));
+						((RegionFunctionContext<?>) functionContext).getDataSet().put(resolvedPet.getName(), resolvedPet);
+					}));
+		}
+
+		@Override
+		public boolean hasResult() {
+			return false;
+		}
+
+		@Override
+		public boolean isHA() {
+			return false;
+		}
+
+		@Override
+		public boolean optimizeForWrite() {
+			return true;
 		}
 	}
 }

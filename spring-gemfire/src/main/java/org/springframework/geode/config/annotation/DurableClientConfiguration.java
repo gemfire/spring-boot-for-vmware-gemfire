@@ -7,7 +7,6 @@ package org.springframework.geode.config.annotation;
 
 import java.lang.annotation.Annotation;
 import java.util.Optional;
-
 import org.apache.geode.cache.client.ClientCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +16,6 @@ import org.springframework.context.annotation.ImportAware;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.data.gemfire.config.annotation.ClientCacheConfigurer;
-import org.springframework.data.gemfire.config.annotation.PeerCacheConfigurer;
 import org.springframework.data.gemfire.config.annotation.support.AbstractAnnotationConfigSupport;
 import org.springframework.util.StringUtils;
 
@@ -35,7 +33,6 @@ import org.springframework.util.StringUtils;
  * @see AnnotationAttributes
  * @see AnnotationMetadata
  * @see ClientCacheConfigurer
- * @see PeerCacheConfigurer
  * @see AbstractAnnotationConfigSupport
  * @see EnableDurableClient
  * @since 1.0.0
@@ -129,20 +126,6 @@ public class DurableClientConfiguration extends AbstractAnnotationConfigSupport 
 			clientCacheFactoryBean.setDurableClientTimeout(getDurableClientTimeout());
 			clientCacheFactoryBean.setKeepAlive(getKeepAlive());
 			clientCacheFactoryBean.setReadyForEvents(getReadyForEvents());
-		});
-	}
-
-	@Bean
-	PeerCacheConfigurer peerCacheDurableClientConfigurer() {
-
-		return (beanName, cacheFactoryBean) -> getDurableClientId().ifPresent(durableClientId -> {
-
-			Logger logger = getLogger();
-
-			if (logger.isWarnEnabled()) {
-				logger.warn("Durable Client ID [{}] was set on a peer Cache instance, which will not have any effect",
-					durableClientId);
-			}
 		});
 	}
 }

@@ -7,7 +7,6 @@ package org.springframework.geode.config.annotation;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.gemfire.config.annotation.ClientCacheConfigurer;
-import org.springframework.data.gemfire.config.annotation.PeerCacheConfigurer;
 
 /**
  * Spring {@link Configuration} class used to configure a {@link org.apache.geode.security.SecurityManager},
@@ -17,20 +16,14 @@ import org.springframework.data.gemfire.config.annotation.PeerCacheConfigurer;
  * @see Bean
  * @see Configuration
  * @see ClientCacheConfigurer
- * @see PeerCacheConfigurer
  * @since 1.1.0
  */
 @Configuration
 @SuppressWarnings("unused")
 public class SecurityManagerConfiguration {
 
-	@Bean
-	ClientCacheConfigurer clientSecurityManagerConfigurer(org.apache.geode.security.SecurityManager securityManager) {
-		return (beanName, clientCacheFactoryBean) -> clientCacheFactoryBean.setSecurityManager(securityManager);
-	}
-
-	@Bean
-	PeerCacheConfigurer peerSecurityManagerConfigurer(org.apache.geode.security.SecurityManager securityManager) {
-		return (beanName, cacheFactoryBean) -> cacheFactoryBean.setSecurityManager(securityManager);
-	}
+//	@Bean
+//	ClientCacheConfigurer clientSecurityManagerConfigurer(org.apache.geode.security.SecurityManager securityManager) {
+//		return (beanName, clientCacheFactoryBean) -> clientCacheFactoryBean.setSecurityManager(securityManager);
+//	}
 }

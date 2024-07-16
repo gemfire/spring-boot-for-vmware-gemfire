@@ -4,10 +4,8 @@
  */
 package org.springframework.geode.boot.autoconfigure;
 
-import org.apache.geode.cache.GemFireCache;
 import org.apache.geode.cache.client.ClientCache;
 import org.apache.geode.distributed.Locator;
-
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -20,7 +18,6 @@ import org.springframework.data.gemfire.config.annotation.ClientCacheApplication
  * instance constructed, configured and initialized with Spring Data for Apache Geode.
  *
  * @author John Blum
- * @see org.apache.geode.cache.GemFireCache
  * @see org.apache.geode.cache.client.ClientCache
  * @see org.apache.geode.distributed.Locator
  * @see org.springframework.boot.SpringBootConfiguration
@@ -31,7 +28,7 @@ import org.springframework.data.gemfire.config.annotation.ClientCacheApplication
  */
 @SpringBootConfiguration
 @ConditionalOnClass({ ClientCacheFactoryBean.class, ClientCache.class })
-@ConditionalOnMissingBean({ GemFireCache.class, Locator.class })
+@ConditionalOnMissingBean({ ClientCache.class, Locator.class })
 @ClientCacheApplication
 public class ClientCacheAutoConfiguration {
 

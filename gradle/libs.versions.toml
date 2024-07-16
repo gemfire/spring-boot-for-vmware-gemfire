@@ -30,8 +30,6 @@ gemfire-gfsh = { module = "com.vmware.gemfire:gemfire-gfsh", version.ref = "gemf
 gemfire-web = { module = "com.vmware.gemfire:gemfire-web", version.ref = "gemfireVersion" }
 gemfire-logging = { module = "com.vmware.gemfire:gemfire-logging", version.ref = "gemfireVersion" }
 gemfire-cq = { module = "com.vmware.gemfire:gemfire-cq", version.ref = "gemfireVersion" }
-gemfire-wan = { module = "com.vmware.gemfire:gemfire-wan", version.ref = "gemfireVersion" }
-gemfire-membership = { module = "com.vmware.gemfire:gemfire-membership", version.ref = "gemfireVersion" }
 gemfire-tcp-server = { module = "com.vmware.gemfire:gemfire-tcp-server", version.ref = "gemfireVersion" }
 gemfire-serialization = { module = "com.vmware.gemfire:gemfire-serialization", version.ref = "gemfireVersion" }
 gemfire-deployment-chained-classloader = { module = "com.vmware.gemfire:gemfire-deployment-chained-classloader", version.ref = "gemfireVersion" }
