@@ -5,16 +5,12 @@
 package org.springframework.geode.boot.autoconfigure.configuration;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
+import org.apache.geode.cache.RegionShortcut;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import org.apache.geode.cache.RegionShortcut;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.gemfire.config.annotation.EnableMemcachedServer;
 import org.springframework.data.gemfire.config.annotation.EnableSsl;
 import org.springframework.data.gemfire.server.SubscriptionEvictionPolicy;
 import org.springframework.data.gemfire.tests.integration.IntegrationTestsSupport;
@@ -34,7 +30,6 @@ import org.springframework.geode.boot.autoconfigure.configuration.support.PdxPro
 import org.springframework.geode.boot.autoconfigure.configuration.support.PeerCacheProperties;
 import org.springframework.geode.boot.autoconfigure.configuration.support.PeerSecurityProperties;
 import org.springframework.geode.boot.autoconfigure.configuration.support.PoolProperties;
-import org.springframework.geode.boot.autoconfigure.configuration.support.SecurityProperties;
 import org.springframework.geode.boot.autoconfigure.configuration.support.ServiceProperties;
 import org.springframework.geode.boot.autoconfigure.configuration.support.SslProperties;
 import org.springframework.test.context.ActiveProfiles;
@@ -306,134 +301,6 @@ public class GemFirePropertiesIntegrationTests extends IntegrationTestsSupport {
 	}
 
 	@Test
-	public void securityConfigurationIsCorrect() {
-
-		SecurityProperties securityProperties = this.gemfireProperties.getSecurity();
-
-		assertThat(securityProperties).isNotNull();
-		assertThat(securityProperties.getUsername()).isEqualTo("TestUser");
-		assertThat(securityProperties.getPassword()).isEqualTo("TestPassword");
-		assertThat(securityProperties.getPropertiesFile()).isEqualTo("/path/to/security.properties");
-	}
-
-	@Test
-	public void securityClientConfigurationIsCorrect() {
-
-		ClientSecurityProperties clientSecurityProperties = this.gemfireProperties.getSecurity().getClient();
-
-		assertThat(clientSecurityProperties).isNotNull();
-		assertThat(clientSecurityProperties.getAccessor()).isEqualTo("TestClientAccessor");
-		assertThat(clientSecurityProperties.getAccessorPostProcessor()).isEqualTo("TestClientAccessorPostProcessor");
-		assertThat(clientSecurityProperties.getAuthenticationInitializer()).isEqualTo("TestClientAuthenticationInitializer");
-		assertThat(clientSecurityProperties.getAuthenticator()).isEqualTo("TestClientAuthenticator");
-		assertThat(clientSecurityProperties.getDiffieHellmanAlgorithm()).isEqualTo("RSA");
-	}
-
-	@Test
-	public void securityLogConfigurationIsCorrect() {
-
-		SecurityProperties.SecurityLogProperties securityLogProperties = this.gemfireProperties.getSecurity().getLog();
-
-		assertThat(securityLogProperties).isNotNull();
-		assertThat(securityLogProperties.getFile()).isEqualTo("/path/to/security.log");
-		assertThat(securityLogProperties.getLevel()).isEqualTo("info");
-	}
-
-	@Test
-	public void securityManagerConfigurationIsCorrect() {
-
-		SecurityProperties.SecurityManagerProperties securityManagerProperties =
-			this.gemfireProperties.getSecurity().getManager();
-
-		assertThat(securityManagerProperties).isNotNull();
-		assertThat(securityManagerProperties.getClassName()).isEqualTo("example.app.security.manager.TestSecurityManager");
-	}
-
-	@Test
-	public void securityPeerConfigurationIsCorrect() {
-
-		PeerSecurityProperties peerSecurityProperties = this.gemfireProperties.getSecurity().getPeer();
-
-		assertThat(peerSecurityProperties).isNotNull();
-		assertThat(peerSecurityProperties.getAuthenticationInitializer()).isEqualTo("TestPeerAuthenticationInitializer");
-		assertThat(peerSecurityProperties.getAuthenticator()).isEqualTo("TestPeerAuthenticator");
-	}
-
-	@Test
-	public void securityPostProcessorConfigurationIsCorrect() {
-
-		SecurityProperties.SecurityPostProcessorProperties securityPostProcessorProperties =
-			this.gemfireProperties.getSecurity().getPostProcessor();
-
-		assertThat(securityPostProcessorProperties).isNotNull();
-		assertThat(securityPostProcessorProperties.getClassName())
-			.isEqualTo("example.app.security.processor.TestSecurityPostProcessor");
-	}
-
-	@Test
-	public void securityShiroConfigurationIsCorrect() {
-
-		SecurityProperties.ApacheShiroProperties shiroProperties = this.gemfireProperties.getSecurity().getShiro();
-
-		assertThat(shiroProperties).isNotNull();
-		assertThat(shiroProperties.getIniResourcePath()).isEqualTo("/path/to/shiro.ini");
-	}
-
-	@Test
-	public void securitySslConfigurationIsCorrect() {
-
-		SslProperties sslProperties = this.gemfireProperties.getSecurity().getSsl();
-
-		assertThat(sslProperties).isNotNull();
-		assertThat(sslProperties.getCiphers()).containsExactly("AES", "DES");
-		assertThat(sslProperties.getComponents())
-			.containsExactly(EnableSsl.Component.GATEWAY, EnableSsl.Component.LOCATOR, EnableSsl.Component.SERVER);
-		assertThat(sslProperties.getKeystore()).isEqualTo("/path/to/keystore.jks");
-		assertThat(sslProperties.getProtocols()).containsExactly("any");
-		assertThat(sslProperties.getTruststore()).isEqualTo("/path/to/truststore.jks");
-	}
-
-	@Test
-	public void securitySslCertificateConfigurationIsCorrect() {
-
-		SslProperties.SslCertificateProperties certificateProperties =
-			this.gemfireProperties.getSecurity().getSsl().getCertificate();
-
-		assertThat(certificateProperties).isNotNull();
-		assertThat(certificateProperties.getAlias()).isNotNull();
-		assertThat(certificateProperties.getAlias().getAll()).isEqualTo("Master");
-		assertThat(certificateProperties.getAlias().getCluster()).isEqualTo("Custard");
-		assertThat(certificateProperties.getAlias().getDefaultAlias()).isEqualTo("RogueOne");
-		assertThat(certificateProperties.getAlias().getGateway()).isEqualTo("WAN");
-		assertThat(certificateProperties.getAlias().getJmx()).isEqualTo("Manage");
-		assertThat(certificateProperties.getAlias().getLocator()).isEqualTo("Local");
-		assertThat(certificateProperties.getAlias().getServer()).isEqualTo("Servant");
-		assertThat(certificateProperties.getAlias().getWeb()).isEqualTo("WWW");
-	}
-
-	@Test
-	public void securitySslKeystoreConfigurationIsCorrect() {
-
-		SslProperties.KeyStoreProperties keystoreProperties =
-			this.gemfireProperties.getSecurity().getSsl().getKeystoreConfig();
-
-		assertThat(keystoreProperties).isNotNull();
-		assertThat(keystoreProperties.getPassword()).isEqualTo("keypass");
-		assertThat(keystoreProperties.getType()).isEqualTo("JKS");
-	}
-
-	@Test
-	public void securitySslTruststoreConfigurationIsCorrect() {
-
-		SslProperties.KeyStoreProperties truststoreProperties =
-			this.gemfireProperties.getSecurity().getSsl().getTruststoreConfig();
-
-		assertThat(truststoreProperties).isNotNull();
-		assertThat(truststoreProperties.getPassword()).isEqualTo("storepass");
-		assertThat(truststoreProperties.getType()).isEqualTo("PKS11");
-	}
-
-	@Test
 	public void serviceConfigurationIsNotNull() {
 		assertThat(this.gemfireProperties.getService()).isNotNull();
 	}
@@ -457,17 +324,6 @@ public class GemFirePropertiesIntegrationTests extends IntegrationTestsSupport {
 
 		assertThat(developerRestApiProperties).isNotNull();
 		assertThat(developerRestApiProperties.isStart()).isTrue();
-	}
-
-	@Test
-	public void serviceMemcachedConfigurationIsCorrect() {
-
-		ServiceProperties.MemcachedServerProperties memcachedProperties =
-			this.gemfireProperties.getService().getMemcached();
-
-		assertThat(memcachedProperties).isNotNull();
-		assertThat(memcachedProperties.getPort()).isEqualTo(22422);
-		assertThat(memcachedProperties.getProtocol()).isEqualTo(EnableMemcachedServer.MemcachedProtocol.BINARY);
 	}
 
 	@SpringBootApplication

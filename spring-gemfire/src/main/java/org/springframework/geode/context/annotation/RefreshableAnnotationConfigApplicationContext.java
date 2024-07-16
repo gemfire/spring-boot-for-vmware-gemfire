@@ -10,7 +10,8 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -25,16 +26,12 @@ import org.springframework.context.annotation.AnnotationConfigUtils;
 import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
 import org.springframework.context.annotation.ScopeMetadataResolver;
 import org.springframework.context.support.AbstractRefreshableConfigApplicationContext;
-import org.springframework.data.gemfire.config.annotation.PeerCacheApplication;
 import org.springframework.data.gemfire.util.ArrayUtils;
 import org.springframework.geode.core.util.SpringExtensions;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * A {@literal refreshable} {@link ApplicationContext} capable of loading {@link Class component classes} used for
@@ -45,9 +42,8 @@ import org.slf4j.LoggerFactory;
  * testing and experimental ({@literal R&D}) purposes. It was designed around Apache Geode's forced-disconnect
  * / auto-reconnect functionality, providing support for this behavior inside a Spring context. Specifically, this
  * concern is only applicable when using Spring Boot to configure and bootstrap Apache Geode peer member
- * {@link org.apache.geode.cache.Cache} applications, such as when annotating your Spring Boot application with
- * SDG's {@link PeerCacheApplication} annotation. This {@link ApplicationContext} implementation is not recommended for
- * use in Production Systems/Applications (yet).
+ * {@link org.apache.geode.cache.client.ClientCache} applications.
+ * This {@link ApplicationContext} implementation is not recommended for use in Production Systems/Applications (yet).
  *
  * @author John Blum
  * @see BeanDefinition

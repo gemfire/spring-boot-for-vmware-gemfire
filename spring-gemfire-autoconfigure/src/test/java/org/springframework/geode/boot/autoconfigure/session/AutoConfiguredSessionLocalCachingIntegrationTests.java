@@ -12,9 +12,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpSession;
 
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -27,8 +25,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.gemfire.tests.integration.IntegrationTestsSupport;
-import org.springframework.geode.config.annotation.ClusterAwareConfiguration;
-import org.springframework.geode.config.annotation.EnableClusterAware;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.session.data.gemfire.config.annotation.web.http.GemFireHttpSessionConfiguration;
@@ -44,15 +40,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 /**
- * Integration Tests for local HTTP Session state caching using SBDG with SSDG along with the {@link EnableClusterAware}
- * to appropriately identify and configure a local Apache Geode cache topology.
+ * Integration Tests for local HTTP Session state caching using SBDG with SSDG.
  *
  * @author John Blum
  * @see org.junit.Test
  * @see org.springframework.boot.autoconfigure.SpringBootApplication
  * @see org.springframework.boot.test.context.SpringBootTest
  * @see org.springframework.data.gemfire.tests.integration.IntegrationTestsSupport
- * @see org.springframework.geode.config.annotation.EnableClusterAware
  * @see org.springframework.test.context.ActiveProfiles
  * @see org.springframework.test.context.junit4.SpringRunner
  * @see org.springframework.web.bind.annotation.GetMapping
@@ -69,7 +63,8 @@ import org.springframework.web.client.RestTemplate;
 		AutoConfiguredSessionLocalCachingIntegrationTests.TestWebApplication.class
 	},
 	properties = {
-		"spring.session.data.gemfire.session.region.name=Sessions"
+		"spring.session.data.gemfire.session.region.name=Sessions",
+		"spring.session.data.gemfire.cache.client.region.shortcut=LOCAL"
 	},
 	webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
@@ -79,11 +74,6 @@ public class AutoConfiguredSessionLocalCachingIntegrationTests extends Integrati
 	private static final AtomicReference<String> sessionId = new AtomicReference<>(null);
 
 	private static final String HTTP_HEADER_AUTHENTICATION_INFO = "Authentication-Info";
-
-	@BeforeClass @AfterClass
-	public static void resetClusterAwareCondition() {
-		ClusterAwareConfiguration.ClusterAwareCondition.reset();
-	}
 
 	@LocalServerPort
 	@SuppressWarnings("unused")
@@ -139,7 +129,6 @@ public class AutoConfiguredSessionLocalCachingIntegrationTests extends Integrati
 	}
 
 	@SpringBootApplication(exclude = WebSocketServletAutoConfiguration.class)
-	@EnableClusterAware
 	static class TestConfiguration {
 
 		@Bean

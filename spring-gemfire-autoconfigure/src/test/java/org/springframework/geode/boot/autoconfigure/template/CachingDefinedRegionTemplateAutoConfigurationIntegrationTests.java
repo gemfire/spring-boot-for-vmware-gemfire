@@ -5,20 +5,19 @@
 package org.springframework.geode.boot.autoconfigure.template;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
+import example.app.books.NonBeanType;
+import example.app.books.model.Author;
+import example.app.books.model.Book;
+import example.app.library.service.LibraryService;
+import jakarta.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import jakarta.annotation.Resource;
-
+import org.apache.geode.cache.Region;
+import org.apache.geode.cache.client.ClientCache;
+import org.apache.geode.cache.client.ClientRegionShortcut;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import org.apache.geode.cache.GemFireCache;
-import org.apache.geode.cache.Region;
-import org.apache.geode.cache.client.ClientRegionShortcut;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -31,18 +30,13 @@ import org.springframework.data.gemfire.tests.mock.annotation.EnableGemFireMockO
 import org.springframework.geode.boot.autoconfigure.RegionTemplateAutoConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import example.app.books.NonBeanType;
-import example.app.books.model.Author;
-import example.app.books.model.Book;
-import example.app.library.service.LibraryService;
-
 /**
  * Integration Tests for {@link RegionTemplateAutoConfiguration} using SDG's {@link EnableCachingDefinedRegions}
  * annotation to define {@link Region Regions} and associated Templates.
  *
  * @author John Blum
  * @see org.junit.Test
- * @see org.apache.geode.cache.GemFireCache
+ * @see org.apache.geode.cache.client.ClientCache
  * @see org.apache.geode.cache.Region
  * @see org.springframework.boot.autoconfigure.SpringBootApplication
  * @see org.springframework.boot.test.context.SpringBootTest
@@ -61,7 +55,7 @@ import example.app.library.service.LibraryService;
 public class CachingDefinedRegionTemplateAutoConfigurationIntegrationTests extends IntegrationTestsSupport {
 
 	@Autowired
-	private GemFireCache gemfireCache;
+	private ClientCache gemfireCache;
 
 	@Autowired
 	@Qualifier("booksByAuthorTemplate")

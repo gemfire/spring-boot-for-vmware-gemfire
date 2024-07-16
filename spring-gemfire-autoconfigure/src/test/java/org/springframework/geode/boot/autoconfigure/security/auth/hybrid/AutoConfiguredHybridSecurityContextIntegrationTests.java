@@ -4,22 +4,17 @@
  */
 package org.springframework.geode.boot.autoconfigure.security.auth.hybrid;
 
+import static com.vmware.gemfire.testcontainers.GemFireCluster.ALL_GLOB;
+import com.vmware.gemfire.testcontainers.GemFireCluster;
 import java.io.IOException;
 import java.util.Properties;
-
+import org.apache.geode.cache.client.ClientCache;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
-
-import org.apache.geode.cache.client.ClientCache;
-
-import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.data.gemfire.config.annotation.CacheServerApplication;
-import org.springframework.data.gemfire.config.annotation.EnableLocator;
 import org.springframework.geode.boot.autoconfigure.ClientSecurityAutoConfiguration;
 import org.springframework.geode.boot.autoconfigure.security.auth.AbstractAutoConfiguredSecurityContextIntegrationTests;
 import org.springframework.test.annotation.DirtiesContext;
@@ -41,10 +36,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  * @see org.springframework.boot.builder.SpringApplicationBuilder
  * @see org.springframework.boot.test.context.SpringBootTest
  * @see org.springframework.core.io.ClassPathResource
- * @see org.springframework.data.gemfire.config.annotation.CacheServerApplication
- * @see org.springframework.data.gemfire.config.annotation.EnableLocator
  * @see org.springframework.geode.boot.autoconfigure.ClientSecurityAutoConfiguration
- * @see org.springframework.geode.boot.autoconfigure.PeerSecurityAutoConfiguration
  * @see org.springframework.geode.boot.autoconfigure.security.auth.AbstractAutoConfiguredSecurityContextIntegrationTests
  * @see org.springframework.test.annotation.DirtiesContext
  * @see org.springframework.test.context.junit4.SpringRunner
@@ -55,7 +47,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest(
 	classes = AutoConfiguredHybridSecurityContextIntegrationTests.GemFireClientConfiguration.class,
 	properties = {
-		"spring.data.gemfire.pool.locators=localhost[${test.security.hybrid.gemfire.pool.locators.port:54441}]",
 		"spring.data.gemfire.security.username=phantom",
 		"spring.data.gemfire.security.password=s3cr3t"
 	},
@@ -69,18 +60,31 @@ public class AutoConfiguredHybridSecurityContextIntegrationTests
 
 	private static final Properties vcapApplicationProperties = new Properties();
 
+	private static GemFireCluster gemFireCluster;
+
 	@BeforeClass
-	public static void startGemFireServer() throws IOException {
+	public static void runGemFireServer() throws IOException {
+		String dockerImage = System.getProperty("spring.test.gemfire.docker.image");
+		gemFireCluster = new GemFireCluster(dockerImage,1,1)
+				.withClasspath(GemFireCluster.ALL_GLOB, System.getProperty("TEST_JAR_PATH"))
+				.withGemFireProperty(ALL_GLOB, "security-manager", TestSecurityManager.class.getName())
+				.withGemFireProperty(ALL_GLOB, "security-username", "phantom")
+				.withGemFireProperty(ALL_GLOB, "security-password", "s3cr3t");
 
-		int locatorPort = findAvailablePort();
+		gemFireCluster.acceptLicense().start();
 
-		startGemFireServer(GemFireServerConfiguration.class,
-			String.format("-Dspring.data.gemfire.locator.port=%d", locatorPort),
-			"-Dspring.profiles.active=security-hybrid");
+		gemFireCluster.gfshBuilder()
+				.withCredentials("phantom", "s3cr3t").build()
+				.run("create region --name=Echo --type=REPLICATE",
+				"put --key=Hello --value=Hello --region=Echo",
+				"put --key=Test --value=Test --region=Echo",
+				"put --key=Good-Bye --value=Good-Bye --region=Echo");
 
-		loadVcapApplicationProperties(locatorPort);
+		System.setProperty("spring.data.gemfire.pool.locators", "localhost[" + gemFireCluster.getLocatorPort() + "]");
 
-		setTestSecuritySystemProperties(locatorPort);
+		loadVcapApplicationProperties(gemFireCluster.getLocatorPort());
+
+		setTestSecuritySystemProperties(gemFireCluster.getLocatorPort());
 
 		unsetTestAutoConfiguredPoolServersPortSystemProperty();
 	}
@@ -116,17 +120,14 @@ public class AutoConfiguredHybridSecurityContextIntegrationTests
 	@SpringBootApplication
 	static class GemFireClientConfiguration extends BaseGemFireClientConfiguration { }
 
-	@SpringBootApplication
-	@EnableLocator
-	@CacheServerApplication(name = "AutoConfiguredHybridSecurityContextIntegrationTestsServer")
-	static class GemFireServerConfiguration extends BaseGemFireServerConfiguration {
+	public static class TestSecurityManager extends AbstractTestSecurityManager {
 
-		public static void main(String[] args) {
+		protected String getUsername() {
+			return "phantom";
+		}
 
-			new SpringApplicationBuilder(GemFireServerConfiguration.class)
-				.web(WebApplicationType.NONE)
-				.build()
-				.run(args);
+		protected String getPassword() {
+			return "s3cr3t";
 		}
 	}
 }

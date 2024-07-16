@@ -9,6 +9,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.withSettings;
 
+import com.vmware.gemfire.testcontainers.GemFireCluster;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -32,10 +33,14 @@ import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.fasterxml.jackson.databind.jsontype.DefaultBaseTypeLimitingValidator;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import org.apache.geode.cache.client.ClientCache;
+import org.apache.geode.cache.client.ClientRegionShortcut;
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-import org.apache.geode.cache.Cache;
 import org.apache.geode.cache.DataPolicy;
 import org.apache.geode.cache.Region;
 import org.apache.geode.cache.RegionService;
@@ -52,9 +57,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import org.springframework.data.gemfire.LocalRegionFactoryBean;
+import org.springframework.data.gemfire.client.ClientCacheFactoryBean;
+import org.springframework.data.gemfire.client.ClientRegionFactoryBean;
+import org.springframework.data.gemfire.client.PoolFactoryBean;
+import org.springframework.data.gemfire.config.annotation.ClientCacheApplication;
+import org.springframework.data.gemfire.config.annotation.ClientCacheConfigurer;
 import org.springframework.data.gemfire.config.annotation.EnablePdx;
-import org.springframework.data.gemfire.config.annotation.PeerCacheApplication;
+import org.springframework.data.gemfire.config.annotation.EnablePool;
+import org.springframework.data.gemfire.support.ConnectionEndpoint;
 import org.springframework.data.gemfire.tests.integration.SpringApplicationContextIntegrationTestsSupport;
 import org.springframework.geode.core.io.ResourceWriteException;
 import org.springframework.geode.core.io.ResourceWriter;
@@ -77,7 +87,7 @@ import example.app.pos.model.PurchaseOrder;
  * @see org.junit.Test
  * @see com.fasterxml.jackson.databind.ObjectMapper
  * @see com.fasterxml.jackson.databind.node.ObjectNode
- * @see org.apache.geode.cache.Cache
+ * @see org.apache.geode.cache.client.ClientCache
  * @see org.apache.geode.cache.Region
  * @see org.apache.geode.cache.RegionService
  * @see org.apache.geode.pdx.JSONFormatter
@@ -87,9 +97,7 @@ import example.app.pos.model.PurchaseOrder;
  * @see org.springframework.context.annotation.Bean
  * @see org.springframework.core.io.ClassPathResource
  * @see org.springframework.core.io.Resource
- * @see org.springframework.data.gemfire.LocalRegionFactoryBean
  * @see org.springframework.data.gemfire.config.annotation.EnablePdx
- * @see org.springframework.data.gemfire.config.annotation.PeerCacheApplication
  * @see org.springframework.data.gemfire.tests.integration.SpringApplicationContextIntegrationTestsSupport
  * @see org.springframework.geode.pdx.PdxInstanceBuilder
  * @since 1.3.0
@@ -108,6 +116,16 @@ public class JsonCacheDataImporterExporterIntegrationTests extends SpringApplica
 	private static volatile Supplier<String> resourceLocationSupplier;
 	private static volatile Supplier<StringWriter> resourceWriterSupplier;
 
+	private static GemFireCluster gemFireCluster;
+
+	@BeforeClass
+	public static void runGemFireServer() {
+		String dockerImage = System.getProperty("spring.test.gemfire.docker.image");
+		gemFireCluster = new GemFireCluster(dockerImage,1,1)
+				.withGfsh(false, "create region --name=Example --type=REPLICATE");
+		gemFireCluster.acceptLicense().start();
+	}
+
 	@Before
 	public void initializeSuppliers() {
 
@@ -116,6 +134,11 @@ public class JsonCacheDataImporterExporterIntegrationTests extends SpringApplica
 		importResourceResolverSupplier = () -> null;
 		resourceLocationSupplier = () -> "";
 		resourceWriterSupplier = StringWriter::new;
+	}
+
+	@After
+	public void clearRegion() {
+		gemFireCluster.gfsh(false, "destroy region --name=Example", "create region --name=Example --type=Replicate");
 	}
 
 	@Override
@@ -523,13 +546,13 @@ public class JsonCacheDataImporterExporterIntegrationTests extends SpringApplica
 	@Test
 	public void geodeJsonFormatterToJsonDoesNotGenerateAtTypeJsonObjectPropertyFromPdxInstanceGetClassName() {
 
-		Cache peerCache = newApplicationContext(TestGeodeConfiguration.class).getBean(Cache.class);
+		ClientCache clientCache = newApplicationContext(TestGeodeConfiguration.class).getBean(ClientCache.class);
 
-		assertThat(peerCache).isNotNull();
+		assertThat(clientCache).isNotNull();
 
 		Customer doeDoe = Customer.newCustomer(13L, "Doe Doe");
 
-		PdxInstance pdx = serializeToPdx(peerCache, doeDoe);
+		PdxInstance pdx = serializeToPdx(clientCache, doeDoe);
 
 		assertThat(pdx).isNotNull();
 		assertThat(pdx.getClassName()).isEqualTo(doeDoe.getClass().getName());
@@ -562,7 +585,7 @@ public class JsonCacheDataImporterExporterIntegrationTests extends SpringApplica
 
 		try {
 
-			Cache peerCache = newApplicationContext(TestGeodeConfiguration.class).getBean(Cache.class);
+			ClientCache clientCache = newApplicationContext(TestGeodeConfiguration.class).getBean(ClientCache.class);
 
 			ObjectMapper objectMapper = newObjectMapper();
 
@@ -603,7 +626,7 @@ public class JsonCacheDataImporterExporterIntegrationTests extends SpringApplica
 
 		try {
 
-			Cache peerCache = newApplicationContext(TestGeodeConfiguration.class).getBean(Cache.class);
+			ClientCache clientCache = newApplicationContext(TestGeodeConfiguration.class).getBean(ClientCache.class);
 
 			PurchaseOrder purchaseOrder = new PurchaseOrder()
 				.add(LineItem.newLineItem(Product.newProduct("Test Product")
@@ -642,16 +665,18 @@ public class JsonCacheDataImporterExporterIntegrationTests extends SpringApplica
 		}
 	}
 
-	@PeerCacheApplication
+	@ClientCacheApplication
+//	@EnablePool(name = "gemfirePool")
 	@EnablePdx(readSerialized = true)
 	static class TestGeodeConfiguration {
 
 		@Bean("Example")
-		LocalRegionFactoryBean<Object, Object> exampleRegion(Cache peerCache) {
+		ClientRegionFactoryBean<Object, Object> exampleRegion(ClientCache clientCache) {
 
-			LocalRegionFactoryBean<Object, Object> exampleRegion = new LocalRegionFactoryBean<>();
-
-			exampleRegion.setCache(peerCache);
+			ClientRegionFactoryBean<Object, Object> exampleRegion = new ClientRegionFactoryBean<>();
+			exampleRegion.setShortcut(ClientRegionShortcut.LOCAL);
+			exampleRegion.setPoolName("gemfirePool");
+			exampleRegion.setCache(clientCache);
 
 			return exampleRegion;
 		}
@@ -679,6 +704,13 @@ public class JsonCacheDataImporterExporterIntegrationTests extends SpringApplica
 						json, resource.getDescription()), cause);
 				}
 			};
+		}
+
+		@Bean("gemfirePool")
+		PoolFactoryBean poolFactoryBean() {
+			PoolFactoryBean poolFactoryBean = new PoolFactoryBean();
+			poolFactoryBean.addLocators(new ConnectionEndpoint("localhost", gemFireCluster.getLocatorPort()));
+			return poolFactoryBean;
 		}
 	}
 

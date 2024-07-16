@@ -7,7 +7,7 @@ package org.springframework.geode.boot.actuate.health;
 
 import java.util.Optional;
 
-import org.apache.geode.cache.GemFireCache;
+import org.apache.geode.cache.client.ClientCache;
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.util.Assert;
@@ -17,7 +17,7 @@ import org.springframework.util.Assert;
  * Apache Geode {@link HealthIndicator} objects.
  *
  * @author John Blum
- * @see org.apache.geode.cache.GemFireCache
+ * @see org.apache.geode.cache.client.ClientCache
  * @see org.springframework.boot.actuate.health.AbstractHealthIndicator
  * @see org.springframework.boot.actuate.health.HealthIndicator
  * @since 1.0.0
@@ -27,7 +27,7 @@ public abstract class AbstractGeodeHealthIndicator extends AbstractHealthIndicat
 
 	protected static final String UNKNOWN = "unknown";
 
-	private final GemFireCache gemfireCache;
+	private final ClientCache gemfireCache;
 
 	/**
 	 * Default constructor to construct an uninitialized instance of {@link AbstractGeodeHealthIndicator},
@@ -40,26 +40,26 @@ public abstract class AbstractGeodeHealthIndicator extends AbstractHealthIndicat
 
 	/**
 	 * Constructs an instance of the {@link AbstractGeodeHealthIndicator} initialized with a reference to
-	 * the {@link GemFireCache} instance.
+	 * the {@link ClientCache} instance.
 	 *
-	 * @param gemfireCache reference to the {@link GemFireCache} instance used to collect health information.
-	 * @throws IllegalArgumentException if {@link GemFireCache} is {@literal null}.
-	 * @see org.apache.geode.cache.GemFireCache
+	 * @param gemfireCache reference to the {@link ClientCache} instance used to collect health information.
+	 * @throws IllegalArgumentException if {@link ClientCache} is {@literal null}.
+	 * @see org.apache.geode.cache.client.ClientCache
 	 */
-	public AbstractGeodeHealthIndicator(GemFireCache gemfireCache) {
+	public AbstractGeodeHealthIndicator(ClientCache gemfireCache) {
 
-		Assert.notNull(gemfireCache, "GemFireCache must not be null");
+		Assert.notNull(gemfireCache, "ClientCache must not be null");
 
 		this.gemfireCache = gemfireCache;
 	}
 
 	/**
-	 * Returns a reference to the {@link GemFireCache} instance.
+	 * Returns a reference to the {@link ClientCache} instance.
 	 *
-	 * @return a reference to the {@link GemFireCache} instance.
-	 * @see org.apache.geode.cache.GemFireCache
+	 * @return a reference to the {@link ClientCache} instance.
+	 * @see org.apache.geode.cache.client.ClientCache
 	 */
-	protected Optional<GemFireCache> getGemFireCache() {
+	protected Optional<ClientCache> getGemFireCache() {
 		return Optional.ofNullable(this.gemfireCache);
 	}
 

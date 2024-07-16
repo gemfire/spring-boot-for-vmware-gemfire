@@ -5,20 +5,13 @@
 package org.springframework.geode.boot.autoconfigure.support;
 
 import static org.springframework.geode.core.util.ObjectUtils.ExceptionThrowingOperation;
-
 import java.io.IOException;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
-import java.util.Optional;
 import java.util.function.Function;
-
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.data.gemfire.config.admin.remote.RestHttpGemfireAdminTemplate;
-import org.springframework.data.gemfire.config.annotation.ClusterConfigurationConfiguration;
 import org.springframework.geode.core.util.ObjectUtils;
 import org.springframework.geode.util.GeodeConstants;
 import org.springframework.http.HttpHeaders;
@@ -84,33 +77,6 @@ public class HttpBasicAuthenticationSecurityConfiguration {
 		Authenticator.setDefault(authenticator);
 
 		return authenticator;
-	}
-
-	@Bean
-	public BeanPostProcessor schemaObjectInitializerPostProcessor(Environment environment) {
-
-		return new BeanPostProcessor() {
-
-			@Nullable @Override
-			public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-
-				if (bean instanceof ClusterConfigurationConfiguration.ClusterSchemaObjectInitializer) {
-
-					Optional.of(bean)
-						.map(schemaObjectInitializer -> invokeMethod(schemaObjectInitializer, "getSchemaObjectContext"))
-						.filter(ClusterConfigurationConfiguration.SchemaObjectContext.class::isInstance)
-						.map(schemaObjectContext -> invokeMethod(schemaObjectContext, "getGemfireAdminOperations"))
-						.filter(RestHttpGemfireAdminTemplate.class::isInstance)
-						.map(gemfireAdminTemplate -> invokeMethod(gemfireAdminTemplate, "getRestOperations"))
-						.filter(RestTemplate.class::isInstance)
-						.map(RestTemplate.class::cast)
-						.ifPresent(restTemplate -> registerInterceptor(restTemplate,
-							new SecurityAwareClientHttpRequestInterceptor(environment)));
-				}
-
-				return bean;
-			}
-		};
 	}
 
 	@SuppressWarnings("unchecked")

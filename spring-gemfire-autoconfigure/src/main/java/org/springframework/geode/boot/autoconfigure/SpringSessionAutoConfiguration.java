@@ -5,13 +5,10 @@
 package org.springframework.geode.boot.autoconfigure;
 
 import static org.springframework.data.gemfire.util.CollectionUtils.asSet;
-
 import java.time.Duration;
 import java.util.Properties;
 import java.util.Set;
-
-import org.apache.geode.cache.GemFireCache;
-
+import org.apache.geode.cache.client.ClientCache;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -44,7 +41,7 @@ import org.springframework.util.StringUtils;
  *
  * @author John Blum
  * @see java.util.Properties
- * @see org.apache.geode.cache.GemFireCache
+ * @see org.apache.geode.cache.client.ClientCache
  * @see org.springframework.boot.SpringApplication
  * @see org.springframework.boot.SpringBootConfiguration
  * @see org.springframework.boot.autoconfigure.AutoConfigureAfter
@@ -71,8 +68,8 @@ import org.springframework.util.StringUtils;
 @SpringBootConfiguration
 @AutoConfigureAfter(ClientCacheAutoConfiguration.class)
 @Conditional(SpringSessionAutoConfiguration.SpringSessionStoreTypeCondition.class)
-@ConditionalOnBean(GemFireCache.class)
-@ConditionalOnClass({ GemFireCache.class, GemFireHttpSessionConfiguration.class })
+@ConditionalOnBean(ClientCache.class)
+@ConditionalOnClass({ ClientCache.class, GemFireHttpSessionConfiguration.class })
 @ConditionalOnMissingBean(SessionRepositoryFilter.class)
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @EnableGemFireHttpSession(poolName = "DEFAULT")

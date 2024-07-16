@@ -5,19 +5,18 @@
 package org.springframework.geode.util;
 
 import java.util.Objects;
-
-import org.apache.geode.cache.GemFireCache;
 import org.apache.geode.cache.Region;
+import org.apache.geode.cache.client.ClientCache;
 import org.apache.geode.distributed.internal.InternalDistributedSystem;
 import org.apache.geode.internal.cache.AbstractRegion;
 import org.apache.geode.internal.cache.GemFireCacheImpl;
 
 /**
- * Abstract utility class containing different assertions for Apache Geode objects, such as a {@link GemFireCache}
+ * Abstract utility class containing different assertions for Apache Geode objects, such as a {@link ClientCache}
  * or {@link Region}, and so on.
  *
  * @author John Blum
- * @see org.apache.geode.cache.GemFireCache
+ * @see org.apache.geode.cache.client.ClientCache
  * @see org.apache.geode.cache.Region
  * @since 1.3.0
  */

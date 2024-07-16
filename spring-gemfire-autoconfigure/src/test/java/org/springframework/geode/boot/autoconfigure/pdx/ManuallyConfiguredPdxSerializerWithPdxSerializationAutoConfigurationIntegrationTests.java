@@ -6,13 +6,10 @@ package org.springframework.geode.boot.autoconfigure.pdx;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
-
+import org.apache.geode.cache.client.ClientCache;
+import org.apache.geode.pdx.PdxSerializer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import org.apache.geode.cache.GemFireCache;
-import org.apache.geode.pdx.PdxSerializer;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -33,7 +30,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  * @author John Blum
  * @see org.junit.Test
  * @see org.mockito.Mockito
- * @see org.apache.geode.cache.GemFireCache
+ * @see org.apache.geode.cache.client.ClientCache
  * @see org.apache.geode.pdx.PdxSerializer
  * @see org.springframework.boot.autoconfigure.SpringBootApplication
  * @see org.springframework.boot.test.context.SpringBootTest
@@ -58,7 +55,7 @@ public class ManuallyConfiguredPdxSerializerWithPdxSerializationAutoConfiguratio
 		extends IntegrationTestsSupport {
 
 	@Autowired
-	private GemFireCache cache;
+	private ClientCache cache;
 
 	@Autowired
 	@Qualifier("mockPdxSerializer")

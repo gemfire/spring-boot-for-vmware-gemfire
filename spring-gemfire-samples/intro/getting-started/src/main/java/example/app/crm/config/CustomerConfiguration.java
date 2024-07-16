@@ -22,7 +22,7 @@ package example.app.crm.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.gemfire.config.annotation.EnableEntityDefinedRegions;
-import org.springframework.geode.config.annotation.EnableClusterAware;
+import org.apache.geode.cache.client.ClientRegionShortcut;
 
 import example.app.crm.model.Customer;
 
@@ -38,8 +38,7 @@ import example.app.crm.model.Customer;
  */
 // tag::class[]
 @Configuration
-@EnableClusterAware
-@EnableEntityDefinedRegions(basePackageClasses = Customer.class)
+@EnableEntityDefinedRegions(basePackageClasses = Customer.class, clientRegionShortcut = ClientRegionShortcut.LOCAL)
 public class CustomerConfiguration {
 
 }

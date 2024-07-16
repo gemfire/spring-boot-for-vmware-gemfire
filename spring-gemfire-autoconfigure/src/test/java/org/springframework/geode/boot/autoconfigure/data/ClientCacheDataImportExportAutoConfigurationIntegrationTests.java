@@ -4,9 +4,11 @@
  */
 package org.springframework.geode.boot.autoconfigure.data;
 
-import static com.vmware.gemfire.testcontainers.GemFireCluster.ALL_GLOB;
 import static org.assertj.core.api.Assertions.assertThat;
-
+import com.vmware.gemfire.testcontainers.GemFireCluster;
+import example.app.books.model.Author;
+import example.app.books.model.Book;
+import example.app.books.model.ISBN;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Month;
@@ -15,27 +17,19 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-
-import com.vmware.gemfire.testcontainers.GemFireCluster;
+import org.apache.geode.cache.DataPolicy;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import org.apache.geode.cache.DataPolicy;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.gemfire.GemfireTemplate;
-import org.springframework.data.gemfire.config.annotation.CacheServerApplication;
 import org.springframework.data.gemfire.config.annotation.EnableEntityDefinedRegions;
-import org.springframework.data.gemfire.tests.integration.ForkingClientServerIntegrationTestsSupport;
 import org.springframework.geode.boot.autoconfigure.DataImportExportAutoConfiguration;
-import org.springframework.geode.boot.autoconfigure.security.TestSecurityManager;
 import org.springframework.geode.config.annotation.ClusterAwareConfiguration;
 import org.springframework.geode.config.annotation.EnableClusterAware;
 import org.springframework.geode.core.util.ObjectUtils;
@@ -44,16 +38,12 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import example.app.books.model.Author;
-import example.app.books.model.Book;
-import example.app.books.model.ISBN;
-
 /**
  * Integration Tests for {@link DataImportExportAutoConfiguration}.
  *
  * @author John Blum
  * @see org.junit.Test
- * @see org.apache.geode.cache.GemFireCache
+ * @see org.apache.geode.cache.client.ClientCache
  * @see org.springframework.boot.autoconfigure.SpringBootApplication
  * @see org.springframework.boot.test.context.SpringBootTest
  * @see org.springframework.context.annotation.AnnotationConfigApplicationContext
@@ -86,7 +76,8 @@ public class ClientCacheDataImportExportAutoConfigurationIntegrationTests {
 	public static void startGeodeServer() throws IOException {
 		String dockerImage = System.getProperty("spring.test.gemfire.docker.image");
 
-		GemFireCluster gemFireCluster = new GemFireCluster(dockerImage, 1, 1);
+		GemFireCluster gemFireCluster = new GemFireCluster(dockerImage, 1, 1)
+				.withGfsh(false, "create region --name=Books --type=PARTITION");
 
 		gemFireCluster.acceptLicense().start();
 

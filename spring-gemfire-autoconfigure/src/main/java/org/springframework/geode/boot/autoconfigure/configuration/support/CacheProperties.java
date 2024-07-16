@@ -5,17 +5,14 @@
 package org.springframework.geode.boot.autoconfigure.configuration.support;
 
 import java.util.Properties;
-
-import org.apache.geode.cache.Cache;
 import org.apache.geode.cache.client.ClientCache;
 import org.apache.geode.cache.control.ResourceManager;
 import org.apache.geode.cache.server.CacheServer;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
- * Spring Boot {@link ConfigurationProperties} used to configure Apache Geode peer {@link Cache}, {@link ClientCache}
+ * Spring Boot {@link ConfigurationProperties} used to configure Apache Geode peer Cache, {@link ClientCache}
  * and {@link CacheServer} objects.
  *
  * The configuration {@link Properties} are based on well-known, documented Spring Data for Apache Geode (SDG)
@@ -23,7 +20,6 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
  *
  * @author John Blum
  * @see java.util.Properties
- * @see org.apache.geode.cache.Cache
  * @see org.apache.geode.cache.client.ClientCache
  * @see org.apache.geode.cache.control.ResourceManager
  * @see org.apache.geode.cache.server.CacheServer

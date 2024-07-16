@@ -14,15 +14,11 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
-
 import java.util.Optional;
 import java.util.function.Predicate;
-
-import org.junit.Test;
-
-import org.apache.geode.cache.GemFireCache;
+import org.apache.geode.cache.client.ClientCache;
 import org.apache.geode.pdx.PdxSerializer;
-
+import org.junit.Test;
 import org.springframework.data.gemfire.mapping.MappingPdxSerializer;
 
 /**
@@ -31,7 +27,7 @@ import org.springframework.data.gemfire.mapping.MappingPdxSerializer;
  * @author John Blum
  * @see Test
  * @see org.mockito.Mockito
- * @see GemFireCache
+ * @see ClientCache
  * @see PdxSerializer
  * @see MappingPdxSerializerIncludedTypesRegistrar
  * @since 1.5.0
@@ -129,7 +125,7 @@ public class MappingPdxSerializerIncludedTypesRegistrarUnitTests {
 	@SuppressWarnings("unchecked")
 	public void postProcessGemFireCacheAfterInitializationIsCorrect() {
 
-		GemFireCache mockCache = mock(GemFireCache.class);
+		ClientCache mockCache = mock(ClientCache.class);
 
 		MappingPdxSerializer mockPdxSerializer = mock(MappingPdxSerializer.class);
 
@@ -151,7 +147,7 @@ public class MappingPdxSerializerIncludedTypesRegistrarUnitTests {
 	@Test
 	public void postProcessGemFireCacheAfterInitializationWithNoRegisteredTypes() {
 
-		GemFireCache mockCache = mock(GemFireCache.class);
+		ClientCache mockCache = mock(ClientCache.class);
 
 		MappingPdxSerializer mockPdxSerializer = mock(MappingPdxSerializer.class);
 
@@ -170,7 +166,7 @@ public class MappingPdxSerializerIncludedTypesRegistrarUnitTests {
 	@Test
 	public void postProcessGemFireCacheAfterInitializationWithNoPdxSerializer() {
 
-		GemFireCache mockCache = mock(GemFireCache.class);
+		ClientCache mockCache = mock(ClientCache.class);
 
 		doReturn(null).when(mockCache).getPdxSerializer();
 
@@ -187,7 +183,7 @@ public class MappingPdxSerializerIncludedTypesRegistrarUnitTests {
 	@Test
 	public void postProcessGemFireCacheAfterInitializationWithNonMappingPdxSerializer() {
 
-		GemFireCache mockCache = mock(GemFireCache.class);
+		ClientCache mockCache = mock(ClientCache.class);
 
 		PdxSerializer mockPdxSerializer = mock(PdxSerializer.class);
 

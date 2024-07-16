@@ -25,14 +25,11 @@ dependencies {
 
   compileOnly(libs.gemfire.core)
   compileOnly(libs.gemfire.cq)
-  compileOnly(libs.gemfire.wan)
 
   implementation("com.fasterxml.jackson.core:jackson-databind")
 
   testImplementation(libs.gemfire.core)
   testImplementation(libs.gemfire.cq)
-  testImplementation(libs.gemfire.wan)
-  testImplementation(libs.gemfire.membership)
   testImplementation(libs.gemfire.serialization)
   testImplementation("junit:junit")
   testImplementation("org.assertj:assertj-core")

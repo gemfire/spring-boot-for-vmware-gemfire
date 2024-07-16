@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import org.apache.geode.cache.GemFireCache;
+import org.apache.geode.cache.client.ClientCache;
 
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  * and assert that Apache Geode was not configured as the Session state management provider.
  *
  * @author John Blum
- * @see org.apache.geode.cache.GemFireCache
+ * @see org.apache.geode.cache.client.ClientCache
  * @see org.springframework.boot.autoconfigure.SpringBootApplication
  * @see org.springframework.boot.test.context.SpringBootTest
  * @see org.springframework.context.ApplicationContext
@@ -63,7 +63,7 @@ public class ManuallyConfiguredWithPropertiesSessionCachingIntegrationTests exte
 		assertThat(this.applicationContext.containsBean(sessionsRegionName)).isFalse();
 		assertThat(this.applicationContext.getBeansOfType(SessionRepository.class)).isEmpty();
 
-		GemFireCache gemfireCache = this.applicationContext.getBean(GemFireCache.class);
+		ClientCache gemfireCache = this.applicationContext.getBean(ClientCache.class);
 
 		assertThat(gemfireCache).isNotNull();
 		assertThat(gemfireCache.rootRegions()).isEmpty();

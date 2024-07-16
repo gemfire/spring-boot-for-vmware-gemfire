@@ -8,12 +8,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
-
-import org.apache.geode.cache.GemFireCache;
 import org.apache.geode.cache.RegionService;
+import org.apache.geode.cache.client.ClientCache;
 import org.apache.geode.pdx.PdxInstance;
 import org.apache.geode.pdx.PdxInstanceFactory;
-
 import org.springframework.geode.cache.SimpleCacheResolver;
 
 /**
@@ -21,7 +19,7 @@ import org.springframework.geode.cache.SimpleCacheResolver;
  * used to construct and initialize a {@link PdxInstance} from different sources.
  *
  * @author John Blum
- * @see org.apache.geode.cache.GemFireCache
+ * @see org.apache.geode.cache.client.ClientCache
  * @see org.apache.geode.cache.RegionService
  * @see org.apache.geode.pdx.PdxInstance
  * @see org.apache.geode.pdx.PdxInstanceFactory
@@ -34,14 +32,14 @@ public class PdxInstanceBuilder {
 	/**
 	 * Factory method used to construct a new instance of the {@link PdxInstanceBuilder} class.
 	 *
-	 * This factory method tries to resolve the {@link GemFireCache} instance for the caller
+	 * This factory method tries to resolve the {@link ClientCache} instance for the caller
 	 * by using {@link SimpleCacheResolver}.
 	 *
-	 * Alternatively, callers may provider their own {@link GemFireCache} instance by calling
+	 * Alternatively, callers may provider their own {@link ClientCache} instance by calling
 	 * {@link #create(RegionService)}.
 	 *
 	 * @return a new instance of the {@link PdxInstanceBuilder}.
-	 * @throws IllegalArgumentException if a {@link GemFireCache} instance is not present.
+	 * @throws IllegalArgumentException if a {@link ClientCache} instance is not present.
 	 * @see #create(RegionService)
 	 */
 	public static PdxInstanceBuilder create() {
@@ -56,8 +54,8 @@ public class PdxInstanceBuilder {
 	 * its functions;
 	 * must not be {@literal null}.
 	 * @return an new instance of the {@link PdxInstanceBuilder}.
-	 * @throws IllegalArgumentException if {@link GemFireCache} is {@literal null}.
-	 * @see org.apache.geode.cache.GemFireCache
+	 * @throws IllegalArgumentException if {@link ClientCache} is {@literal null}.
+	 * @see org.apache.geode.cache.client.ClientCache
 	 * @see #PdxInstanceBuilder(RegionService)
 	 */
 	public static PdxInstanceBuilder create(RegionService regionService) {
@@ -146,9 +144,9 @@ public class PdxInstanceBuilder {
 		RegionService regionService = getRegionService();
 
 		Optional.of(regionService)
-			.filter(GemFireCache.class::isInstance)
-			.map(GemFireCache.class::cast)
-			.map(GemFireCache::getPdxReadSerialized)
+			.filter(ClientCache.class::isInstance)
+			.map(ClientCache.class::cast)
+			.map(ClientCache::getPdxReadSerialized)
 			.filter(Boolean.TRUE::equals)
 			.orElseThrow(() -> new IllegalStateException("PDX read-serialized must be set to true"));
 

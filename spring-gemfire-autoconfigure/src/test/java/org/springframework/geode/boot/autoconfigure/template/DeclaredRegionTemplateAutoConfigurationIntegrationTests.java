@@ -5,16 +5,17 @@
 package org.springframework.geode.boot.autoconfigure.template;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
 import jakarta.annotation.Resource;
-
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
+import org.apache.geode.cache.Region;
+import org.apache.geode.cache.client.ClientCache;
+import org.apache.geode.cache.client.ClientRegionShortcut;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import org.apache.geode.cache.GemFireCache;
-import org.apache.geode.cache.Region;
-import org.apache.geode.cache.client.ClientRegionShortcut;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -28,19 +29,13 @@ import org.springframework.data.gemfire.tests.mock.annotation.EnableGemFireMockO
 import org.springframework.geode.boot.autoconfigure.RegionTemplateAutoConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
-
 /**
  * Integration Tests for {@link RegionTemplateAutoConfiguration} using explicitly declared {@link Region}
  * bean definitions in a Spring {@link ApplicationContext}.
  *
  * @author John Blum
  * @see org.junit.Test
- * @see org.apache.geode.cache.GemFireCache
+ * @see org.apache.geode.cache.client.ClientCache
  * @see org.apache.geode.cache.Region
  * @see org.springframework.boot.autoconfigure.SpringBootApplication
  * @see org.springframework.boot.test.context.SpringBootTest
@@ -144,7 +139,7 @@ public class DeclaredRegionTemplateAutoConfigurationIntegrationTests extends Int
 	static class TestConfiguration {
 
 		@Bean("Example")
-		ClientRegionFactoryBean<Long, String> exampleRegion(GemFireCache gemfireCache) {
+		ClientRegionFactoryBean<Long, String> exampleRegion(ClientCache gemfireCache) {
 
 			ClientRegionFactoryBean<Long, String> exampleRegion = new ClientRegionFactoryBean<>();
 
@@ -163,7 +158,7 @@ public class DeclaredRegionTemplateAutoConfigurationIntegrationTests extends Int
 		// can be properly autowired/injected into the auto-configured GemfireTemplate for this Region!
 		@Bean("TestRegion")
 		@SuppressWarnings("rawtypes")
-		public ClientRegionFactoryBean testRegion(GemFireCache gemfireCache) {
+		public ClientRegionFactoryBean testRegion(ClientCache gemfireCache) {
 
 			ClientRegionFactoryBean testRegion = new ClientRegionFactoryBean();
 
@@ -174,7 +169,7 @@ public class DeclaredRegionTemplateAutoConfigurationIntegrationTests extends Int
 		}
 
 		@Bean("Users")
-		public ClientRegionFactoryBean<Long, User> usersRegions(GemFireCache cache) {
+		public ClientRegionFactoryBean<Long, User> usersRegions(ClientCache cache) {
 
 			ClientRegionFactoryBean<Long, User> usersRegion = new ClientRegionFactoryBean<>();
 

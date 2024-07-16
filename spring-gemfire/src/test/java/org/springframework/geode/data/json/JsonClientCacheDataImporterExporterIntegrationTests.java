@@ -5,46 +5,36 @@
 package org.springframework.geode.data.json;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
+import com.vmware.gemfire.testcontainers.GemFireCluster;
+import example.app.crm.model.Customer;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import com.vmware.gemfire.testcontainers.GemFireCluster;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import org.apache.geode.cache.DataPolicy;
-import org.apache.geode.cache.GemFireCache;
 import org.apache.geode.cache.Region;
 import org.apache.geode.cache.client.ClientCache;
 import org.apache.geode.cache.client.ClientRegionShortcut;
 import org.apache.geode.pdx.PdxInstance;
-
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.data.gemfire.LocalRegionFactoryBean;
 import org.springframework.data.gemfire.client.ClientRegionFactoryBean;
-import org.springframework.data.gemfire.config.annotation.CacheServerApplication;
 import org.springframework.data.gemfire.config.annotation.ClientCacheApplication;
-import org.springframework.data.gemfire.tests.integration.ForkingClientServerIntegrationTestsSupport;
 import org.springframework.data.gemfire.util.PropertiesBuilder;
 import org.springframework.geode.core.io.ResourceWriter;
 import org.springframework.util.FileCopyUtils;
-
-import example.app.crm.model.Customer;
 
 /**
  * Integration Tests for {@link JsonCacheDataImporterExporter} using an Apache Geode {@link ClientCache}.
@@ -52,7 +42,7 @@ import example.app.crm.model.Customer;
  * @author John Blum
  * @see java.util.Properties
  * @see org.junit.Test
- * @see org.apache.geode.cache.GemFireCache
+ * @see org.apache.geode.cache.client.ClientCache
  * @see org.apache.geode.cache.Region
  * @see org.apache.geode.cache.client.ClientCache
  * @see org.apache.geode.pdx.PdxInstance
@@ -65,9 +55,7 @@ import example.app.crm.model.Customer;
  * @see org.springframework.context.event.ContextClosedEvent
  * @see org.springframework.context.event.EventListener
  * @see org.springframework.core.io.ClassPathResource
- * @see org.springframework.data.gemfire.LocalRegionFactoryBean
  * @see org.springframework.data.gemfire.client.ClientRegionFactoryBean
- * @see org.springframework.data.gemfire.config.annotation.CacheServerApplication
  * @see org.springframework.data.gemfire.config.annotation.ClientCacheApplication
  * @see org.springframework.data.gemfire.util.PropertiesBuilder
  * @see org.springframework.geode.data.json.JsonCacheDataImporterExporter
@@ -192,7 +180,7 @@ public class JsonClientCacheDataImporterExporterIntegrationTests{
 	static class TestGeodeClientConfiguration {
 
 		@Bean("Customers")
-		ClientRegionFactoryBean<Long, Customer> customersRegion(GemFireCache cache) {
+		ClientRegionFactoryBean<Long, Customer> customersRegion(ClientCache cache) {
 
 			ClientRegionFactoryBean<Long, Customer> customersRegion = new ClientRegionFactoryBean<>();
 
@@ -222,29 +210,6 @@ public class JsonClientCacheDataImporterExporterIntegrationTests{
 		@EventListener(classes = ContextClosedEvent.class)
 		void applicationContextClosedListener(ContextClosedEvent event) {
 			applicationContextClosed.set(true);
-		}
-	}
-
-	@CacheServerApplication(name = "JsonClientCacheDataImporterExporterIntegrationTestsServer")
-	static class TestGeodeServerConfiguration {
-
-		public static void main(String[] args) {
-
-			AnnotationConfigApplicationContext applicationContext =
-				new AnnotationConfigApplicationContext(TestGeodeServerConfiguration.class);
-
-			applicationContext.registerShutdownHook();
-		}
-
-		@Bean("Customers")
-		LocalRegionFactoryBean<Long, Customer> customersRegion(GemFireCache cache) {
-
-			LocalRegionFactoryBean<Long, Customer> customersRegion = new LocalRegionFactoryBean<>();
-
-			customersRegion.setCache(cache);
-			customersRegion.setPersistent(false);
-
-			return customersRegion;
 		}
 	}
 }

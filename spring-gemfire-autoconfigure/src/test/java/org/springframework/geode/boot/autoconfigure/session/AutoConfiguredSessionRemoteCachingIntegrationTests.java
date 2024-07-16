@@ -5,36 +5,28 @@
 package org.springframework.geode.boot.autoconfigure.session;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
+import com.vmware.gemfire.testcontainers.GemFireCluster;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URI;
 import java.util.concurrent.atomic.AtomicReference;
-
-import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpSession;
-
+import org.apache.geode.cache.DataPolicy;
+import org.apache.geode.cache.Region;
+import org.apache.geode.cache.client.ClientCache;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import org.apache.geode.cache.DataPolicy;
-import org.apache.geode.cache.Region;
-import org.apache.geode.cache.client.ClientCache;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.websocket.servlet.WebSocketServletAutoConfiguration;
-import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.gemfire.config.annotation.CacheServerApplication;
 import org.springframework.data.gemfire.tests.integration.ForkingClientServerIntegrationTestsSupport;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.session.data.gemfire.config.annotation.web.http.EnableGemFireHttpSession;
 import org.springframework.session.data.gemfire.config.annotation.web.http.GemFireHttpSessionConfiguration;
 import org.springframework.session.web.http.HeaderHttpSessionIdResolver;
 import org.springframework.session.web.http.HttpSessionIdResolver;
@@ -61,7 +53,6 @@ import org.springframework.web.client.RestTemplate;
  * @see org.springframework.boot.test.context.SpringBootTest
  * @see org.springframework.boot.test.web.server.LocalServerPort
  * @see org.springframework.context.annotation.Bean
- * @see org.springframework.data.gemfire.config.annotation.CacheServerApplication
  * @see org.springframework.data.gemfire.tests.integration.ForkingClientServerIntegrationTestsSupport
  * @see org.springframework.geode.boot.autoconfigure.SpringSessionAutoConfiguration
  * @see org.springframework.http.RequestEntity
@@ -92,9 +83,16 @@ public class AutoConfiguredSessionRemoteCachingIntegrationTests extends ForkingC
 
 	private static final String HTTP_HEADER_AUTHENTICATION_INFO = "Authentication-Info";
 
+	private static GemFireCluster gemFireCluster;
+
 	@BeforeClass
-	public static void setupGemFireServer() throws IOException {
-		startGemFireServer(SessionGemFireServerConfiguration.class);
+	public static void runGemFireServer() throws IOException {
+		String dockerImage = System.getProperty("spring.test.gemfire.docker.image");
+		gemFireCluster = new GemFireCluster(dockerImage, 1, 1)
+				.withGfsh(false, "create region --name=ClusteredSpringSessions --type=REPLICATE");
+		gemFireCluster.acceptLicense().start();
+
+		System.setProperty("spring.data.gemfire.pool.locators", "localhost[" + gemFireCluster.getLocatorPort() + "]");
 	}
 
 	@LocalServerPort
@@ -199,19 +197,6 @@ public class AutoConfiguredSessionRemoteCachingIntegrationTests extends ForkingC
 			//	session.getId(), session.getClass().getName(), name);
 
 			return String.valueOf(session.getAttribute(name));
-		}
-	}
-
-	@CacheServerApplication(name = "AutoConfiguredSessionRemoteCachingIntegrationTests")
-	@EnableGemFireHttpSession
-	static class SessionGemFireServerConfiguration {
-
-		public static void main(String[] args) {
-
-			new SpringApplicationBuilder(SessionGemFireServerConfiguration.class)
-				.web(WebApplicationType.NONE)
-				.build()
-				.run(args);
 		}
 	}
 }
