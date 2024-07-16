@@ -10,26 +10,20 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
 import java.net.InetSocketAddress;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-
+import org.apache.geode.cache.client.ClientCache;
+import org.apache.geode.cache.client.Pool;
+import org.apache.geode.distributed.DistributedSystem;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import org.apache.geode.cache.Cache;
-import org.apache.geode.cache.GemFireCache;
-import org.apache.geode.cache.client.ClientCache;
-import org.apache.geode.cache.client.Pool;
-import org.apache.geode.distributed.DistributedSystem;
-
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.data.gemfire.tests.mock.PoolMockObjects;
@@ -43,8 +37,6 @@ import org.springframework.data.gemfire.util.CacheUtils;
  * @see org.mockito.Mock
  * @see org.mockito.Mockito
  * @see org.mockito.junit.MockitoJUnitRunner
- * @see org.apache.geode.cache.Cache
- * @see org.apache.geode.cache.GemFireCache
  * @see org.apache.geode.cache.client.ClientCache
  * @see org.apache.geode.cache.client.Pool
  * @see org.apache.geode.distributed.DistributedSystem
@@ -146,7 +138,7 @@ public class GeodePoolsHealthIndicatorUnitTests {
 		verify(this.poolsHealthIndicator, times(1)).findAllPools();
 	}
 
-	public void testHealthCheckFailsWhenGemFireCacheIsInvalid(GemFireCache gemfireCache) {
+	public void testHealthCheckFailsWhenGemFireCacheIsInvalid(ClientCache gemfireCache) {
 
 		GeodePoolsHealthIndicator healthIndicator = gemfireCache != null
 			? new GeodePoolsHealthIndicator(gemfireCache)
@@ -164,12 +156,7 @@ public class GeodePoolsHealthIndicatorUnitTests {
 	}
 
 	@Test
-	public void healthCheckFailsWhenGemFireCacheIsNotClientCache() throws Exception {
-		testHealthCheckFailsWhenGemFireCacheIsInvalid(mock(Cache.class));
-	}
-
-	@Test
-	public void healthCheckFailsWhenGemFireCacheIsNotPresent() throws Exception {
+	public void healthCheckFailsWhenGemFireCacheIsNotPresent() {
 		testHealthCheckFailsWhenGemFireCacheIsInvalid(null);
 	}
 }

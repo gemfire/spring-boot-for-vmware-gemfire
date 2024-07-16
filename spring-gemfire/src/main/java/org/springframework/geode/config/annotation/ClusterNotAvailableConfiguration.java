@@ -6,9 +6,7 @@ package org.springframework.geode.config.annotation;
 
 import static org.springframework.geode.config.annotation.ClusterAwareConfiguration.LOCAL_CLIENT_REGION_SHORTCUT;
 import static org.springframework.geode.config.annotation.ClusterAwareConfiguration.SPRING_DATA_GEMFIRE_CACHE_CLIENT_REGION_SHORTCUT_PROPERTY;
-
 import org.apache.geode.cache.client.ClientRegionShortcut;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.condition.AllNestedConditions;
@@ -43,8 +41,6 @@ import org.springframework.lang.Nullable;
  * @see Environment
  * @see AnnotatedTypeMetadata
  * @see ClientRegionFactoryBean
- * @see RegionConfigurer
- * @see CacheTypeAwareRegionFactoryBean
  * @see ClusterAwareConfiguration
  * @since 1.2.0
  */

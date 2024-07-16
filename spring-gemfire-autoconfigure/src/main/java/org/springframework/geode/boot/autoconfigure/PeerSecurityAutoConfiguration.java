@@ -22,7 +22,7 @@ import org.springframework.geode.config.annotation.EnableSecurityManager;
  * @see org.springframework.boot.SpringBootConfiguration
  * @see org.springframework.boot.autoconfigure.EnableAutoConfiguration
  * @see org.springframework.context.annotation.Import
- * @see org.springframework.data.gemfire.CacheFactoryBean
+ * @see org.springframework.data.gemfire.client.ClientCacheFactoryBean
  * @see org.springframework.data.gemfire.client.ClientCacheFactoryBean
  * @see org.springframework.data.gemfire.config.annotation.ApacheShiroSecurityConfiguration
  * @see org.springframework.data.gemfire.config.annotation.GeodeIntegratedSecurityConfiguration

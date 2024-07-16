@@ -10,16 +10,14 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
-
 import org.apache.geode.cache.EvictionAlgorithm;
 import org.apache.geode.cache.EvictionAttributes;
 import org.apache.geode.cache.ExpirationAttributes;
-import org.apache.geode.cache.GemFireCache;
 import org.apache.geode.cache.PartitionAttributes;
 import org.apache.geode.cache.Region;
 import org.apache.geode.cache.RegionAttributes;
+import org.apache.geode.cache.client.ClientCache;
 import org.apache.geode.internal.cache.LocalDataSet;
-
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.geode.boot.actuate.health.AbstractGeodeHealthIndicator;
@@ -28,10 +26,10 @@ import org.springframework.util.StringUtils;
 
 /**
  * The {@link GeodeRegionsHealthIndicator} class is a Spring Boot {@link HealthIndicator} providing details about
- * the health of the {@link GemFireCache} {@link Region Regions}.
+ * the health of the {@link ClientCache} {@link Region Regions}.
  *
  * @author John Blum
- * @see org.apache.geode.cache.GemFireCache
+ * @see org.apache.geode.cache.client.ClientCache
  * @see org.apache.geode.cache.Region
  * @see org.springframework.boot.actuate.health.Health
  * @see org.springframework.boot.actuate.health.HealthIndicator
@@ -57,21 +55,21 @@ public class GeodeRegionsHealthIndicator extends AbstractGeodeHealthIndicator {
 
 	/**
 	 * Constructs an instance of the {@link GeodeRegionsHealthIndicator} initialized with a reference to
-	 * the {@link GemFireCache} instance.
+	 * the {@link ClientCache} instance.
 	 *
-	 * @param gemfireCache reference to the {@link GemFireCache} instance used to collect health information.
-	 * @throws IllegalArgumentException if {@link GemFireCache} is {@literal null}.
-	 * @see org.apache.geode.cache.GemFireCache
+	 * @param gemfireCache reference to the {@link ClientCache} instance used to collect health information.
+	 * @throws IllegalArgumentException if {@link ClientCache} is {@literal null}.
+	 * @see org.apache.geode.cache.client.ClientCache
 	 */
-	public GeodeRegionsHealthIndicator(GemFireCache gemfireCache) {
+	public GeodeRegionsHealthIndicator(ClientCache gemfireCache) {
 		super(gemfireCache);
 	}
 
 	/**
-	 * Returns the collection of {@link BiConsumer} objects that applies health details about the {@link GemFireCache}
+	 * Returns the collection of {@link BiConsumer} objects that applies health details about the {@link ClientCache}
 	 * {@link Region Regions} to the {@link Health} object.
 	 *
-	 * @return the collection of {@link BiConsumer} objects that applies health details about the {@link GemFireCache}
+	 * @return the collection of {@link BiConsumer} objects that applies health details about the {@link ClientCache}
 	 * {@link Region Regions} to the {@link Health} object.
 	 * @see org.springframework.boot.actuate.health.Health
 	 * @see org.apache.geode.cache.Region
@@ -87,7 +85,7 @@ public class GeodeRegionsHealthIndicator extends AbstractGeodeHealthIndicator {
 		if (getGemFireCache().isPresent()) {
 
 			Set<Region<?, ?>> rootRegions = getGemFireCache()
-				.map(GemFireCache::rootRegions)
+				.map(ClientCache::rootRegions)
 				.orElseGet(Collections::emptySet);
 
 			builder.withDetail("geode.cache.regions", rootRegions.stream()

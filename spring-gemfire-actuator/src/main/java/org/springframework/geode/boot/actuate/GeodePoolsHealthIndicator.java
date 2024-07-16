@@ -6,18 +6,14 @@ package org.springframework.geode.boot.actuate;
 
 import static org.springframework.data.gemfire.util.CollectionUtils.nullSafeList;
 import static org.springframework.data.gemfire.util.CollectionUtils.nullSafeMap;
-
 import java.net.InetSocketAddress;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
-import org.apache.geode.cache.GemFireCache;
 import org.apache.geode.cache.client.ClientCache;
 import org.apache.geode.cache.client.Pool;
 import org.apache.geode.cache.client.PoolManager;
-
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.data.gemfire.util.CacheUtils;
@@ -29,7 +25,7 @@ import org.springframework.util.StringUtils;
  * the health of the configured Apache Geode client {@link Pool Pools}.
  *
  * @author John Blum
- * @see org.apache.geode.cache.GemFireCache
+ * @see org.apache.geode.cache.client.ClientCache
  * @see org.apache.geode.cache.client.Pool
  * @see org.apache.geode.cache.client.PoolManager
  * @see org.springframework.boot.actuate.health.Health
@@ -50,20 +46,20 @@ public class GeodePoolsHealthIndicator extends AbstractGeodeHealthIndicator {
 
 	/**
 	 * Constructs an instance of the {@link GeodePoolsHealthIndicator} initialized with a reference to
-	 * the {@link GemFireCache} instance.
+	 * the {@link ClientCache} instance.
 	 *
-	 * @param gemfireCache reference to the {@link GemFireCache} instance used to collect health information.
-	 * @throws IllegalArgumentException if {@link GemFireCache} is {@literal null}.
-	 * @see org.apache.geode.cache.GemFireCache
+	 * @param gemfireCache reference to the {@link ClientCache} instance used to collect health information.
+	 * @throws IllegalArgumentException if {@link ClientCache} is {@literal null}.
+	 * @see org.apache.geode.cache.client.ClientCache
 	 */
-	public GeodePoolsHealthIndicator(GemFireCache gemfireCache) {
+	public GeodePoolsHealthIndicator(ClientCache gemfireCache) {
 		super(gemfireCache);
 	}
 
 	@Override
 	protected void doHealthCheck(Health.Builder builder) {
 
-		if (getGemFireCache().filter(CacheUtils::isClient).isPresent()) {
+		if (getGemFireCache().isPresent()) {
 
 			Map<String, Pool> pools = nullSafeMap(findAllPools());
 

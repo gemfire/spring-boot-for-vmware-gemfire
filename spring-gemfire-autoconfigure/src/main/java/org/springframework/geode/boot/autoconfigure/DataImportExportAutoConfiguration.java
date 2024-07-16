@@ -6,9 +6,7 @@ package org.springframework.geode.boot.autoconfigure;
 
 import java.util.Optional;
 import java.util.function.Predicate;
-
-import org.apache.geode.cache.GemFireCache;
-
+import org.apache.geode.cache.client.ClientCache;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -24,7 +22,7 @@ import org.springframework.context.annotation.Conditional;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
 import org.springframework.core.type.AnnotatedTypeMetadata;
-import org.springframework.data.gemfire.CacheFactoryBean;
+import org.springframework.data.gemfire.client.ClientCacheFactoryBean;
 import org.springframework.geode.boot.autoconfigure.support.PdxInstanceWrapperRegionAspect;
 import org.springframework.geode.cache.SimpleCacheResolver;
 import org.springframework.geode.data.AbstractCacheDataImporterExporter;
@@ -38,7 +36,7 @@ import org.springframework.lang.Nullable;
  * Spring Boot {@link EnableAutoConfiguration auto-configuration} for cache data import/export.
  *
  * @author John Blum
- * @see org.apache.geode.cache.GemFireCache
+ * @see org.apache.geode.cache.client.ClientCache
  * @see org.apache.geode.cache.Region
  * @see org.springframework.boot.SpringBootConfiguration
  * @see org.springframework.boot.autoconfigure.EnableAutoConfiguration
@@ -51,7 +49,7 @@ import org.springframework.lang.Nullable;
  * @see org.springframework.context.annotation.Conditional
  * @see org.springframework.core.env.ConfigurableEnvironment
  * @see org.springframework.core.env.Environment
- * @see org.springframework.data.gemfire.CacheFactoryBean
+ * @see org.springframework.data.gemfire.client.ClientCacheFactoryBean
  * @see org.springframework.geode.boot.autoconfigure.support.PdxInstanceWrapperRegionAspect
  * @see org.springframework.geode.data.CacheDataImporterExporter
  * @see org.springframework.geode.data.json.JsonCacheDataImporterExporter
@@ -59,8 +57,8 @@ import org.springframework.lang.Nullable;
  * @since 1.3.0
  */
 @SpringBootConfiguration
-@ConditionalOnBean(GemFireCache.class)
-@ConditionalOnClass({ CacheFactoryBean.class, GemFireCache.class })
+@ConditionalOnBean(ClientCache.class)
+@ConditionalOnClass({ ClientCacheFactoryBean.class, ClientCache.class })
 @SuppressWarnings("unused")
 public class DataImportExportAutoConfiguration {
 
@@ -108,7 +106,7 @@ public class DataImportExportAutoConfiguration {
 		private boolean isCachePdxReadSerializedEnabled() {
 
 			return SimpleCacheResolver.getInstance().resolve()
-				.filter(GemFireCache::getPdxReadSerialized)
+				.filter(ClientCache::getPdxReadSerialized)
 				.isPresent();
 		}
 

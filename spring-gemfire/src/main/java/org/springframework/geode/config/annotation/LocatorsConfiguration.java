@@ -7,26 +7,20 @@ package org.springframework.geode.config.annotation;
 import java.lang.annotation.Annotation;
 import java.util.Optional;
 import java.util.Properties;
-
-import org.apache.geode.cache.Cache;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportAware;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.data.gemfire.config.annotation.ClientCacheConfigurer;
-import org.springframework.data.gemfire.config.annotation.LocatorConfigurer;
-import org.springframework.data.gemfire.config.annotation.PeerCacheConfigurer;
 import org.springframework.data.gemfire.config.annotation.support.AbstractAnnotationConfigSupport;
 import org.springframework.util.StringUtils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * The {@link LocatorsConfiguration} class is a Spring {@link Configuration} class used to configure Apache Geode
- * {@literal locators} and/or {@literal remote-locators} properties used by a {@link Cache peer Cache member}
+ * {@literal locators} and/or {@literal remote-locators} properties used by a peer Cache member
  * to join a cluster of servers when using the P2P topology.
  *
  * The {@literal remote-locators} property is used to configure the Locators that a cluster will use in order to
@@ -35,13 +29,11 @@ import org.slf4j.LoggerFactory;
  * and remote Locator(s) for the remote clusters to which you will connect.
  *
  * @author John Blum
- * @see Cache
  * @see Bean
  * @see Configuration
  * @see ImportAware
  * @see AnnotationAttributes
  * @see AnnotationMetadata
- * @see PeerCacheConfigurer
  * @see AbstractAnnotationConfigSupport
  * @see UseLocators
  * @since 1.0.0
@@ -130,21 +122,7 @@ public class LocatorsConfiguration extends AbstractAnnotationConfigSupport imple
 	}
 
 	@Bean
-	LocatorConfigurer locatorLocatorsConfigurer() {
-
-		return (beanName, locatorFactoryBean) -> {
-
-			Properties gemfireProperties = locatorFactoryBean.getGemFireProperties();
-
-			getLocators().ifPresent(locators -> gemfireProperties.setProperty(LOCATORS_PROPERTY, locators));
-
-			getRemoteLocators().ifPresent(remoteLocators ->
-				gemfireProperties.setProperty(REMOTE_LOCATORS_PROPERTY, remoteLocators));
-		};
-	}
-
-	@Bean
-	PeerCacheConfigurer peerCacheLocatorsConfigurer() {
+	ClientCacheConfigurer peerCacheLocatorsConfigurer() {
 
 		return (beanName, cacheFactoryBean) -> {
 

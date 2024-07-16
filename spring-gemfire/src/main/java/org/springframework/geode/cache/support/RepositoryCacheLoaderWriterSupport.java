@@ -7,13 +7,11 @@ package org.springframework.geode.cache.support;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
-
 import org.apache.geode.cache.CacheLoader;
 import org.apache.geode.cache.CacheLoaderException;
 import org.apache.geode.cache.CacheRuntimeException;
 import org.apache.geode.cache.CacheWriter;
 import org.apache.geode.cache.LoaderHelper;
-
 import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
 import org.springframework.data.repository.CrudRepository;
@@ -26,14 +24,10 @@ import org.springframework.util.Assert;
  * Abstract base class supporting the implementation of Apache Geode {@link CacheLoader CacheLoaders}
  * and {@link CacheWriter CacheWriters} backed by Spring Data {@link Repository Repositories}.
  *
- * @author John Blum
- * @see CacheLoader
- * @see CacheWriter
+ * @author John BlumLoaderWriter
  * @see EnvironmentAware
  * @see Environment
  * @see CrudRepository
- * @see Repository
- * @see CacheLoaderSupport
  * @since 1.1.0
  */
 public abstract class RepositoryCacheLoaderWriterSupport<T, ID>

@@ -5,17 +5,16 @@
 package org.springframework.geode.data.support;
 
 import static org.springframework.geode.core.util.ObjectUtils.initialize;
-
 import java.io.File;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
-
-import org.apache.geode.cache.GemFireCache;
 import org.apache.geode.cache.Region;
-
+import org.apache.geode.cache.client.ClientCache;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -57,16 +56,13 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * An {@link AbstractCacheDataImporterExporter} extension and implementation capable of handling and managing import
  * and export {@link Resource Resources}.
  *
  * @author John Blum
  * @see File
- * @see GemFireCache
+ * @see ClientCache
  * @see Region
  * @see InitializingBean
  * @see ApplicationContext
@@ -259,11 +255,11 @@ public abstract class ResourceCapableCacheDataImporterExporter extends AbstractC
 	}
 
 	/**
-	 * {@link ResourceResolver} interface extension used to resolve {@link GemFireCache cache}
+	 * {@link ResourceResolver} interface extension used to resolve {@link ClientCache cache}
 	 * {@link Resource Resources}.
 	 *
 	 * @see ResourceResolver
-	 * @see GemFireCache
+	 * @see ClientCache
 	 * @see Region
 	 */
 	@FunctionalInterface
@@ -292,7 +288,7 @@ public abstract class ResourceCapableCacheDataImporterExporter extends AbstractC
 	}
 
 	/**
-	 * Abstract base class containing functionality common to all {@link GemFireCache cache} based
+	 * Abstract base class containing functionality common to all {@link ClientCache cache} based
 	 * {@link ResourceResolver ResourceResolvers}, whether for import or export.
 	 *
 	 * @see ResourceLoaderResourceResolver

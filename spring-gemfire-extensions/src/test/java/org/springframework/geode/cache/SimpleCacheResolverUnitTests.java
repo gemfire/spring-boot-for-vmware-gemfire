@@ -5,7 +5,6 @@
 package org.springframework.geode.cache;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
 import org.junit.Test;
 
 /**
@@ -13,8 +12,6 @@ import org.junit.Test;
  *
  * @author John Blum
  * @see org.junit.Test
- * @see org.apache.geode.cache.Cache
- * @see org.apache.geode.cache.GemFireCache
  * @see org.apache.geode.cache.client.ClientCache
  * @see org.springframework.geode.cache.SimpleCacheResolver
  * @since 1.3.0
@@ -40,11 +37,6 @@ public class SimpleCacheResolverUnitTests {
 		assertThat(SimpleCacheResolver.getInstance().resolveClientCache().orElse(null)).isNull();
 	}
 
-	@Test
-	public void resolvePeerCacheWhenNoPeerCacheIsPresentReturnsEmptyOptional() {
-		assertThat(SimpleCacheResolver.getInstance().resolvePeerCache().orElse(null)).isNull();
-	}
-
 	@Test(expected = IllegalStateException.class)
 	public void requireCacheWhenNoCacheIsPresentThrowsIllegalStateException() {
 
@@ -53,7 +45,7 @@ public class SimpleCacheResolverUnitTests {
 		}
 		catch (IllegalStateException expected) {
 
-			assertThat(expected).hasMessage("GemFireCache not found");
+			assertThat(expected).hasMessage("ClientCache not found");
 			assertThat(expected).hasNoCause();
 
 			throw expected;

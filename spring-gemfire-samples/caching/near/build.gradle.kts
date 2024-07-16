@@ -29,7 +29,13 @@ dependencies {
   runtimeOnly("org.springframework.boot:spring-boot-starter-jetty")
 
   testImplementation(libs.gemfire.core)
+  testImplementation(libs.gemfire.testcontainers)
   testImplementation(project(":spring-gemfire-starter-test"))
   testImplementation("org.springframework.boot:spring-boot-starter-test")
+}
 
+tasks.getByName<Test>("test") { forkEvery = 1
+  maxParallelForks = 4
+  val springTestGemfireDockerImage: String by project
+  systemProperty("spring.test.gemfire.docker.image", springTestGemfireDockerImage)
 }

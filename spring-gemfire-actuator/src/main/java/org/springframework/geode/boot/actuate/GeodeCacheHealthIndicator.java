@@ -6,13 +6,11 @@ package org.springframework.geode.boot.actuate;
 
 import java.net.URL;
 import java.util.function.Function;
-
 import org.apache.geode.CancelCriterion;
-import org.apache.geode.cache.GemFireCache;
+import org.apache.geode.cache.client.ClientCache;
 import org.apache.geode.cache.control.ResourceManager;
 import org.apache.geode.distributed.DistributedMember;
 import org.apache.geode.distributed.DistributedSystem;
-
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.boot.actuate.health.Status;
@@ -22,14 +20,14 @@ import org.springframework.util.StringUtils;
 
 /**
  * The {@link GeodeCacheHealthIndicator} class is a Spring Boot {@link HealthIndicator} providing details about
- * the health of the {@link GemFireCache}, the {@link DistributedSystem}, this {@link DistributedMember}
+ * the health of the {@link ClientCache}, the {@link DistributedSystem}, this {@link DistributedMember}
  * and the {@link ResourceManager}.
  *
  * @author John Blum
  * @see java.net.URL
  * @see java.util.Optional
  * @see java.util.function.Function
- * @see org.apache.geode.cache.GemFireCache
+ * @see org.apache.geode.cache.client.ClientCache
  * @see org.apache.geode.cache.control.ResourceManager
  * @see org.apache.geode.distributed.DistributedMember
  * @see org.apache.geode.distributed.DistributedSystem
@@ -56,22 +54,22 @@ public class GeodeCacheHealthIndicator extends AbstractGeodeHealthIndicator {
 
 	/**
 	 * Constructs an instance of the {@link GeodeCacheHealthIndicator} initialized with a reference to
-	 * the {@link GemFireCache} instance.
+	 * the {@link ClientCache} instance.
 	 *
-	 * @param gemfireCache reference to the {@link GemFireCache} instance used to collect health information.
-	 * @throws IllegalArgumentException if {@link GemFireCache} is {@literal null}.
-	 * @see org.apache.geode.cache.GemFireCache
+	 * @param gemfireCache reference to the {@link ClientCache} instance used to collect health information.
+	 * @throws IllegalArgumentException if {@link ClientCache} is {@literal null}.
+	 * @see org.apache.geode.cache.client.ClientCache
 	 */
-	public GeodeCacheHealthIndicator(GemFireCache gemfireCache) {
+	public GeodeCacheHealthIndicator(ClientCache gemfireCache) {
 		super(gemfireCache);
 	}
 
 	/**
 	 * Return a collection of {@link Function Functions} that apply {@link HealthIndicator} information
-	 * about the {@link GemFireCache} to the {@link Health} aggregate object.
+	 * about the {@link ClientCache} to the {@link Health} aggregate object.
 	 *
 	 * @return a collection of {@link Function Functions} applying {@link HealthIndicator} information
-	 * about the {@link GemFireCache} to a {@link Health} object.
+	 * about the {@link ClientCache} to a {@link Health} object.
 	 * @see org.springframework.boot.actuate.health.Health.Builder
 	 * @see java.util.function.Function
 	 */
@@ -86,7 +84,7 @@ public class GeodeCacheHealthIndicator extends AbstractGeodeHealthIndicator {
 
 			getGemfireHealthIndicatorFunctions().apply(builder);
 
-			builder.status(getGemFireCache().map(GemFireCache::isClosed).orElse(true)
+			builder.status(getGemFireCache().map(ClientCache::isClosed).orElse(true)
 				? Status.DOWN : Status.UP);
 
 			return;
@@ -97,10 +95,10 @@ public class GeodeCacheHealthIndicator extends AbstractGeodeHealthIndicator {
 
 	private Function<Health.Builder, Health.Builder> withCacheDetails() {
 
-		return healthBuilder -> healthBuilder.withDetail("geode.cache.name", getGemFireCache().map(GemFireCache::getName).orElse(""))
-				.withDetail("geode.cache.closed", getGemFireCache().map(GemFireCache::isClosed).map(this::toYesNoString).orElse("Yes"))
+		return healthBuilder -> healthBuilder.withDetail("geode.cache.name", getGemFireCache().map(ClientCache::getName).orElse(""))
+				.withDetail("geode.cache.closed", getGemFireCache().map(ClientCache::isClosed).map(this::toYesNoString).orElse("Yes"))
 			.withDetail("geode.cache.cancel-in-progress", getGemFireCache()
-				.map(GemFireCache::getCancelCriterion)
+				.map(ClientCache::getCancelCriterion)
 				.filter(CancelCriterion::isCancelInProgress)
 				.isPresent() ? "Yes" : "No");
 	}
@@ -108,7 +106,7 @@ public class GeodeCacheHealthIndicator extends AbstractGeodeHealthIndicator {
 	private Function<Health.Builder, Health.Builder> withDistributedMemberDetails() {
 
 		return healthBuilder -> getGemFireCache()
-			.map(GemFireCache::getDistributedSystem)
+			.map(ClientCache::getDistributedSystem)
 			.map(DistributedSystem::getDistributedMember)
 			.map(distributedMember -> healthBuilder
 				.withDetail("geode.distributed-member.id", distributedMember.getId())
@@ -123,7 +121,7 @@ public class GeodeCacheHealthIndicator extends AbstractGeodeHealthIndicator {
 	private Function<Health.Builder, Health.Builder> withDistributedSystemDetails() {
 
 		return healthBuilder -> getGemFireCache()
-			.map(GemFireCache::getDistributedSystem)
+			.map(ClientCache::getDistributedSystem)
 			.map(distributedSystem -> healthBuilder
 				.withDetail("geode.distributed-system.member-count", toMemberCount(distributedSystem))
 				.withDetail("geode.distributed-system.connection", toConnectedNoConnectedString(distributedSystem.isConnected()))
@@ -137,7 +135,7 @@ public class GeodeCacheHealthIndicator extends AbstractGeodeHealthIndicator {
 	private Function<Health.Builder, Health.Builder> withResourceManagerDetails() {
 
 		return healthBuilder -> getGemFireCache()
-			.map(GemFireCache::getResourceManager)
+			.map(ClientCache::getResourceManager)
 			.map(resourceManager -> healthBuilder
 				.withDetail("geode.resource-manager.critical-heap-percentage", resourceManager.getCriticalHeapPercentage())
 				.withDetail("geode.resource-manager.critical-off-heap-percentage", resourceManager.getCriticalOffHeapPercentage())

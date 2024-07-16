@@ -36,14 +36,12 @@ dependencies {
 
   testImplementation(libs.gemfire.core)
   testImplementation(libs.gemfire.cq)
-  testImplementation(libs.gemfire.wan)
+  testImplementation(libs.gemfire.gfsh)
   testImplementation("jakarta.servlet:jakarta.servlet-api")
   testImplementation("org.apache.httpcomponents.client5:httpclient5")
   testImplementation("org.springframework.boot:spring-boot-starter-test")
   testImplementation("org.springframework.boot:spring-boot-starter-web")
   testCompileOnly(libs.findbugs.jsr305)
-
-  testRuntimeOnly(project(":spring-gemfire-jetty12"))
 
   testRuntimeOnly("javax.cache:cache-api")
   testRuntimeOnly(libs.gemfire.web)

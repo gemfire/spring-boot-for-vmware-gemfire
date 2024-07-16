@@ -5,11 +5,7 @@
 package org.springframework.geode.boot.autoconfigure;
 
 import java.util.Optional;
-
-import org.apache.geode.cache.Cache;
-import org.apache.geode.cache.GemFireCache;
 import org.apache.geode.cache.client.ClientCache;
-
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -17,32 +13,28 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
-import org.springframework.data.gemfire.CacheFactoryBean;
+import org.springframework.data.gemfire.client.ClientCacheFactoryBean;
 import org.springframework.data.gemfire.config.annotation.ClientCacheConfigurer;
-import org.springframework.data.gemfire.config.annotation.PeerCacheConfigurer;
 import org.springframework.geode.boot.autoconfigure.condition.ConditionalOnMissingProperty;
 import org.springframework.util.StringUtils;
 
 /**
  * Spring Boot {@link EnableAutoConfiguration auto-configuration} class used to configure the Apache Geode
- * {@link ClientCache} application or peer {@link Cache} member node name (i.e. {@literal gemfire.name})
+ * {@link ClientCache} application or peer Cache member node name (i.e. {@literal gemfire.name})
  * with the Spring Boot {@literal spring.application.name} property.
  *
  * @author John Blum
- * @see org.apache.geode.cache.Cache
- * @see org.apache.geode.cache.GemFireCache
  * @see org.apache.geode.cache.client.ClientCache
  * @see org.springframework.boot.SpringBootConfiguration
  * @see org.springframework.boot.autoconfigure.EnableAutoConfiguration
  * @see org.springframework.context.annotation.Bean
  * @see org.springframework.core.env.Environment
- * @see org.springframework.data.gemfire.CacheFactoryBean
+ * @see org.springframework.data.gemfire.client.ClientCacheFactoryBean
  * @see org.springframework.data.gemfire.config.annotation.ClientCacheConfigurer
- * @see org.springframework.data.gemfire.config.annotation.PeerCacheConfigurer
  * @since 1.0.0
  */
 @SpringBootConfiguration
-@ConditionalOnClass({ CacheFactoryBean.class, GemFireCache.class })
+@ConditionalOnClass({ ClientCacheFactoryBean.class, ClientCache.class })
 @SuppressWarnings("unused")
 public class CacheNameAutoConfiguration {
 
@@ -65,19 +57,7 @@ public class CacheNameAutoConfiguration {
 		return (beanName, clientCacheFactoryBean) -> configureCacheName(environment, clientCacheFactoryBean);
 	}
 
-	@Bean
-	@Order(Ordered.HIGHEST_PRECEDENCE + 1) // apply next (e.g. after @UseMemberName)
-	@ConditionalOnMissingProperty({
-		SPRING_DATA_GEMFIRE_CACHE_NAME_PROPERTY,
-		SPRING_DATA_GEMFIRE_NAME_PROPERTY,
-		SPRING_DATA_GEODE_CACHE_NAME_PROPERTY,
-		SPRING_DATA_GEODE_NAME_PROPERTY,
-	})
-	PeerCacheConfigurer peerCacheNameConfigurer(Environment environment) {
-		return (beanName, peerCacheFactoryBean) -> configureCacheName(environment, peerCacheFactoryBean);
-	}
-
-	private void configureCacheName(Environment environment, CacheFactoryBean cacheFactoryBean) {
+	private void configureCacheName(Environment environment, ClientCacheFactoryBean cacheFactoryBean) {
 
 		String springApplicationName = resolveSpringApplicationName(environment);
 
@@ -95,7 +75,7 @@ public class CacheNameAutoConfiguration {
 			.orElse(null);
 	}
 
-	private void setGemFireName(CacheFactoryBean cacheFactoryBean, String gemfireName) {
+	private void setGemFireName(ClientCacheFactoryBean cacheFactoryBean, String gemfireName) {
 		cacheFactoryBean.getProperties().setProperty(GEMFIRE_NAME_PROPERTY, gemfireName);
 	}
 }

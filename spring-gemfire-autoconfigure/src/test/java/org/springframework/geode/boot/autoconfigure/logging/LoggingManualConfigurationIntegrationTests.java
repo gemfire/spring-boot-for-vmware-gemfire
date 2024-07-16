@@ -5,15 +5,11 @@
 package org.springframework.geode.boot.autoconfigure.logging;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
 import java.util.Properties;
-
+import org.apache.geode.cache.client.ClientCache;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import org.apache.geode.cache.GemFireCache;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,7 +26,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  * @author John Blum
  * @see java.util.Properties
  * @see org.junit.Test
- * @see org.apache.geode.cache.GemFireCache
+ * @see org.apache.geode.cache.client.ClientCache
  * @see org.springframework.boot.autoconfigure.SpringBootApplication
  * @see org.springframework.boot.test.context.SpringBootTest
  * @see org.springframework.data.gemfire.config.annotation.EnableLogging
@@ -54,7 +50,7 @@ public class LoggingManualConfigurationIntegrationTests extends IntegrationTests
 	private Environment environment;
 
 	@Autowired
-	private GemFireCache cache;
+	private ClientCache cache;
 
 	@Before
 	public void setup() {

@@ -4,11 +4,9 @@
  */
 package example.echo.config;
 
-import org.apache.geode.cache.GemFireCache;
 import org.apache.geode.cache.Region;
 import org.apache.geode.cache.client.ClientCache;
 import org.apache.geode.cache.client.ClientRegionShortcut;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.gemfire.GemfireTemplate;
@@ -20,7 +18,7 @@ import org.springframework.data.gemfire.util.RegionUtils;
  * a {@link ClientCache} {@link Region} for echo messages.
  *
  * @author John Blum
- * @see org.apache.geode.cache.GemFireCache
+ * @see org.apache.geode.cache.client.ClientCache
  * @see org.apache.geode.cache.Region
  * @see org.apache.geode.cache.client.ClientCache
  * @see org.springframework.context.annotation.Bean
@@ -36,7 +34,7 @@ public class EchoClientConfiguration {
 	protected static final String REGION_NAME = "Echo";
 
 	@Bean(REGION_NAME)
-	public ClientRegionFactoryBean<String, String> echoRegion(GemFireCache gemfireCache) {
+	public ClientRegionFactoryBean<String, String> echoRegion(ClientCache gemfireCache) {
 
 		ClientRegionFactoryBean<String, String> echoRegion = new ClientRegionFactoryBean<>();
 
@@ -48,7 +46,7 @@ public class EchoClientConfiguration {
 	}
 
 	@Bean
-	public GemfireTemplate echoTemplate(GemFireCache gemfireCache) {
+	public GemfireTemplate echoTemplate(ClientCache gemfireCache) {
 		return new GemfireTemplate(gemfireCache.getRegion(RegionUtils.toRegionPath(REGION_NAME)));
 	}
 }

@@ -5,13 +5,11 @@
 package org.springframework.geode.boot.autoconfigure;
 
 import static org.springframework.data.gemfire.util.RuntimeExceptionFactory.newIllegalStateException;
-
 import java.util.Optional;
 import java.util.Properties;
-
-import org.apache.geode.cache.GemFireCache;
 import org.apache.geode.cache.client.ClientCache;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
@@ -36,16 +34,12 @@ import org.springframework.geode.core.env.support.User;
 import org.springframework.lang.Nullable;
 import org.springframework.util.StringUtils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * Spring Boot {@link EnableAutoConfiguration auto-configuration} enabling Apache Geode's Security functionality,
  * and specifically Authentication between a client and server using Spring Data Geode Security annotations.
  *
  * @author John Blum
  * @see java.util.Properties
- * @see org.apache.geode.cache.GemFireCache
  * @see org.apache.geode.cache.client.ClientCache
  * @see org.springframework.boot.SpringApplication
  * @see org.springframework.boot.SpringBootConfiguration
@@ -77,7 +71,7 @@ import org.slf4j.LoggerFactory;
 @AutoConfigureBefore(ClientCacheAutoConfiguration.class)
 @Conditional(ClientSecurityAutoConfiguration.EnableSecurityCondition.class)
 @ConditionalOnClass({ ClientCacheFactoryBean.class, ClientCache.class })
-@ConditionalOnMissingBean(GemFireCache.class)
+@ConditionalOnMissingBean(ClientCache.class)
 @EnableSecurity
 //@Import(HttpBasicAuthenticationSecurityConfiguration.class)
 @SuppressWarnings("unused")

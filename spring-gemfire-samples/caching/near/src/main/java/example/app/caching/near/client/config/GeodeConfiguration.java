@@ -22,11 +22,10 @@ package example.app.caching.near.client.config;
 
 import org.apache.geode.cache.CacheListener;
 import org.apache.geode.cache.EntryEvent;
-import org.apache.geode.cache.GemFireCache;
 import org.apache.geode.cache.InterestResultPolicy;
 import org.apache.geode.cache.Region;
+import org.apache.geode.cache.client.ClientCache;
 import org.apache.geode.cache.client.ClientRegionShortcut;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.gemfire.client.ClientRegionFactoryBean;
@@ -58,7 +57,7 @@ public class GeodeConfiguration {
 	//  because...) once DATAGEODE-219 is resolved. :(
 	// tag::region[]
 	@Bean("YellowPages")
-	public ClientRegionFactoryBean<Object, Object> yellowPagesRegion(GemFireCache gemfireCache) {
+	public ClientRegionFactoryBean<Object, Object> yellowPagesRegion(ClientCache gemfireCache) {
 
 		ClientRegionFactoryBean<Object, Object> clientRegion = new ClientRegionFactoryBean<>();
 

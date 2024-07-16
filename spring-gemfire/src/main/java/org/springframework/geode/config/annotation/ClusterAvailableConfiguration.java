@@ -5,7 +5,7 @@
 package org.springframework.geode.config.annotation;
 
 import java.util.Set;
-
+import org.slf4j.Logger;
 import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
 import org.springframework.boot.cloud.CloudPlatform;
 import org.springframework.context.annotation.ConditionContext;
@@ -13,16 +13,13 @@ import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.core.type.AnnotatedTypeMetadata;
-import org.springframework.data.gemfire.config.annotation.EnableClusterConfiguration;
 import org.springframework.data.gemfire.support.ConnectionEndpointList;
 import org.springframework.data.gemfire.util.CollectionUtils;
 import org.springframework.lang.NonNull;
 
-import org.slf4j.Logger;
-
 /**
- * The {@link ClusterAvailableConfiguration} class is a Spring {@link Configuration} class that enables configuration
- * when an Apache Geode cluster of servers are available.
+ * The {@link ClusterAvailableConfiguration} class is a Spring {@link Configuration} class that connects to a cluster
+ * of servers when available.
  *
  * @author John Blum
  * @see AnyNestedCondition
@@ -33,13 +30,11 @@ import org.slf4j.Logger;
  * @see Configuration
  * @see Environment
  * @see AnnotatedTypeMetadata
- * @see EnableClusterConfiguration
  * @see ClusterAwareConfiguration
  * @since 1.2.0
  */
 @Configuration
 @Conditional(ClusterAvailableConfiguration.AnyClusterAvailableCondition.class)
-@EnableClusterConfiguration(requireHttps = false, useHttp = true)
 @SuppressWarnings("unused")
 public class ClusterAvailableConfiguration {
 

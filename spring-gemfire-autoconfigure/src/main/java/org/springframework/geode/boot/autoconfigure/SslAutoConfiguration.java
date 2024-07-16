@@ -5,7 +5,6 @@
 package org.springframework.geode.boot.autoconfigure;
 
 import static org.springframework.data.gemfire.util.ArrayUtils.nullSafeArray;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -13,9 +12,9 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.Properties;
-
-import org.apache.geode.cache.GemFireCache;
-
+import org.apache.geode.cache.client.ClientCache;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
@@ -35,15 +34,12 @@ import org.springframework.core.env.PropertySource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.type.AnnotatedTypeMetadata;
-import org.springframework.data.gemfire.CacheFactoryBean;
+import org.springframework.data.gemfire.client.ClientCacheFactoryBean;
 import org.springframework.data.gemfire.config.annotation.EnableSsl;
 import org.springframework.util.Assert;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Spring Boot {@link EnableAutoConfiguration auto-configuration} enabling Apache Geode's SSL transport
@@ -53,7 +49,7 @@ import org.slf4j.LoggerFactory;
  * @see java.io.File
  * @see java.net.URL
  * @see java.util.Properties
- * @see org.apache.geode.cache.GemFireCache
+ * @see org.apache.geode.cache.client.ClientCache
  * @see org.springframework.boot.SpringApplication
  * @see org.springframework.boot.SpringBootConfiguration
  * @see org.springframework.boot.autoconfigure.AutoConfigureBefore
@@ -71,7 +67,7 @@ import org.slf4j.LoggerFactory;
  * @see org.springframework.core.io.ClassPathResource
  * @see org.springframework.core.io.Resource
  * @see org.springframework.core.type.AnnotatedTypeMetadata
- * @see org.springframework.data.gemfire.CacheFactoryBean
+ * @see org.springframework.data.gemfire.client.ClientCacheFactoryBean
  * @see org.springframework.data.gemfire.config.annotation.EnableSsl
  * @see org.springframework.geode.boot.autoconfigure.ClientCacheAutoConfiguration
  * @since 1.0.0
@@ -79,7 +75,7 @@ import org.slf4j.LoggerFactory;
 @SpringBootConfiguration
 @AutoConfigureBefore(ClientCacheAutoConfiguration.class)
 @Conditional(SslAutoConfiguration.EnableSslCondition.class)
-@ConditionalOnClass({ CacheFactoryBean.class, GemFireCache.class })
+@ConditionalOnClass({ ClientCacheFactoryBean.class, ClientCache.class })
 @EnableSsl
 @SuppressWarnings("unused")
 public class SslAutoConfiguration {

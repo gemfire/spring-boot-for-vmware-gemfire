@@ -8,10 +8,8 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
-
-import org.apache.geode.cache.GemFireCache;
+import org.apache.geode.cache.client.ClientCache;
 import org.apache.geode.pdx.PdxSerializer;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.data.gemfire.mapping.MappingPdxSerializer;
@@ -26,7 +24,7 @@ import org.springframework.lang.Nullable;
  * @author John Blum
  * @see Class
  * @see Predicate
- * @see GemFireCache
+ * @see ClientCache
  * @see PdxSerializer
  * @see BeanPostProcessor
  * @see MappingPdxSerializer
@@ -126,7 +124,7 @@ public class MappingPdxSerializerIncludedTypesRegistrar implements BeanPostProce
 
 	/**
 	 * Registers the configured {@link Class} types with SDG's {@link MappingPdxSerializer} providing the bean
-	 * to post process after initialization is a {@link GemFireCache} instance and SDG's {@link MappingPdxSerializer}
+	 * to post process after initialization is a {@link ClientCache} instance and SDG's {@link MappingPdxSerializer}
 	 * was configured as the cache's {@link PdxSerializer} used to de/serialize objects of the specified {@link Class}
 	 * types.
 	 *
@@ -139,9 +137,9 @@ public class MappingPdxSerializerIncludedTypesRegistrar implements BeanPostProce
 	public @Nullable Object postProcessAfterInitialization(@Nullable Object bean, @Nullable String beanName)
 			throws BeansException {
 
-		if (bean instanceof GemFireCache) {
+		if (bean instanceof ClientCache) {
 
-			GemFireCache cache = (GemFireCache) bean;
+			ClientCache cache = (ClientCache) bean;
 
 			PdxSerializer pdxSerializer = cache.getPdxSerializer();
 

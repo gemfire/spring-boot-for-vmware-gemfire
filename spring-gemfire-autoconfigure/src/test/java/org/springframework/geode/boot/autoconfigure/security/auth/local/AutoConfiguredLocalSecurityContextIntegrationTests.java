@@ -4,16 +4,12 @@
  */
 package org.springframework.geode.boot.autoconfigure.security.auth.local;
 
-import java.io.IOException;
-
+import static com.vmware.gemfire.testcontainers.GemFireCluster.ALL_GLOB;
+import com.vmware.gemfire.testcontainers.GemFireCluster;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
-
-import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.gemfire.config.annotation.CacheServerApplication;
 import org.springframework.geode.boot.autoconfigure.security.auth.AbstractAutoConfiguredSecurityContextIntegrationTests;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
@@ -26,11 +22,10 @@ import org.springframework.test.context.junit4.SpringRunner;
  * @author John Blum
  * @see java.security.Principal
  * @see org.junit.Test
- * @see org.apache.geode.cache.GemFireCache
+ * @see org.apache.geode.cache.client.ClientCache
  * @see org.springframework.boot.autoconfigure.SpringBootApplication
  * @see org.springframework.boot.builder.SpringApplicationBuilder
  * @see org.springframework.boot.test.context.SpringBootTest
- * @see org.springframework.data.gemfire.config.annotation.CacheServerApplication
  * @see org.springframework.geode.boot.autoconfigure.ClientSecurityAutoConfiguration
  * @see org.springframework.geode.boot.autoconfigure.PeerSecurityAutoConfiguration
  * @see org.springframework.geode.boot.autoconfigure.security.auth.AbstractAutoConfiguredSecurityContextIntegrationTests
@@ -50,25 +45,40 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class AutoConfiguredLocalSecurityContextIntegrationTests
 		extends AbstractAutoConfiguredSecurityContextIntegrationTests {
 
+	private static GemFireCluster gemFireCluster;
+
 	@BeforeClass
-	public static void startGemFireServer() throws IOException {
-		startGemFireServer(GemFireServerConfiguration.class,
-			"-Dspring.profiles.active=security-local-server");
+	public static void runGemFireServer() {
+		String dockerImage = System.getProperty("spring.test.gemfire.docker.image");
+		gemFireCluster = new GemFireCluster(dockerImage, 1, 1)
+				.withClasspath(GemFireCluster.ALL_GLOB, System.getProperty("TEST_JAR_PATH"))
+				.withGemFireProperty(ALL_GLOB, "security-manager", TestSecurityManager.class.getName())
+				.withGemFireProperty(ALL_GLOB, "security-username", "ghostrider")
+				.withGemFireProperty(ALL_GLOB, "security-password", "p@55w0rd");
+
+		gemFireCluster.acceptLicense().start();
+
+		gemFireCluster.gfshBuilder()
+				.withCredentials("ghostrider", "p@55w0rd").build()
+				.run("create region --name=Echo --type=REPLICATE",
+						"put --key=Hello --value=Hello --region=Echo",
+						"put --key=Test --value=Test --region=Echo",
+						"put --key=Good-Bye --value=Good-Bye --region=Echo");
+
+		System.setProperty("spring.data.gemfire.pool.locators", "localhost[" + gemFireCluster.getLocatorPort() + "]");
 	}
 
 	@SpringBootApplication
 	static class GemFireClientConfiguration extends BaseGemFireClientConfiguration { }
 
-	@SpringBootApplication
-	@CacheServerApplication(name = "AutoConfiguredLocalSecurityContextIntegrationTestsServer")
-	static class GemFireServerConfiguration extends BaseGemFireServerConfiguration {
+	public static class TestSecurityManager extends AbstractTestSecurityManager {
 
-		public static void main(String[] args) {
+		protected String getUsername() {
+			return "ghostrider";
+		}
 
-			new SpringApplicationBuilder(GemFireServerConfiguration.class)
-				.web(WebApplicationType.NONE)
-				.build()
-				.run(args);
+		protected String getPassword() {
+			return "p@55w0rd";
 		}
 	}
 }

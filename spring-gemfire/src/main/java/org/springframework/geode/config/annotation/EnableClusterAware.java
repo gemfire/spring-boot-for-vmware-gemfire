@@ -10,9 +10,7 @@ import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
 import org.apache.geode.cache.client.ClientCache;
-
 import org.springframework.context.annotation.Import;
 
 /**
@@ -27,7 +25,6 @@ import org.springframework.context.annotation.Import;
  * @see Target
  * @see ClientCache
  * @see Import
- * @see org.springframework.data.gemfire.config.annotation.EnableClusterConfiguration
  * @since 1.2.0
  */
 @Target(ElementType.TYPE)

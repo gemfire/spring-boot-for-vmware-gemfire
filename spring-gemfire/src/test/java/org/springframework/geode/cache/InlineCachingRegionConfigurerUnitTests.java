@@ -16,18 +16,13 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
 import java.util.function.Predicate;
-
+import org.apache.geode.cache.CacheLoader;
+import org.apache.geode.cache.CacheWriter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import org.apache.geode.cache.CacheLoader;
-import org.apache.geode.cache.CacheWriter;
-
-import org.springframework.data.gemfire.PeerRegionFactoryBean;
 import org.springframework.data.gemfire.client.ClientRegionFactoryBean;
 import org.springframework.data.repository.CrudRepository;
 
@@ -41,7 +36,7 @@ import org.springframework.data.repository.CrudRepository;
  * @see java.util.function.Predicate
  * @see org.apache.geode.cache.CacheLoader
  * @see org.apache.geode.cache.CacheWriter
- * @see org.springframework.data.gemfire.PeerRegionFactoryBean
+ * @see org.springframework.data.gemfire.client.ClientRegionFactoryBean
  * @see org.springframework.data.gemfire.client.ClientRegionFactoryBean
  * @see org.springframework.data.repository.CrudRepository
  * @see org.springframework.geode.cache.InlineCachingRegionConfigurer
@@ -146,7 +141,7 @@ public class InlineCachingRegionConfigurerUnitTests {
 	@SuppressWarnings("unchecked")
 	public void configurePeerRegionFactoryBeanWithInlineCachingWhenPredicateReturnsFalse() {
 
-		PeerRegionFactoryBean<?, ?> peerRegionFactoryBean = mock(PeerRegionFactoryBean.class);
+		ClientRegionFactoryBean<?, ?> peerRegionFactoryBean = mock(ClientRegionFactoryBean.class);
 
 		doAnswer(answer -> {
 
@@ -190,7 +185,7 @@ public class InlineCachingRegionConfigurerUnitTests {
 	@SuppressWarnings("unchecked")
 	public void doesNotConfigurePeerRegionFactoryBeanWithInlineCachingWhenPredicateReturnsFalse() {
 
-		PeerRegionFactoryBean<?, ?> peerRegionFactoryBean = mock(PeerRegionFactoryBean.class);
+		ClientRegionFactoryBean<?, ?> peerRegionFactoryBean = mock(ClientRegionFactoryBean.class);
 
 		when(this.mockPredicate.test(anyString())).thenReturn(false);
 

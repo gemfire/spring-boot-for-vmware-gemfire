@@ -6,13 +6,9 @@ package org.springframework.geode.cache;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.Predicate;
-
-import org.apache.geode.cache.Cache;
 import org.apache.geode.cache.DiskStore;
 import org.apache.geode.cache.Region;
 import org.apache.geode.cache.asyncqueue.AsyncEvent;
@@ -23,17 +19,12 @@ import org.apache.geode.cache.wan.GatewayEventFilter;
 import org.apache.geode.cache.wan.GatewayEventSubstitutionFilter;
 import org.apache.geode.cache.wan.GatewaySender;
 import org.apache.geode.cache.wan.GatewaySender.OrderPolicy;
-
-import org.springframework.data.gemfire.PeerRegionFactoryBean;
 import org.springframework.data.gemfire.config.annotation.RegionConfigurer;
-import org.springframework.data.gemfire.util.ArrayUtils;
-import org.springframework.data.gemfire.util.CollectionUtils;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.geode.cache.RepositoryAsyncEventListener.AsyncEventErrorHandler;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 
 /**
  * A Spring Data for Apache Geode {@link RegionConfigurer} implementation used to configure a target {@link Region}
@@ -43,7 +34,6 @@ import org.springframework.util.StringUtils;
  * @author John Blum
  * @see Function
  * @see Predicate
- * @see Cache
  * @see Region
  * @see AsyncEventListener
  * @see AsyncEventQueue
@@ -51,7 +41,6 @@ import org.springframework.util.StringUtils;
  * @see GatewayEventFilter
  * @see GatewayEventSubstitutionFilter
  * @see OrderPolicy
- * @see PeerRegionFactoryBean
  * @see RegionConfigurer
  * @see CrudRepository
  * @see AsyncEventErrorHandler
@@ -187,32 +176,6 @@ public class AsyncInlineCachingRegionConfigurer<T, ID> implements RegionConfigur
 	}
 
 	/**
-	 * Configures the target {@link Region} by {@link String name} with {@literal Asynchronous Inline Caching}
-	 * functionality.
-	 *
-	 * Effectively, this Configurer creates an {@link AsyncEventQueue} attached to the target {@link Region} with a
-	 * registered {@link RepositoryAsyncEventListener} to perform asynchronous data access operations triggered by
-	 * cache operations to an external, backend data source using a Spring Data {@link CrudRepository}.
-	 *
-	 * @param beanName {@link String} specifying the name of the target {@link Region} and bean name
-	 * in the Spring container.
-	 * @param bean {@link PeerRegionFactoryBean} containing the configuration of the target {@link Region}
-	 * in the Spring container.
-	 * @see PeerRegionFactoryBean
-	 * @see #newAsyncEventQueue(Cache, String)
-	 */
-	@Override
-	public void configure(String beanName, PeerRegionFactoryBean<?, ?> bean) {
-
-		if (getRegionBeanName().test(beanName)) {
-
-			AsyncEventQueue queue = newAsyncEventQueue((Cache) bean.getCache(), beanName);
-
-			bean.addAsyncEventQueues(ArrayUtils.asArray(queue));
-		}
-	}
-
-	/**
 	 * Generates a new {@link String ID} for the {@link AsyncEventQueue}.
 	 *
 	 * @param regionBeanName {@link String name} of the target {@link Region}.
@@ -223,98 +186,6 @@ public class AsyncInlineCachingRegionConfigurer<T, ID> implements RegionConfigur
 		Assert.hasText(regionBeanName, () -> String.format("Region bean name [%s] must be specified", regionBeanName));
 
 		return regionBeanName.concat(String.format("-AEQ-%s", UUID.randomUUID().toString()));
-	}
-
-	/**
-	 * Constructs a new instance of an {@link AsyncEventQueue} to attach to the target {@link Region} configured for
-	 * {@literal Asynchronous Inline Caching}.
-	 *
-	 * @param peerCache reference to the {@link Cache peer cache}; must not be {@literal null}.
-	 * @param regionBeanName {@link String name} of the target {@link Region}; must not be {@literal null}.
-	 * @return a new {@link AsyncEventQueue}.
-	 * @see AsyncEventQueue
-	 * @see Cache
-	 * @see #generateId(String)
-	 * @see #newAsyncEventQueueFactory(Cache)
-	 * @see #newAsyncEventQueue(AsyncEventQueueFactory, String, AsyncEventListener)
-	 * @see #newRepositoryAsyncEventListener()
-	 * @see #postProcess(AsyncEventListener)
-	 * @see #postProcess(AsyncEventQueue)
-	 * @see #postProcess(AsyncEventQueueFactory)
-	 */
-	protected AsyncEventQueue newAsyncEventQueue(@NonNull Cache peerCache, @NonNull String regionBeanName) {
-
-		AsyncEventQueueFactory asyncEventQueueFactory = newAsyncEventQueueFactory(peerCache);
-
-		Optional.ofNullable(this.batchConflationEnabled).ifPresent(asyncEventQueueFactory::setBatchConflationEnabled);
-		Optional.ofNullable(this.batchSize).ifPresent(asyncEventQueueFactory::setBatchSize);
-		Optional.ofNullable(this.batchTimeInterval).ifPresent(asyncEventQueueFactory::setBatchTimeInterval);
-		Optional.ofNullable(this.diskStoreName).filter(StringUtils::hasText).ifPresent(asyncEventQueueFactory::setDiskStoreName);
-		Optional.ofNullable(this.diskSynchronous).ifPresent(asyncEventQueueFactory::setDiskSynchronous);
-		Optional.ofNullable(this.dispatcherThreads).ifPresent(asyncEventQueueFactory::setDispatcherThreads);
-		Optional.ofNullable(this.forwardExpirationDestroy).ifPresent(asyncEventQueueFactory::setForwardExpirationDestroy);
-		Optional.ofNullable(this.gatewayEventSubstitutionFilter).ifPresent(asyncEventQueueFactory::setGatewayEventSubstitutionListener);
-		Optional.ofNullable(this.maximumQueueMemory).ifPresent(asyncEventQueueFactory::setMaximumQueueMemory);
-		Optional.ofNullable(this.orderPolicy).ifPresent(asyncEventQueueFactory::setOrderPolicy);
-		Optional.ofNullable(this.parallel).ifPresent(asyncEventQueueFactory::setParallel);
-		Optional.ofNullable(this.persistent).ifPresent(asyncEventQueueFactory::setPersistent);
-
-		CollectionUtils.nullSafeList(this.gatewayEventFilters).stream()
-			.filter(Objects::nonNull)
-			.forEach(asyncEventQueueFactory::addGatewayEventFilter);
-
-		if (Boolean.TRUE.equals(this.pauseEventDispatching)) {
-			asyncEventQueueFactory.pauseEventDispatching();
-		}
-
-		String asyncEventQueueId = generateId(regionBeanName);
-
-		AsyncEventListener asyncEventListener = newRepositoryAsyncEventListener();
-
-		asyncEventListener = postProcess(asyncEventListener);
-		asyncEventQueueFactory = postProcess(asyncEventQueueFactory);
-
-		AsyncEventQueue asyncEventQueue =
-			newAsyncEventQueue(asyncEventQueueFactory, asyncEventQueueId, asyncEventListener);
-
-		asyncEventQueue = postProcess(asyncEventQueue);
-
-		return asyncEventQueue;
-	}
-
-	/**
-	 * Constructs (creates) a new instance of {@link AsyncEventQueue} using the given {@link AsyncEventQueueFactory}
-	 * with the given {@link String AEQ ID} and {@link AsyncEventListener}.
-	 *
-	 * @param factory {@link AsyncEventQueueFactory} used to create the {@link AsyncEventQueue};
-	 * must not be {@literal null}.
-	 * @param asyncEventQueueId {@link String} containing the {@literal ID} for the {@link AsyncEventQueue};
-	 * must not be {@literal null}.
-	 * @param listener {@link AsyncEventListener} registered with the {@link AsyncEventQueue} to process cache events
-	 * from the {@link AsyncEventQueue} attached to the {@link Region}.
-	 * @return a new {@link AsyncEventQueue} with the {@link String ID} and registered {@link AsyncEventListener}.
-	 * @see AsyncEventQueueFactory
-	 * @see AsyncEventQueue
-	 * @see AsyncEventListener
-	 */
-	protected @NonNull AsyncEventQueue newAsyncEventQueue(@NonNull AsyncEventQueueFactory factory,
-			@NonNull String asyncEventQueueId, @NonNull AsyncEventListener listener) {
-
-		return factory.create(asyncEventQueueId, listener);
-	}
-
-	/**
-	 * Constructs (creates) a new instance of the {@link AsyncEventQueueFactory} from the given {@literal peer}
-	 * {@link Cache}.
-	 *
-	 * @param peerCache {@literal Peer} {@link Cache} instance used to create an instance of
-	 * the {@link AsyncEventQueueFactory}; must not be {@literal null}.
-	 * @return a new instance of {@link AsyncEventQueueFactory} to create a {@link AsyncEventQueue}.
-	 * @see AsyncEventQueueFactory
-	 * @see Cache
-	 */
-	protected @NonNull AsyncEventQueueFactory newAsyncEventQueueFactory(@NonNull Cache peerCache) {
-		return peerCache.createAsyncEventQueueFactory();
 	}
 
 	/**

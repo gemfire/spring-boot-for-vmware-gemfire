@@ -7,36 +7,29 @@ package org.springframework.geode.config.annotation;
 
 import java.lang.annotation.Annotation;
 import java.util.Optional;
-
-import org.apache.geode.cache.Cache;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportAware;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.data.gemfire.config.annotation.ClientCacheConfigurer;
-import org.springframework.data.gemfire.config.annotation.PeerCacheConfigurer;
 import org.springframework.data.gemfire.config.annotation.support.AbstractAnnotationConfigSupport;
 import org.springframework.util.Assert;
 
 /**
  * The {@link DistributedSystemIdConfiguration} class is a Spring {@link Configuration} class used to configure
- * the {@literal distributed-system-id} for a {@link Cache peer Cache member} in a cluster
+ * the {@literal distributed-system-id} for a peer Cache member in a cluster
  * when using the P2P topology.
  *
  * @author John Blum
- * @see Cache
  * @see Bean
  * @see Configuration
  * @see ImportAware
  * @see AnnotationAttributes
  * @see AnnotationMetadata
  * @see ClientCacheConfigurer
- * @see PeerCacheConfigurer
  * @see AbstractAnnotationConfigSupport
  * @see UseDistributedSystemId
  * @since 1.0.0
@@ -109,14 +102,5 @@ public class DistributedSystemIdConfiguration extends AbstractAnnotationConfigSu
 					distributedSystemId);
 			}
 		});
-	}
-
-	@Bean
-	PeerCacheConfigurer peerCacheDistributedSystemIdConfigurer() {
-
-		return (beanName, cacheFactoryBean) ->
-			getDistributedSystemId().ifPresent(id -> cacheFactoryBean.getProperties()
-				.setProperty(GEMFIRE_DISTRIBUTED_SYSTEM_ID_PROPERTY,
-					String.valueOf(validateDistributedSystemId(id))));
 	}
 }

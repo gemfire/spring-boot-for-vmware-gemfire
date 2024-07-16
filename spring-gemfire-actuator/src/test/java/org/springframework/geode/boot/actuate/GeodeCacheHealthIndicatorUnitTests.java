@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.apache.geode.CancelCriterion;
-import org.apache.geode.cache.GemFireCache;
+import org.apache.geode.cache.client.ClientCache;
 import org.apache.geode.cache.control.ResourceManager;
 import org.apache.geode.distributed.DistributedMember;
 import org.apache.geode.distributed.DistributedSystem;
@@ -40,7 +40,7 @@ import org.springframework.data.gemfire.tests.mock.CacheMockObjects;
  * @see org.mockito.Mockito
  * @see org.mockito.junit.MockitoJUnitRunner
  * @see org.apache.geode.CancelCriterion
- * @see org.apache.geode.cache.GemFireCache
+ * @see org.apache.geode.cache.client.ClientCache
  * @see org.apache.geode.cache.control.ResourceManager
  * @see org.apache.geode.distributed.DistributedMember
  * @see org.apache.geode.distributed.DistributedSystem
@@ -54,7 +54,7 @@ import org.springframework.data.gemfire.tests.mock.CacheMockObjects;
 public class GeodeCacheHealthIndicatorUnitTests {
 
 	@Mock
-	private GemFireCache mockGemFireCache;
+	private ClientCache mockGemFireCache;
 
 	private GeodeCacheHealthIndicator cacheHealthIndicator;
 
@@ -89,7 +89,7 @@ public class GeodeCacheHealthIndicatorUnitTests {
 		ResourceManager mockResourceManager = CacheMockObjects.mockResourceManager(0.9f,
 			0.95f, 0.85f, 0.9f);
 
-		GemFireCache mockGemFireCache = CacheMockObjects.mockGemFireCache(this.mockGemFireCache,
+		ClientCache mockGemFireCache = CacheMockObjects.mockGemFireCache(this.mockGemFireCache,
 			"MockGemFireCache", mockDistributedSystem, mockResourceManager);
 
 		CancelCriterion mockCancelCriterion = mock(CancelCriterion.class);

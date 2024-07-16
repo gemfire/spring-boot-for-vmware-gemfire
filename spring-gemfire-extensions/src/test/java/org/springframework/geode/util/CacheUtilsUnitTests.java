@@ -24,14 +24,11 @@ import java.util.TreeSet;
 
 import org.junit.Test;
 
-import org.apache.geode.cache.Cache;
+import org.apache.geode.cache.client.ClientCache;
 import org.apache.geode.cache.DataPolicy;
-import org.apache.geode.cache.GemFireCache;
 import org.apache.geode.cache.Region;
 import org.apache.geode.cache.RegionAttributes;
 import org.apache.geode.cache.RegionService;
-import org.apache.geode.cache.client.ClientCache;
-import org.apache.geode.internal.cache.GemFireCacheImpl;
 
 /**
  * Unit Tests for {@link CacheUtils}.
@@ -39,8 +36,7 @@ import org.apache.geode.internal.cache.GemFireCacheImpl;
  * @author John Blum
  * @see org.junit.Test
  * @see org.mockito.Mockito
- * @see org.apache.geode.cache.Cache
- * @see org.apache.geode.cache.GemFireCache
+ * @see org.apache.geode.cache.client.ClientCache
  * @see org.apache.geode.cache.Region
  * @see org.apache.geode.cache.RegionAttributes
  * @see org.apache.geode.cache.RegionService
@@ -76,7 +72,6 @@ public class CacheUtilsUnitTests {
 		assertThat(CacheUtils.collectValues(mockRegion)).containsExactlyInAnyOrder(keysValues.values().toArray());
 
 		verify(mockRegion, times(2)).getAttributes();
-		verify(mockRegion, times(1)).getRegionService();
 		verify(mockRegion, times(1)).keySetOnServer();
 		verify(mockRegion, times(1)).getAll(eq(keySetOnServer));
 		verify(mockRegion, never()).values();
@@ -110,7 +105,6 @@ public class CacheUtilsUnitTests {
 		assertThat(values).isEmpty();
 
 		verify(mockRegion, times(3)).getAttributes();
-		verify(mockRegion, times(1)).getRegionService();
 		verify(mockRegion, times(1)).keySetOnServer();
 		verify(mockRegion, times(1)).getAll(eq(keySetOnServer));
 		verify(mockRegion, never()).values();
@@ -141,7 +135,6 @@ public class CacheUtilsUnitTests {
 		assertThat(values).isEmpty();
 
 		verify(mockRegion, times(3)).getAttributes();
-		verify(mockRegion, times(1)).getRegionService();
 		verify(mockRegion, times(1)).keySetOnServer();
 		verify(mockRegion, never()).getAll(any());
 		verify(mockRegion, never()).values();
@@ -163,7 +156,6 @@ public class CacheUtilsUnitTests {
 
 		assertThat(CacheUtils.collectValues(mockRegion)).containsExactlyInAnyOrder(values.toArray());
 
-		verify(mockRegion, times(1)).getRegionService();
 		verify(mockRegion, times(1)).values();
 	}
 
@@ -187,32 +179,12 @@ public class CacheUtilsUnitTests {
 		assertThat(values).isNotNull();
 		assertThat(values).containsExactly("one", "two");
 
-		verify(mockRegion, times(1)).getRegionService();
 		verify(mockRegion, times(3)).getAttributes();
 		verify(mockRegion, times(1)).values();
 		verify(mockRegion, never()).keySetOnServer();
 		verify(mockRegion, never()).getAll(any());
 		verify(mockRegionAttributes, times(1)).getDataPolicy();
 		verify(mockRegionAttributes, times(1)).getPoolName();
-		verifyNoInteractions(mockRegionService);
-	}
-
-	@Test
-	public void collectValuesFromPeerRegion() {
-
-		Region<Object, Object> mockRegion = mock(Region.class);
-
-		RegionService mockRegionService = mock(Cache.class);
-
-		Collection<Object> values = Arrays.asList("one", "two", "three");
-
-		doReturn(mockRegionService).when(mockRegion).getRegionService();
-		doReturn(values).when(mockRegion).values();
-
-		assertThat(CacheUtils.collectValues(mockRegion)).containsExactlyInAnyOrder(values.toArray());
-
-		verify(mockRegion, times(1)).getRegionService();
-		verify(mockRegion, times(1)).values();
 		verifyNoInteractions(mockRegionService);
 	}
 
@@ -229,195 +201,6 @@ public class CacheUtilsUnitTests {
 
 			throw expected;
 		}
-	}
-
-	@Test
-	public void isClientCacheWithClientCache() {
-		assertThat(CacheUtils.isClientCache(mock(ClientCache.class))).isTrue();
-	}
-
-	@Test
-	public void isClientCacheWithGemFireCacheImplWhenIsClientReturnsTrue() {
-
-		GemFireCacheImpl mockCache = mock(GemFireCacheImpl.class);
-
-		doReturn(true).when(mockCache).isClient();
-
-		assertThat(CacheUtils.isClientCache(mockCache)).isTrue();
-
-		verify(mockCache, times(1)).isClient();
-		verifyNoMoreInteractions(mockCache);
-	}
-
-	@Test
-	public void isClientCacheWithGemFireCacheImplWhenIsClientReturnsFalse() {
-
-		GemFireCacheImpl mockCache = mock(GemFireCacheImpl.class);
-
-		doReturn(false).when(mockCache).isClient();
-
-		assertThat(CacheUtils.isClientCache(mockCache)).isFalse();
-
-		verify(mockCache, times(1)).isClient();
-		verifyNoMoreInteractions(mockCache);
-	}
-
-	@Test
-	public void isClientCacheWithNonClientCache() {
-		assertThat(CacheUtils.isClientCache(mock(Cache.class))).isFalse();
-		assertThat(CacheUtils.isClientCache(mock(GemFireCache.class))).isFalse();
-		assertThat(CacheUtils.isClientCache(mock(RegionService.class))).isFalse();
-	}
-
-	@Test
-	public void isClientCacheWithNull() {
-		assertThat(CacheUtils.isClientCache(null)).isFalse();
-	}
-
-	@Test
-	public void isClientRegionWithClientRegionInClientCache() {
-
-		Region<?, ?> mockRegion = mock(Region.class);
-
-		RegionService mockRegionService = mock(ClientCache.class);
-
-		doReturn(mockRegionService).when(mockRegion).getRegionService();
-
-		assertThat(CacheUtils.isClientRegion(mockRegion)).isTrue();
-		assertThat(CacheUtils.isPeerRegion(mockRegion)).isFalse();
-
-		verify(mockRegion, times(2)).getRegionService();
-		verifyNoMoreInteractions(mockRegion);
-		verifyNoInteractions(mockRegionService);
-	}
-
-	@Test
-	public void isClientRegionWithClientRegionDeterminedByPoolName() {
-
-		Region<?, ?> mockRegion = mock(Region.class);
-
-		RegionAttributes<?, ?> mockRegionAttributes = mock(RegionAttributes.class);
-
-		RegionService mockRegionService = mock(RegionService.class);
-
-		doReturn(mockRegionAttributes).when(mockRegion).getAttributes();
-		doReturn(mockRegionService).when(mockRegion).getRegionService();
-		doReturn("TestPool").when(mockRegionAttributes).getPoolName();
-
-		assertThat(CacheUtils.isClientRegion(mockRegion)).isTrue();
-		assertThat(CacheUtils.isPeerRegion(mockRegion)).isFalse();
-
-		verify(mockRegion, times(2)).getRegionService();
-		verify(mockRegion, times(2)).getAttributes();
-		verify(mockRegionAttributes, times(2)).getPoolName();
-		verifyNoMoreInteractions(mockRegion, mockRegionAttributes);
-		verifyNoInteractions(mockRegionService);
-	}
-
-	@Test
-	public void isClientRegionWithRegionHavingNoPoolName() {
-
-		Region<?, ?> mockRegion = mock(Region.class);
-
-		RegionAttributes<?, ?> mockRegionAttributes = mock(RegionAttributes.class);
-
-		doReturn(mockRegionAttributes).when(mockRegion).getAttributes();
-		doReturn(null).when(mockRegion).getRegionService();
-		doReturn("  ").when(mockRegionAttributes).getPoolName();
-
-		assertThat(CacheUtils.isClientRegion(mockRegion)).isFalse();
-		assertThat(CacheUtils.isPeerRegion(mockRegion)).isTrue();
-
-		verify(mockRegion, times(2)).getRegionService();
-		verify(mockRegion, times(2)).getAttributes();
-		verify(mockRegionAttributes, times(2)).getPoolName();
-		verifyNoMoreInteractions(mockRegion, mockRegionAttributes);
-	}
-
-	@Test
-	public void isClientRegionWithRegionHavingNoRegionAttributes() {
-
-		Region<?, ?> mockRegion = mock(Region.class);
-
-		doReturn(null).when(mockRegion).getAttributes();
-		doReturn(null).when(mockRegion).getRegionService();
-
-		assertThat(CacheUtils.isClientRegion(mockRegion)).isFalse();
-		assertThat(CacheUtils.isPeerRegion(mockRegion)).isTrue();
-
-		verify(mockRegion, times(2)).getRegionService();
-		verify(mockRegion, times(2)).getAttributes();
-		verifyNoMoreInteractions(mockRegion);
-	}
-
-	@Test
-	public void isClientRegionWithPeerRegionInPeerCache() {
-
-		Region<?, ?> mockRegion = mock(Region.class);
-
-		RegionService mockRegionService = mock(Cache.class);
-
-		doReturn(mockRegionService).when(mockRegion).getRegionService();
-
-		assertThat(CacheUtils.isClientRegion(mockRegion)).isFalse();
-		assertThat(CacheUtils.isPeerRegion(mockRegion)).isTrue();
-
-		verify(mockRegion, times(2)).getRegionService();
-		verify(mockRegion, times(2)).getAttributes();
-		verifyNoMoreInteractions(mockRegion);
-	}
-
-	@Test
-	public void isClientRegionWithNull() {
-		assertThat(CacheUtils.isClientRegion(null)).isFalse();
-	}
-
-	@Test
-	public void isPeerCacheWithPeerCache() {
-		assertThat(CacheUtils.isPeerCache(mock(Cache.class))).isTrue();
-	}
-
-	@Test
-	public void isPeerCacheWithGemFireCacheImplWhenIsClientReturnsTrue() {
-
-		GemFireCacheImpl mockCache = mock(GemFireCacheImpl.class);
-
-		doReturn(true).when(mockCache).isClient();
-
-		assertThat(CacheUtils.isPeerCache(mockCache)).isFalse();
-
-		verify(mockCache, times(1)).isClient();
-		verifyNoMoreInteractions(mockCache);
-	}
-
-	@Test
-	public void isPeerCacheWithGemFireCacheImplWhenIsClientReturnsFalse() {
-
-		GemFireCacheImpl mockCache = mock(GemFireCacheImpl.class);
-
-		doReturn(false).when(mockCache).isClient();
-
-		assertThat(CacheUtils.isPeerCache(mockCache)).isTrue();
-
-		verify(mockCache, times(1)).isClient();
-		verifyNoMoreInteractions(mockCache);
-	}
-
-	@Test
-	public void isPeerCacheWithNonPeerCache() {
-		assertThat(CacheUtils.isPeerCache(mock(ClientCache.class))).isFalse();
-		assertThat(CacheUtils.isPeerCache(mock(GemFireCache.class))).isFalse();
-		assertThat(CacheUtils.isPeerCache(mock(RegionService.class))).isFalse();
-	}
-
-	@Test
-	public void isPeerCacheWithNull() {
-		assertThat(CacheUtils.isPeerCache(null)).isFalse();
-	}
-
-	@Test
-	public void isPeerRegionWithNull() {
-		assertThat(CacheUtils.isPeerRegion(null)).isFalse();
 	}
 
 	@Test

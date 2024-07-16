@@ -8,10 +8,7 @@ import java.lang.annotation.Annotation;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-
-import org.apache.geode.cache.Cache;
 import org.apache.geode.cache.client.ClientCache;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportAware;
@@ -20,28 +17,24 @@ import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.core.type.AnnotationMetadata;
-import org.springframework.data.gemfire.CacheFactoryBean;
+import org.springframework.data.gemfire.client.ClientCacheFactoryBean;
 import org.springframework.data.gemfire.config.annotation.ClientCacheConfigurer;
-import org.springframework.data.gemfire.config.annotation.PeerCacheConfigurer;
 import org.springframework.data.gemfire.config.annotation.support.AbstractAnnotationConfigSupport;
 import org.springframework.util.StringUtils;
 
 /**
  * The {@link MemberNameConfiguration} class is a Spring {@link Configuration} class used to configure an Apache Geode
  * member name in the distributed system, whether the member is a {@link ClientCache client} in the client/server
- * topology or a {@link Cache peer} in a cluster using the P2P topology.
+ * topology or a Cache peer in a cluster using the P2P topology.
  *
  * @author John Blum
- * @see Cache
  * @see ClientCache
  * @see Bean
  * @see Configuration
  * @see ImportAware
  * @see AnnotationAttributes
  * @see AnnotationMetadata
- * @see CacheFactoryBean
  * @see ClientCacheConfigurer
- * @see PeerCacheConfigurer
  * @see AbstractAnnotationConfigSupport
  * @see UseMemberName
  * @since 1.0.0
@@ -108,14 +101,8 @@ public class MemberNameConfiguration extends AbstractAnnotationConfigSupport imp
 	ClientCacheConfigurer clientCacheMemberNameConfigurer(Environment environment) {
 		return (beanName, clientCacheFactoryBean) -> configureMemberName(environment, clientCacheFactoryBean);
 	}
-
-	@Bean
-	@Order(Ordered.HIGHEST_PRECEDENCE) // apply first (e.g. before CacheNameAutoConfiguration)
-	PeerCacheConfigurer peerCacheMemberNameConfigurer(Environment environment) {
-		return (beanName, peerCacheFactoryBean) -> configureMemberName(environment, peerCacheFactoryBean);
-	}
-
-	private void configureMemberName(Environment environment, CacheFactoryBean cacheFactoryBean) {
+	
+	private void configureMemberName(Environment environment, ClientCacheFactoryBean cacheFactoryBean) {
 
 		getMemberName()
 			.filter(memberName -> namePropertiesNotPresent(environment))

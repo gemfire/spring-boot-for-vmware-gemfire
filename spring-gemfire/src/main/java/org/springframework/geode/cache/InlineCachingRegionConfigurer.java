@@ -7,12 +7,9 @@ package org.springframework.geode.cache;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
-
 import org.apache.geode.cache.CacheLoader;
 import org.apache.geode.cache.CacheWriter;
 import org.apache.geode.cache.Region;
-
-import org.springframework.data.gemfire.PeerRegionFactoryBean;
 import org.springframework.data.gemfire.client.ClientRegionFactoryBean;
 import org.springframework.data.gemfire.config.annotation.RegionConfigurer;
 import org.springframework.data.repository.CrudRepository;
@@ -24,9 +21,6 @@ import org.springframework.util.Assert;
  * A {@link RegionConfigurer} implementation used to enable Inline Caching on a designated {@link Region}.
  *
  * @author John Blum
- * @see Predicate
- * @see CacheLoader
- * @see CacheWriter
  * @see Region
  * @see RegionConfigurer
  * @see RepositoryCacheLoaderRegionConfigurer
@@ -41,11 +35,6 @@ public class InlineCachingRegionConfigurer<T, ID> implements RegionConfigurer {
 
 		@Override
 		public void configure(String beanName, ClientRegionFactoryBean<?, ?> bean) {
-			regionConfigurers.forEach(regionConfigurer -> regionConfigurer.configure(beanName, bean));
-		}
-
-		@Override
-		public void configure(String beanName, PeerRegionFactoryBean<?, ?> bean) {
 			regionConfigurers.forEach(regionConfigurer -> regionConfigurer.configure(beanName, bean));
 		}
 	};
@@ -113,11 +102,6 @@ public class InlineCachingRegionConfigurer<T, ID> implements RegionConfigurer {
 
 	@Override
 	public void configure(String beanName, ClientRegionFactoryBean<?, ?> bean) {
-		this.compositeRegionConfigurer.configure(beanName, bean);
-	}
-
-	@Override
-	public void configure(String beanName, PeerRegionFactoryBean<?, ?> bean) {
 		this.compositeRegionConfigurer.configure(beanName, bean);
 	}
 }

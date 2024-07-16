@@ -5,16 +5,12 @@
 package org.springframework.geode.boot.autoconfigure.template;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
 import jakarta.annotation.Resource;
-
+import org.apache.geode.cache.Region;
+import org.apache.geode.cache.client.ClientCache;
+import org.apache.geode.cache.client.ClientRegionShortcut;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import org.apache.geode.cache.GemFireCache;
-import org.apache.geode.cache.Region;
-import org.apache.geode.cache.client.ClientRegionShortcut;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -92,7 +88,7 @@ public class ExistingRegionTemplateByRegionAutoConfigurationIntegrationTests ext
 	static class TestConfiguration {
 
 		@Bean("Example")
-		public ClientRegionFactoryBean<Object, Object> exampleRegion(GemFireCache gemfireCache) {
+		public ClientRegionFactoryBean<Object, Object> exampleRegion(ClientCache gemfireCache) {
 
 			ClientRegionFactoryBean<Object, Object> clientRegion = new ClientRegionFactoryBean<>();
 
@@ -104,7 +100,7 @@ public class ExistingRegionTemplateByRegionAutoConfigurationIntegrationTests ext
 
 		@Bean("TestTemplate")
 		@DependsOn("Example")
-		GemfireTemplate testTemplate(GemFireCache gemfireCache) {
+		GemfireTemplate testTemplate(ClientCache gemfireCache) {
 			return new GemfireTemplate(gemfireCache.getRegion("/Example"));
 		}
 	}
