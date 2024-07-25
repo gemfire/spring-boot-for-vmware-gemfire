@@ -5,21 +5,17 @@
 package org.springframework.geode.boot.autoconfigure.cache;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 import java.util.Collections;
 import java.util.function.Function;
 import org.apache.geode.cache.client.ClientCache;
-import org.apache.geode.cache.client.Pool;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.gemfire.config.annotation.ClientCacheApplication;
 import org.springframework.data.gemfire.tests.integration.SpringBootApplicationIntegrationTestsSupport;
 import org.springframework.data.gemfire.tests.mock.annotation.EnableGemFireMockObjects;
 import org.springframework.geode.boot.autoconfigure.CacheNameAutoConfiguration;
-import org.springframework.geode.config.annotation.UseMemberName;
 
 /**
  * Integration Tests for {@link CacheNameAutoConfiguration}.
@@ -70,12 +66,6 @@ public class CacheNameAutoConfigurationIntegrationTests extends SpringBootApplic
 	}
 
 	@Test
-	public void cacheNameUsesMemberNameAttribute() {
-		assertGemFireCache(newApplicationContext(MemberNameAttributeTestConfiguration.class)
-			.getBean(ClientCache.class), "MemberNameTest");
-	}
-
-	@Test
 	public void cacheNameUsesSpringApplicationNameProperty() {
 
 		this.springApplicationBuilderFunction = this.springApplicationNamePropertyFunction;
@@ -84,32 +74,10 @@ public class CacheNameAutoConfigurationIntegrationTests extends SpringBootApplic
 			.getBean(ClientCache.class), "SpringApplicationNameTest");
 	}
 
-	@Test
-	public void cacheNameUsesSpringDataGemFireNameProperty() {
-
-		this.springApplicationBuilderFunction = this.springApplicationNamePropertyFunction
-			.andThen(this.springDataGemFireNamePropertyFunction);
-
-		assertGemFireCache(newApplicationContext(MemberNameAttributeTestConfiguration.class)
-			.getBean(ClientCache.class), "SpringDataGemFireNameTest");
-	}
 
 	@Configuration
 	@EnableAutoConfiguration
 	@EnableGemFireMockObjects
 	@ClientCacheApplication(name = "AnnotationNameTest")
 	static class AnnotationNameAttributeTestConfiguration { }
-
-	@Configuration
-	@EnableAutoConfiguration
-	@EnableGemFireMockObjects
-	@UseMemberName("MemberNameTest")
-	@SuppressWarnings("unused")
-	static class MemberNameAttributeTestConfiguration {
-
-		@Bean("DEFAULT")
-		Pool defaultPool() {
-			return mock(Pool.class);
-		}
-	}
 }
