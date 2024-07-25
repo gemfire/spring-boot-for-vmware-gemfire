@@ -15,9 +15,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.AliasFor;
 
 /**
- * The {@link UseGroups} annotation configures the groups in which the member belongs in an Apache Geode
- * distributed system, whether the member is a {@link ClientCache} in a client/server topology
- * or a peer Cache in a cluster using the P2P topology.
+ * The {@link UseGroups} annotation configures the groups in which the client belongs in a GemFire distributed system.
  *
  * @author John Blum
  * @see Documented
@@ -36,7 +34,6 @@ import org.springframework.core.annotation.AliasFor;
 @Inherited
 @Documented
 @Import(GroupsConfiguration.class)
-@Deprecated(forRemoval = true)
 @SuppressWarnings("unused")
 public @interface UseGroups {
 
