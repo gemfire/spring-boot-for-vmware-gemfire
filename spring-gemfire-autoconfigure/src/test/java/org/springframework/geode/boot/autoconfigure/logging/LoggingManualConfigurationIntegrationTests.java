@@ -14,10 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.Environment;
+import org.springframework.data.gemfire.config.annotation.ClientCacheApplication;
 import org.springframework.data.gemfire.config.annotation.EnableLogging;
 import org.springframework.data.gemfire.tests.integration.IntegrationTestsSupport;
 import org.springframework.data.gemfire.tests.mock.annotation.EnableGemFireMockObjects;
-import org.springframework.geode.config.annotation.UseMemberName;
 import org.springframework.test.context.junit4.SpringRunner;
 
 /**
@@ -72,8 +72,8 @@ public class LoggingManualConfigurationIntegrationTests extends IntegrationTests
 
 	@SpringBootApplication
 	@EnableGemFireMockObjects
+	@ClientCacheApplication(name = "LoggingManualConfigurationIntegrationTests")
 	@EnableLogging
-	@UseMemberName("LoggingManualConfigurationIntegrationTests")
 	static class TestConfigurationOne { }
 
 	/*
