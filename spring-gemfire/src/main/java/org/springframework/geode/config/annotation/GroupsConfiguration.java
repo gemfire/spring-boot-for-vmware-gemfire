@@ -19,8 +19,7 @@ import org.springframework.util.StringUtils;
 
 /**
  * The {@link GroupsConfiguration} class is a Spring {@link Configuration} class used to configure the {@literal groups}
- * in which is member belongs in an Apache Geode distributed system, whether the member is a {@link ClientCache} in a
- * client/server topology or a peer Cache in a cluster using the P2P topology.
+ * in which a client belongs in a GemFire distributed system.
  *
  * @author John Blum
  * @see ClientCache
