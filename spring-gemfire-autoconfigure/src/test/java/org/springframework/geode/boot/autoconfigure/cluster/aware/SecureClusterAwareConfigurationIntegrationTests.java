@@ -75,7 +75,6 @@ import com.vmware.gemfire.testcontainers.GemFireCluster;
  * @see org.springframework.data.gemfire.tests.integration.ForkingClientServerIntegrationTestsSupport
  * @see org.springframework.geode.config.annotation.ClusterAwareConfiguration
  * @see org.springframework.geode.config.annotation.EnableClusterAware
- * @see org.springframework.geode.security.TestSecurityManager
  * @see org.springframework.test.annotation.DirtiesContext
  * @see org.springframework.test.context.ActiveProfiles
  * @see org.springframework.test.context.junit4.SpringRunner

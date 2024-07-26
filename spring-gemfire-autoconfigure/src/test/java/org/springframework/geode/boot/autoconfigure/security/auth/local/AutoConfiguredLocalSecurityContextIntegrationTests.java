@@ -27,7 +27,6 @@ import org.springframework.test.context.junit4.SpringRunner;
  * @see org.springframework.boot.builder.SpringApplicationBuilder
  * @see org.springframework.boot.test.context.SpringBootTest
  * @see org.springframework.geode.boot.autoconfigure.ClientSecurityAutoConfiguration
- * @see org.springframework.geode.boot.autoconfigure.PeerSecurityAutoConfiguration
  * @see org.springframework.geode.boot.autoconfigure.security.auth.AbstractAutoConfiguredSecurityContextIntegrationTests
  * @see org.springframework.test.annotation.DirtiesContext
  * @see org.springframework.test.context.ActiveProfiles
