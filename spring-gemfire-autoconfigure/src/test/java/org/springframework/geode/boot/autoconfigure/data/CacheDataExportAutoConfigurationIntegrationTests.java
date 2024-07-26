@@ -17,6 +17,7 @@ import java.util.Set;
 import java.util.stream.StreamSupport;
 
 import org.apache.geode.cache.Region;
+import org.apache.geode.cache.client.ClientRegionShortcut;
 import org.awaitility.Awaitility;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -135,7 +136,7 @@ public class CacheDataExportAutoConfigurationIntegrationTests extends ClientServ
 	@Profile("EXPORT")
 	@SpringBootApplication
 	@EnableClusterAware
-	@EnableEntityDefinedRegions(basePackageClasses = Golfer.class)
+	@EnableEntityDefinedRegions(basePackageClasses = Golfer.class, clientRegionShortcut = ClientRegionShortcut.LOCAL)
 	@SuppressWarnings("unused")
 	static class TestGeodeConfiguration {
 

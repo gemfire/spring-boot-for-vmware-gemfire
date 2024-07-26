@@ -76,8 +76,8 @@ public class ClusterAvailableConfiguration {
 			return getLogger().isInfoEnabled();
 		}
 
-		protected boolean isMatchingStrictOrLoggable(boolean match, boolean strictMatch) {
-			return match && (strictMatch || isInfoLoggingEnabled());
+		protected boolean isMatchingLoggable(boolean match) {
+			return match && isInfoLoggingEnabled();
 		}
 
 		@Override
@@ -85,9 +85,8 @@ public class ClusterAvailableConfiguration {
 				@NonNull AnnotatedTypeMetadata typeMetadata) {
 
 			boolean match = isCloudPlatformActive(conditionContext.getEnvironment());
-			boolean strictMatch = isStrictMatch(conditionContext, typeMetadata);
 
-			if (isMatchingStrictOrLoggable(match, strictMatch)) {
+			if (isMatchingLoggable(match)) {
 				match |= super.matches(conditionContext, typeMetadata);
 			}
 

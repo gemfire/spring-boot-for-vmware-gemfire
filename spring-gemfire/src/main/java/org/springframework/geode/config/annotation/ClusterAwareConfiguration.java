@@ -19,7 +19,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -33,8 +32,6 @@ import org.apache.geode.cache.client.PoolManager;
 import org.apache.geode.cache.server.CacheServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Condition;
@@ -98,11 +95,10 @@ import org.springframework.util.StringUtils;
  * @since 1.2.0
  */
 @Configuration
-@Import({ ClusterAvailableConfiguration.class, ClusterNotAvailableConfiguration.class })
-public class ClusterAwareConfiguration extends AbstractAnnotationConfigSupport implements ImportAware {
+@Import({ ClusterAvailableConfiguration.class })
+public class ClusterAwareConfiguration extends AbstractAnnotationConfigSupport {
 
 	static final boolean DEFAULT_CLUSTER_AWARE_CONDITION_MATCH = false;
-	static final boolean DEFAULT_CLUSTER_AWARE_CONDITION_STRICT_MATCH = false;
 
 	static final int DEFAULT_CACHE_SERVER_PORT = CacheServer.DEFAULT_PORT;
 	static final int DEFAULT_LOCATOR_PORT = 10334;
@@ -112,7 +108,6 @@ public class ClusterAwareConfiguration extends AbstractAnnotationConfigSupport i
 
 	static final String LOCALHOST = "localhost";
 	static final String MATCHING_PROPERTY_PATTERN = "spring\\.data\\.gemfire\\.pool\\..*locators|servers";
-	static final String STRICT_MATCH_ATTRIBUTE_NAME = "strictMatch";
 
 	static final String CLUSTER_AWARE_CONFIGURATION_PROPERTY_SOURCE_NAME =
 		ClusterAwareConfiguration.class.getSimpleName().concat("PropertySource");
@@ -120,14 +115,8 @@ public class ClusterAwareConfiguration extends AbstractAnnotationConfigSupport i
 	static final String SPRING_BOOT_DATA_GEMFIRE_CLUSTER_CONDITION_MATCH_PROPERTY =
 		"spring.boot.data.gemfire.cluster.condition.match";
 
-	static final String SPRING_BOOT_DATA_GEMFIRE_CLUSTER_CONDITION_MATCH_STRICT_PROPERTY =
-		"spring.boot.data.gemfire.cluster.condition.match.strict";
-
 	static final String SPRING_DATA_GEMFIRE_CACHE_CLIENT_REGION_SHORTCUT_PROPERTY =
 		"spring.data.gemfire.cache.client.region.shortcut";
-
-	private static final AtomicBoolean strictMatchConfiguration =
-		new AtomicBoolean(DEFAULT_CLUSTER_AWARE_CONDITION_STRICT_MATCH);
 
 	private static final Function<ConditionContext, Boolean> configuredMatchFunction = conditionContext ->
 		Optional.ofNullable(conditionContext)
@@ -144,25 +133,6 @@ public class ClusterAwareConfiguration extends AbstractAnnotationConfigSupport i
 	@Override
 	protected @NonNull Class<? extends Annotation> getAnnotationType() {
 		return EnableClusterAware.class;
-	}
-
-	protected boolean isStrictMatchConfigured(@NonNull AnnotationAttributes enableClusterAwareAttributes) {
-		return enableClusterAwareAttributes != null
-			&& Boolean.TRUE.equals(enableClusterAwareAttributes.getBoolean(STRICT_MATCH_ATTRIBUTE_NAME));
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void setImportMetadata(@NonNull AnnotationMetadata importMetadata) {
-
-		if (isAnnotationPresent(importMetadata)) {
-
-			AnnotationAttributes enableClusterAwareAttributes = getAnnotationAttributes(importMetadata);
-
-			strictMatchConfiguration.set(isStrictMatchConfigured(enableClusterAwareAttributes));
-		}
 	}
 
 	@SuppressWarnings("unused")
@@ -235,66 +205,11 @@ public class ClusterAwareConfiguration extends AbstractAnnotationConfigSupport i
 		public synchronized boolean matches(@NonNull ConditionContext conditionContext,
 				@NonNull AnnotatedTypeMetadata typeMetadata) {
 
-			boolean matches = isMatch(conditionContext) || doCachedMatch(conditionContext);
-			boolean strictMatch = isStrictMatch(conditionContext, typeMetadata);
-
-			failOnStrictMatchAndNoMatches(strictMatch, matches);
-
-			return matches;
+			return isMatch(conditionContext) || doCachedMatch(conditionContext);
 		}
 
 		boolean isMatch(@NonNull ConditionContext conditionContext) {
 			return isAvailable() || configuredMatchFunction.apply(conditionContext);
-		}
-
-		protected boolean isStrictMatch(@NonNull ConditionContext conditionContext,
-				@NonNull AnnotatedTypeMetadata typeMetadata) {
-
-			Environment environment = conditionContext.getEnvironment();
-
-			Function<ConfigurableListableBeanFactory, Boolean> isStrictMatchEnabledFunction = beanFactory -> {
-
-				boolean strictMatchEnabled = strictMatchConfiguration.get();
-
-				if (!strictMatchEnabled) {
-
-					String annotationName = EnableClusterAware.class.getName();
-
-					strictMatchEnabled = beanFactory != null
-						&& Arrays.stream(ArrayUtils.nullSafeArray(beanFactory.getBeanDefinitionNames(), String.class))
-							.map(beanFactory::getBeanDefinition)
-							.filter(AnnotatedBeanDefinition.class::isInstance)
-							.map(AnnotatedBeanDefinition.class::cast)
-							.map(AnnotatedBeanDefinition::getMetadata)
-							.filter(annotationMetadata -> annotationMetadata.hasAnnotation(annotationName))
-							.findFirst()
-							.map(annotationMetadata -> annotationMetadata.getAnnotationAttributes(annotationName))
-							.map(AnnotationAttributes::fromMap)
-							.map(annotationAttributes -> annotationAttributes.getBoolean(STRICT_MATCH_ATTRIBUTE_NAME))
-							.orElse(DEFAULT_CLUSTER_AWARE_CONDITION_STRICT_MATCH);
-				}
-
-				return strictMatchEnabled;
-			};
-
-			return environment.getProperty(SPRING_BOOT_DATA_GEMFIRE_CLUSTER_CONDITION_MATCH_STRICT_PROPERTY,
-				Boolean.class, isStrictMatchEnabledFunction.apply(conditionContext.getBeanFactory()));
-		}
-
-		protected boolean isStrictMatchAndNoMatches(boolean strictMatch, boolean matches) {
-			return strictMatch && !matches;
-		}
-
-		protected void failOnStrictMatchAndNoMatches(boolean strictMatch, boolean matches) {
-
-			if (isStrictMatchAndNoMatches(strictMatch, matches)) {
-
-				String message =
-					String.format("Failed to find available cluster in [%1$s] when strictMatch was [%2$s]",
-						getRuntimeEnvironmentName(), strictMatch);
-
-				throw new ClusterNotAvailableException(message);
-			}
 		}
 
 		/**
@@ -634,8 +549,7 @@ public class ClusterAwareConfiguration extends AbstractAnnotationConfigSupport i
 		protected void logUnconnectedRuntimeEnvironment(@NonNull Logger logger) {
 
 			if (logger.isInfoEnabled()) {
-				logger.info("No cluster was found; Spring Boot application will run in standalone [LOCAL] mode"
-					+ " unless strictMode is false and the application is running in a Cloud-managed Environment");
+				logger.info("No cluster was found");
 			}
 		}
 	}
