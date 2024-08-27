@@ -1,7 +1,13 @@
+/*
+ * Copyright 2024 Broadcom. All rights reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 plugins {
   alias(libs.plugins.lombok)
   id("project-base")
   id("gemfire-repo-artifact-publishing")
+  id("gemfire-artifactory")
 }
 
 description = "Spring Boot Auto-Configuration for VMware GemFire"

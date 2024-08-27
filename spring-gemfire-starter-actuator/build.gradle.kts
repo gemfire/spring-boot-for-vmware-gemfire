@@ -1,6 +1,12 @@
+/*
+ * Copyright 2024 Broadcom. All rights reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 plugins {
     id("project-base")
     id("gemfire-repo-artifact-publishing")
+    id("gemfire-artifactory")
 }
 
 description = "Spring Boot Actuator Starter for VMware GemFire"

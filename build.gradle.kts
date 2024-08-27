@@ -1,5 +1,5 @@
 /*
- * Copyright (c) VMware, Inc. 2023-2024. All rights reserved.
+ * Copyright 2023-2024 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -12,9 +12,22 @@ plugins {
   id("maven-publish")
   alias(libs.plugins.ben.manes.versions)
   alias(libs.plugins.littlerobots.version.catalog.update)
+  id("gemfire-artifactory")
+}
+
+// Suppress warning from gemfire-artifactory plugin. We need the module to be on this project in order to get buildInfo
+// uploaded, but there is no artifact on the root project, so we skip that part.
+tasks.artifactoryPublish {
+  skip = true
 }
 
 group = "com.vmware.gemfire"
+
+allprojects {
+  configurations.all {
+    resolutionStrategy.cacheChangingModulesFor(0, "minutes")
+  }
+}
 
 versionCatalogUpdate {
   // These options will be set as default for all version catalogs
@@ -51,24 +64,14 @@ fun isPatch(candidateVersion: String, currentVersion: String): Boolean {
   val candidateSplit = candidateVersion.split(".")
   val currentSplit = currentVersion.split(".")
 
-  val strings = listOf("rc", "alpha", "beta")
-
-  if (strings.filter { candidateVersion.uppercase().contains(it) }.toList().isNotEmpty()) {
-    return false
-  }
-
-  if (currentSplit.size == 3) {
-    if (candidateSplit.size == currentSplit.size) {
-      return if (candidateSplit[0] != currentSplit[0]) {
-        false
-      } else if (candidateSplit[1] != currentSplit[1]) {
-        false
-      } else {
-        true
-      }
+  if (candidateSplit.size == currentSplit.size && currentSplit.size == 3) {
+    if (candidateSplit[0] != currentSplit[0]) {
+      return false
     }
-  } else {
-    return false
+    if (candidateSplit[1] != currentSplit[1]) {
+      return false
+    }
+    return true
   }
   return false
 }
