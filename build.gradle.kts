@@ -12,9 +12,22 @@ plugins {
   id("maven-publish")
   alias(libs.plugins.ben.manes.versions)
   alias(libs.plugins.littlerobots.version.catalog.update)
+  id("gemfire-artifactory")
+}
+
+// Suppress warning from gemfire-artifactory plugin. We need the module to be on this project in order to get buildInfo
+// uploaded, but there is no artifact on the root project, so we skip that part.
+tasks.artifactoryPublish {
+  skip = true
 }
 
 group = "com.vmware.gemfire"
+
+allprojects {
+  configurations.all {
+    resolutionStrategy.cacheChangingModulesFor(0, "minutes")
+  }
+}
 
 versionCatalogUpdate {
   // These options will be set as default for all version catalogs
