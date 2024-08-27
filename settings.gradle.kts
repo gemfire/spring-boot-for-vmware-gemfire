@@ -12,7 +12,7 @@ pluginManagement {
 }
 
 
-rootProject.name = "spring-boot-data-gemfire"
+rootProject.name = "spring-boot-for-data-gemfire"
 
 include("spring-gemfire")
 include("spring-gemfire-autoconfigure")
@@ -25,6 +25,18 @@ include("spring-gemfire-starter-logging")
 include("spring-gemfire-starter-session")
 include("spring-gemfire-starter-actuator")
 include("spring-gemfire-starter-test")
+
+project(":spring-gemfire").name = "spring-gemfire"
+project(":spring-gemfire-autoconfigure").name = "spring-gemfire-autoconfigure"
+project(":spring-gemfire-extensions").name = "spring-gemfire-extensions"
+
+project(":spring-gemfire-starter").name = "spring-gemfire-starter"
+project(":spring-gemfire-actuator").name = "spring-gemfire-actuator"
+project(":spring-gemfire-actuator-autoconfigure").name = "spring-gemfire-actuator-autoconfigure"
+project(":spring-gemfire-starter-logging").name = "spring-gemfire-starter-logging"
+project(":spring-gemfire-starter-session").name = "spring-gemfire-starter-session"
+project(":spring-gemfire-starter-actuator").name = "spring-gemfire-starter-actuator"
+project(":spring-gemfire-starter-test").name = "spring-gemfire-starter-test"
 
 include("spring-gemfire-samples")
 include("spring-gemfire-samples:boot:actuator")
