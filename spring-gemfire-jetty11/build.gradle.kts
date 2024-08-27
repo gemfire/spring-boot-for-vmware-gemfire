@@ -6,6 +6,7 @@
 plugins {
   id("project-base")
   id("gemfire-repo-artifact-publishing")
+  id("gemfire-artifactory")
 }
 
 description = "VMware GemFire Integration with Eclipse Jetty declared and managed by Spring Boot"

@@ -4,9 +4,24 @@
  */
 
 plugins {
+    id("groovy-gradle-plugin")
     `kotlin-dsl`
 }
 
+repositories {
+    mavenCentral()
+    gradlePluginPortal()
+}
+
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.21")
+    implementation(libs.kotlin.gradle.plugin)
+    implementation(gradleApi())
+    implementation("org.jfrog.buildinfo:build-info-extractor-gradle:5.2.2")
+}
+
+gradlePlugin {
+    plugins.register("gemfire-artifactory") {
+        id = "gemfire-artifactory"
+        implementationClass = "com.vmware.gemfire.gradle.ArtifactoryPlugin"
+    }
 }
