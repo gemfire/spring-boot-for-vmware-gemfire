@@ -2,6 +2,7 @@ plugins {
   alias(libs.plugins.lombok)
   id("project-base")
   id("gemfire-repo-artifact-publishing")
+  id("gemfire-artifactory")
 }
 
 description = "Spring Boot Auto-Configuration for VMware GemFire"

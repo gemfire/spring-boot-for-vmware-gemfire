@@ -1,6 +1,7 @@
 plugins {
   id("project-base")
   id("gemfire-repo-artifact-publishing")
+  id("gemfire-artifactory")
 }
 
 description = "Spring Boot Actuator Auto-Configuration for VMware GemFire"
