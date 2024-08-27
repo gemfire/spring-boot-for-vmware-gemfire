@@ -1,9 +1,9 @@
-import java.lang.RuntimeException
-
 /*
  * Copyright 2024 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
+
+import java.lang.RuntimeException
 
 object ProjectUtils {
   fun getGemFireBaseVersion(gemfireVersion:String): String {
