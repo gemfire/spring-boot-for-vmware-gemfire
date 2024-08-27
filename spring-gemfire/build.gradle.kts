@@ -7,6 +7,7 @@ plugins {
   id("project-base")
   alias(libs.plugins.lombok)
   id("gemfire-repo-artifact-publishing")
+  id("gemfire-artifactory")
 }
 
 description = "Spring GemFire base build for VMware GemFire"
