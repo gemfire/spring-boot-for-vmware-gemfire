@@ -7,6 +7,7 @@ plugins {
   id("java-library")
   id("idea")
   id("eclipse")
+  id("commercial-repositories")
 }
 
 group = "com.vmware.gemfire"
@@ -28,13 +29,6 @@ dependencies{
 
 repositories {
   mavenCentral()
-  maven {
-    credentials {
-      username = property("gemfireRepoUsername") as String
-      password = property("gemfireRepoPassword") as String
-    }
-    url = uri("https://commercial-repo.pivotal.io/data3/gemfire-release-repo/gemfire")
-  }
   val additionalMavenRepoURLs = project.findProperty("additionalMavenRepoURLs").toString()
   if (!additionalMavenRepoURLs.isNullOrBlank() && additionalMavenRepoURLs.isNotEmpty()) {
     additionalMavenRepoURLs.split(",").forEach {
@@ -47,10 +41,6 @@ repositories {
 
 configurations.all {
   resolutionStrategy.cacheChangingModulesFor(0, "minutes")
-}
-
-tasks.withType<JavaCompile>().configureEach {
-  options.compilerArgs.add("-parameters")
 }
 
 fun getGemFireBaseVersion(): String {
