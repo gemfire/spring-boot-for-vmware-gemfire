@@ -4,8 +4,6 @@
  */
 
 import com.vmware.gemfire.publishing.extension.ManifestExtension
-import gradle.kotlin.dsl.accessors._0ac9a36cec4eeb1254edca678008b431.ext
-import gradle.kotlin.dsl.accessors._0ac9a36cec4eeb1254edca678008b431.publishing
 import org.gradle.jvm.tasks.Jar
 import java.net.URI
 
@@ -28,71 +26,71 @@ val license = """
 val publishingDetails = project.extensions.create<ManifestExtension>("publishingDetails")
 
 publishing {
-    publications {
-        create<MavenPublication>("maven") {
-            afterEvaluate {
-                from(components["java"])
-                groupId = "com.vmware.gemfire"
-                artifactId = publishingDetails.artifactName.get()
-                pom {
-                    name = publishingDetails.longName.get()
-                    description = publishingDetails.description.get()
-                    url = "https://tanzu.vmware.com/gemfire"
+  publications {
+    create<MavenPublication>("maven") {
+      afterEvaluate {
+        from(components["java"])
+        groupId = "com.vmware.gemfire"
+        artifactId = publishingDetails.artifactName.get()
+        pom {
+          name = publishingDetails.longName.get()
+          description = publishingDetails.description.get()
+          url = "https://tanzu.vmware.com/gemfire"
 
-                    withXml {
-                        val providerAsElement = asElement()
-                        providerAsElement.insertBefore(
-                            providerAsElement.ownerDocument.createComment(license),
-                            providerAsElement.firstChild
-                        )
-                    }
-                    scm {
-                        connection = "scm:git:https://github.com/gemfire/spring-boot-for-vmware-gemfire.git"
-                        developerConnection =
-                            "scm:git:https://github.com/gemfire/spring-boot-for-vmware-gemfire.git"
-                        url = "https://github.com/gemfire/spring-boot-for-vmware-gemfire"
-                    }
-                }
-            }
-            repositories {
-                maven {
-                    val mavenPushRepositoryURL = project.findProperty("mavenPushRepository")
-                    if (mavenPushRepositoryURL != null) {
-                        url = uri(mavenPushRepositoryURL)
-                        if (mavenPushRepositoryURL.toString().startsWith("gcs:")) {
-                            name = "GCS"
-                        }
-                        setGemFirePublishingCredentials(this)
-                    } else {
-                        println("WARNING: No push repository configured")
-                    }
-                }
-            }
+          withXml {
+            val providerAsElement = asElement()
+            providerAsElement.insertBefore(
+              providerAsElement.ownerDocument.createComment(license),
+              providerAsElement.firstChild
+            )
+          }
+          scm {
+            connection = "scm:git:https://github.com/gemfire/spring-boot-for-vmware-gemfire.git"
+            developerConnection =
+              "scm:git:https://github.com/gemfire/spring-boot-for-vmware-gemfire.git"
+            url = "https://github.com/gemfire/spring-boot-for-vmware-gemfire"
+          }
         }
+      }
+      repositories {
+        maven {
+          val mavenPushRepositoryURL = project.findProperty("mavenPushRepository")
+          if (mavenPushRepositoryURL != null) {
+            url = uri(mavenPushRepositoryURL)
+            if (mavenPushRepositoryURL.toString().startsWith("gcs:")) {
+              name = "GCS"
+            }
+            setGemFirePublishingCredentials(this)
+          } else {
+            println("WARNING: No push repository configured")
+          }
+        }
+      }
     }
+  }
 }
 
 tasks.register("publishToInternalGCS") {
-    group = "publishing"
-    description = "Publishes all Maven publications to internal GCS repository."
-    dependsOn(tasks.withType<PublishToMavenRepository>().matching {
-        it.repository == publishing.repositories["GCS"]
-    })
+  group = "publishing"
+  description = "Publishes all Maven publications to internal GCS repository."
+  dependsOn(tasks.withType<PublishToMavenRepository>().matching {
+    it.repository == publishing.repositories["GCS"]
+  })
 }
 
 fun setGemFirePublishingCredentials(
-    mavenArtifactRepository: MavenArtifactRepository
+  mavenArtifactRepository: MavenArtifactRepository
 ) {
-    if (mavenArtifactRepository.url.toString().startsWith("http") || mavenArtifactRepository.url.toString()
-            .startsWith("sftp")
-    ) {
-        // Username / password credentials are only supported for http, https, and sftp repos.
-        // See the Gradle documentation on Repository Types for more information.
-        mavenArtifactRepository.credentials {
-            username = project.findProperty("gemfirePublishRepoUsername").toString()
-            password = project.findProperty("gemfirePublishRepoPassword").toString()
-        }
+  if (mavenArtifactRepository.url.toString().startsWith("http") || mavenArtifactRepository.url.toString()
+      .startsWith("sftp")
+  ) {
+    // Username / password credentials are only supported for http, https, and sftp repos.
+    // See the Gradle documentation on Repository Types for more information.
+    mavenArtifactRepository.credentials {
+      username = project.findProperty("gemfirePublishRepoUsername").toString()
+      password = project.findProperty("gemfirePublishRepoPassword").toString()
     }
+  }
 }
 
 tasks.register("install") {
