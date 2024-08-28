@@ -3,10 +3,18 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import org.gradle.internal.impldep.org.junit.experimental.categories.Categories.CategoryFilter.exclude
+
+/*
+ * Copyright 2024 Broadcom. All rights reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 plugins {
   id("project-base")
   alias(libs.plugins.lombok)
   id("gemfire-repo-artifact-publishing")
+  id("gemfire-artifactory")
 }
 
 description = "Spring GemFire base build for VMware GemFire"
