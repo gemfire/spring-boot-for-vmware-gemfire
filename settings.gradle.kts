@@ -47,16 +47,29 @@ include("spring-geode-tests:smoke-tests:mock-session-caching")
 include("spring-geode-tests:smoke-tests:multi-store")
 include("spring-geode-tests:smoke-tests:peer-cache-application")
 
+project(":spring-gemfire").name = "spring-gemfire"
+project(":spring-gemfire-jetty11").name = "spring-gemfire-jetty11"
+project(":spring-gemfire-autoconfigure").name = "spring-gemfire-autoconfigure"
+project(":spring-gemfire-extensions").name = "spring-gemfire-extensions"
+
+project(":spring-gemfire-starter").name = "spring-gemfire-starter"
+project(":spring-gemfire-actuator").name = "spring-gemfire-actuator"
+project(":spring-gemfire-actuator-autoconfigure").name = "spring-gemfire-actuator-autoconfigure"
+project(":spring-gemfire-starter-logging").name = "spring-gemfire-starter-logging"
+project(":spring-gemfire-starter-session").name = "spring-gemfire-starter-session"
+project(":spring-gemfire-starter-actuator").name = "spring-gemfire-starter-actuator"
+project(":spring-gemfire-starter-test").name = "spring-gemfire-starter-test"
+
+
 dependencyResolutionManagement {
   versionCatalogs {
-    val projectRootPath = layout.rootDirectory.asFile.toPath()
     create("libs") {
       val properties = Properties()
-      properties.load(FileInputStream(projectRootPath.resolve("gradle.properties").toString()))
+      properties.load(FileInputStream("gradle.properties"))
       versionOverrideFromProperties(this, properties)
     }
     create("bom") {
-      from(files(projectRootPath.resolve("gradle").resolve("bom.versions.toml").toString()))
+      from(files("gradle/bom.versions.toml"))
     }
   }
 }
