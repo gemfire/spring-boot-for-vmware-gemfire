@@ -6,7 +6,9 @@
 plugins {
     id("project-base")
     id("gemfire-repo-artifact-publishing")
+  id("gemfire-artifactory")
 }
+
 description="Spring Boot Logging Starter for VMware GemFire"
 
 publishingDetails {
