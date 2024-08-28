@@ -3,6 +3,11 @@ plugins {
   id 'signing'
 }
 
+/*
+ * Copyright 2024 Broadcom. All rights reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 // The published bom will constrain versions within geode of any subproject with this property set.
 project.ext.set('constrainVersionInBom', true)
 
