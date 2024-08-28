@@ -12,9 +12,16 @@ plugins {
   id("maven-publish")
   alias(libs.plugins.ben.manes.versions)
   alias(libs.plugins.littlerobots.version.catalog.update)
+  id("gemfire-artifactory")
 }
 
-group="com.vmware.gemfire"
+// Suppress warning from gemfire-artifactory plugin. We need the module to be on this project in order to get buildInfo
+// uploaded, but there is no artifact on the root project, so we skip that part.
+tasks.artifactoryPublish {
+  skip = true
+}
+
+group = "com.vmware.gemfire"
 
 allprojects {
   configurations.all {
@@ -36,11 +43,11 @@ versionCatalogUpdate {
     // keep all plugins that aren't used in the project
     keepUnusedPlugins = true
   }
-  versionCatalogs{
-    create("bom"){
+  versionCatalogs {
+    create("bom") {
       catalogFile = file("gradle/bom.versions.toml")
     }
-    create("publish"){
+    create("publish") {
       catalogFile = file("gradle/publish.versions.toml")
     }
   }
@@ -64,6 +71,7 @@ fun isPatch(candidateVersion: String, currentVersion: String): Boolean {
     if (candidateSplit[1] != currentSplit[1]) {
       return false
     }
+    return true
   }
-  return true
+  return false
 }

@@ -3,6 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import java.lang.RuntimeException
+
 object ProjectUtils {
   fun getGemFireBaseVersion(gemfireVersion:String): String {
     return getBaseVersion(gemfireVersion)
