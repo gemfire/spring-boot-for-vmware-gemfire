@@ -6,12 +6,13 @@
 plugins {
   id("project-base")
   id("gemfire-repo-artifact-publishing")
+  id("gemfire-artifactory")
 }
 
 description = "Spring Boot Starter for Spring Session using VMware GemFire"
 
 publishingDetails {
-  artifactName.set("spring-boot-session-3.2-gemfire-${ProjectUtils.getGemFireBaseVersion(property("gemfireVersion").toString())}")
+  artifactName.set("spring-boot-session-3.3-gemfire-${ProjectUtils.getGemFireBaseVersion(property("gemfireVersion").toString())}")
   longName.set(project.description)
   description.set(project.description)
 }

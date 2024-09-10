@@ -7,12 +7,13 @@ plugins {
   id("project-base")
   alias(libs.plugins.lombok)
   id("gemfire-repo-artifact-publishing")
+  id("gemfire-artifactory")
 }
 
 description = "Spring GemFire base build for VMware GemFire"
 
 publishingDetails {
-  artifactName.set("spring-boot-3.2-gemfire-core-${ProjectUtils.getGemFireBaseVersion(property("gemfireVersion").toString())}")
+  artifactName.set("spring-boot-3.3-gemfire-core-${ProjectUtils.getGemFireBaseVersion(property("gemfireVersion").toString())}")
   longName.set(project.description)
   description.set(project.description)
 }

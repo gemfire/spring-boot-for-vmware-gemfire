@@ -16,6 +16,7 @@ buildscript {
 plugins {
   id("project-base")
   id("gemfire-repo-artifact-publishing")
+  id("gemfire-artifactory")
 }
 
 description = "Spring Boot Starter for VMware GemFire"
@@ -23,7 +24,7 @@ description = "Spring Boot Starter for VMware GemFire"
 val gemfireVersion = ProjectUtils.getGemFireBaseVersion(property("gemfireVersion").toString())
 
 publishingDetails {
-  artifactName.set("spring-boot-3.2-gemfire-$gemfireVersion")
+  artifactName.set("spring-boot-3.3-gemfire-$gemfireVersion")
   longName.set(project.description)
   description.set(project.description)
 }
