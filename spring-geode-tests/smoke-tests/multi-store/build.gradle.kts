@@ -11,9 +11,6 @@ plugins {
 description = "Smoke Tests to assert that a multi-store Spring Data project using JPA for database access and Apache Geode for caching works as expected."
 
 dependencies {
-	implementation(platform(bom.spring.framework.bom))
-	implementation(platform(bom.spring.boot.dependencies.bom))
-	implementation(platform(bom.spring.security.bom))
 	implementation(platform(bom.testcontainers.dependencies.bom))
 	compileOnly(libs.gemfire.core)
 
