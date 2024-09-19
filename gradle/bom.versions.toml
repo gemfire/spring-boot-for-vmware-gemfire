@@ -1,8 +1,8 @@
 [versions]
-springVersion = "6.1.6"
-springBootVersion="3.2.4"
-springSecurityVersion="6.2.4"
-testcontainersVersion="1.19.7"
+springVersion = "6.1.13"
+springBootVersion="3.3.3"
+springSecurityVersion="6.3.3"
+testcontainersVersion="1.19.8"
 
 [libraries]
 spring-boot-dependencies-bom={module="org.springframework.boot:spring-boot-dependencies", version.ref="springBootVersion"}
