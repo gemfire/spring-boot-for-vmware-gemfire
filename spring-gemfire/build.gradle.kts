@@ -19,9 +19,6 @@ publishingDetails {
 }
 
 dependencies {
-  api(platform(bom.spring.framework.bom))
-  api(platform(bom.spring.boot.dependencies.bom))
-  api(platform(bom.spring.security.bom))
   api(platform(bom.testcontainers.dependencies.bom))
   api(project(":spring-gemfire-extensions"))
 

@@ -1,11 +1,11 @@
 [versions]
 antlrVersion = "2.7.7"
-awaitilityVersion="4.2.1"
+awaitilityVersion="4.2.2"
 aspectjToolsVersion = "1.9.22"
 findbugsVersion = "3.0.2"
 mockitoCoreVersion = { strictly = "4.8.1" }
 multithreadedtcVersion = "1.01"
-springBootVersion="3.1.10"
+springBootVersion="3.1.12"
 springShellVersion = "1.2.0.RELEASE"
 tomcatMigrationVersion="1.0.7"
 

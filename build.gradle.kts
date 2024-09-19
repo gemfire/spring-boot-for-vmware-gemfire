@@ -64,14 +64,21 @@ fun isPatch(candidateVersion: String, currentVersion: String): Boolean {
   val candidateSplit = candidateVersion.split(".")
   val currentSplit = currentVersion.split(".")
 
-  if (candidateSplit.size == currentSplit.size && currentSplit.size == 3) {
-    if (candidateSplit[0] != currentSplit[0]) {
-      return false
+  if (currentSplit.size == 3) {
+    if (candidateSplit.size == currentSplit.size) {
+      if (candidateSplit[0] != currentSplit[0]) {
+        return false
+      }
+      if (candidateSplit[1] != currentSplit[1]) {
+        return false
+      }
+      if (candidateSplit[2] != currentSplit[2]) {
+      }
+      return true
     }
-    if (candidateSplit[1] != currentSplit[1]) {
-      return false
-    }
-    return true
+    return false
+  } else {
+    return false
   }
   return false
 }
