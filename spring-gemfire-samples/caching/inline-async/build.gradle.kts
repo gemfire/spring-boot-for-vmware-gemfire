@@ -12,9 +12,6 @@ description =
   "Spring Geode Sample demonstrating Spring's Cache Abstraction using Apache Geode as the caching provider for Asynchronous Inline Caching."
 
 dependencies {
-  implementation(platform(bom.spring.framework.bom))
-  implementation(platform(bom.spring.boot.dependencies.bom))
-  implementation(platform(bom.spring.security.bom))
   implementation(platform(bom.testcontainers.dependencies.bom))
   compileOnly(libs.findbugs.jsr305)
   compileOnly(libs.gemfire.core)
