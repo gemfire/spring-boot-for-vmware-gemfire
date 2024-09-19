@@ -1,7 +1,7 @@
 [versions]
 antlrVersion = "2.7.7"
-awaitilityVersion="4.2.1"
-aspectjToolsVersion = "1.9.21"
+awaitilityVersion="4.2.2"
+aspectjToolsVersion = "1.9.22"
 findbugsVersion = "3.0.2"
 mockitoCoreVersion = { strictly = "4.8.1" }
 multithreadedtcVersion = "1.01"

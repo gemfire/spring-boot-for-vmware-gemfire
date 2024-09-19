@@ -17,9 +17,6 @@ publishingDetails {
 }
 
 dependencies {
-  api(platform(bom.spring.framework.bom))
-  api(platform(bom.spring.boot.dependencies.bom))
-  api(platform(bom.spring.security.bom))
   api(platform(bom.testcontainers.dependencies.bom))
   api("ch.qos.logback:logback-classic")
   api("org.apache.logging.log4j:log4j-to-slf4j")
