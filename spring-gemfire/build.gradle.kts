@@ -43,11 +43,12 @@ dependencies {
 //  testImplementation("jakarta.persistence:jakarta.persistence-api")
   testImplementation("org.springframework.boot:spring-boot-starter-data-jpa")
   testImplementation("org.springframework.boot:spring-boot-starter-data-cassandra")
-  testImplementation(libs.spring.test.gemfire)
+  testImplementation(variantOf(libs.spring.data.gemfire) { classifier("test-framework") })
   testImplementation(libs.gemfire.core)
   testImplementation(libs.gemfire.lucene)
   testImplementation("org.testcontainers:testcontainers")
   testImplementation("org.testcontainers:cassandra")
   testImplementation(libs.mockito.core)
+  testImplementation(libs.multithreadedtc)
   testRuntimeOnly("org.hsqldb:hsqldb")
 }
