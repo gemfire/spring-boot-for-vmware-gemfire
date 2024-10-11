@@ -45,7 +45,6 @@ gemfire-deployment-legacy-classloader = { module = "com.vmware.gemfire:geode-dep
 
 spring-data-gemfire = { module = "com.vmware.gemfire:spring-data-2.6-gemfire-9.15", version.ref = "springDataGemFireVersion" }
 spring-session-gemfire = { module = "com.vmware.gemfire:spring-session-2.6-gemfire-9.15", version.ref = "springSessionDataGemFireVersion" }
-spring-test-gemfire = { module = "com.vmware.gemfire:spring-test-gemfire-9.15-2.6", version.ref = "springTestGemFireVersion" }
 
 [bundles]
 
