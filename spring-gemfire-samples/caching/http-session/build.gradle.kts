@@ -19,6 +19,7 @@ dependencies {
 
 	runtimeOnly("org.springframework.boot:spring-boot-starter-thymeleaf")
 
+	testImplementation("junit:junit")
 	testImplementation(project(":spring-gemfire-starter-session"))
 	testImplementation(project(":spring-gemfire-starter-test"))
 	testImplementation(libs.gemfire.core)

@@ -19,6 +19,7 @@ dependencies {
   implementation("org.projectlombok:lombok")
   implementation("org.springframework.boot:spring-boot-starter-web")
 
+  testImplementation("junit:junit")
   testImplementation(project(":spring-gemfire-starter-test"))
   testImplementation("org.springframework.boot:spring-boot-starter-test")
 
