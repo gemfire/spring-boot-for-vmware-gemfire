@@ -15,5 +15,5 @@ dependencies {
 	api(platform(bom.testcontainers.dependencies.bom))
 	api(project(":spring-gemfire-starter"))
 	api("org.springframework.boot:spring-boot-starter-test")
-	api(libs.spring.test.gemfire)
+	api(variantOf(libs.spring.data.gemfire) { classifier("test") })
 }
