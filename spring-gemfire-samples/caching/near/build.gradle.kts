@@ -27,6 +27,7 @@ dependencies {
 
   testImplementation(libs.gemfire.core)
   testImplementation(libs.gemfire.testcontainers)
+  testImplementation("junit:junit")
   testImplementation(project(":spring-gemfire-starter-test"))
   testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
