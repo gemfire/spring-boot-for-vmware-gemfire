@@ -51,4 +51,6 @@ dependencies {
   testRuntimeOnly("org.springframework.boot:spring-boot-starter-json")
   testRuntimeOnly(libs.spring.shell)
 
+  testImplementation(variantOf(libs.spring.data.gemfire) { classifier("test-framework") })
+  testImplementation(libs.awaitility)
 }
