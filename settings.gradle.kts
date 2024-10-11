@@ -77,6 +77,5 @@ fun versionOverrideFromProperty(
 fun versionOverrideFromProperties(versionCatalogBuilder: VersionCatalogBuilder, properties: Properties) {
   versionOverrideFromProperty(versionCatalogBuilder, "gemfireVersion", properties)
   versionOverrideFromProperty(versionCatalogBuilder, "springDataGemFireVersion", properties)
-  versionOverrideFromProperty(versionCatalogBuilder, "springTestGemFireVersion", properties)
   versionOverrideFromProperty(versionCatalogBuilder, "springSessionDataGemFireVersion", properties)
 }
