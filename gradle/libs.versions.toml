@@ -38,7 +38,6 @@ gemfire-deployment-chained-classloader = { module = "com.vmware.gemfire:gemfire-
 
 spring-data-gemfire = { module = "com.vmware.gemfire:spring-data-3.1-gemfire-10.0", version.ref = "springDataGemFireVersion" }
 spring-session-gemfire = { module = "com.vmware.gemfire:spring-session-3.1-gemfire-10.0", version.ref = "springSessionDataGemFireVersion" }
-spring-test-gemfire = { module = "com.vmware.gemfire:spring-test-gemfire-10.0-3.1", version.ref = "springTestGemFireVersion" }
 
 [bundles]
 
