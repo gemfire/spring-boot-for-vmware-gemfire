@@ -46,6 +46,6 @@ dependencies {
   testImplementation(libs.mockito.core)
   testImplementation("org.projectlombok:lombok")
   testImplementation("org.springframework.boot:spring-boot-starter-test")
-  testImplementation(libs.spring.test.gemfire)
+  testImplementation(variantOf(libs.spring.data.gemfire) { classifier("test-framework") })
   testImplementation(libs.multithreadedtc)
 }
