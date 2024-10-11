@@ -45,7 +45,7 @@ dependencies {
   testRuntimeOnly("org.springframework.boot:spring-boot-starter-jetty")
   testRuntimeOnly("org.springframework.boot:spring-boot-starter-json")
   testRuntimeOnly(libs.spring.shell)
-  testImplementation(libs.spring.test.gemfire)
+  testImplementation(variantOf(libs.spring.data.gemfire) { classifier("test") })
   testImplementation(libs.gemfire.testcontainers)
 }
 
