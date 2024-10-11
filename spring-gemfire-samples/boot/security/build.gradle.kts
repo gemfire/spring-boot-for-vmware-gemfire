@@ -25,4 +25,5 @@ dependencies {
 
 	testImplementation(libs.gemfire.core)
 	testImplementation(libs.gemfire.lucene)
+	testImplementation("junit:junit")
 }

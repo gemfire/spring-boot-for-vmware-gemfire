@@ -19,7 +19,7 @@ dependencies {
 
 	testImplementation(project(":spring-gemfire-starter-test"))
 	testImplementation(libs.gemfire.core)
-
+	testImplementation("junit:junit")
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {
 		exclude(group="org.junit.vintage", module="junit-vintage-engine")
 	}
