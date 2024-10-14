@@ -41,7 +41,7 @@ dependencies {
   testImplementation("jakarta.persistence:jakarta.persistence-api")
   testImplementation("org.springframework.boot:spring-boot-starter-data-jpa")
   testImplementation("org.springframework.boot:spring-boot-starter-data-cassandra")
-  testImplementation(variantOf(libs.spring.data.gemfire) { classifier("test") })
+  testImplementation(variantOf(libs.spring.data.gemfire) { classifier("test-framework") })
   testImplementation(libs.gemfire.core)
   testImplementation("org.testcontainers:testcontainers")
   testImplementation("org.testcontainers:cassandra")
