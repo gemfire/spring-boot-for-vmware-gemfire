@@ -49,6 +49,8 @@ dependencies {
   testRuntimeOnly(libs.spring.shell)
   testImplementation(variantOf(libs.spring.data.gemfire) { classifier("test-framework") })
   testImplementation(libs.gemfire.testcontainers)
+  testImplementation(libs.awaitility)
+  testImplementation("junit:junit")
 }
 
 tasks.register<Jar>("testJar") {

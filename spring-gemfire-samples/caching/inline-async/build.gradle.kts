@@ -31,5 +31,5 @@ dependencies {
   testImplementation(libs.gemfire.core)
   testImplementation(libs.awaitility)
   testImplementation("org.springframework.boot:spring-boot-starter-test")
-
+  testImplementation("junit:junit")
 }
