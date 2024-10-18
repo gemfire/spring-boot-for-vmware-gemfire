@@ -58,6 +58,5 @@ dependencies {
   testImplementation("org.testcontainers:cassandra")
   testImplementation(libs.mockito.core)
   testImplementation(libs.multithreadedtc)
-  testImplementation(libs.gemfire.testcontainers)
   testRuntimeOnly("org.hsqldb:hsqldb")
 }
