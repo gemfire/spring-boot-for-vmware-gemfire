@@ -30,6 +30,8 @@ dependencies {
   testImplementation(project(":spring-gemfire-starter-test"))
   testImplementation(libs.gemfire.core)
   testImplementation(libs.awaitility)
+  testImplementation("junit:junit")
+  testImplementation(variantOf(libs.spring.data.gemfire) { classifier("test-framework") })
   testImplementation("org.springframework.boot:spring-boot-starter-test")
 
 }

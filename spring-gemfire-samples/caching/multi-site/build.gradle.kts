@@ -24,5 +24,6 @@ dependencies {
   testImplementation(libs.gemfire.wan)
   testImplementation(project(":spring-gemfire-starter-test"))
   testImplementation("org.springframework.boot:spring-boot-starter-test")
-
+  testImplementation("junit:junit")
+  testImplementation(variantOf(libs.spring.data.gemfire) { classifier("test-framework") })
 }
