@@ -42,15 +42,13 @@ dependencies {
   testImplementation("org.springframework.boot:spring-boot-starter-web")
   testImplementation("jakarta.servlet:jakarta.servlet-api")
   testImplementation("org.apache.httpcomponents:httpclient")
-  testImplementation(libs.spring.test.gemfire)
+  testImplementation(variantOf(libs.spring.data.gemfire) { classifier("test-framework") })
   testImplementation(libs.awaitility)
+  testImplementation("junit:junit")
 
   testRuntimeOnly("javax.cache:cache-api")
   testRuntimeOnly(libs.gemfire.web)
   testRuntimeOnly("org.springframework.boot:spring-boot-starter-jetty")
   testRuntimeOnly("org.springframework.boot:spring-boot-starter-json")
   testRuntimeOnly(libs.spring.shell)
-  testImplementation(variantOf(libs.spring.data.gemfire) { classifier("test-framework") })
-  testImplementation(libs.awaitility)
-  testImplementation("junit:junit")
 }

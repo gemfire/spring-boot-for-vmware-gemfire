@@ -24,4 +24,5 @@ dependencies {
 
 	testImplementation(libs.gemfire.core)
 	testImplementation("junit:junit")
+	testImplementation(variantOf(libs.spring.data.gemfire) { classifier("test-framework") })
 }
