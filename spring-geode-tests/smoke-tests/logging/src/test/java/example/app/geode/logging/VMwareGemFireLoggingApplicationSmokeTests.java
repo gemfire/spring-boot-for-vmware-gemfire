@@ -44,6 +44,6 @@ public class VMwareGemFireLoggingApplicationSmokeTests extends IntegrationTestsS
 
 	@Test
 	public void gemfireLogsContent() {
-		assertThat(this.log.getContent()).containsSequence("Product-Name: VMware GemFire");
+		assertThat(this.log.getContent()).containsSequence("Product-Name: Tanzu GemFire");
 	}
 }
