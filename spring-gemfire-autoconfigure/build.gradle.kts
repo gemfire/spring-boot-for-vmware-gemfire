@@ -25,8 +25,8 @@ dependencies {
   compileOnly(libs.gemfire.core)
   compileOnly(libs.findbugs.jsr305)
 
-  implementation("org.springframework.boot:spring-boot-configuration-processor")
-  implementation("org.springframework.boot:spring-boot-autoconfigure-processor")
+  compileOnly("org.springframework.boot:spring-boot-configuration-processor")
+  compileOnly("org.springframework.boot:spring-boot-autoconfigure-processor")
   compileOnly(libs.spring.session.gemfire)
   implementation(libs.aspectj.tools)
   implementation("org.aspectj:aspectjweaver:1.9.19")
