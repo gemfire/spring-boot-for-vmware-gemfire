@@ -27,8 +27,8 @@ dependencies {
   compileOnly(libs.spring.session.gemfire)
   implementation("jakarta.annotation:jakarta.annotation-api")
 
-  implementation("org.springframework.boot:spring-boot-configuration-processor")
-  implementation("org.springframework.boot:spring-boot-autoconfigure-processor")
+  compileOnly("org.springframework.boot:spring-boot-configuration-processor")
+  compileOnly("org.springframework.boot:spring-boot-autoconfigure-processor")
   implementation(libs.aspectjwaever)
 
   testImplementation(libs.gemfire.core)
