@@ -17,7 +17,7 @@ antlr = { module = "antlr:antlr", version.ref = "antlrVersion" }
 aspectj-tools = { module = "org.aspectj:aspectjtools", version.ref = "aspectjToolsVersion" }
 awaitility={module="org.awaitility:awaitility",version.ref="awaitilityVersion"}
 findbugs-jsr305 = { module = "com.google.code.findbugs:jsr305", version.ref = "findbugsVersion" }
-gemfire-testcontainers = { module = "com.vmware.gemfire:gemfire-testcontainers", version.ref = "gemFireTestContainersVersion" }
+gemfire-testcontainers = { module = "dev.gemfire:gemfire-testcontainers", version.ref = "gemFireTestContainersVersion" }
 multithreadedtc = { module = "edu.umd.cs.mtc:multithreadedtc", version.ref = "multithreadedtcVersion" }
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoCoreVersion" }
 spring-shell = { module = "org.springframework.shell:spring-shell", version.ref = "springShellVersion" }
