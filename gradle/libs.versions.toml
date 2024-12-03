@@ -5,12 +5,11 @@ aspectjToolsVersion = "1.9.22"
 findbugsVersion = "3.0.2"
 mockitoCoreVersion = { strictly = "4.4.0" }
 multithreadedtcVersion = "1.01"
-springBootVersion="2.7.18"
 springShellVersion = "1.2.0.RELEASE"
 tomcatMigrationVersion="1.0.7"
 
 benManesVersions = "0.50.0"
-littlerobotsVersionCatalogUpdate = "0.8.4"
+littlerobotsVersionCatalogUpdate = "0.8.5"
 lombokPlugin = "8.6"
 
 [libraries]
@@ -20,8 +19,6 @@ awaitility={module="org.awaitility:awaitility",version.ref="awaitilityVersion"}
 findbugs-jsr305 = { module = "com.google.code.findbugs:jsr305", version.ref = "findbugsVersion" }
 multithreadedtc = { module = "edu.umd.cs.mtc:multithreadedtc", version.ref = "multithreadedtcVersion" }
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoCoreVersion" }
-spring-boot-configuration-processor = { module = "org.springframework.boot:spring-boot-configuration-processor", version.ref = "springBootVersion" }
-spring-boot-autoconfigure-processor = { module = "org.springframework.boot:spring-boot-autoconfigure-processor", version.ref = "springBootVersion" }
 spring-shell = { module = "org.springframework.shell:spring-shell", version.ref = "springShellVersion" }
 tomcat-jakartaee-migration={module="org.apache.tomcat:jakartaee-migration",version.ref="tomcatMigrationVersion"}
 
