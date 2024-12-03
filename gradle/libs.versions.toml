@@ -3,14 +3,14 @@ antlrVersion = "2.7.7"
 awaitilityVersion="4.2.2"
 aspectjToolsVersion = "1.9.19"
 findbugsVersion = "3.0.2"
-gemFireTestContainersVersion = "2.3.0"
+gemFireTestContainersVersion = "2.3.1"
 mockitoCoreVersion = { strictly = "4.8.1" }
 multithreadedtcVersion = "1.01"
 springBootVersion = "3.3.3"
 springShellVersion = "1.2.0.RELEASE"
 
 benManesVersions = "0.50.0"
-littlerobotsVersionCatalogUpdate = "0.8.4"
+littlerobotsVersionCatalogUpdate = "0.8.5"
 lombokPlugin = "8.6"
 
 [libraries]
