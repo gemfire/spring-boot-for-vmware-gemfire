@@ -1,6 +1,6 @@
 [versions]
 antlrVersion = "2.7.7"
-awaitilityVersion="4.2.1"
+awaitilityVersion="4.2.2"
 aspectjToolsVersion = "1.9.22"
 findbugsVersion = "3.0.2"
 mockitoCoreVersion = { strictly = "4.8.1" }
@@ -10,7 +10,7 @@ springShellVersion = "1.2.0.RELEASE"
 tomcatMigrationVersion="1.0.7"
 
 benManesVersions = "0.50.0"
-littlerobotsVersionCatalogUpdate = "0.8.4"
+littlerobotsVersionCatalogUpdate = "0.8.5"
 lombokPlugin = "8.6"
 
 [libraries]
