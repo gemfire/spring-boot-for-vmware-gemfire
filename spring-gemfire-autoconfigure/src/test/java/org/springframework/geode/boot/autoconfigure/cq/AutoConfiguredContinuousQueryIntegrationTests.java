@@ -85,7 +85,6 @@ public class AutoConfiguredContinuousQueryIntegrationTests {
 
 		GemFireCluster gemFireCluster = new GemFireCluster(dockerImage, 1, 1);
 		gemFireCluster.withPdx("example\\.geode\\.query\\.cq\\.event\\..*", true)
-				.withStartupTimeout(GemFireCluster.ALL_GLOB,240)
 				.withClasspath(GemFireCluster.ALL_GLOB, System.getProperty("TEST_JAR_PATH"));
 
 		gemFireCluster.acceptLicense().start();

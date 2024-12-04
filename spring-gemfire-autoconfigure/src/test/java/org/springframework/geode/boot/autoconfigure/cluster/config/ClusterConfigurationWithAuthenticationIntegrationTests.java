@@ -87,7 +87,6 @@ public class ClusterConfigurationWithAuthenticationIntegrationTests {
 				.withGemFireProperty(ALL_GLOB, "security-username", "cluster")
 				.withGemFireProperty(ALL_GLOB, "security-password", "cluster");
 
-		gemFireCluster.withStartupTimeout(GemFireCluster.ALL_GLOB,240);
 		gemFireCluster.acceptLicense().start();
 
 		System.setProperty("spring.data.gemfire.pool.locators", "localhost[" + gemFireCluster.getLocatorPort() + "]");
