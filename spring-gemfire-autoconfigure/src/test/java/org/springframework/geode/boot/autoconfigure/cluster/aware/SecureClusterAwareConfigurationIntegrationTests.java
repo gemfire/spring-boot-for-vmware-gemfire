@@ -116,6 +116,7 @@ public class SecureClusterAwareConfigurationIntegrationTests {
 				.withGemFireProperty(ALL_GLOB, "security-username", "cluster")
 				.withGemFireProperty(ALL_GLOB, "security-password", "cluster");
 
+		gemFireCluster.withStartupTimeout(GemFireCluster.ALL_GLOB,240);
 		gemFireCluster.acceptLicense().start();
 		gemFireCluster.gfsh(true, "create region --name=Customers --type=REPLICATE");
 
