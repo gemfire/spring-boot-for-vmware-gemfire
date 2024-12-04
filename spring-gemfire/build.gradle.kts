@@ -54,7 +54,7 @@ dependencies {
 
 tasks.getByName<Test>("test") {
   forkEvery = 1
-  maxParallelForks = 1
+  maxParallelForks = 4
   val springTestGemfireDockerImage: String by project
   systemProperty("spring.test.gemfire.docker.image", springTestGemfireDockerImage)
 }
