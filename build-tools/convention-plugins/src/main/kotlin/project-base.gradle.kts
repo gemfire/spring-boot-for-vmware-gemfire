@@ -3,6 +3,16 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import gradle.kotlin.dsl.accessors._47bddfe2709b17d87106a3017b4e6c2a.api
+import gradle.kotlin.dsl.accessors._47bddfe2709b17d87106a3017b4e6c2a.ext
+import gradle.kotlin.dsl.accessors._47bddfe2709b17d87106a3017b4e6c2a.java
+import java.util.LinkedList
+
+/*
+ * Copyright 2024 Broadcom. All rights reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 plugins {
   id("java-library")
   id("idea")
@@ -39,6 +49,17 @@ repositories {
     additionalMavenRepoURLs.split(",").forEach {
       project.repositories.maven {
         this.url = uri(it)
+      }
+    }
+  }
+  val listOrderedRepos= LinkedList<ArtifactRepository>()
+  val values = project.repositories.asMap.values
+  values.forEach { artifactRepository ->
+    if (artifactRepository is MavenArtifactRepository) {
+      if (artifactRepository.url.toString().startsWith("gcs:")) {
+        listOrderedRepos.addFirst(artifactRepository)
+      } else {
+        listOrderedRepos.add(artifactRepository)
       }
     }
   }
