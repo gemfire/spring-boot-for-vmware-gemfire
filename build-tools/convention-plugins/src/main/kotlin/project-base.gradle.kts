@@ -3,6 +3,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import gradle.kotlin.dsl.accessors._47bddfe2709b17d87106a3017b4e6c2a.api
+import gradle.kotlin.dsl.accessors._47bddfe2709b17d87106a3017b4e6c2a.ext
+import gradle.kotlin.dsl.accessors._47bddfe2709b17d87106a3017b4e6c2a.java
 import java.util.LinkedList
 
 /*
