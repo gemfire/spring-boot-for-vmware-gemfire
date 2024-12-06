@@ -24,8 +24,7 @@ dependencies {
   api("org.springframework.boot:spring-boot-starter-actuator")
 
   compileOnly(libs.gemfire.logging)
-  runtimeOnly(libs.gemfire.logging)
-  runtimeOnly(libs.gemfire.serialization)
+  compileOnly(libs.gemfire.serialization)
 
   compileOnly(libs.gemfire.core)
   compileOnly(libs.gemfire.cq)
