@@ -63,6 +63,9 @@ repositories {
       }
     }
   }
+
+  project.repositories.clear()
+  project.repositories.addAll(listOrderedRepos)
 }
 
 configurations.all {
