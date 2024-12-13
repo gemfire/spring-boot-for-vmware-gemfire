@@ -3,6 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import ProjectUtils.getBaseVersion
 import com.google.cloud.storage.BlobId
 import com.google.cloud.storage.BlobInfo
 import com.google.cloud.storage.StorageOptions
@@ -21,10 +22,10 @@ plugins {
 
 description = "Spring Boot Starter for VMware GemFire"
 
-val gemfireVersion = ProjectUtils.getGemFireBaseVersion(property("gemfireVersion").toString())
+val gemfireVersion = getBaseVersion(property("gemfireVersion").toString())
 
 publishingDetails {
-  artifactName.set("spring-boot-3.3-gemfire-$gemfireVersion")
+  artifactName.set("spring-boot-${getBaseVersion(property("spring-boot.version").toString())}-gemfire-$gemfireVersion")
   longName.set(project.description)
   description.set(project.description)
 }

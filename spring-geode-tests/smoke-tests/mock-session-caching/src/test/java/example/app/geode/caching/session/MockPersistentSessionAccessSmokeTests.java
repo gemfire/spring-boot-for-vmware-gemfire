@@ -22,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.gemfire.tests.integration.IntegrationTestsSupport;
 import org.springframework.data.gemfire.tests.mock.annotation.EnableGemFireMockObjects;
 import org.springframework.data.gemfire.tests.support.MapBuilder;
 import org.springframework.hamcrest.RegexMatcher;
@@ -70,7 +69,7 @@ import lombok.ToString;
 )
 @AutoConfigureMockMvc
 @SuppressWarnings("unused")
-public class MockPersistentSessionAccessSmokeTests extends IntegrationTestsSupport {
+public class MockPersistentSessionAccessSmokeTests {
 
 	@Autowired
 	private MockMvc mvc;
@@ -86,7 +85,7 @@ public class MockPersistentSessionAccessSmokeTests extends IntegrationTestsSuppo
 			.andExpect(status().isOk())
 			.andExpect(request().sessionAttribute(username, User.newUser(username)))
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-			.andExpect(content().string(RegexMatcher.from("\\{\"id\":\".*\",\"name\":\"jonDoe\"\\}")));
+			.andExpect(content().string(RegexMatcher.from("\\{\"name\":\"jonDoe\"\\,\"id\":\".*\"}|\\{\"id\":\".*\",\"name\":\"jonDoe\"\\}")));
 	}
 
 	@SpringBootApplication

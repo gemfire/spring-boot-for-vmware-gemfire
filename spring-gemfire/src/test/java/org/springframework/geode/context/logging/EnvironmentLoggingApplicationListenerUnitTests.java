@@ -105,7 +105,7 @@ public class EnvironmentLoggingApplicationListenerUnitTests {
 		EnvironmentLoggingApplicationListener listener = spy(new EnvironmentLoggingApplicationListener());
 
 		doReturn(mockLogger).when(listener).getLogger();
-		doNothing().when(listener).logToSystemErr(anyString(), any());
+		doNothing().when(listener).logToSystemErr(anyString(), any(Object[].class));
 
 		listener.onApplicationEvent(mockEvent);
 

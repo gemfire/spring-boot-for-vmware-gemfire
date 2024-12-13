@@ -3,6 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import ProjectUtils.getBaseVersion
+
 plugins {
   alias(libs.plugins.lombok)
   id("project-base")
@@ -13,7 +15,7 @@ plugins {
 description = "Spring Boot Auto-Configuration for VMware GemFire"
 
 publishingDetails {
-  artifactName.set("spring-boot-3.3-gemfire-autoconfigure-${ProjectUtils.getGemFireBaseVersion(property("gemfireVersion").toString())}")
+  artifactName.set("spring-boot-${getBaseVersion(property("spring-boot.version").toString())}-gemfire-autoconfigure-${getBaseVersion(property("gemfireVersion").toString())}")
   longName.set(project.description)
   description.set(project.description)
 }

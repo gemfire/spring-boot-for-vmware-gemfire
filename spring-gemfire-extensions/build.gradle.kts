@@ -3,6 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import ProjectUtils.getBaseVersion
+
 plugins {
   id("project-base")
   id("gemfire-repo-artifact-publishing")
@@ -12,7 +14,7 @@ plugins {
 description = "Spring Boot for VMware GemFire Extensions"
 
 publishingDetails {
-  artifactName.set("spring-boot-3.3-gemfire-extensions-${ProjectUtils.getGemFireBaseVersion(property("gemfireVersion").toString())}")
+  artifactName.set("spring-boot-${getBaseVersion(property("spring-boot.version").toString())}-gemfire-extensions-${getBaseVersion(property("gemfireVersion").toString())}")
   longName.set(project.description)
   description.set(project.description)
 }
