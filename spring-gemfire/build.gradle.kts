@@ -3,6 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import ProjectUtils.getBaseVersion
+
 plugins {
   id("project-base")
   alias(libs.plugins.lombok)
@@ -13,7 +15,7 @@ plugins {
 description = "Spring GemFire base build for VMware GemFire"
 
 publishingDetails {
-  artifactName.set("spring-boot-3.3-gemfire-core-${ProjectUtils.getGemFireBaseVersion(property("gemfireVersion").toString())}")
+  artifactName.set("spring-boot-${getBaseVersion(property("spring-boot.version").toString())}-gemfire-core-${getBaseVersion(property("gemfireVersion").toString())}")
   longName.set(project.description)
   description.set(project.description)
 }
@@ -46,6 +48,7 @@ dependencies {
   testImplementation("org.testcontainers:testcontainers")
   testImplementation("org.testcontainers:cassandra")
   testImplementation(libs.mockito.core)
+  testImplementation(libs.mockito.subclass)
   testImplementation(libs.multithreadedtc)
   testImplementation(libs.gemfire.testcontainers)
   testRuntimeOnly("org.hsqldb:hsqldb")

@@ -3,8 +3,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import java.nio.file.Path
-
 plugins {
   id("java-library")
   id("idea")
@@ -55,14 +53,4 @@ tasks.withType<JavaCompile>().configureEach {
   options.compilerArgs.add("-parameters")
 }
 
-fun getGemFireBaseVersion(): String {
-  return getBaseVersion(property("gemfireVersion").toString())
-}
-
-fun getBaseVersion(version: String): String {
-  val split = version.split(".")
-  if (split.size < 2) {
-    throw RuntimeException("version is malformed")
-  }
-  return "${split[0]}.${split[1]}"
-}
+tasks.register("compileTestKotlin") {}

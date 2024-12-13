@@ -4,9 +4,6 @@
  */
 
 object ProjectUtils {
-  fun getGemFireBaseVersion(gemfireVersion:String): String {
-    return getBaseVersion(gemfireVersion)
-  }
 
   fun getBaseVersion(version: String): String {
     val split = version.split(".")
