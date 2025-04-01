@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Broadcom. All rights reserved.
+ * Copyright 2024-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -50,7 +50,7 @@ dependencies {
   testRuntimeOnly("org.springframework.boot:spring-boot-starter-jetty")
   testRuntimeOnly("org.springframework.boot:spring-boot-starter-json")
   testRuntimeOnly(libs.spring.shell)
-  testImplementation(variantOf(libs.spring.data.gemfire) { classifier("test-framework") })
+  testImplementation(libs.spring.data.gemfire.test.framework)
   testImplementation(libs.awaitility)
   testImplementation("junit:junit")
 }
