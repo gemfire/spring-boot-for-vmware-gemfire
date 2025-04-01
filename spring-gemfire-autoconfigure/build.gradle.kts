@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Broadcom. All rights reserved.
+ * Copyright 2024-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -42,7 +42,7 @@ dependencies {
   testImplementation("org.springframework.boot:spring-boot-starter-web")
   testImplementation("jakarta.servlet:jakarta.servlet-api")
   testImplementation("org.apache.httpcomponents:httpclient")
-  testImplementation(variantOf(libs.spring.data.gemfire) { classifier("test-framework") })
+  testImplementation(libs.spring.data.gemfire.test.framework)
   testImplementation(libs.awaitility)
   testImplementation("junit:junit")
 

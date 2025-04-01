@@ -37,6 +37,7 @@ gemfire-serialization = { module = "com.vmware.gemfire:gemfire-serialization", v
 gemfire-deployment-chained-classloader = { module = "com.vmware.gemfire:gemfire-deployment-chained-classloader", version.ref = "gemfireVersion" }
 
 spring-data-gemfire = { module = "com.vmware.gemfire:spring-data-2.7-gemfire-10.1", version.ref = "springDataGemFireVersion" }
+spring-data-gemfire-test-framework = { module = "com.vmware.gemfire:spring-data-2.7-gemfire-test-framework-10.1", version.ref = "springDataGemFireVersion" }
 spring-session-gemfire = { module = "com.vmware.gemfire:spring-session-2.7-gemfire-10.1", version.ref = "springSessionDataGemFireVersion" }
 
 [bundles]

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Broadcom. All rights reserved.
+ * Copyright 2024-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -47,7 +47,7 @@ dependencies {
   testImplementation("jakarta.persistence:jakarta.persistence-api")
   testImplementation("org.springframework.boot:spring-boot-starter-data-jpa")
   testImplementation("org.springframework.boot:spring-boot-starter-data-cassandra")
-  testImplementation(variantOf(libs.spring.data.gemfire) { classifier("test-framework") })
+  testImplementation(libs.spring.data.gemfire.test.framework)
   testImplementation(libs.gemfire.server.all) {
     exclude(group="com.vmware.gemfire", module="gemfire-log4j")
   }
