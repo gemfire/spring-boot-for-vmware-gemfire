@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -76,8 +76,6 @@ fun isPatch(candidateVersion: String, currentVersion: String): Boolean {
       }
       return true
     }
-    return false
-  } else {
     return false
   }
   return false

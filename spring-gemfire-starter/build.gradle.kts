@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Broadcom. All rights reserved.
+ * Copyright 2024-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -68,8 +68,9 @@ tasks {
     val javadocJarTask = named("combinedJavadocJar")
     dependsOn(javadocJarTask)
     doLast {
-      val storage = StorageOptions.newBuilder().setProjectId(project.properties["docsGCSProject"].toString())
-        .build().getService()
+//      val storage = StorageOptions.newBuilder().setProjectId(project.properties["docsGCSProject"].toString())
+//        .build().getService()
+      val storage = StorageOptions.getDefaultInstance().service
       val javadocJarFiles = javadocJarTask.get().outputs.files
       val blobId = BlobId.of(
         project.properties["docsGCSBucket"].toString(),
