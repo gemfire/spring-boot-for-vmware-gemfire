@@ -3,13 +3,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.storage.BlobId
 import com.google.cloud.storage.BlobInfo
 import com.google.cloud.storage.StorageOptions
 
 buildscript {
   dependencies {
-    classpath("com.google.cloud:google-cloud-storage:2.30.2")
+    classpath("com.google.cloud:google-cloud-storage:2.50.0")
   }
 }
 
@@ -68,9 +69,13 @@ tasks {
     val javadocJarTask = named("combinedJavadocJar")
     dependsOn(javadocJarTask)
     doLast {
-//      val storage = StorageOptions.newBuilder().setProjectId(project.properties["docsGCSProject"].toString())
-//        .build().getService()
-      val storage = StorageOptions.getDefaultInstance().service
+      val storage =
+        StorageOptions.newBuilder().setProjectId(project.properties["docsGCSProject"].toString()).setCredentials(
+          GoogleCredentials.fromStream(
+            new
+                FileInputStream (project.properties["docsGCSProjectCredentials"].toString())
+          )
+        ).build().getService()
       val javadocJarFiles = javadocJarTask.get().outputs.files
       val blobId = BlobId.of(
         project.properties["docsGCSBucket"].toString(),
