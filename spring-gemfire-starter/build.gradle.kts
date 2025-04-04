@@ -7,6 +7,7 @@ import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.storage.BlobId
 import com.google.cloud.storage.BlobInfo
 import com.google.cloud.storage.StorageOptions
+import java.io.FileInputStream
 
 buildscript {
   dependencies {
@@ -71,11 +72,7 @@ tasks {
     doLast {
       val storage =
         StorageOptions.newBuilder().setProjectId(project.properties["docsGCSProject"].toString()).setCredentials(
-          GoogleCredentials.fromStream(
-            new
-                FileInputStream (project.properties["docsGCSProjectCredentials"].toString())
-          )
-        ).build().getService()
+          GoogleCredentials.fromStream(FileInputStream(project.properties["docsGCSProjectCredentials"].toString()))).build().getService()
       val javadocJarFiles = javadocJarTask.get().outputs.files
       val blobId = BlobId.of(
         project.properties["docsGCSBucket"].toString(),
