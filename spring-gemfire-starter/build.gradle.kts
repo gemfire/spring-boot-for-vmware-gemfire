@@ -73,7 +73,6 @@ tasks {
       val storage =
         StorageOptions.newBuilder().setProjectId(project.properties["docsGCSProject"].toString()).setCredentials(
           GoogleCredentials.fromStream(FileInputStream(project.properties["docsGCSProjectCredentials"].toString()))).build().getService()
-        .build().getService()
       val javadocJarFiles = javadocJarTask.get().outputs.files
       val blobId = BlobId.of(
         project.properties["docsGCSBucket"].toString(),
