@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Broadcom. All rights reserved.
+ * Copyright 2024-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -23,7 +23,12 @@ dependencies {
 	implementation("org.projectlombok:lombok")
 	implementation("jakarta.persistence:jakarta.persistence-api")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-	implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
+	//The mongo-driver-sync:5.4.0 that comes from the BOM is broken. Override to 5.5.0
+	implementation("org.springframework.boot:spring-boot-starter-data-mongodb"){
+		exclude(group="org.mongodb", module="mongodb-driver-sync")
+	}
+
+	implementation("org.mongodb:mongodb-driver-sync:5.5.0")
 
 	runtimeOnly("org.hsqldb:hsqldb")
 
