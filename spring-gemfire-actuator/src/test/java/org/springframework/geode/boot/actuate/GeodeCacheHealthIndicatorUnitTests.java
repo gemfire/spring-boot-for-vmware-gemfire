@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -27,8 +27,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.boot.actuate.health.Health;
-import org.springframework.boot.actuate.health.Status;
+import org.springframework.boot.health.contributor.Health;
+import org.springframework.boot.health.contributor.Status;
 import org.springframework.data.gemfire.tests.mock.CacheMockObjects;
 
 /**
@@ -44,8 +44,8 @@ import org.springframework.data.gemfire.tests.mock.CacheMockObjects;
  * @see org.apache.geode.cache.control.ResourceManager
  * @see org.apache.geode.distributed.DistributedMember
  * @see org.apache.geode.distributed.DistributedSystem
- * @see org.springframework.boot.actuate.health.Health
- * @see org.springframework.boot.actuate.health.HealthIndicator
+ * @see org.springframework.boot.health.contributor.Health
+ * @see org.springframework.boot.health.contributor.HealthIndicator
  * @see org.springframework.data.gemfire.tests.mock.CacheMockObjects
  * @see org.springframework.geode.boot.actuate.GeodeCacheHealthIndicator
  * @since 1.0.0

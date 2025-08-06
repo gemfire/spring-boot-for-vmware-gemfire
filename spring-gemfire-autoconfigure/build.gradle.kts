@@ -30,6 +30,8 @@ dependencies {
   compileOnly("org.springframework.boot:spring-boot-configuration-processor")
   compileOnly("org.springframework.boot:spring-boot-autoconfigure-processor")
   implementation("jakarta.annotation:jakarta.annotation-api")
+  implementation("org.springframework.boot:spring-boot-cache")
+  implementation("org.springframework.boot:spring-boot-websocket")
 
   implementation(libs.aspectj.tools)
 
@@ -41,6 +43,7 @@ dependencies {
   testImplementation("org.apache.httpcomponents.client5:httpclient5")
   testImplementation("org.springframework.boot:spring-boot-starter-test")
   testImplementation("org.springframework.boot:spring-boot-starter-web")
+  testImplementation("org.springframework.boot:spring-boot-web-server-test")
   testCompileOnly(libs.findbugs.jsr305)
 
   testRuntimeOnly("javax.cache:cache-api")

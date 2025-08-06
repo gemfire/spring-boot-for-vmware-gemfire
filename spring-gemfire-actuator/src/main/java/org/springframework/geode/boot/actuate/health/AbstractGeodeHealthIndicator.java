@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -8,8 +8,8 @@ package org.springframework.geode.boot.actuate.health;
 import java.util.Optional;
 
 import org.apache.geode.cache.client.ClientCache;
-import org.springframework.boot.actuate.health.AbstractHealthIndicator;
-import org.springframework.boot.actuate.health.HealthIndicator;
+import org.springframework.boot.health.contributor.AbstractHealthIndicator;
+import org.springframework.boot.health.contributor.HealthIndicator;
 import org.springframework.util.Assert;
 
 /**
@@ -18,8 +18,8 @@ import org.springframework.util.Assert;
  *
  * @author John Blum
  * @see org.apache.geode.cache.client.ClientCache
- * @see org.springframework.boot.actuate.health.AbstractHealthIndicator
- * @see org.springframework.boot.actuate.health.HealthIndicator
+ * @see org.springframework.boot.health.contributor.AbstractHealthIndicator
+ * @see org.springframework.boot.health.contributor.HealthIndicator
  * @since 1.0.0
  */
 @SuppressWarnings("unused")

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 package org.springframework.geode.context.annotation;
@@ -13,11 +13,13 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanRegistrar;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanNameGenerator;
+import org.springframework.beans.factory.support.BeanRegistryAdapter;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotatedBeanDefinitionReader;
@@ -65,10 +67,8 @@ public class RefreshableAnnotationConfigApplicationContext extends AbstractRefre
 	protected static final boolean DEFAULT_COPY_CONFIGURATION = false;
 	protected static final boolean USE_DEFAULT_FILTERS = true;
 
-	@Nullable
 	private BeanNameGenerator beanNameGenerator;
 
-	@Nullable
 	private volatile DefaultListableBeanFactory beanFactory;
 
 	private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -76,7 +76,6 @@ public class RefreshableAnnotationConfigApplicationContext extends AbstractRefre
 	private final Set<String> basePackages = new LinkedHashSet<>();
 	private final Set<Class<?>> componentClasses = new LinkedHashSet<>();
 
-	@Nullable
 	private ScopeMetadataResolver scopeMetadataResolver;
 
 	// TODO: WARNING - Calling refreshBeanFactory() in the constructor to eagerly create a BeanFactory is problematic.
@@ -303,7 +302,14 @@ public class RefreshableAnnotationConfigApplicationContext extends AbstractRefre
 		super.prepareRefresh();
 	}
 
-	/**
+  @Override
+  public void register(BeanRegistrar... registrars) {
+    for (BeanRegistrar registrar : registrars) {
+      new BeanRegistryAdapter(this.beanFactory, getEnvironment(), registrar.getClass()).register(registrar);
+    }
+  }
+
+  /**
 	 * {@inheritDoc}
 	 */
 	@Override

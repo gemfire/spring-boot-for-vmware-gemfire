@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 package example.app.crm.config;
@@ -12,9 +12,9 @@ import java.util.Arrays;
 import com.datastax.oss.driver.api.core.CqlSession;
 
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.cassandra.CassandraProperties;
-import org.springframework.boot.autoconfigure.cassandra.CqlSessionBuilderCustomizer;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.cassandra.autoconfigure.CassandraProperties;
+import org.springframework.boot.cassandra.autoconfigure.CqlSessionBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -33,7 +33,7 @@ import example.app.crm.model.Customer;
  * @author John Blum
  * @see java.net.InetSocketAddress
  * @see com.datastax.oss.driver.api.core.CqlSession
- * @see org.springframework.boot.autoconfigure.cassandra.CqlSessionBuilderCustomizer
+ * @see org.springframework.boot.cassandra.autoconfigure.CqlSessionBuilderCustomizer
  * @see org.springframework.boot.autoconfigure.domain.EntityScan
  * @see org.springframework.context.annotation.Bean
  * @see org.springframework.context.annotation.Configuration
@@ -150,8 +150,8 @@ public class TestcontainersCassandraConfiguration extends TestCassandraConfigura
 	}
 
 	@Bean
-	CqlSessionBuilderCustomizer cqlSessionBuilderCustomizer(CassandraProperties properties,
-			@Qualifier("CassandraContainer") GenericContainer<?> cassandraContainer) {
+  CqlSessionBuilderCustomizer cqlSessionBuilderCustomizer(CassandraProperties properties,
+                                                          @Qualifier("CassandraContainer") GenericContainer<?> cassandraContainer) {
 
 		return cqlSessionBuilder -> cqlSessionBuilder
 			.addContactPoint(resolveContactPoint(cassandraContainer))

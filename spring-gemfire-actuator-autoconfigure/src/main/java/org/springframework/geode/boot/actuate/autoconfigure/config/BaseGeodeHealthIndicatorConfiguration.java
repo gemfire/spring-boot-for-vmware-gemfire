@@ -1,11 +1,11 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 package org.springframework.geode.boot.actuate.autoconfigure.config;
 
 import org.apache.geode.cache.client.ClientCache;
-import org.springframework.boot.actuate.health.HealthIndicator;
+import org.springframework.boot.health.contributor.HealthIndicator;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +19,7 @@ import org.springframework.geode.boot.actuate.GeodeRegionsHealthIndicator;
  *
  * @author John Blum
  * @see org.apache.geode.cache.client.ClientCache
- * @see org.springframework.boot.actuate.health.HealthIndicator
+ * @see org.springframework.boot.health.contributor.HealthIndicator
  * @see org.springframework.context.ApplicationContext
  * @see org.springframework.context.annotation.Bean
  * @see org.springframework.context.annotation.Configuration

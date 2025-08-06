@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 package org.springframework.geode.boot.actuate;
@@ -11,9 +11,9 @@ import org.apache.geode.cache.client.ClientCache;
 import org.apache.geode.cache.control.ResourceManager;
 import org.apache.geode.distributed.DistributedMember;
 import org.apache.geode.distributed.DistributedSystem;
-import org.springframework.boot.actuate.health.Health;
-import org.springframework.boot.actuate.health.HealthIndicator;
-import org.springframework.boot.actuate.health.Status;
+import org.springframework.boot.health.contributor.Health;
+import org.springframework.boot.health.contributor.HealthIndicator;
+import org.springframework.boot.health.contributor.Status;
 import org.springframework.data.gemfire.util.CollectionUtils;
 import org.springframework.geode.boot.actuate.health.AbstractGeodeHealthIndicator;
 import org.springframework.util.StringUtils;
@@ -31,8 +31,8 @@ import org.springframework.util.StringUtils;
  * @see org.apache.geode.cache.control.ResourceManager
  * @see org.apache.geode.distributed.DistributedMember
  * @see org.apache.geode.distributed.DistributedSystem
- * @see org.springframework.boot.actuate.health.Health
- * @see org.springframework.boot.actuate.health.HealthIndicator
+ * @see org.springframework.boot.health.contributor.Health
+ * @see org.springframework.boot.health.contributor.HealthIndicator
  * @see org.springframework.geode.boot.actuate.health.AbstractGeodeHealthIndicator
  * @since 1.0.0
  */
@@ -70,7 +70,7 @@ public class GeodeCacheHealthIndicator extends AbstractGeodeHealthIndicator {
 	 *
 	 * @return a collection of {@link Function Functions} applying {@link HealthIndicator} information
 	 * about the {@link ClientCache} to a {@link Health} object.
-	 * @see org.springframework.boot.actuate.health.Health.Builder
+	 * @see org.springframework.boot.health.contributor.Health.Builder
 	 * @see java.util.function.Function
 	 */
 	protected Function<Health.Builder, Health.Builder> getGemfireHealthIndicatorFunctions() {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 package org.springframework.geode.boot.autoconfigure.session;
@@ -20,9 +20,9 @@ import org.apache.geode.cache.DataPolicy;
 import org.apache.geode.cache.Region;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.websocket.servlet.WebSocketServletAutoConfiguration;
+import org.springframework.boot.web.server.test.LocalServerPort;
+import org.springframework.boot.websocket.autoconfigure.servlet.WebSocketMessagingAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.gemfire.tests.integration.IntegrationTestsSupport;
 import org.springframework.http.RequestEntity;
@@ -128,7 +128,7 @@ public class AutoConfiguredSessionLocalCachingIntegrationTests extends Integrati
 		assertThat(response.getBody()).isEqualTo("TEST");
 	}
 
-	@SpringBootApplication(exclude = WebSocketServletAutoConfiguration.class)
+	@SpringBootApplication(exclude = WebSocketMessagingAutoConfiguration.class)
 	static class TestConfiguration {
 
 		@Bean

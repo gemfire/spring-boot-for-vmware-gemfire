@@ -1,12 +1,13 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 package org.springframework.geode.boot.actuate.autoconfigure;
 
 import org.apache.geode.cache.client.ClientCache;
-import org.springframework.boot.actuate.autoconfigure.health.ConditionalOnEnabledHealthIndicator;
-import org.springframework.boot.actuate.health.HealthIndicator;
+import org.springframework.boot.health.autoconfigure.contributor.ConditionalOnEnabledHealthIndicator;
+import org.springframework.boot.health.autoconfigure.contributor.HealthContributorAutoConfiguration;
+import org.springframework.boot.health.contributor.HealthIndicator;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -24,8 +25,8 @@ import org.springframework.geode.boot.autoconfigure.ClientCacheAutoConfiguration
  *
  * @author John Blum
  * @see org.apache.geode.cache.client.ClientCache
- * @see org.springframework.boot.actuate.autoconfigure.health.ConditionalOnEnabledHealthIndicator
- * @see org.springframework.boot.actuate.autoconfigure.health.HealthContributorAutoConfiguration
+ * @see ConditionalOnEnabledHealthIndicator
+ * @see HealthContributorAutoConfiguration
  * @see org.springframework.boot.autoconfigure.EnableAutoConfiguration
  * @see org.springframework.context.annotation.Configuration
  * @see org.springframework.context.annotation.Import

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 package org.springframework.geode.boot.actuate;
@@ -17,8 +17,8 @@ import org.apache.geode.cache.query.Query;
 import org.apache.geode.cache.query.QueryService;
 import org.apache.geode.cache.query.QueryStatistics;
 
-import org.springframework.boot.actuate.health.Health;
-import org.springframework.boot.actuate.health.HealthIndicator;
+import org.springframework.boot.health.contributor.Health;
+import org.springframework.boot.health.contributor.HealthIndicator;
 import org.springframework.data.gemfire.listener.ContinuousQueryListenerContainer;
 import org.springframework.geode.boot.actuate.health.AbstractGeodeHealthIndicator;
 
@@ -30,8 +30,8 @@ import org.springframework.geode.boot.actuate.health.AbstractGeodeHealthIndicato
  * @see org.apache.geode.cache.query.CqQuery
  * @see org.apache.geode.cache.query.Query
  * @see org.apache.geode.cache.query.QueryService
- * @see org.springframework.boot.actuate.health.Health
- * @see org.springframework.boot.actuate.health.HealthIndicator
+ * @see org.springframework.boot.health.contributor.Health
+ * @see org.springframework.boot.health.contributor.HealthIndicator
  * @see org.springframework.data.gemfire.listener.ContinuousQueryListenerContainer
  * @see org.springframework.geode.boot.actuate.health.AbstractGeodeHealthIndicator
  * @since 1.0.0

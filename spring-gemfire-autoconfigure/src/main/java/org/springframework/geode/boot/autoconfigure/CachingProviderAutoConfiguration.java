@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 package org.springframework.geode.boot.autoconfigure;
@@ -13,8 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.cache.CacheManagerCustomizers;
-import org.springframework.boot.autoconfigure.cache.CacheProperties;
+import org.springframework.boot.cache.autoconfigure.CacheManagerCustomizers;
+import org.springframework.boot.cache.autoconfigure.CacheProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -37,8 +37,8 @@ import org.springframework.util.StringUtils;
  * @see org.apache.geode.cache.client.ClientCache
  * @see org.springframework.boot.SpringBootConfiguration
  * @see org.springframework.boot.autoconfigure.EnableAutoConfiguration
- * @see org.springframework.boot.autoconfigure.cache.CacheManagerCustomizers
- * @see org.springframework.boot.autoconfigure.cache.CacheProperties
+ * @see org.springframework.boot.cache.autoconfigure.CacheManagerCustomizers
+ * @see org.springframework.boot.cache.autoconfigure.CacheProperties
  * @see org.springframework.cache.CacheManager
  * @see org.springframework.data.gemfire.cache.GemfireCacheManager
  * @see org.springframework.data.gemfire.cache.config.EnableGemfireCaching

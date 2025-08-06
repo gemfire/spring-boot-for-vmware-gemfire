@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -19,6 +19,12 @@ plugins {
 // uploaded, but there is no artifact on the root project, so we skip that part.
 tasks.artifactoryPublish {
   skip = true
+}
+
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(17)
+  }
 }
 
 group = "com.vmware.gemfire"

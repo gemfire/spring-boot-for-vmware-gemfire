@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 package org.springframework.geode.boot.autoconfigure.session;
@@ -20,9 +20,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.websocket.servlet.WebSocketServletAutoConfiguration;
+import org.springframework.boot.web.server.test.LocalServerPort;
+import org.springframework.boot.websocket.autoconfigure.servlet.WebSocketMessagingAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.gemfire.tests.integration.ForkingClientServerIntegrationTestsSupport;
 import org.springframework.http.RequestEntity;
@@ -51,7 +51,7 @@ import org.springframework.web.client.RestTemplate;
  * @see org.springframework.boot.autoconfigure.SpringBootApplication
  * @see org.springframework.boot.builder.SpringApplicationBuilder
  * @see org.springframework.boot.test.context.SpringBootTest
- * @see org.springframework.boot.test.web.server.LocalServerPort
+ * @see LocalServerPort
  * @see org.springframework.context.annotation.Bean
  * @see org.springframework.data.gemfire.tests.integration.ForkingClientServerIntegrationTestsSupport
  * @see org.springframework.geode.boot.autoconfigure.SpringSessionAutoConfiguration
@@ -157,7 +157,7 @@ public class AutoConfiguredSessionRemoteCachingIntegrationTests extends ForkingC
 		assertThat(response.getBody()).isEqualTo("TEST");
 	}
 
-	@SpringBootApplication(exclude = WebSocketServletAutoConfiguration.class)
+	@SpringBootApplication(exclude = WebSocketMessagingAutoConfiguration.class)
 	static class SessionGemFireClientConfiguration {
 
 		@Bean

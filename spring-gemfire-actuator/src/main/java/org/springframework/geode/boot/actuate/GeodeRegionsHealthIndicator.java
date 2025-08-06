@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 package org.springframework.geode.boot.actuate;
@@ -18,8 +18,8 @@ import org.apache.geode.cache.Region;
 import org.apache.geode.cache.RegionAttributes;
 import org.apache.geode.cache.client.ClientCache;
 import org.apache.geode.internal.cache.LocalDataSet;
-import org.springframework.boot.actuate.health.Health;
-import org.springframework.boot.actuate.health.HealthIndicator;
+import org.springframework.boot.health.contributor.Health;
+import org.springframework.boot.health.contributor.HealthIndicator;
 import org.springframework.geode.boot.actuate.health.AbstractGeodeHealthIndicator;
 import org.springframework.geode.boot.actuate.health.support.RegionStatisticsResolver;
 import org.springframework.util.StringUtils;
@@ -31,8 +31,8 @@ import org.springframework.util.StringUtils;
  * @author John Blum
  * @see org.apache.geode.cache.client.ClientCache
  * @see org.apache.geode.cache.Region
- * @see org.springframework.boot.actuate.health.Health
- * @see org.springframework.boot.actuate.health.HealthIndicator
+ * @see Health
+ * @see HealthIndicator
  * @see org.springframework.geode.boot.actuate.health.AbstractGeodeHealthIndicator
  * @since 1.0.0
  */
@@ -71,7 +71,7 @@ public class GeodeRegionsHealthIndicator extends AbstractGeodeHealthIndicator {
 	 *
 	 * @return the collection of {@link BiConsumer} objects that applies health details about the {@link ClientCache}
 	 * {@link Region Regions} to the {@link Health} object.
-	 * @see org.springframework.boot.actuate.health.Health
+	 * @see org.springframework.boot.health.contributor.Health
 	 * @see org.apache.geode.cache.Region
 	 * @see java.util.function.BiConsumer
 	 */

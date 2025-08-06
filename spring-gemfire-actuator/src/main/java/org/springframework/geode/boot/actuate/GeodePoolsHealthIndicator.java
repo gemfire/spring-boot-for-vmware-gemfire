@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 package org.springframework.geode.boot.actuate;
@@ -14,8 +14,8 @@ import java.util.stream.Collectors;
 import org.apache.geode.cache.client.ClientCache;
 import org.apache.geode.cache.client.Pool;
 import org.apache.geode.cache.client.PoolManager;
-import org.springframework.boot.actuate.health.Health;
-import org.springframework.boot.actuate.health.HealthIndicator;
+import org.springframework.boot.health.contributor.Health;
+import org.springframework.boot.health.contributor.HealthIndicator;
 import org.springframework.data.gemfire.util.CacheUtils;
 import org.springframework.geode.boot.actuate.health.AbstractGeodeHealthIndicator;
 import org.springframework.util.StringUtils;
@@ -28,8 +28,8 @@ import org.springframework.util.StringUtils;
  * @see org.apache.geode.cache.client.ClientCache
  * @see org.apache.geode.cache.client.Pool
  * @see org.apache.geode.cache.client.PoolManager
- * @see org.springframework.boot.actuate.health.Health
- * @see org.springframework.boot.actuate.health.HealthIndicator
+ * @see org.springframework.boot.health.contributor.Health
+ * @see org.springframework.boot.health.contributor.HealthIndicator
  * @see org.springframework.geode.boot.actuate.health.AbstractGeodeHealthIndicator
  * @since 1.0.0
  */

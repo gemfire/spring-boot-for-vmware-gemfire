@@ -26,7 +26,6 @@ dependencies {
   api(project(":spring-gemfire-extensions"))
 
   api("org.springframework:spring-context-support")
-  api("org.springframework:spring-jcl")
   api("org.springframework.boot:spring-boot-starter")
   api(libs.spring.data.gemfire)
 

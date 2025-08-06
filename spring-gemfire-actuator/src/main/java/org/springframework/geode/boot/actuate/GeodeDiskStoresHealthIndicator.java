@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 package org.springframework.geode.boot.actuate;
@@ -13,8 +13,8 @@ import java.util.Optional;
 
 import org.apache.geode.cache.DiskStore;
 
-import org.springframework.boot.actuate.health.Health;
-import org.springframework.boot.actuate.health.HealthIndicator;
+import org.springframework.boot.health.contributor.Health;
+import org.springframework.boot.health.contributor.HealthIndicator;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.gemfire.util.ArrayUtils;
 import org.springframework.geode.boot.actuate.health.AbstractGeodeHealthIndicator;
@@ -26,8 +26,8 @@ import org.springframework.util.Assert;
  *
  * @author John Blum
  * @see org.apache.geode.cache.DiskStore
- * @see org.springframework.boot.actuate.health.Health
- * @see org.springframework.boot.actuate.health.HealthIndicator
+ * @see Health
+ * @see HealthIndicator
  * @see org.springframework.context.ApplicationContext
  * @see org.springframework.geode.boot.actuate.health.AbstractGeodeHealthIndicator
  * @since 1.0.0

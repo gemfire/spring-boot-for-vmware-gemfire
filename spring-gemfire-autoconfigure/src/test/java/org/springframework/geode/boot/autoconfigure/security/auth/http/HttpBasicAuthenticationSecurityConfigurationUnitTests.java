@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 package org.springframework.geode.boot.autoconfigure.security.auth.http;
@@ -189,8 +189,8 @@ public class HttpBasicAuthenticationSecurityConfigurationUnitTests {
 
 		interceptor.intercept(mockHttpRequest, body, mockExecution);
 
-		assertThat(httpHeaders.containsKey(GeodeConstants.USERNAME)).isFalse();
-		assertThat(httpHeaders.containsKey(GeodeConstants.PASSWORD)).isFalse();
+		assertThat(httpHeaders.containsHeader(GeodeConstants.USERNAME)).isFalse();
+		assertThat(httpHeaders.containsHeader(GeodeConstants.PASSWORD)).isFalse();
 
 		verify(mockHttpRequest, never()).getHeaders();
 		verify(mockExecution, times(1)).execute(eq(mockHttpRequest), eq(body));

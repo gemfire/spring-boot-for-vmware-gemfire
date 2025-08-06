@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 package org.springframework.geode.boot.autoconfigure.data;
@@ -12,28 +12,27 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import example.app.golf.model.Golfer;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.StreamSupport;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-
+import org.apache.geode.cache.Region;
+import org.apache.geode.cache.client.ClientRegionShortcut;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import org.apache.geode.cache.Region;
-import org.apache.geode.cache.client.ClientRegionShortcut;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.websocket.servlet.WebSocketServletAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.websocket.autoconfigure.servlet.WebSocketMessagingAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.Resource;
@@ -52,7 +51,9 @@ import org.springframework.geode.data.support.ResourceCapableCacheDataImporterEx
 import org.springframework.geode.data.support.ResourceCapableCacheDataImporterExporter.ImportResourceResolver;
 import org.springframework.geode.pdx.PdxInstanceWrapper;
 import org.springframework.http.MediaType;
+import org.springframework.http.converter.AbstractJacksonHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.HttpMessageConverters;
 import org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
@@ -67,11 +68,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import example.app.golf.model.Golfer;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.json.JsonReadFeature;
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 
 /**
- * Integration Tests testing custom {@link ResourceReader} and {@link ResourceWriter} to import/export data from/to
- * a web service in a cloud environment.
+ * Integration Tests testing custom {@link ResourceReader} and {@link ResourceWriter} to import/export data from/to a
+ * web service in a cloud environment.
  *
  * @author John Blum
  * @see org.junit.Test
@@ -79,7 +84,6 @@ import example.app.golf.model.Golfer;
  * @see org.springframework.boot.autoconfigure.SpringBootApplication
  * @see org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
  * @see org.springframework.boot.test.context.SpringBootTest
- * @see org.springframework.boot.web.server.LocalServerPort
  * @see org.springframework.context.annotation.Bean
  * @see org.springframework.context.annotation.Profile
  * @see org.springframework.core.io.Resource
@@ -98,34 +102,28 @@ import example.app.golf.model.Golfer;
  */
 @ActiveProfiles("NET-IMPORT-EXPORT")
 @RunWith(SpringRunner.class)
-@SpringBootTest(
-	properties = {
-		"spring.boot.data.gemfire.cache.data.export.enabled=true",
+@SpringBootTest(properties = { "spring.boot.data.gemfire.cache.data.export.enabled=true",
 		"spring.boot.data.gemfire.cache.data.export.resource.location=/cache/#{#regionName}/data/export",
 		"spring.boot.data.gemfire.cache.data.import.active-profiles=NET-IMPORT-EXPORT",
 		"spring.boot.data.gemfire.cache.data.import.resource.location=/cache/#{#regionName}/data/import",
 		"spring.session.store-type=NONE",
-		//"spring.boot.data.gemfire.cache.data.import.phase=2147483647",
-		//"spring.boot.data.gemfire.cache.data.export.resource.location=http://localhost:#{#env['local.server.port']}/cache/#{#regionName}/data/export",
-		//"spring.boot.data.gemfire.cache.data.import.resource.location=http://localhost:#{#env['local.server.port']}/cache/#{#regionName}/data/import",
-	},
-	webEnvironment = SpringBootTest.WebEnvironment.MOCK
-)
+// "spring.boot.data.gemfire.cache.data.import.phase=2147483647",
+// "spring.boot.data.gemfire.cache.data.export.resource.location=http://localhost:#{#env['local.server.port']}/cache/#{#regionName}/data/export",
+// "spring.boot.data.gemfire.cache.data.import.resource.location=http://localhost:#{#env['local.server.port']}/cache/#{#regionName}/data/import",
+}, webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
 @SuppressWarnings("unused")
 public class RestServiceCacheDataImportExportIntegrationTests extends IntegrationTestsSupport {
 
 	private static final boolean DEBUG = false;
 
-	//@LocalServerPort
-	//private int httpServerPort;
+	// @LocalServerPort
+	// private int httpServerPort;
+
+	@Autowired private CacheDataImporterExporter importerExporter;
 
 	@Autowired
-	private CacheDataImporterExporter importerExporter;
-
-	@Autowired
-	@Qualifier("golfersTemplate")
-	private GemfireTemplate golfersTemplate;
+	@Qualifier("golfersTemplate") private GemfireTemplate golfersTemplate;
 
 	private static void assertGolfer(Golfer golfer, long id, String name, int handicap) {
 
@@ -138,9 +136,7 @@ public class RestServiceCacheDataImportExportIntegrationTests extends Integratio
 	private static Golfer findById(Iterable<Golfer> golfers, long id) {
 
 		return StreamSupport.stream(CollectionUtils.nullSafeIterable(golfers).spliterator(), false)
-			.filter(golfer -> golfer.getId().equals(id))
-			.findFirst()
-			.orElse(null);
+				.filter(golfer -> golfer.getId().equals(id)).findFirst().orElse(null);
 	}
 
 	private static void log(String message, Object... args) {
@@ -163,18 +159,18 @@ public class RestServiceCacheDataImportExportIntegrationTests extends Integratio
 	@Before
 	public void setup() {
 
-		//log("Local Server Port [%d]%n", this.httpServerPort);
-		//log("environment['local.server.port'] = %s%n", this.environment.getProperty("local.server.port"));
+		// log("Local Server Port [%d]%n", this.httpServerPort);
+		// log("environment['local.server.port'] = %s%n", this.environment.getProperty("local.server.port"));
 
 		assertThat(this.golfersTemplate).isNotNull();
 		assertThat(this.golfersTemplate.getRegion()).isNotNull();
 		assertThat(this.golfersTemplate.getRegion().getName()).isEqualTo("Golfers");
 		assertThat(this.importerExporter).isNotNull();
 
-		//assertThat(this.httpServerPort).isNotZero();
-		//assertThat(this.environment.containsProperty("local.server.port")).isTrue();
-		//assertThat(this.environment.getProperty("local.server.port", Integer.class, -80))
-		//	.isEqualTo(this.httpServerPort);
+		// assertThat(this.httpServerPort).isNotZero();
+		// assertThat(this.environment.containsProperty("local.server.port")).isTrue();
+		// assertThat(this.environment.getProperty("local.server.port", Integer.class, -80))
+		// .isEqualTo(this.httpServerPort);
 	}
 
 	@After
@@ -204,7 +200,7 @@ public class RestServiceCacheDataImportExportIntegrationTests extends Integratio
 	}
 
 	@Profile("NET-IMPORT-EXPORT")
-	@SpringBootApplication(exclude = WebSocketServletAutoConfiguration.class)
+	@SpringBootApplication(exclude = WebSocketMessagingAutoConfiguration.class)
 	@EnableGemFireMockObjects
 	@EnableEntityDefinedRegions(basePackageClasses = Golfer.class, clientRegionShortcut = ClientRegionShortcut.LOCAL)
 	static class TestGeodeConfiguration implements WebMvcConfigurer {
@@ -271,10 +267,8 @@ public class RestServiceCacheDataImportExportIntegrationTests extends Integratio
 
 			assertThat(regionName).isEqualTo("golfers");
 
-			return Arrays.asList(
-				Golfer.newGolfer(1L, "John Blum").withHandicap(12),
-				Golfer.newGolfer(2L, "Moe Haroon").withHandicap(10)
-			);
+			return Arrays.asList(Golfer.newGolfer(1L, "John Blum").withHandicap(12),
+					Golfer.newGolfer(2L, "Moe Haroon").withHandicap(10));
 		}
 
 		@PostMapping("/cache/{regionName}/data/export")
@@ -295,13 +289,10 @@ public class RestServiceCacheDataImportExportIntegrationTests extends Integratio
 		}
 	}
 
-	@JsonTypeInfo(
-		use = JsonTypeInfo.Id.CLASS,
-		include = JsonTypeInfo.As.PROPERTY,
-		property = PdxInstanceWrapper.AT_TYPE_FIELD_NAME
-	)
+	@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY,
+			property = PdxInstanceWrapper.AT_TYPE_FIELD_NAME)
 	@SuppressWarnings("all")
-	interface ObjectTypeMetadataMixin { }
+	interface ObjectTypeMetadataMixin {}
 
 	static class RestServiceExportResourceResolver extends AbstractExportResourceResolver {
 
@@ -346,18 +337,15 @@ public class RestServiceCacheDataImportExportIntegrationTests extends Integratio
 
 			try {
 
-				//String json = this.mvc.perform(get(resource.getURI()).accept(MediaType.APPLICATION_JSON))
-				String json = this.mvc.perform(get("/cache/{regionName}/data/import", "golfers")
-					.accept(MediaType.APPLICATION_JSON))
-					.andReturn()
-					.getResponse()
-					.getContentAsString();
+				// String json = this.mvc.perform(get(resource.getURI()).accept(MediaType.APPLICATION_JSON))
+				String json = this.mvc
+						.perform(get("/cache/{regionName}/data/import", "golfers").accept(MediaType.APPLICATION_JSON)).andReturn()
+						.getResponse().getContentAsString();
 
 				return json.getBytes();
-			}
-			catch (Exception cause) {
-				throw new ResourceReadException(String.format("Failed to read from resource at location [%s]",
-					resource.getDescription()), cause);
+			} catch (Exception cause) {
+				throw new ResourceReadException(
+						String.format("Failed to read from resource at location [%s]", resource.getDescription()), cause);
 			}
 		}
 	}
@@ -380,15 +368,13 @@ public class RestServiceCacheDataImportExportIntegrationTests extends Integratio
 
 				String json = new String(data);
 
-				//this.mvc.perform(post(resource.getURI()).content(data).contentType(MediaType.APPLICATION_JSON))
-				this.mvc.perform(post("/cache/{regionName}/data/export", "golfers")
-					.contentType(MediaType.APPLICATION_JSON)
-					.content(data))
-					.andExpect(status().isOk());
-			}
-			catch (Exception cause) {
-				throw new ResourceWriteException(String.format("Failed to write to resource at location [%s]",
-					resource.getDescription()), cause);
+				// this.mvc.perform(post(resource.getURI()).content(data).contentType(MediaType.APPLICATION_JSON))
+				this.mvc.perform(
+						post("/cache/{regionName}/data/export", "golfers").contentType(MediaType.APPLICATION_JSON).content(data))
+						.andExpect(status().isOk());
+			} catch (Exception cause) {
+				throw new ResourceWriteException(
+						String.format("Failed to write to resource at location [%s]", resource.getDescription()), cause);
 			}
 		}
 	}
