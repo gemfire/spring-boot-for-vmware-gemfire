@@ -20,7 +20,11 @@ java {
   }
 }
 
-tasks.named<Javadoc>("javadoc") {
+//tasks.withType(Test::class).configureEach {
+//  useJUnitPlatform()
+//}
+
+tasks.withType(Javadoc::class).configureEach {
   isFailOnError = false
 }
 
@@ -53,5 +57,3 @@ configurations.all {
 tasks.withType<JavaCompile>().configureEach {
   options.compilerArgs.add("-parameters")
 }
-
-tasks.register("compileTestKotlin") {}

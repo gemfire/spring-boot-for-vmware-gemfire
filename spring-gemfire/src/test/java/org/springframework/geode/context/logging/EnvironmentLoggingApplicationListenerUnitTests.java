@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 package org.springframework.geode.context.logging;
@@ -65,7 +65,7 @@ public class EnvironmentLoggingApplicationListenerUnitTests {
 
 		ConfigurableEnvironment mockEnvironment = new MockEnvironment();
 
-		ContextRefreshedEvent mockEvent = mock(ContextRefreshedEvent.class);
+		ContextRefreshedEvent mockEvent = new ContextRefreshedEvent(mockApplicationContext);
 
 		Logger mockLogger = mock(Logger.class);
 
@@ -75,7 +75,6 @@ public class EnvironmentLoggingApplicationListenerUnitTests {
 
 		mockEnvironment = spy(mockEnvironment);
 
-		doReturn(mockApplicationContext).when(mockEvent).getApplicationContext();
 		doReturn(mockEnvironment).when(mockApplicationContext).getEnvironment();
 
 		doReturn(ArrayUtils.asArray("activeOne","activeTwo", "activeThree"))
@@ -109,12 +108,10 @@ public class EnvironmentLoggingApplicationListenerUnitTests {
 
 		listener.onApplicationEvent(mockEvent);
 
-		InOrder order = inOrder(mockApplicationContext, mockEnvironment, mockEvent, mockLogger,
+		InOrder order = inOrder(mockApplicationContext, mockEnvironment, mockLogger,
 			mockPropertySourceOne, mockPropertySourceTwo, mockPropertySourceThree);
 
-		order.verify(mockEvent, times(1)).getApplicationContext();
 		order.verify(mockApplicationContext, times(1)).getEnvironment();
-		//order.verify(listener, times(1)).log(eq("ENV: [%s]"), eq(mockEnvironment.getClass().getName()));
 		order.verify(mockLogger, times(1))
 			.debug(eq("ENV: [" + mockEnvironment.getClass().getName() + "]"));
 		order.verify(mockEnvironment, times(1)).getActiveProfiles();
@@ -146,7 +143,7 @@ public class EnvironmentLoggingApplicationListenerUnitTests {
 			.debug("ENV: PropertySource [MockPropertySourceThree]");
 		order.verify(mockPropertySourceThree, times(1)).getSource();
 
-		verifyNoMoreInteractions(mockEvent, mockApplicationContext, mockEnvironment,
+		verifyNoMoreInteractions(mockApplicationContext, mockEnvironment,
 			mockPropertySourceOne, mockPropertySourceTwo, mockPropertySourceThree, mockLogger);
 	}
 
@@ -155,11 +152,10 @@ public class EnvironmentLoggingApplicationListenerUnitTests {
 
 		ApplicationContext mockApplicationContext = mock(ApplicationContext.class);
 
-		ContextRefreshedEvent mockEvent = mock(ContextRefreshedEvent.class);
+		ContextRefreshedEvent mockEvent = new ContextRefreshedEvent(mockApplicationContext);
 
 		Environment mockEnvironment = mock(Environment.class);
 
-		doReturn(mockApplicationContext).when(mockEvent).getApplicationContext();
 		doReturn(mockEnvironment).when(mockApplicationContext).getEnvironment();
 		doReturn(ArrayUtils.asArray("mockProfile")).when(mockEnvironment).getActiveProfiles();
 		doReturn(ArrayUtils.asArray("testProfile")).when(mockEnvironment).getDefaultProfiles();
@@ -173,7 +169,6 @@ public class EnvironmentLoggingApplicationListenerUnitTests {
 
 		listener.onApplicationEvent(mockEvent);
 
-		verify(mockEvent, times(1)).getApplicationContext();
 		verify(mockApplicationContext, times(1)).getEnvironment();
 		verify(mockLogger, times(1))
 			.debug(eq("ENV: [" + mockEnvironment.getClass().getName() + "]"));
@@ -182,7 +177,7 @@ public class EnvironmentLoggingApplicationListenerUnitTests {
 		verify(mockEnvironment, times(1)).getDefaultProfiles();
 		verify(mockLogger, times(1)).debug(eq("ENV: Default Profiles [testProfile]"));
 
-		verifyNoMoreInteractions(mockApplicationContext, mockEnvironment, mockEvent, mockLogger);
+		verifyNoMoreInteractions(mockApplicationContext, mockEnvironment, mockLogger);
 	}
 
 	@Test

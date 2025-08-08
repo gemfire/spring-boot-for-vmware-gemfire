@@ -5,7 +5,7 @@ findbugsVersion = "3.0.2"
 gemFireTestContainersVersion = "2.3.1"
 littlerobotsVersionCatalogUpdate = "0.8.5"
 lombokPlugin = "8.6"
-mockitoCoreVersion = { strictly = "5.14.2" }
+mockitoCoreVersion = { strictly = "5.18.0" }
 multithreadedtcVersion = "1.01"
 springShellVersion = "1.2.0.RELEASE"
 

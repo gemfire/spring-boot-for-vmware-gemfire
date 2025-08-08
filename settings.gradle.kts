@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Broadcom. All rights reserved.
+ * Copyright 2024-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -39,11 +39,11 @@ include("spring-gemfire-samples:caching:near")
 include("spring-gemfire-samples:intro:getting-started")
 include("spring-gemfire-samples:intro:quick-start")
 //
-include("spring-geode-tests:smoke-tests:function-execution-on-region")
-include("spring-geode-tests:smoke-tests:locator-application")
-include("spring-geode-tests:smoke-tests:logging")
-include("spring-geode-tests:smoke-tests:mock-session-caching")
-include("spring-geode-tests:smoke-tests:multi-store")
+include("spring-gemfire-tests:smoke-tests:function-execution-on-region")
+include("spring-gemfire-tests:smoke-tests:locator-application")
+include("spring-gemfire-tests:smoke-tests:logging")
+include("spring-gemfire-tests:smoke-tests:mock-session-caching")
+include("spring-gemfire-tests:smoke-tests:multi-store")
 
 project(":spring-gemfire").name = "spring-gemfire"
 project(":spring-gemfire-autoconfigure").name = "spring-gemfire-autoconfigure"
