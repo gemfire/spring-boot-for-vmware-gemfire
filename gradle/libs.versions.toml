@@ -1,12 +1,12 @@
 [versions]
 antlrVersion = "2.7.7"
 awaitilityVersion="4.2.1"
-aspectjToolsVersion = "1.9.19"
+aspectjToolsVersion = "1.9.22.1"
 findbugsVersion = "3.0.2"
-gemFireTestContainersVersion = "2.0.0"
-mockitoCoreVersion = { strictly = "4.8.1" }
+gemFireTestContainersVersion = "2.3.3"
+mockitoCoreVersion = { strictly = "5.14.2" }
 multithreadedtcVersion = "1.01"
-springBootVersion = "3.3.12"
+springBootVersion = "3.5.1"
 springShellVersion = "1.2.0.RELEASE"
 
 benManesVersions = "0.50.0"
@@ -36,9 +36,9 @@ gemfire-tcp-server = { module = "com.vmware.gemfire:gemfire-tcp-server", version
 gemfire-serialization = { module = "com.vmware.gemfire:gemfire-serialization", version.ref = "gemfireVersion" }
 gemfire-deployment-chained-classloader = { module = "com.vmware.gemfire:gemfire-deployment-chained-classloader", version.ref = "gemfireVersion" }
 
-spring-data-gemfire = { module = "com.vmware.gemfire:spring-data-3.3-gemfire-10.1", version.ref = "springDataGemFireVersion" }
-spring-data-gemfire-test-framework = { module = "com.vmware.gemfire:spring-data-3.3-gemfire-test-framework-10.1", version.ref = "springDataGemFireVersion" }
-spring-session-gemfire = { module = "com.vmware.gemfire:spring-session-3.3-gemfire-10.1", version.ref = "springSessionDataGemFireVersion" }
+spring-data-gemfire = { module = "com.vmware.gemfire:spring-data-3.5-gemfire-10.1", version.ref = "springDataGemFireVersion" }
+spring-data-gemfire-test-framework = { module = "com.vmware.gemfire:spring-data-3.5-gemfire-test-framework-10.1", version.ref = "springDataGemFireVersion" }
+spring-session-gemfire = { module = "com.vmware.gemfire:spring-session-3.5-gemfire-10.1", version.ref = "springSessionDataGemFireVersion" }
 
 [bundles]
 
