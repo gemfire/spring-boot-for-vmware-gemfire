@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 package org.springframework.geode.context.logging;
@@ -105,7 +105,7 @@ public class EnvironmentLoggingApplicationListenerUnitTests {
 		EnvironmentLoggingApplicationListener listener = spy(new EnvironmentLoggingApplicationListener());
 
 		doReturn(mockLogger).when(listener).getLogger();
-		doNothing().when(listener).logToSystemErr(anyString(), any());
+		doNothing().when(listener).logToSystemErr(anyString(), any(Object[].class));
 
 		listener.onApplicationEvent(mockEvent);
 
