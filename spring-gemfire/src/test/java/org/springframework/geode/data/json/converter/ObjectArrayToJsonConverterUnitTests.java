@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 package org.springframework.geode.data.json.converter;
@@ -39,7 +39,7 @@ public class ObjectArrayToJsonConverterUnitTests {
 
 		ObjectArrayToJsonConverter mockConverter = mock(ObjectArrayToJsonConverter.class);
 
-		doCallRealMethod().when(mockConverter).convert(ArgumentMatchers.<Object[]>any());
+		doCallRealMethod().when(mockConverter).convert(ArgumentMatchers.any(Object[].class));
 		doReturn(json).when(mockConverter).convert(any(Iterable.class));
 
 		Customer jonDoe = Customer.newCustomer(1L, "Jon Doe");
@@ -57,7 +57,7 @@ public class ObjectArrayToJsonConverterUnitTests {
 
 		ObjectArrayToJsonConverter mockConverter = mock(ObjectArrayToJsonConverter.class);
 
-		doCallRealMethod().when(mockConverter).convert(ArgumentMatchers.<Object[]>any());
+		doCallRealMethod().when(mockConverter).convert(ArgumentMatchers.any(Object[].class));
 		doReturn(json).when(mockConverter).convert(any(Iterable.class));
 
 		assertThat(mockConverter.convert()).isEqualTo(json);

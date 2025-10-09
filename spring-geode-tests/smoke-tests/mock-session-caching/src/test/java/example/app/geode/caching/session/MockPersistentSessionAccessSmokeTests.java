@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 package example.app.geode.caching.session;
@@ -86,7 +86,7 @@ public class MockPersistentSessionAccessSmokeTests extends IntegrationTestsSuppo
 			.andExpect(status().isOk())
 			.andExpect(request().sessionAttribute(username, User.newUser(username)))
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-			.andExpect(content().string(RegexMatcher.from("\\{\"id\":\".*\",\"name\":\"jonDoe\"\\}")));
+			.andExpect(content().string(RegexMatcher.from("\\{\"name\":\"jonDoe\"\\,\"id\":\".*\"}")));
 	}
 
 	@SpringBootApplication

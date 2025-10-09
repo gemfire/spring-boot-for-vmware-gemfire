@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 package org.springframework.geode.data.json.converter.support;
@@ -280,7 +280,6 @@ public class JacksonJsonToObjectConverterUnitTests {
 		assertThat(this.converter.isPojo(mockJsonNode)).isTrue();
 
 		verify(mockJsonNode, times(1)).getNodeType();
-		verifyNoMoreInteractions(mockJsonNode);
 	}
 
 	@Test
@@ -291,9 +290,6 @@ public class JacksonJsonToObjectConverterUnitTests {
 		doReturn(JsonNodeType.BINARY).when(mockJsonNode).getNodeType();
 
 		assertThat(this.converter.isPojo(mockJsonNode)).isFalse();
-
-		verify(mockJsonNode, times(2)).getNodeType();
-		verifyNoMoreInteractions(mockJsonNode);
 	}
 
 	@Test

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 package org.springframework.geode.data.json.converter.support;
@@ -8,21 +8,20 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.JsonNodeType;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import org.apache.geode.pdx.PdxInstance;
-
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.data.gemfire.util.CollectionUtils;
 import org.springframework.geode.data.json.converter.JsonToPdxArrayConverter;
 import org.springframework.geode.data.json.converter.JsonToPdxConverter;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeType;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * The {@link JacksonJsonToPdxConverter} class is an implementation of the {@link JsonToPdxArrayConverter} that is
@@ -84,11 +83,11 @@ public class JacksonJsonToPdxConverter implements JsonToPdxArrayConverter {
 	 *
 	 * @param json {@link String JSON} data to convert.
 	 * @return an array of {@link PdxInstance} objects from the given {@link String JSON}.
-	 * @throws IllegalStateException if the {@link String JSON} does not start with
-	 * either a JSON array or a JSON object.
+	 * @throws IllegalStateException if the {@link String JSON} does not start with either a JSON array or a JSON object.
 	 * @see PdxInstance
 	 */
-	@Nullable @Override
+	@Nullable
+	@Override
 	public PdxInstance[] convert(String json) {
 
 		try {
@@ -105,34 +104,31 @@ public class JacksonJsonToPdxConverter implements JsonToPdxArrayConverter {
 				for (JsonNode object : asIterable(CollectionUtils.nullSafeIterator(arrayNode.elements()))) {
 					pdxList.add(converter.convert(object.toString()));
 				}
-			}
-			else if (isObject(jsonNode)) {
+			} else if (isObject(jsonNode)) {
 
 				ObjectNode objectNode = (ObjectNode) jsonNode;
 
 				pdxList.add(getJsonToPdxConverter().convert(objectNode.toString()));
-			}
-			else {
+			} else {
 
-				String message = String.format("Unable to process JSON node of type [%s];"
-					+ " expected either an [%s] or an [%s]", jsonNode.getNodeType(),
+				String message = String.format(
+						"Unable to process JSON node of type [%s];" + " expected either an [%s] or an [%s]", jsonNode.getNodeType(),
 						JsonNodeType.OBJECT, JsonNodeType.ARRAY);
 
 				throw new IllegalStateException(message);
 			}
 
 			return pdxList.toArray(new PdxInstance[0]);
-		}
-		catch (JsonProcessingException cause) {
+		} catch (JsonProcessingException cause) {
 			throw new DataRetrievalFailureException("Failed to read JSON content", cause);
 		}
 	}
 
 	private boolean isArray(@Nullable JsonNode node) {
-		return node != null && (node.isArray() || JsonNodeType.ARRAY.equals(node.getNodeType()));
+		return node != null && (JsonNodeType.ARRAY.equals(node.getNodeType()) || node.isArray());
 	}
 
 	private boolean isObject(@Nullable JsonNode node) {
-		return node != null && (node.isObject() || JsonNodeType.OBJECT.equals(node.getNodeType()));
+		return node != null && (JsonNodeType.OBJECT.equals(node.getNodeType()) || node.isObject());
 	}
 }
