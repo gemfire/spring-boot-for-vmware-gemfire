@@ -13,7 +13,7 @@ description = "Spring Boot Actuator Auto-Configuration for VMware GemFire"
 
 
 publishingDetails {
-  artifactName.set("spring-boot-3.3-gemfire-actuator-autoconfigure-${ProjectUtils.getGemFireBaseVersion(property("gemfireVersion").toString())}")
+  artifactName.set("spring-boot-3.5-gemfire-actuator-autoconfigure-${ProjectUtils.getGemFireBaseVersion(property("gemfireVersion").toString())}")
   longName.set(project.description)
   description.set(project.description)
 }

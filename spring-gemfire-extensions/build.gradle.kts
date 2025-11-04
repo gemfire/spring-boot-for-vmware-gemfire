@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Broadcom. All rights reserved.
+ * Copyright 2024-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -12,7 +12,7 @@ plugins {
 description = "Spring Boot for VMware GemFire Extensions"
 
 publishingDetails {
-  artifactName.set("spring-boot-3.3-gemfire-extensions-${ProjectUtils.getGemFireBaseVersion(property("gemfireVersion").toString())}")
+  artifactName.set("spring-boot-3.5-gemfire-extensions-${ProjectUtils.getGemFireBaseVersion(property("gemfireVersion").toString())}")
   longName.set(project.description)
   description.set(project.description)
 }
