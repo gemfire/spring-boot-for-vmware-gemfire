@@ -27,7 +27,7 @@ mockito-subclass = { module = "org.mockito:mockito-subclass", version.ref = "moc
 multithreadedtc = { module = "edu.umd.cs.mtc:multithreadedtc", version.ref = "multithreadedtcVersion" }
 spring-data-gemfire = { module = "com.vmware.gemfire:spring-data-4.0-gemfire-10.2", version.ref ="springDataGemFireVersion" }
 spring-data-gemfire-test-framework = { module = "com.vmware.gemfire:spring-data-4.0-gemfire-test-framework-10.2", version.ref = "springDataGemFireVersion" }
-spring-session-gemfire = { module = "com.vmware.gemfire:spring-session-4.0-gemfire-10.3", version.ref ="springSessionDataGemFireVersion" }
+spring-session-gemfire = { module = "com.vmware.gemfire:spring-session-4.0-gemfire-10.2", version.ref ="springSessionDataGemFireVersion" }
 spring-shell = { module = "org.springframework.shell:spring-shell", version.ref = "springShellVersion" }
 
 [plugins]
