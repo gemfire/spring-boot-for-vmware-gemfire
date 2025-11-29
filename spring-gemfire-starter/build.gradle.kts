@@ -58,7 +58,7 @@ val exportedProjects = arrayOf(
 tasks {
   register<Javadoc>("combinedJavadoc") {
     source(exportedProjects.map { project(it).sourceSets["main"].allJava })
-    title = "Spring Boot 3.2 for VMware GemFire $gemfireVersion Java API Reference"
+    title = "Spring Boot 4.0 for VMware GemFire $gemfireVersion Java API Reference"
     classpath = files(exportedProjects.map { project(it).sourceSets["main"].compileClasspath })
     setDestinationDir(file("${layout.buildDirectory}/docs/javadoc"))
   }

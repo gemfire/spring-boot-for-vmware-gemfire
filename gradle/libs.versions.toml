@@ -4,7 +4,7 @@ benManesVersions = "0.50.0"
 findbugsVersion = "3.0.2"
 gemFireTestContainersVersion = "2.3.1"
 littlerobotsVersionCatalogUpdate = "0.8.5"
-lombokPlugin = "8.6"
+lombokVersion = "1.18.36"
 mockitoCoreVersion = { strictly = "5.18.0" }
 multithreadedtcVersion = "1.01"
 springShellVersion = "1.2.0.RELEASE"
@@ -12,6 +12,7 @@ springShellVersion = "1.2.0.RELEASE"
 [libraries]
 aspectj-tools = { module = "org.aspectj:aspectjtools", version.ref = "aspectjToolsVersion" }
 findbugs-jsr305 = { module = "com.google.code.findbugs:jsr305", version.ref = "findbugsVersion" }
+lombok = {module="org.projectlombok:lombok",version.ref="lombokVersion"}
 gemfire-core = { module = "com.vmware.gemfire:gemfire-core", version.ref = "gemfireVersion" }
 gemfire-cq = { module = "com.vmware.gemfire:gemfire-cq", version.ref = "gemfireVersion" }
 gemfire-deployment-chained-classloader = { module = "com.vmware.gemfire:gemfire-deployment-chained-classloader", version.ref = "gemfireVersion" }
@@ -24,12 +25,11 @@ gemfire-web = { module = "com.vmware.gemfire:gemfire-web", version.ref = "gemfir
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoCoreVersion" }
 mockito-subclass = { module = "org.mockito:mockito-subclass", version.ref = "mockitoCoreVersion" }
 multithreadedtc = { module = "edu.umd.cs.mtc:multithreadedtc", version.ref = "multithreadedtcVersion" }
-spring-data-gemfire = { module = "com.vmware.gemfire:spring-data-4.0-gemfire-10.3", version.ref ="springDataGemFireVersion" }
-spring-data-gemfire-test-framework = { module = "com.vmware.gemfire:spring-data-4.0-gemfire-test-framework-10.3", version.ref = "springDataGemFireVersion" }
+spring-data-gemfire = { module = "com.vmware.gemfire:spring-data-4.0-gemfire-10.2", version.ref ="springDataGemFireVersion" }
+spring-data-gemfire-test-framework = { module = "com.vmware.gemfire:spring-data-4.0-gemfire-test-framework-10.2", version.ref = "springDataGemFireVersion" }
 spring-session-gemfire = { module = "com.vmware.gemfire:spring-session-4.0-gemfire-10.3", version.ref ="springSessionDataGemFireVersion" }
 spring-shell = { module = "org.springframework.shell:spring-shell", version.ref = "springShellVersion" }
 
 [plugins]
 ben-manes-versions = { id = "com.github.ben-manes.versions", version.ref = "benManesVersions" }
 littlerobots-version-catalog-update = { id = "nl.littlerobots.version-catalog-update", version.ref = "littlerobotsVersionCatalogUpdate" }
-lombok = { id = "io.freefair.lombok", version.ref = "lombokPlugin" }

@@ -12,9 +12,9 @@ import java.util.Arrays;
 import com.datastax.oss.driver.api.core.CqlSession;
 
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.cassandra.autoconfigure.CassandraProperties;
 import org.springframework.boot.cassandra.autoconfigure.CqlSessionBuilderCustomizer;
+import org.springframework.boot.persistence.autoconfigure.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;

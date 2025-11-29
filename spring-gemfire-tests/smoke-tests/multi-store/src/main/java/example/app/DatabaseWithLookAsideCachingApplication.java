@@ -4,15 +4,14 @@
  */
 package example.app;
 
-import org.apache.geode.cache.client.ClientRegionShortcut;
+import example.app.model.Contact;
 
+import org.apache.geode.cache.client.ClientRegionShortcut;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.persistence.autoconfigure.EntityScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.gemfire.config.annotation.EnableCachingDefinedRegions;
-
-import example.app.model.Contact;
 
 /**
  * The {@link DatabaseWithLookAsideCachingApplication} class is a Spring Boot application testing Spring Data's
@@ -21,7 +20,6 @@ import example.app.model.Contact;
  * @author John Blum
  * @see org.springframework.boot.SpringApplication
  * @see org.springframework.boot.autoconfigure.SpringBootApplication
- * @see org.springframework.boot.autoconfigure.domain.EntityScan
  * @see org.springframework.context.annotation.Configuration
  * @see org.springframework.data.gemfire.config.annotation.EnableEntityDefinedRegions
  * @see example.app.model.Contact

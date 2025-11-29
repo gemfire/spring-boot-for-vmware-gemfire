@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Broadcom. All rights reserved.
+ * Copyright 2024-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -20,16 +20,13 @@
  */
 package example.app.temp.event;
 
-import lombok.Getter;
+import example.app.temp.model.TemperatureReading;
 
 import org.springframework.context.ApplicationEvent;
-
-import example.app.temp.model.TemperatureReading;
 
 // tag::class[]
 public class TemperatureEvent extends ApplicationEvent {
 
-	@Getter
 	private final TemperatureReading temperatureReading;
 
 	public TemperatureEvent(Object source, TemperatureReading temperatureReading) {
@@ -37,6 +34,10 @@ public class TemperatureEvent extends ApplicationEvent {
 		super(source);
 
 		this.temperatureReading = temperatureReading;
+	}
+
+	public TemperatureReading getTemperatureReading() {
+		return temperatureReading;
 	}
 }
 // end::class[]

@@ -6,7 +6,6 @@
 import ProjectUtils.getBaseVersion
 
 plugins {
-  alias(libs.plugins.lombok)
   id("project-base")
   id("gemfire-repo-artifact-publishing")
   id("gemfire-artifactory")
@@ -35,6 +34,11 @@ dependencies {
 
   implementation(libs.aspectj.tools)
 
+  testCompileOnly(libs.lombok)
+  testAnnotationProcessor(libs.lombok)
+
+  testImplementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+
   testImplementation(libs.gemfire.core)
   testImplementation(libs.gemfire.cq)
   testImplementation(libs.gemfire.gfsh)
@@ -43,7 +47,7 @@ dependencies {
   testImplementation("org.apache.httpcomponents.client5:httpclient5")
   testImplementation("org.springframework.boot:spring-boot-starter-test")
   testImplementation("org.springframework.boot:spring-boot-starter-web")
-  testImplementation("org.springframework.boot:spring-boot-web-server-test")
+  testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
   testCompileOnly(libs.findbugs.jsr305)
 
   testRuntimeOnly("javax.cache:cache-api")
@@ -53,6 +57,11 @@ dependencies {
   testRuntimeOnly(libs.spring.shell)
   testImplementation(libs.spring.data.gemfire.test.framework)
   testImplementation(libs.gemfire.testcontainers)
+  testImplementation("org.testcontainers:testcontainers") {
+    version {
+      strictly(bom.versions.testcontainersVersion.get())
+    }
+  }
 }
 
 tasks.register<Jar>("testJar") {

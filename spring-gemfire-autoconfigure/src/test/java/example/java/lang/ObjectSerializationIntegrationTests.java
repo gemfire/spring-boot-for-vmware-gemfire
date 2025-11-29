@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 package example.java.lang;
@@ -13,6 +13,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
+import lombok.Getter;
 import org.junit.Test;
 
 import lombok.AllArgsConstructor;
@@ -85,12 +86,9 @@ public class ObjectSerializationIntegrationTests {
 
 		IntegerEmployee jonDoe = new IntegerEmployee("Jon Doe");
 
-		//jonDoe.setAge(0);
-
 		assertThat(jonDoe).isNotNull();
 		assertThat(jonDoe.getName()).isEqualTo("Jon Doe");
 		assertThat(jonDoe.getAge()).isNull();
-		//assertThat(jonDoe.getAge()).isEqualTo(0);
 
 		byte[] jonDoeNoAgeBytes = serialize(jonDoe);
 
@@ -111,14 +109,10 @@ public class ObjectSerializationIntegrationTests {
 		assertThat(jonDoeWithAgeDeserialized).isEqualTo(jonDoe);
 		assertThat(jonDoeWithAgeDeserialized).isNotSameAs(jonDoe);
 
-		//System.out.printf("Jon Doe no Age [%s] Byte Length (%d) vs. Jon Doe with Age [%s] Byte Length [%d]%n",
-		//	jonDoeNoAgeDeserialized, jonDoeNoAgeBytes.length, jonDoeWithAgeDeserialized, jonDoeWithAgeBytes.length);
-
 		assertThat(jonDoeNoAgeBytes.length).isLessThan(jonDoeWithAgeBytes.length);
 	}
 
 	@Data
-	@ToString
 	@AllArgsConstructor
 	@RequiredArgsConstructor
 	@EqualsAndHashCode(of = { "name", "age" })
@@ -132,12 +126,10 @@ public class ObjectSerializationIntegrationTests {
 	}
 
 	@Data
-	@ToString
 	@AllArgsConstructor
 	@RequiredArgsConstructor
 	@EqualsAndHashCode(of = { "name", "age" })
 	public static class IntegerEmployee implements Serializable {
-
 		private Integer age;
 
 		@NonNull

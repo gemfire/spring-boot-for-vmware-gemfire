@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Broadcom. All rights reserved.
+ * Copyright 2024-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -86,7 +86,7 @@ public class CustomerServiceApplicationIntegrationTests extends IntegrationTests
 	@Test
 	public void putAndGetCustomerIsSuccessful() {
 
-		Customer expectedJaneDoe = Customer.newCustomer(2L, "Jane Doe");
+		Customer expectedJaneDoe = new Customer(2L, "Jane Doe");
 
 		expectedJaneDoe = this.customerRepository.save(expectedJaneDoe);
 

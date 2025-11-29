@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2024 Broadcom. All rights reserved.
+ * Copyright 2022-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 package org.springframework.geode.pdx;
@@ -13,19 +13,19 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
-
 import org.apache.geode.internal.Sendable;
 import org.apache.geode.pdx.JSONFormatter;
 import org.apache.geode.pdx.PdxInstance;
 import org.apache.geode.pdx.WritablePdxInstance;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+
 /**
- * The {@link PdxInstanceWrapper} class is an implementation of the {@link PdxInstance} interface
- * wrapping an existing {@link PdxInstance} object and decorating the functionality.
+ * The {@link PdxInstanceWrapper} class is an implementation of the {@link PdxInstance} interface wrapping an existing
+ * {@link PdxInstance} object and decorating the functionality.
  *
  * @author John Blum
  * @see java.util.function.Function
@@ -54,62 +54,6 @@ public class PdxInstanceWrapper implements PdxInstance, Sendable {
 	protected static final String COMMA_SPACE = COMMA + " ";
 	protected static final String OBJECT_BEGIN = "{";
 	protected static final String OBJECT_END = "}";
-
-	/**
-	 * Smart, {@literal null-safe} factory method used to evaluate the given {@link Object} and wrap the {@link Object}
-	 * in a new instance of {@link PdxInstanceWrapper} if the {@link Object} is an instance of {@link PdxInstance}
-	 * or return the given {@link Object} as is.
-	 *
-	 * @param target {@link Object} to evaluate
-	 * @return the {@link Object} wrapped in a new instance of {@link PdxInstanceWrapper} if {@link Object}
-	 * is an instance of {@link PdxInstance}, otherwise returns the given {@link Object}.
-	 * @see org.apache.geode.pdx.PdxInstance
-	 * @see Object
-	 * @see #from(PdxInstance)
-	 */
-	public static Object from(Object target) {
-
-		return target instanceof PdxInstance
-			? from((PdxInstance) target)
-			: target;
-	}
-
-	/**
-	 * Factory method used to construct a new instance of {@link PdxInstanceWrapper} initialized with the given,
-	 * required {@link PdxInstance} used to back the wrapper.
-	 *
-	 * @param pdxInstance {@link PdxInstance} object used to back this wrapper; must not be {@literal null}.
-	 * @return a new instance of {@link PdxInstanceWrapper} initialized with the given {@link PdxInstance}.
-	 * @throws IllegalArgumentException if {@link PdxInstance} is {@literal null}.
-	 * @see org.apache.geode.pdx.PdxInstance
-	 * @see #PdxInstanceWrapper(PdxInstance)
-	 */
-	public static PdxInstanceWrapper from(PdxInstance pdxInstance) {
-
-		return pdxInstance instanceof PdxInstanceWrapper
-			? (PdxInstanceWrapper) pdxInstance
-			: new PdxInstanceWrapper(pdxInstance);
-	}
-
-	/**
-	 * Null-safe factory method used to unwrap the given {@link PdxInstance}.
-	 *
-	 * If the given {@link PdxInstance} is an instance of {@link PdxInstanceWrapper} then this factory method will
-	 * unwrap the {@link PdxInstanceWrapper} returning the underlying, {@link PdxInstanceWrapper#getDelegate() delegate}
-	 * {@link PdxInstance}.  Otherwise, the given {@link PdxInstance} is returned.
-	 *
-	 * @param pdxInstance {@link PdxInstance} to unwrap; may be {@literal null}.
-	 * @return the unwrapped {@link PdxInstance}.
-	 * @see org.apache.geode.pdx.PdxInstance
-	 * @see #getDelegate()
-	 */
-	public static PdxInstance unwrap(PdxInstance pdxInstance) {
-
-		return pdxInstance instanceof PdxInstanceWrapper
-			? ((PdxInstanceWrapper) pdxInstance).getDelegate()
-			: pdxInstance;
-	}
-
 	private final PdxInstance delegate;
 
 	/**
@@ -128,10 +72,58 @@ public class PdxInstanceWrapper implements PdxInstance, Sendable {
 	}
 
 	/**
+	 * Smart, {@literal null-safe} factory method used to evaluate the given {@link Object} and wrap the {@link Object} in
+	 * a new instance of {@link PdxInstanceWrapper} if the {@link Object} is an instance of {@link PdxInstance} or return
+	 * the given {@link Object} as is.
+	 *
+	 * @param target {@link Object} to evaluate
+	 * @return the {@link Object} wrapped in a new instance of {@link PdxInstanceWrapper} if {@link Object} is an instance
+	 *         of {@link PdxInstance}, otherwise returns the given {@link Object}.
+	 * @see org.apache.geode.pdx.PdxInstance
+	 * @see Object
+	 * @see #from(PdxInstance)
+	 */
+	public static Object from(Object target) {
+
+		return target instanceof PdxInstance ? from((PdxInstance) target) : target;
+	}
+
+	/**
+	 * Factory method used to construct a new instance of {@link PdxInstanceWrapper} initialized with the given, required
+	 * {@link PdxInstance} used to back the wrapper.
+	 *
+	 * @param pdxInstance {@link PdxInstance} object used to back this wrapper; must not be {@literal null}.
+	 * @return a new instance of {@link PdxInstanceWrapper} initialized with the given {@link PdxInstance}.
+	 * @throws IllegalArgumentException if {@link PdxInstance} is {@literal null}.
+	 * @see org.apache.geode.pdx.PdxInstance
+	 * @see #PdxInstanceWrapper(PdxInstance)
+	 */
+	public static PdxInstanceWrapper from(PdxInstance pdxInstance) {
+
+		return pdxInstance instanceof PdxInstanceWrapper ? (PdxInstanceWrapper) pdxInstance
+				: new PdxInstanceWrapper(pdxInstance);
+	}
+
+	/**
+	 * Null-safe factory method used to unwrap the given {@link PdxInstance}. If the given {@link PdxInstance} is an
+	 * instance of {@link PdxInstanceWrapper} then this factory method will unwrap the {@link PdxInstanceWrapper}
+	 * returning the underlying, {@link PdxInstanceWrapper#getDelegate() delegate} {@link PdxInstance}. Otherwise, the
+	 * given {@link PdxInstance} is returned.
+	 *
+	 * @param pdxInstance {@link PdxInstance} to unwrap; may be {@literal null}.
+	 * @return the unwrapped {@link PdxInstance}.
+	 * @see org.apache.geode.pdx.PdxInstance
+	 * @see #getDelegate()
+	 */
+	public static PdxInstance unwrap(PdxInstance pdxInstance) {
+
+		return pdxInstance instanceof PdxInstanceWrapper ? ((PdxInstanceWrapper) pdxInstance).getDelegate() : pdxInstance;
+	}
+
+	/**
 	 * Returns a reference to the configured, underlying {@link PdxInstance} backing this wrapper.
 	 *
-	 * @return a reference to the configured, underlying {@link PdxInstance} backing this wrapper;
-	 * never {@literal null}.
+	 * @return a reference to the configured, underlying {@link PdxInstance} backing this wrapper; never {@literal null}.
 	 * @see org.apache.geode.pdx.PdxInstance
 	 */
 	public PdxInstance getDelegate() {
@@ -139,10 +131,9 @@ public class PdxInstanceWrapper implements PdxInstance, Sendable {
 	}
 
 	/**
-	 * Returns an {@link Optional} reference to a configured Jackson {@link ObjectMapper} used to
-	 * deserialize the {@link String JSON} generated from {@link PdxInstance PDX} back into an {@link Object}.
-	 *
-	 * This method is meant ot be overridden by {@link Class subclasses}.
+	 * Returns an {@link Optional} reference to a configured Jackson {@link ObjectMapper} used to deserialize the
+	 * {@link String JSON} generated from {@link PdxInstance PDX} back into an {@link Object}. This method is meant ot be
+	 * overridden by {@link Class subclasses}.
 	 *
 	 * @return an {@link Optional} {@link ObjectMapper}.
 	 * @see ObjectMapper
@@ -151,11 +142,9 @@ public class PdxInstanceWrapper implements PdxInstance, Sendable {
 	protected Optional<ObjectMapper> getObjectMapper() {
 
 		ObjectMapper objectMapper = newJsonMapperBuilder()
-			.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false)
-			.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-			.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS, true)
-			.build()
-			.findAndRegisterModules();
+				.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false)
+				.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+				.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS, true).build().findAndRegisterModules();
 
 		return Optional.of(objectMapper);
 	}
@@ -211,8 +200,8 @@ public class PdxInstanceWrapper implements PdxInstance, Sendable {
 	}
 
 	/**
-	 * Determines the {@link Object identifier} for, or {@link PdxInstance#isIdentityField(String) identity} of,
-	 * this {@link PdxInstance}.
+	 * Determines the {@link Object identifier} for, or {@link PdxInstance#isIdentityField(String) identity} of, this
+	 * {@link PdxInstance}.
 	 *
 	 * @return the {@link Object identifier} for this {@link PdxInstance}; never {@literal null}.
 	 * @throws IllegalStateException if the {@link PdxInstance} does not have an id.
@@ -223,20 +212,16 @@ public class PdxInstanceWrapper implements PdxInstance, Sendable {
 	 */
 	public Object getIdentifier() {
 
-		Optional<String> identityFieldName = nullSafeList(getFieldNames()).stream()
-			.filter(this::hasText)
-			.filter(this::isIdentityField)
-			.findFirst();
+		Optional<String> identityFieldName = nullSafeList(getFieldNames()).stream().filter(this::hasText)
+				.filter(this::isIdentityField).findFirst();
 
-		return identityFieldName
-			.map(this::getField)
-			.orElseGet(this::getId);
+		return identityFieldName.map(this::getField).orElseGet(this::getId);
 	}
 
 	/**
-	 * Searches for a PDX {@link String field name} called {@literal id} on this {@link PdxInstance}
-	 * and returns its {@link Object value} as the {@link Object identifier} for,
-	 * or {@link PdxInstance#isIdentityField(String) identity} of, this {@link PdxInstance}.
+	 * Searches for a PDX {@link String field name} called {@literal id} on this {@link PdxInstance} and returns its
+	 * {@link Object value} as the {@link Object identifier} for, or {@link PdxInstance#isIdentityField(String) identity}
+	 * of, this {@link PdxInstance}.
 	 *
 	 * @return the {@link Object value} of the {@literal id} {@link String field} on this {@link PdxInstance}.
 	 * @throws IllegalStateException if this {@link PdxInstance} does not have an id.
@@ -246,32 +231,25 @@ public class PdxInstanceWrapper implements PdxInstance, Sendable {
 	 */
 	protected Object getId() {
 
-		return hasField(ID_FIELD_NAME)
-			? getField(ID_FIELD_NAME)
-			: getAtIdentifier();
+		return hasField(ID_FIELD_NAME) ? getField(ID_FIELD_NAME) : getAtIdentifier();
 	}
 
 	/**
-	 * Searches for a PDX {@link String field} declared by the {@literal @identifier} metadata {@link String field}
-	 * on this {@link PdxInstance} and returns the {@link Object value} of this {@link String field}
-	 * as the {@link Object identifier} for, or {@link PdxInstance#isIdentityField(String) identity} of,
-	 * this {@link PdxInstance}.
+	 * Searches for a PDX {@link String field} declared by the {@literal @identifier} metadata {@link String field} on
+	 * this {@link PdxInstance} and returns the {@link Object value} of this {@link String field} as the {@link Object
+	 * identifier} for, or {@link PdxInstance#isIdentityField(String) identity} of, this {@link PdxInstance}.
 	 *
 	 * @return the {@link Object value} of the {@link String field} declared in the {@literal @identifier} metadata
-	 * {@link String field} on this {@link PdxInstance}.
+	 *         {@link String field} on this {@link PdxInstance}.
 	 * @throws IllegalStateException if the {@link PdxInstance} does not have an id.
 	 * @see org.apache.geode.pdx.PdxInstance
 	 */
 	protected Object getAtIdentifier() {
 
-		return Optional.of(AT_IDENTIFIER_FIELD_NAME)
-			.filter(this::hasField)
-			.map(this::getField)
-			.map(String::valueOf)
-			.filter(this::hasField)
-			.map(this::getField)
-			.orElseThrow(() -> new IllegalStateException(String.format("PdxInstance for type [%1$s] has no %2$s",
-				getClassName(), resolveMessageForIdentifierError(this))));
+		return Optional.of(AT_IDENTIFIER_FIELD_NAME).filter(this::hasField).map(this::getField).map(String::valueOf)
+				.filter(this::hasField).map(this::getField)
+				.orElseThrow(() -> new IllegalStateException(String.format("PdxInstance for type [%1$s] has no %2$s",
+						getClassName(), resolveMessageForIdentifierError(this))));
 	}
 
 	private String resolveMessageForIdentifierError(PdxInstance pdxInstance) {
@@ -280,27 +258,25 @@ public class PdxInstanceWrapper implements PdxInstance, Sendable {
 
 		if (pdxInstance.hasField(ID_FIELD_NAME)) {
 			message = "id";
-		}
-		else if (pdxInstance.hasField(AT_IDENTIFIER_FIELD_NAME)) {
+		} else if (pdxInstance.hasField(AT_IDENTIFIER_FIELD_NAME)) {
 
 			Object atIdentifierFieldValue = pdxInstance.getField(AT_IDENTIFIER_FIELD_NAME);
 
 			String resolvedIdentifierFieldName = Objects.nonNull(atIdentifierFieldValue)
-				? atIdentifierFieldValue.toString().trim()
-				: NO_FIELD_NAME;
+					? atIdentifierFieldValue.toString().trim()
+					: NO_FIELD_NAME;
 
 			boolean identifierFieldNameWasDeclaredAndIsValid = pdxInstance.hasField(resolvedIdentifierFieldName);
 
-			Object identifier = identifierFieldNameWasDeclaredAndIsValid
-				? pdxInstance.getField(resolvedIdentifierFieldName)
-				: null;
+			Object identifier = identifierFieldNameWasDeclaredAndIsValid ? pdxInstance.getField(resolvedIdentifierFieldName)
+					: null;
 
 			String ifMessage = "value [%s] for field [%s] declared in [%s]";
 			String elseMessage = "field [%s] declared in [%s]";
 
 			message = identifierFieldNameWasDeclaredAndIsValid
-				? String.format(ifMessage, identifier, resolvedIdentifierFieldName, AT_IDENTIFIER_FIELD_NAME)
-				: String.format(elseMessage, resolvedIdentifierFieldName, AT_IDENTIFIER_FIELD_NAME);
+					? String.format(ifMessage, identifier, resolvedIdentifierFieldName, AT_IDENTIFIER_FIELD_NAME)
+					: String.format(elseMessage, resolvedIdentifierFieldName, AT_IDENTIFIER_FIELD_NAME);
 		}
 
 		return message;
@@ -315,11 +291,10 @@ public class PdxInstanceWrapper implements PdxInstance, Sendable {
 	}
 
 	/**
-	 * Materializes an {@link Object} from the PDX bytes described by this {@link PdxInstance}.
-	 *
-	 * If these PDX bytes describe an {@link Object} parsed from JSON, then the JSON is reconstructed from
-	 * this {@link PdxInstance} and mapped to an instance of the {@link Class type} identified by
-	 * the {@literal @type} metadata PDX {@link String field} using Jackson's {@link ObjectMapper}.
+	 * Materializes an {@link Object} from the PDX bytes described by this {@link PdxInstance}. If these PDX bytes
+	 * describe an {@link Object} parsed from JSON, then the JSON is reconstructed from this {@link PdxInstance} and
+	 * mapped to an instance of the {@link Class type} identified by the {@literal @type} metadata PDX {@link String
+	 * field} using Jackson's {@link ObjectMapper}.
 	 *
 	 * @return an {@link Object} constructed from the PDX bytes described by this {@link PdxInstance}.
 	 * @see ObjectMapper
@@ -329,26 +304,22 @@ public class PdxInstanceWrapper implements PdxInstance, Sendable {
 	@Override
 	public Object getObject() {
 
-		return getObjectMapper()
-			.filter(objectMapper -> JSONFormatter.JSON_CLASSNAME.equals(getClassName()))
-			.filter(objectMapper -> hasField(AT_TYPE_FIELD_NAME))
-			.<Object>map(objectMapper ->  {
-				try {
+		return getObjectMapper().filter(objectMapper -> JSONFormatter.JSON_CLASSNAME.equals(getClassName()))
+				.filter(objectMapper -> hasField(AT_TYPE_FIELD_NAME)).<Object> map(objectMapper -> {
+					try {
 
-					String typeName = String.valueOf(getField(AT_TYPE_FIELD_NAME));
+						String typeName = String.valueOf(getField(AT_TYPE_FIELD_NAME));
 
-					Class<?> type = Class.forName(typeName);
+						Class<?> type = Class.forName(typeName);
 
-					String json = jsonFormatterToJson(getDelegate());
+						String json = jsonFormatterToJson(getDelegate());
 
-					return objectMapper.readValue(json, type);
-				}
-				catch (Throwable ignore) {
-					// TODO Log Throwable?
-					return null;
-				}
-			})
-			.orElseGet(() -> getDelegate().getObject());
+						return objectMapper.readValue(json, type);
+					} catch (Throwable ignore) {
+						// TODO Log Throwable?
+						return null;
+					}
+				}).orElseGet(() -> getDelegate().getObject());
 	}
 
 	/**
@@ -400,7 +371,7 @@ public class PdxInstanceWrapper implements PdxInstance, Sendable {
 	 */
 	@Override
 	public String toString() {
-		//return getDelegate().toString();
+		// return getDelegate().toString();
 		return toString(this);
 	}
 
@@ -431,8 +402,7 @@ public class PdxInstanceWrapper implements PdxInstance, Sendable {
 			buffer.append(NEW_LINE).append(indent).append(OBJECT_END);
 
 			return buffer.toString();
-		}
-		else {
+		} else {
 			return null;
 		}
 	}
@@ -459,8 +429,7 @@ public class PdxInstanceWrapper implements PdxInstance, Sendable {
 	private String toStringObject(Object value, String indent) {
 
 		return isPdxInstance(value) ? toString((PdxInstance) value, indent)
-			: isArray(value) ? toStringArray(value, indent)
-			: String.valueOf(value);
+				: isArray(value) ? toStringArray(value, indent) : String.valueOf(value);
 	}
 
 	private String formatFieldValue(String fieldName, Object fieldValue) {

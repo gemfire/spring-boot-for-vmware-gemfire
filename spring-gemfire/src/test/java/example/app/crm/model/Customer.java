@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 package example.app.crm.model;
@@ -7,6 +7,7 @@ package example.app.crm.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
+import lombok.Getter;
 import org.springframework.data.cassandra.core.mapping.Indexed;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.gemfire.mapping.annotation.Region;
@@ -35,6 +36,7 @@ import lombok.NoArgsConstructor;
 @org.springframework.data.cassandra.core.mapping.Table("Customers")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(staticName = "newCustomer")
+@Getter
 public class Customer {
 
 	@PrimaryKey

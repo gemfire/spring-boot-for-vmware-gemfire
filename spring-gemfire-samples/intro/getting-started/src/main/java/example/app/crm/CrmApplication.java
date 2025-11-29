@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Broadcom. All rights reserved.
+ * Copyright 2024-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -55,7 +55,7 @@ public class CrmApplication {
 
 			assertThat(customerRepository.count()).isEqualTo(0);
 
-			Customer jonDoe = Customer.newCustomer(1L, "JonDoe");
+			Customer jonDoe = new Customer(1L, "JonDoe");
 
 			System.err.printf("Saving Customer [%s]...%n", jonDoe);
 

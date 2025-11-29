@@ -4,7 +4,6 @@
  */
 
 plugins {
-	alias(libs.plugins.lombok)
 	id("project-base")
 }
 
@@ -14,6 +13,9 @@ dependencies {
 
 	implementation(platform(bom.testcontainers.dependencies.bom))
 	compileOnly(libs.gemfire.core)
+
+	testCompileOnly(libs.lombok)
+	testAnnotationProcessor(libs.lombok)
 
 	implementation(project(":spring-gemfire-starter")) {
 		exclude(group="com.sun.xml.bind", module= "jaxb-impl")

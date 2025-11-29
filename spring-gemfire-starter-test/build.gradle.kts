@@ -5,7 +5,6 @@
 
 plugins {
 	id("project-base")
-	alias(libs.plugins.lombok)
 }
 
 description = "Spring Boot Test Starter for VMware GemFire"

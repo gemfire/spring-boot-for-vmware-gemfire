@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.data.cassandra.autoconfigure.CassandraDataAutoConfiguration;
+import org.springframework.boot.data.cassandra.autoconfigure.DataCassandraAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 
@@ -24,7 +24,7 @@ import org.springframework.core.env.Environment;
  * @since 1.4.0
  */
 @SuppressWarnings("unused")
-@SpringBootApplication(exclude = CassandraDataAutoConfiguration.class)
+@SpringBootApplication(exclude = DataCassandraAutoConfiguration.class)
 public class EnvironmentUsingSpringBootApplication {
 
 	public static void main(String[] args) {

@@ -4,7 +4,6 @@
  */
 
 plugins {
-	alias(libs.plugins.lombok)
 	id("project-base")
 }
 
@@ -14,6 +13,9 @@ dependencies {
 	implementation(platform(bom.testcontainers.dependencies.bom))
 
 	compileOnly(libs.findbugs.jsr305)
+
+	testCompileOnly(libs.lombok)
+	testAnnotationProcessor(libs.lombok)
 
 	implementation("org.assertj:assertj-core")
 	implementation("org.springframework.boot:spring-boot-starter-web")
@@ -27,5 +29,6 @@ dependencies {
 	testImplementation(libs.gemfire.core)
 	testImplementation("junit:junit")
 	testImplementation(project(":spring-gemfire-starter-test"))
+	testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
 
 }

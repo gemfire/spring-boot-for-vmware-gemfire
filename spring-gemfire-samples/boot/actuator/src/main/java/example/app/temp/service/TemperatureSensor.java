@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Broadcom. All rights reserved.
+ * Copyright 2024-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -54,7 +54,7 @@ public class TemperatureSensor {
 	public void readTemperature() {
 
 		TemperatureReading temperatureReading =
-			TemperatureReading.newTemperatureReading(temperatureStream.nextInt());
+			new TemperatureReading(temperatureStream.nextInt());
 
 		this.repository.save(log(temperatureReading));
 	}

@@ -1,11 +1,10 @@
 /*
- * Copyright 2024 Broadcom. All rights reserved.
+ * Copyright 2024-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
 plugins {
   id("project-base")
-  alias(libs.plugins.lombok)
 }
 
 description = "Spring Geode Sample for Getting Started with Spring Boot for Apache Geode quickly, easily and reliably."
@@ -14,6 +13,8 @@ dependencies {
   implementation(platform(bom.testcontainers.dependencies.bom))
   implementation(project(":spring-gemfire-starter"))
   implementation(libs.gemfire.core)
+  testCompileOnly(libs.lombok)
+  testAnnotationProcessor(libs.lombok)
 
   implementation("org.assertj:assertj-core")
   implementation("org.projectlombok:lombok")

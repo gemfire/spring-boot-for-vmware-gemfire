@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Broadcom. All rights reserved.
+ * Copyright 2024-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -33,10 +33,8 @@ import lombok.ToString;
  * @since 1.1.0
  */
 // tag::class[]
-@Getter
 @EqualsAndHashCode(of = "name")
 @ToString(of = { "name", "email", "phoneNumber" })
-@RequiredArgsConstructor(staticName = "newPerson")
 public class Person {
 
 	@NonNull
@@ -44,6 +42,22 @@ public class Person {
 
 	private String email;
 	private String phoneNumber;
+
+	public Person(@NonNull String name) {
+		this.name = name;
+	}
+
+	public @NonNull String getName() {
+		return name;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
 
 	public Person withEmail(String email) {
 		this.email = email;

@@ -4,7 +4,6 @@
  */
 
 plugins {
-	alias(libs.plugins.lombok)
 	id("project-base")
 }
 
@@ -14,12 +13,17 @@ dependencies {
 	implementation(platform(bom.testcontainers.dependencies.bom))
 	implementation(project(":spring-gemfire-starter"))
 
+	compileOnly(libs.lombok)
+	annotationProcessor(libs.lombok)
+
 	implementation("org.assertj:assertj-core")
-	implementation("org.projectlombok:lombok")
 
 	testImplementation(project(":spring-gemfire-starter-test"))
 	testImplementation(libs.gemfire.core)
 	testImplementation(libs.gemfire.testcontainers)
+
+	testCompileOnly(libs.lombok)
+	testAnnotationProcessor(libs.lombok)
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {
 		exclude(group="org.junit.vintage", module="junit-vintage-engine")

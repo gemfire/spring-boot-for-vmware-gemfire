@@ -1,5 +1,5 @@
 #
-# Copyright 2024 Broadcom. All rights reserved.
+# Copyright 2024-2025 Broadcom. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
 
@@ -7,7 +7,7 @@
 # See /META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports
 
 # Spring Boot Environment Post Processing
-org.springframework.boot.env.EnvironmentPostProcessor=\
+org.springframework.boot.EnvironmentPostProcessor=\
 org.springframework.geode.boot.autoconfigure.ClientSecurityAutoConfiguration.AutoConfiguredCloudSecurityEnvironmentPostProcessor,\
 org.springframework.geode.boot.autoconfigure.DataImportExportAutoConfiguration.DisableGemFireShutdownHookEnvironmentPostProcessor,\
 org.springframework.geode.boot.autoconfigure.SpringSessionAutoConfiguration.SpringSessionPropertiesEnvironmentPostProcessor,\

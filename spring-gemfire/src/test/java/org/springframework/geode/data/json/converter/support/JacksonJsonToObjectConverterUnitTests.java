@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 package org.springframework.geode.data.json.converter.support;
@@ -44,8 +44,6 @@ import example.app.crm.model.Customer;
  * @see org.mockito.Spy
  * @see org.mockito.junit.MockitoJUnitRunner
  * @see org.springframework.geode.data.json.converter.support.JacksonJsonToObjectConverter
- * @see com.fasterxml.jackson.databind.ObjectMapper
- * @see com.fasterxml.jackson.databind.JsonNode
  * @since 1.3.0
  */
 @RunWith(MockitoJUnitRunner.class)

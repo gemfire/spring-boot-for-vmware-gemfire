@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Broadcom. All rights reserved.
+ * Copyright 2024-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -27,6 +27,7 @@ dependencies {
   compileOnly(libs.gemfire.cq)
 
   implementation("com.fasterxml.jackson.core:jackson-databind")
+  implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310");
 
   testImplementation(libs.gemfire.core)
   testImplementation(libs.gemfire.cq)

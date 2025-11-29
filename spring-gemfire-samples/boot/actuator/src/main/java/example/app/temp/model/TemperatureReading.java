@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Broadcom. All rights reserved.
+ * Copyright 2024-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -31,7 +31,6 @@ import lombok.RequiredArgsConstructor;
 // tag::class[]
 @Data
 @Region("TemperatureReadings")
-@RequiredArgsConstructor(staticName = "newTemperatureReading")
 @SuppressWarnings("unused")
 public class TemperatureReading {
 
@@ -43,6 +42,10 @@ public class TemperatureReading {
 
 	@NonNull
 	private final Integer temperature;
+
+	public TemperatureReading(@NonNull Integer temperature) {
+		this.temperature = temperature;
+	}
 
 	@Transient
 	public boolean isBoiling() {
@@ -68,6 +71,10 @@ public class TemperatureReading {
 	@Override
 	public String toString() {
 		return String.format("%d °F", getTemperature());
+	}
+
+	public @NonNull Integer getTemperature() {
+		return temperature;
 	}
 }
 // end::class[]

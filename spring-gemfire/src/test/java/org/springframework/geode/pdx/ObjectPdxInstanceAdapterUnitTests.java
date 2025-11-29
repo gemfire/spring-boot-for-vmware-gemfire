@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 package org.springframework.geode.pdx;
@@ -550,52 +550,44 @@ public class ObjectPdxInstanceAdapterUnitTests {
 	}
 
 	// PASS
+	@Getter(AccessLevel.PROTECTED) @Setter
 	static class IdNamedPropertyOverridesNonPublicAtIdAnnotatedFieldBean {
 
-		@Id @Getter(AccessLevel.PROTECTED) @Setter
+		@Id
 		private Object accountNumber;
-
 		public Object getId() {
 			return 10;
 		}
 	}
 
 	// FAIL
+	@Setter
 	static class WriteOnlyAtIdAnnotatedFieldBean {
-
-		@Id @Setter
+		@Id
 		private Object identifier;
-
 	}
 
 	// FAIL
 	static class WriteOnlyAtIdAnnotatedPropertyBean {
-
 		@Id
 		public void setIdentifier(Object id) { }
-
 	}
 
+	@Setter
+	@Getter
 	static class CharacterValueBean {
-
-		@Getter @Setter
 		private Character value = 'X';
-
 	}
 
 	static class NoPropertyNoFieldBean { }
 
+	@Getter
 	static class ReadOnlyBean {
-
-		@Getter
 		private final Object value = "TEST";
-
 	}
 
+	@Setter
 	static class WriteOnlyBean {
-
-		@Setter
 		private Object value;
-
 	}
 }

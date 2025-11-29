@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Broadcom. All rights reserved.
+ * Copyright 2024-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -93,13 +93,13 @@ public class CalculatorApplicationIntegrationTests extends IntegrationTestsSuppo
 
 			assertThat(calculations).isNotNull();
 			assertThat(calculations).hasSize(6);
-			assertThat(calculations).containsExactly(
-				ResultHolder.of(5, Operator.FACTORIAL, 120),
-				ResultHolder.of(7, Operator.FACTORIAL, 5040),
-				ResultHolder.of(9, Operator.FACTORIAL, 362880),
-				ResultHolder.of(16, Operator.SQUARE_ROOT, 4),
-				ResultHolder.of(64, Operator.SQUARE_ROOT, 8),
-				ResultHolder.of(256, Operator.SQUARE_ROOT, 16)
+			assertThat(calculations).containsExactlyInAnyOrder(
+				new ResultHolder(5, Operator.FACTORIAL, 120),
+				new ResultHolder(7, Operator.FACTORIAL, 5040),
+				new ResultHolder(9, Operator.FACTORIAL, 362880),
+				new ResultHolder(16, Operator.SQUARE_ROOT, 4),
+				new ResultHolder(64, Operator.SQUARE_ROOT, 8),
+				new ResultHolder(256, Operator.SQUARE_ROOT, 16)
 			);
 		}
 	}
@@ -107,7 +107,7 @@ public class CalculatorApplicationIntegrationTests extends IntegrationTestsSuppo
 	@Test
 	public void cacheMissForExistingValueLoadsFromDatabase() {
 
-		Object key = ResultHolder.ResultKey.of(7, Operator.FACTORIAL);
+		Object key = new ResultHolder.ResultKey(7, Operator.FACTORIAL);
 
 		assertThat(this.factorials).doesNotContainKey(key);
 		assertThat(this.calculatorRepository.findByOperandEqualsAndOperatorEquals(7, Operator.FACTORIAL)
@@ -125,7 +125,7 @@ public class CalculatorApplicationIntegrationTests extends IntegrationTestsSuppo
 	@Test
 	public void cacheMissForNonExistingValueInvokesServiceMethodPutsIntoCacheAndSavesToDatabase() {
 
-		Object key = ResultHolder.ResultKey.of(25, Operator.SQUARE_ROOT);
+		Object key = new ResultHolder.ResultKey(25, Operator.SQUARE_ROOT);
 
 		assertThat(this.squareRoots).doesNotContainKey(key);
 		assertThat(this.calculatorRepository.findByOperandEqualsAndOperatorEquals(25, Operator.SQUARE_ROOT)

@@ -28,13 +28,9 @@ import lombok.ToString;
  */
 @Data
 @Entity
-//@Document
-//@Region("Contacts")
 @Table(name = "Contacts")
 @ToString(of = "name")
 @EqualsAndHashCode(of = "name")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@RequiredArgsConstructor(staticName = "newContact")
 @SuppressWarnings("unused")
 public class Contact {
 
@@ -47,9 +43,41 @@ public class Contact {
 	@Column(name = "phone_number")
 	private String phoneNumber;
 
+	public Contact() {
+	}
+
+	public Contact(@NonNull String name) {
+		this.name = name;
+	}
+
 	public Contact withEmailAddress(String emailAddress) {
 		setEmailAddress(emailAddress);
 		return this;
+	}
+
+	@NonNull
+	public String getName() {
+		return name;
+	}
+
+	public void setName(@NonNull String name) {
+		this.name = name;
+	}
+
+	public String getEmailAddress() {
+		return emailAddress;
+	}
+
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
 	}
 
 	public Contact withPhoneNumber(String phoneNumber) {

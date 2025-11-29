@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Broadcom. All rights reserved.
+ * Copyright 2024-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -39,17 +39,11 @@ import lombok.RequiredArgsConstructor;
  *
  * @author John Blum
  * @see java.io.Serializable
- * @see javax.persistence.Entity
- * @see javax.persistence.IdClass
- * @see javax.persistence.Table
  * @since 1.1.0
  */
 // tag::class[]
 @Entity
-@Getter
 @IdClass(ResultHolder.ResultKey.class)
-@EqualsAndHashCode(of = { "operand", "operator" })
-@RequiredArgsConstructor(staticName = "of")
 @Table(name = "Calculations")
 public class ResultHolder implements Serializable {
 
@@ -64,16 +58,47 @@ public class ResultHolder implements Serializable {
 	@NonNull
 	private Integer result;
 
+	public ResultHolder(@NonNull Integer operand, @NonNull Operator operator, @NonNull Integer result) {
+		this.operand = operand;
+		this.operator = operator;
+		this.result = result;
+	}
+
 	protected ResultHolder() { }
+
+	public @NonNull Integer getOperand() {
+		return operand;
+	}
+
+	public @NonNull Operator getOperator() {
+		return operator;
+	}
+
+	public @NonNull Integer getResult() {
+		return result;
+	}
 
 	@Override
 	public String toString() {
 		return getOperator().toString(getOperand(), getResult());
 	}
 
+	@Override
+	public final boolean equals(Object o) {
+		if (!(o instanceof ResultHolder that)) return false;
+
+    return operand.equals(that.operand) && operator == that.operator && result.equals(that.result);
+	}
+
+	@Override
+	public int hashCode() {
+		int result1 = operand.hashCode();
+		result1 = 31 * result1 + operator.hashCode();
+		result1 = 31 * result1 + result.hashCode();
+		return result1;
+	}
+
 	@Getter
-	@EqualsAndHashCode
-	@RequiredArgsConstructor(staticName = "of")
 	public static class ResultKey implements Serializable {
 
 		@NonNull
@@ -84,6 +109,32 @@ public class ResultHolder implements Serializable {
 
 		protected ResultKey() { }
 
+		public ResultKey(@NonNull Integer operand, @NonNull Operator operator) {
+			this.operand = operand;
+			this.operator = operator;
+		}
+
+		public @NonNull Integer getOperand() {
+			return operand;
+		}
+
+		public @NonNull Operator getOperator() {
+			return operator;
+		}
+
+		@Override
+		public final boolean equals(Object o) {
+			if (!(o instanceof ResultKey resultKey)) return false;
+
+      return operand.equals(resultKey.operand) && operator == resultKey.operator;
+		}
+
+		@Override
+		public int hashCode() {
+			int result = operand.hashCode();
+			result = 31 * result + operator.hashCode();
+			return result;
+		}
 	}
 }
 // end::class[]

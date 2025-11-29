@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Broadcom. All rights reserved.
+ * Copyright 2024-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -25,7 +25,7 @@ import java.util.function.Predicate;
 
 import org.apache.geode.cache.client.ClientRegionShortcut;
 
-import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.persistence.autoconfigure.EntityScan;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,7 +44,6 @@ import example.app.caching.inline.repo.CalculatorRepository;
  * used by both the cache and the database.
  *
  * @author John Blum
- * @see org.springframework.boot.autoconfigure.domain.EntityScan
  * @see org.springframework.cache.interceptor.KeyGenerator
  * @see org.springframework.context.annotation.Bean
  * @see org.springframework.context.annotation.Configuration
@@ -83,7 +82,7 @@ public class CalculatorConfiguration {
 				? Operator.SQUARE_ROOT
 				: Operator.FACTORIAL;
 
-			return ResultHolder.ResultKey.of(operand, operator);
+			return new ResultHolder.ResultKey(operand, operator);
 		};
 	}
 	// end::key-generator[]

@@ -1,11 +1,10 @@
 /*
- * Copyright 2024 Broadcom. All rights reserved.
+ * Copyright 2024-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
 plugins {
   id("project-base")
-  alias(libs.plugins.lombok)
 }
 
 description =
@@ -14,6 +13,9 @@ description =
 dependencies {
   implementation(platform(bom.testcontainers.dependencies.bom))
   compileOnly(libs.gemfire.core)
+
+  testCompileOnly(libs.lombok)
+  testAnnotationProcessor(libs.lombok)
 
   implementation(project(":spring-gemfire-starter")) {
     exclude(group = "com.sun.xml.bind", module = "jaxb-impl")

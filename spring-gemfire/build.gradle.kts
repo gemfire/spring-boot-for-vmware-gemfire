@@ -7,7 +7,6 @@ import ProjectUtils.getBaseVersion
 
 plugins {
   id("project-base")
-  alias(libs.plugins.lombok)
   id("gemfire-repo-artifact-publishing")
   id("gemfire-artifactory")
 }
@@ -15,10 +14,18 @@ plugins {
 description = "Spring GemFire base build for VMware GemFire"
 
 publishingDetails {
-  artifactName.set("spring-boot-${getBaseVersion(property("spring-boot.version").toString())}-gemfire-core-${getBaseVersion(property("gemfireVersion").toString())}")
+  artifactName.set(
+    "spring-boot-${getBaseVersion(property("spring-boot.version").toString())}-gemfire-core-${
+      getBaseVersion(
+        property("gemfireVersion").toString()
+      )
+    }"
+  )
   longName.set(project.description)
   description.set(project.description)
 }
+
+project.ext.set("testcontainers.version", "1.21.3")
 
 dependencies {
   implementation(platform(bom.testcontainers.dependencies.bom))
@@ -28,6 +35,9 @@ dependencies {
   api("org.springframework:spring-context-support")
   api("org.springframework.boot:spring-boot-starter")
   api(libs.spring.data.gemfire)
+
+  testCompileOnly(libs.lombok)
+  testAnnotationProcessor(libs.lombok)
 
   compileOnly(libs.gemfire.core)
   compileOnly(libs.findbugs.jsr305)
@@ -44,7 +54,11 @@ dependencies {
   testImplementation("org.springframework.boot:spring-boot-starter-data-cassandra")
   testImplementation(libs.spring.data.gemfire.test.framework)
   testImplementation(libs.gemfire.core)
-  testImplementation("org.testcontainers:testcontainers")
+  testImplementation("org.testcontainers:testcontainers") {
+    version {
+      strictly(bom.versions.testcontainersVersion.get())
+    }
+  }
   testImplementation("org.testcontainers:cassandra")
   testImplementation(libs.mockito.core)
   testImplementation(libs.mockito.subclass)

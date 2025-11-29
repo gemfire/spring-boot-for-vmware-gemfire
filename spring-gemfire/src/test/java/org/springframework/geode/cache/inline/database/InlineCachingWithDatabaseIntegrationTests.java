@@ -11,9 +11,8 @@ import org.apache.geode.cache.client.ClientCache;
 import org.apache.geode.cache.client.ClientRegionShortcut;
 import org.junit.runner.RunWith;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.boot.cassandra.autoconfigure.CassandraAutoConfiguration;
-import org.springframework.boot.data.cassandra.autoconfigure.CassandraDataAutoConfiguration;
+import org.springframework.boot.data.cassandra.autoconfigure.DataCassandraAutoConfiguration;
+import org.springframework.boot.persistence.autoconfigure.EntityScan;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.DependsOn;
@@ -52,7 +51,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class InlineCachingWithDatabaseIntegrationTests
 		extends AbstractInlineCachingWithExternalDataSourceIntegrationTests {
 
-	@SpringBootApplication(exclude = { CassandraAutoConfiguration.class, CassandraDataAutoConfiguration.class })
+	@SpringBootApplication(exclude = { DataCassandraAutoConfiguration.class})
 	@ClientCacheApplication
 	@EntityScan(basePackageClasses = Customer.class)
 	@EnableEntityDefinedRegions(basePackageClasses = Customer.class, clientRegionShortcut = ClientRegionShortcut.LOCAL)

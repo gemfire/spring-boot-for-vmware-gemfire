@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Broadcom. All rights reserved.
+ * Copyright 2024-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -59,7 +59,7 @@ public class CalculatorService extends AbstractCacheableService {
 		simulateLatency();
 
 		if (number <= 2) {
-			return ResultHolder.of(number, Operator.FACTORIAL, number == 2 ? 2 : 1);
+			return new ResultHolder(number, Operator.FACTORIAL, number == 2 ? 2 : 1);
 		}
 
 		int operand = number;
@@ -69,7 +69,7 @@ public class CalculatorService extends AbstractCacheableService {
 			result *= number;
 		}
 
-		return ResultHolder.of(operand, Operator.FACTORIAL, result);
+		return new ResultHolder(operand, Operator.FACTORIAL, result);
 	}
 
 	@Cacheable(value = "SquareRoots", keyGenerator = "resultKeyGenerator")
@@ -84,7 +84,7 @@ public class CalculatorService extends AbstractCacheableService {
 
 		int result = Double.valueOf(Math.sqrt(number)).intValue();
 
-		return ResultHolder.of(number, Operator.SQUARE_ROOT, result);
+		return new ResultHolder(number, Operator.SQUARE_ROOT, result);
 	}
 }
 // end::class[]

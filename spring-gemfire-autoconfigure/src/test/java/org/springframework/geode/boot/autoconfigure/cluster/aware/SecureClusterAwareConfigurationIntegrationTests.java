@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 package org.springframework.geode.boot.autoconfigure.cluster.aware;
@@ -10,7 +10,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import example.app.books.model.Book;
 import example.app.books.model.ISBN;
 
-import java.io.IOException;
 import java.security.KeyStore;
 
 import javax.net.ssl.SSLContext;

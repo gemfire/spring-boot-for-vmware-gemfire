@@ -37,7 +37,6 @@ include("spring-gemfire-samples:caching:look-aside")
 include("spring-gemfire-samples:caching:multi-site")
 include("spring-gemfire-samples:caching:near")
 include("spring-gemfire-samples:intro:getting-started")
-include("spring-gemfire-samples:intro:quick-start")
 //
 include("spring-gemfire-tests:smoke-tests:function-execution-on-region")
 include("spring-gemfire-tests:smoke-tests:locator-application")

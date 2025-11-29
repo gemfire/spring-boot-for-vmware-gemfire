@@ -12,7 +12,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import example.app.golf.model.Golfer;
 
 import java.util.Arrays;
@@ -30,8 +30,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.jackson.autoconfigure.JsonMapperBuilderCustomizer;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.websocket.autoconfigure.servlet.WebSocketMessagingAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
@@ -51,10 +52,6 @@ import org.springframework.geode.data.support.ResourceCapableCacheDataImporterEx
 import org.springframework.geode.data.support.ResourceCapableCacheDataImporterExporter.ImportResourceResolver;
 import org.springframework.geode.pdx.PdxInstanceWrapper;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.AbstractJacksonHttpMessageConverter;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.HttpMessageConverters;
-import org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.test.context.ActiveProfiles;
@@ -68,12 +65,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.json.JsonReadFeature;
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.json.JsonMapper;
-
 /**
  * Integration Tests testing custom {@link ResourceReader} and {@link ResourceWriter} to import/export data from/to a
  * web service in a cloud environment.
@@ -82,7 +73,6 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
  * @see org.junit.Test
  * @see org.springframework.beans.factory.config.BeanPostProcessor
  * @see org.springframework.boot.autoconfigure.SpringBootApplication
- * @see org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
  * @see org.springframework.boot.test.context.SpringBootTest
  * @see org.springframework.context.annotation.Bean
  * @see org.springframework.context.annotation.Profile
@@ -106,11 +96,7 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 		"spring.boot.data.gemfire.cache.data.export.resource.location=/cache/#{#regionName}/data/export",
 		"spring.boot.data.gemfire.cache.data.import.active-profiles=NET-IMPORT-EXPORT",
 		"spring.boot.data.gemfire.cache.data.import.resource.location=/cache/#{#regionName}/data/import",
-		"spring.session.store-type=NONE",
-// "spring.boot.data.gemfire.cache.data.import.phase=2147483647",
-// "spring.boot.data.gemfire.cache.data.export.resource.location=http://localhost:#{#env['local.server.port']}/cache/#{#regionName}/data/export",
-// "spring.boot.data.gemfire.cache.data.import.resource.location=http://localhost:#{#env['local.server.port']}/cache/#{#regionName}/data/import",
-}, webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+		"spring.session.store-type=NONE"}, webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
 @SuppressWarnings("unused")
 public class RestServiceCacheDataImportExportIntegrationTests extends IntegrationTestsSupport {
@@ -205,14 +191,9 @@ public class RestServiceCacheDataImportExportIntegrationTests extends Integratio
 	@EnableEntityDefinedRegions(basePackageClasses = Golfer.class, clientRegionShortcut = ClientRegionShortcut.LOCAL)
 	static class TestGeodeConfiguration implements WebMvcConfigurer {
 
-		@Override
-		public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
-
-			CollectionUtils.nullSafeList(converters).stream()
-				.filter(AbstractJackson2HttpMessageConverter.class::isInstance)
-				.map(AbstractJackson2HttpMessageConverter.class::cast)
-				.map(AbstractJackson2HttpMessageConverter::getObjectMapper)
-				.forEach(objectMapper -> objectMapper.addMixIn(Golfer.class, ObjectTypeMetadataMixin.class));
+		@Bean
+		public JsonMapperBuilderCustomizer golferMixin() {
+			return builder -> builder.addMixIn(Golfer.class, ObjectTypeMetadataMixin.class);
 		}
 
 		@Bean

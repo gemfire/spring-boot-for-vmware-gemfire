@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 package org.springframework.geode.boot.autoconfigure;
@@ -23,7 +23,7 @@ import org.springframework.boot.autoconfigure.condition.AllNestedConditions;
 import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.env.EnvironmentPostProcessor;
+import org.springframework.boot.EnvironmentPostProcessor;
 import org.springframework.context.annotation.Condition;
 import org.springframework.context.annotation.ConditionContext;
 import org.springframework.context.annotation.Conditional;
@@ -56,7 +56,7 @@ import org.springframework.util.StringUtils;
  * @see org.springframework.boot.autoconfigure.EnableAutoConfiguration
  * @see org.springframework.boot.autoconfigure.condition.ConditionalOnClass
  * @see org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
- * @see org.springframework.boot.env.EnvironmentPostProcessor
+ * @see org.springframework.boot.EnvironmentPostProcessor
  * @see org.springframework.context.annotation.Condition
  * @see org.springframework.context.annotation.ConditionContext
  * @see org.springframework.context.annotation.Conditional

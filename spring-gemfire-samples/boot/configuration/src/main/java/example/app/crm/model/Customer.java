@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Broadcom. All rights reserved.
+ * Copyright 2024-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -41,14 +41,25 @@ import org.springframework.data.gemfire.mapping.annotation.Region;
 @Region("Customers")
 @EqualsAndHashCode
 @ToString(of = "name")
-@RequiredArgsConstructor(staticName = "newCustomer")
 public class Customer {
 
-	@Id @NonNull @Getter
+	public Customer(@NonNull Long id, @NonNull String name) {
+		this.id = id;
+		this.name = name;
+	}
+
+	@Id @NonNull
 	private Long id;
 
-	@NonNull @Getter
+	@NonNull
 	private String name;
 
+	public @NonNull Long getId() {
+		return id;
+	}
+
+	public @NonNull String getName() {
+		return name;
+	}
 }
 // end::class[]

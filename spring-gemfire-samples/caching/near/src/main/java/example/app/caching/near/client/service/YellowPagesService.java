@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Broadcom. All rights reserved.
+ * Copyright 2024-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -54,7 +54,7 @@ public class YellowPagesService extends AbstractCacheableService {
 
 		this.cacheMiss.set(true);
 
-		Person person = Person.newPerson(name)
+		Person person = new Person(name)
 			.withEmail(EmailGenerator.generate(name, null))
 			.withPhoneNumber(PhoneNumberGenerator.generate(null));
 

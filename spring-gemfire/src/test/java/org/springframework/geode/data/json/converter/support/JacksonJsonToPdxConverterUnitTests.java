@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 package org.springframework.geode.data.json.converter.support;
@@ -41,7 +41,6 @@ import org.springframework.geode.data.json.converter.JsonToPdxConverter;
  * @see org.apache.geode.pdx.PdxInstance
  * @see org.springframework.geode.data.json.converter.JsonToPdxConverter
  * @see org.springframework.geode.data.json.converter.support.JacksonJsonToPdxConverter
- * @see com.fasterxml.jackson.databind.ObjectMapper
  * @since 1.3.0
  */
 public class JacksonJsonToPdxConverterUnitTests {

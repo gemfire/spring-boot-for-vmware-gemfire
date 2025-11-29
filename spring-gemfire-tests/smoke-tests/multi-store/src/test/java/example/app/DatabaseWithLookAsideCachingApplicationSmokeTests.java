@@ -82,7 +82,7 @@ public class DatabaseWithLookAsideCachingApplicationSmokeTests extends Integrati
 
 		assertThat(this.contactsService.isCacheMiss()).isFalse();
 
-		Contact pieDoe = Contact.newContact("Pie Doe")
+		Contact pieDoe = new Contact("Pie Doe")
 			.withEmailAddress("pieDoe@work.com")
 			.withPhoneNumber("503-555-4321");
 
@@ -101,7 +101,7 @@ public class DatabaseWithLookAsideCachingApplicationSmokeTests extends Integrati
 
 		assertThat(this.contactsService.isCacheMiss()).isFalse();
 
-		Contact giDoe = Contact.newContact("Gi Doe")
+		Contact giDoe = new Contact("Gi Doe")
 			.withEmailAddress("giDoe@thefarm.org")
 			.withPhoneNumber("971-555-8899");
 

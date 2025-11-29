@@ -20,8 +20,10 @@ import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureWebMvc;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.data.gemfire.tests.mock.annotation.EnableGemFireMockObjects;
 import org.springframework.data.gemfire.tests.support.MapBuilder;
 import org.springframework.hamcrest.RegexMatcher;
@@ -41,6 +43,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 /**
  * Smoke Tests testing the persistent access of a (HTTP) Session stored and managed by Apache Geode using Mock Objects
@@ -50,7 +53,6 @@ import lombok.ToString;
  * @see jakarta.servlet.http.HttpSession
  * @see org.junit.Test
  * @see org.springframework.boot.autoconfigure.SpringBootApplication
- * @see org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
  * @see org.springframework.boot.test.context.SpringBootTest
  * @see org.springframework.data.gemfire.tests.integration.IntegrationTestsSupport
  * @see org.springframework.data.gemfire.tests.mock.annotation.EnableGemFireMockObjects
@@ -64,8 +66,7 @@ import lombok.ToString;
 	classes = {
 		MockPersistentSessionAccessSmokeTests.TestSessionGeodeConfiguration.class,
 		MockPersistentSessionAccessSmokeTests.TestUserAccessController.class
-	},
-	webEnvironment = SpringBootTest.WebEnvironment.MOCK
+	}
 )
 @AutoConfigureMockMvc
 @SuppressWarnings("unused")

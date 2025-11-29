@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 package org.springframework.geode.boot.autoconfigure.data;
@@ -41,8 +41,9 @@ import org.springframework.geode.boot.autoconfigure.DataImportExportAutoConfigur
 import org.springframework.geode.config.annotation.ClusterAwareConfiguration;
 import org.springframework.geode.config.annotation.EnableClusterAware;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * Integration Tests for {@link DataImportExportAutoConfiguration}, which specifically tests the export of
@@ -50,7 +51,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  *
  * @author John Blum
  * @see org.junit.Test
- * @see com.fasterxml.jackson.databind.ObjectMapper
+ * @see tools.jackson.databind.ObjectMapper
  * @see org.apache.geode.cache.Region
  * @see org.springframework.boot.ApplicationRunner
  * @see org.springframework.boot.SpringApplication
@@ -129,8 +130,7 @@ public class CacheDataExportAutoConfigurationIntegrationTests extends ClientServ
 
 	private ObjectMapper newObjectMapper() {
 
-		return new ObjectMapper().configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false)
-				.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		return new JsonMapper();
 	}
 
 	@Profile("EXPORT")

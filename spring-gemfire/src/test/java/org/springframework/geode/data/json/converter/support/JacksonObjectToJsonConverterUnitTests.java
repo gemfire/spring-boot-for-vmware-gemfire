@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 package org.springframework.geode.data.json.converter.support;
@@ -36,7 +36,6 @@ import example.app.crm.model.Customer;
  * @author John Blum
  * @see org.junit.Test
  * @see org.mockito.Mockito
- * @see com.fasterxml.jackson.databind.ObjectMapper
  * @see org.springframework.geode.data.json.converter.support.JacksonObjectToJsonConverter
  * @since 1.3.0
  */

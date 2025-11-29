@@ -4,9 +4,7 @@
  */
 
 plugins {
-  id("java-library")
-  id("idea")
-  id("eclipse")
+  id("java")
   id("commercial-repositories")
 }
 
@@ -20,10 +18,6 @@ java {
   }
 }
 
-//tasks.withType(Test::class).configureEach {
-//  useJUnitPlatform()
-//}
-
 tasks.withType(Javadoc::class).configureEach {
   isFailOnError = false
 }
@@ -34,6 +28,11 @@ dependencies {
   api(platform("org.springframework:spring-framework-bom:${project.ext.get("spring-framework.version")}"))
   api(platform("org.springframework.security:spring-security-bom:${project.ext.get("spring-security.version")}"))
   api(platform("org.springframework.session:spring-session-bom:${project.ext.get("spring-session.version")}"))
+  testImplementation("org.testcontainers:testcontainers") {
+    version {
+      strictly("1.21.3")
+    }
+  }
 }
 
 repositories {
