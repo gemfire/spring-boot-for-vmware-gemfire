@@ -17,7 +17,7 @@ import org.apache.geode.cache.Region;
 import org.apache.geode.cache.execute.Function;
 import org.apache.geode.cache.execute.FunctionContext;
 import org.apache.geode.cache.execute.RegionFunctionContext;
-import org.apache.shiro.util.CollectionUtils;
+import org.springframework.data.gemfire.util.CollectionUtils;
 import org.awaitility.Awaitility;
 import org.junit.Before;
 import org.junit.BeforeClass;

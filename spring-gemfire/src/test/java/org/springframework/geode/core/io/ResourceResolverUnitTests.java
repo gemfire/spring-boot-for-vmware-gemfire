@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 package org.springframework.geode.core.io;
@@ -19,7 +19,7 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import org.apache.shiro.util.CollectionUtils;
+import org.springframework.data.gemfire.util.CollectionUtils;
 
 import org.springframework.core.io.Resource;
 
