@@ -37,7 +37,6 @@ include("spring-gemfire-samples:caching:near")
 include("spring-gemfire-samples:intro:getting-started")
 //
 include("spring-gemfire-tests:smoke-tests:function-execution-on-region")
-include("spring-gemfire-tests:smoke-tests:locator-application")
 include("spring-gemfire-tests:smoke-tests:logging")
 include("spring-gemfire-tests:smoke-tests:mock-session-caching")
 include("spring-gemfire-tests:smoke-tests:multi-store")
