@@ -32,6 +32,10 @@ publishingDetails {
   description.set(project.description)
 }
 
+configurations{
+  create("combinedJavaDocsConfig")
+}
+
 dependencies {
   implementation(platform(bom.testcontainers.dependencies.bom))
   api("org.springframework.boot:spring-boot-starter")
@@ -56,7 +60,7 @@ val exportedProjects = arrayOf(
 
 
 tasks {
-  register<Javadoc>("combinedJavadoc") {
+  register("combinedJavadoc", Javadoc::class) {
     source(exportedProjects.map { project(it).sourceSets["main"].allJava })
     title = "Spring Boot 4.0 for VMware GemFire $gemfireVersion Java API Reference"
     classpath = files(exportedProjects.map { project(it).sourceSets["main"].compileClasspath })
@@ -73,7 +77,8 @@ tasks {
     doLast {
       val storage =
         StorageOptions.newBuilder().setProjectId(project.properties["docsGCSProject"].toString()).setCredentials(
-          GoogleCredentials.fromStream(FileInputStream(project.properties["docsGCSProjectCredentials"].toString()))).build().getService()
+          GoogleCredentials.fromStream(FileInputStream(project.properties["docsGCSProjectCredentials"].toString()))
+        ).build().getService()
       val javadocJarFiles = javadocJarTask.get().outputs.files
       val blobId = BlobId.of(
         project.properties["docsGCSBucket"].toString(),
