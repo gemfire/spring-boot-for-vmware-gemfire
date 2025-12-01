@@ -17,7 +17,6 @@ import org.apache.geode.cache.Region;
 import org.apache.geode.cache.execute.Function;
 import org.apache.geode.cache.execute.FunctionContext;
 import org.apache.geode.cache.execute.RegionFunctionContext;
-import org.apache.shiro.util.CollectionUtils;
 import org.awaitility.Awaitility;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -28,6 +27,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.gemfire.config.annotation.EnableEntityDefinedRegions;
 import org.springframework.data.gemfire.function.config.EnableGemfireFunctionExecutions;
+import org.springframework.data.gemfire.util.CollectionUtils;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.testcontainers.utility.MountableFile;
 

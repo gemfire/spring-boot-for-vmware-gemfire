@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 package org.springframework.geode.core.io.support;
@@ -23,12 +23,11 @@ import java.util.Set;
 import org.junit.Test;
 import org.mockito.InOrder;
 
-import org.apache.shiro.util.CollectionUtils;
-
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.data.gemfire.util.CollectionUtils;
 import org.springframework.geode.core.io.ResourceNotFoundException;
 import org.springframework.util.ClassUtils;
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 package org.springframework.geode.boot.autoconfigure.support;
@@ -11,7 +11,6 @@ import java.util.Set;
 
 import org.apache.geode.cache.client.Pool;
 
-import org.apache.shiro.util.CollectionUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +18,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.data.gemfire.config.annotation.ClientCacheConfigurer;
 import org.springframework.data.gemfire.config.annotation.PoolConfigurer;
+import org.springframework.data.gemfire.util.CollectionUtils;
 
 /**
  * A Spring {@link Configuration} class used to enable subscription on the Apache Geode {@literal DEFAULT} {@link Pool}
