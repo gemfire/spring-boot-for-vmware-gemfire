@@ -1,5 +1,10 @@
 /*
- * Copyright 2024 Broadcom. All rights reserved.
+ * Copyright $originalComment.match(" (\d+)", 1, "-", $today.year)2026 Broadcom. All rights reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+/*
+ * Copyright $originalComment.match(" (\d+)", 1, "-", $today.year)2026 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -22,14 +27,7 @@ repositories {
       .getOrElse("false").toBoolean()
   val jsonString = File(repositoryConfigFilePath).readText(Charsets.UTF_8)
   val repositories = groovy.json.JsonSlurper().parseText(jsonString) as Map<*, *>
-  (repositories["repositories"] as List<*>).filterNotNull().map { entry -> entry as Map<*, *> }
-    .filter { entry ->
-      return@filter if (entry["private"]!! as Boolean) {
-        enablePrivateCommercialRepos
-      } else {
-        true
-      }
-    }.forEach { entry ->
+  (repositories["repositories"] as List<*>).filterNotNull().map { entry -> entry as Map<*, *> }.forEach { entry ->
       entry.apply {
         maven {
           url = uri(entry["url"]!! as String)
