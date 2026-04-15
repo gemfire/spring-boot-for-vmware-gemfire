@@ -1,5 +1,5 @@
 /*
- * Copyright 2024-2025 Broadcom. All rights reserved.
+ * Copyright $originalComment.match(" (\d+)", 1, "-", $today.year)2026 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -75,7 +75,9 @@ fun versionOverrideFromProperty(
 ): String {
   val propertyValue = providers.systemProperty(propertyName).getOrElse(propertiesFile.getProperty(propertyName))
 
-  return versionCatalogBuilder.version(propertyName, propertyValue)
+  return versionCatalogBuilder.version(propertyName) {
+    strictly(propertyValue)
+  }
 }
 
 fun versionOverrideFromProperties(versionCatalogBuilder: VersionCatalogBuilder, properties: Properties) {
