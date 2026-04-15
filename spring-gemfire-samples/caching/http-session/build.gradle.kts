@@ -1,10 +1,11 @@
 /*
- * Copyright 2024 Broadcom. All rights reserved.
+ * Copyright $originalComment.match(" (\d+)", 1, "-", $today.year)2026 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
 plugins {
 	id("project-base")
+	id("commercial-repositories")
 }
 
 description = "Spring Geode Sample demonstrating Spring Session with Apache Geode for HTTP Session Caching."
