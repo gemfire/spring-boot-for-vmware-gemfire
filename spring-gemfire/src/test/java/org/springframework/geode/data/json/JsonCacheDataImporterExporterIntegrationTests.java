@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2025 Broadcom. All rights reserved.
+ * Copyright $originalComment.match(" (\d+)", 1, "-", $today.year)2026 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 package org.springframework.geode.data.json;
@@ -68,8 +68,6 @@ import org.springframework.util.StringUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.fasterxml.jackson.databind.jsontype.DefaultBaseTypeLimitingValidator;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.vmware.gemfire.testcontainers.GemFireCluster;
@@ -113,8 +111,8 @@ public class JsonCacheDataImporterExporterIntegrationTests extends SpringApplica
 	@BeforeClass
 	public static void runGemFireServer() {
 		String dockerImage = System.getProperty("spring.test.gemfire.docker.image");
-		gemFireCluster = new GemFireCluster(dockerImage,1,1)
-				.withGfsh(false, "create region --name=Example --type=REPLICATE");
+		gemFireCluster = new GemFireCluster(dockerImage, 1, 1).withGfsh(false,
+				"create region --name=Example --type=REPLICATE");
 		gemFireCluster.acceptLicense().start();
 	}
 
@@ -141,10 +139,10 @@ public class JsonCacheDataImporterExporterIntegrationTests extends SpringApplica
 		MutablePropertySources propertySources = applicationContext.getEnvironment().getPropertySources();
 
 		MockPropertySource mockPropertySource = new MockPropertySource(getClass().getName().concat(".MockPropertySource"))
-			.withProperty(EXPORT_ENABLED_PROPERTY, exportEnabledSupplier.get())
-			.withProperty(EXPORT_RESOURCE_LOCATION_PROPERTY, resourceLocationSupplier.get())
-			.withProperty(IMPORT_ENABLED_PROPERTY, importEnabledSupplier.get())
-			.withProperty(IMPORT_RESOURCE_LOCATION_PROPERTY, resourceLocationSupplier.get());
+				.withProperty(EXPORT_ENABLED_PROPERTY, exportEnabledSupplier.get())
+				.withProperty(EXPORT_RESOURCE_LOCATION_PROPERTY, resourceLocationSupplier.get())
+				.withProperty(IMPORT_ENABLED_PROPERTY, importEnabledSupplier.get())
+				.withProperty(IMPORT_RESOURCE_LOCATION_PROPERTY, resourceLocationSupplier.get());
 
 		propertySources.addFirst(mockPropertySource);
 
@@ -176,9 +174,7 @@ public class JsonCacheDataImporterExporterIntegrationTests extends SpringApplica
 
 		assertThat(example).hasSize(1);
 
-		Object value = example.values().stream()
-			.findFirst()
-			.orElse(null);
+		Object value = example.values().stream().findFirst().orElse(null);
 
 		assertThat(value).isInstanceOf(PdxInstance.class);
 
@@ -204,27 +200,17 @@ public class JsonCacheDataImporterExporterIntegrationTests extends SpringApplica
 
 		assertThat(example).hasSize(9);
 
-		Set<Customer> customers = example.values().stream()
-			.filter(PdxInstance.class::isInstance)
-			.map(PdxInstance.class::cast)
-			.map(PdxInstance::getObject)
-			.filter(Customer.class::isInstance)
-			.map(Customer.class::cast)
-			.collect(Collectors.toSet());
+		Set<Customer> customers = example.values().stream().filter(PdxInstance.class::isInstance)
+				.map(PdxInstance.class::cast).map(PdxInstance::getObject).filter(Customer.class::isInstance)
+				.map(Customer.class::cast).collect(Collectors.toSet());
 
 		assertThat(customers).hasSize(example.size());
 
-		assertThat(customers).containsExactlyInAnyOrder(
-			Customer.newCustomer(1L, "Jon Doe"),
-			Customer.newCustomer(2L, "Jane Doe"),
-			Customer.newCustomer(3L, "Cookie Doe"),
-			Customer.newCustomer(4L, "Fro Doe"),
-			Customer.newCustomer(5L, "Ginger Doe"),
-			Customer.newCustomer(6L, "Hoe Doe"),
-			Customer.newCustomer(7L, "Joe Doe"),
-			Customer.newCustomer(8L, "Pie Doe"),
-			Customer.newCustomer(9L, "Sour Doe")
-		);
+		assertThat(customers).containsExactlyInAnyOrder(Customer.newCustomer(1L, "Jon Doe"),
+				Customer.newCustomer(2L, "Jane Doe"), Customer.newCustomer(3L, "Cookie Doe"),
+				Customer.newCustomer(4L, "Fro Doe"), Customer.newCustomer(5L, "Ginger Doe"),
+				Customer.newCustomer(6L, "Hoe Doe"), Customer.newCustomer(7L, "Joe Doe"), Customer.newCustomer(8L, "Pie Doe"),
+				Customer.newCustomer(9L, "Sour Doe"));
 	}
 
 	private void assertPurchaseOrder(Object purchaseOrder, int expectedNumberOfLineItems) {
@@ -271,8 +257,8 @@ public class JsonCacheDataImporterExporterIntegrationTests extends SpringApplica
 		assertThat(purchaseOrder.getId()).isEqualTo(expectedId);
 		assertThat(purchaseOrder.getTotal()).isEqualTo(expectedTotal);
 
-		expectedLineItems.forEach(lineItem ->
-			assertLineItem(purchaseOrder.findBy(lineItem.getProduct().getName()).orElse(null), lineItem));
+		expectedLineItems.forEach(
+				lineItem -> assertLineItem(purchaseOrder.findBy(lineItem.getProduct().getName()).orElse(null), lineItem));
 	}
 
 	private void assertLineItem(LineItem actual, LineItem expected) {
@@ -297,24 +283,20 @@ public class JsonCacheDataImporterExporterIntegrationTests extends SpringApplica
 
 	private ObjectMapper newObjectMapper() {
 
-		return new ObjectMapper()
-			.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false)
-			.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-			.findAndRegisterModules();
+		return new ObjectMapper().configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false)
+				.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false).findAndRegisterModules();
 	}
 
 	private PdxInstance serializeToPdx(RegionService regionService, Object value) {
 
-		return PdxInstanceBuilder.create(regionService)
-			.from(value)
-			.create();
+		return PdxInstanceBuilder.create(regionService).from(value).create();
 	}
 
 	private PdxInstance serializeToPdx(RegionService regionService, Customer customer) {
 
 		PdxInstanceFactory pdxFactory = regionService.createPdxInstanceFactory(customer.getClass().getName());
 
-		//pdxFactory.writeString("@type", customer.getClass().getName());
+		// pdxFactory.writeString("@type", customer.getClass().getName());
 		pdxFactory.writeLong("id", customer.getId());
 		pdxFactory.writeString("name", customer.getName());
 		pdxFactory.markIdentityField("id");
@@ -331,16 +313,21 @@ public class JsonCacheDataImporterExporterIntegrationTests extends SpringApplica
 
 		assertThat(example).hasSize(1);
 
-		Object value = example.values().stream()
-			.findFirst()
-			.orElse(null);
+		Object value = example.values().stream().findFirst().orElse(null);
 
 		assertPurchaseOrder(value, 3);
 
 		List<LineItem> expectedLineItems = Arrays.asList(
-			LineItem.newLineItem(Product.newProduct("Apple iPad").havingPrice(BigDecimal.valueOf(1499.0d)).in(Product.Category.SHOPPING)).withQuantity(2), // 2998.00
-			LineItem.newLineItem(Product.newProduct("Apple iPhone").havingPrice(BigDecimal.valueOf(1249.0d)).in(Product.Category.SHOPPING)).withQuantity(3), // 3747.00
-			LineItem.newLineItem(Product.newProduct("Apple iPod").havingPrice(BigDecimal.valueOf(599.0d)).in(Product.Category.SHOPPING)).withQuantity(1) // 599.00
+				LineItem.newLineItem(
+						Product.newProduct("Apple iPad").havingPrice(BigDecimal.valueOf(1499.0d)).in(Product.Category.SHOPPING))
+						.withQuantity(2), // 2998.00
+				LineItem.newLineItem(
+						Product.newProduct("Apple iPhone").havingPrice(BigDecimal.valueOf(1249.0d)).in(Product.Category.SHOPPING))
+						.withQuantity(3), // 3747.00
+				LineItem
+						.newLineItem(
+								Product.newProduct("Apple iPod").havingPrice(BigDecimal.valueOf(599.0d)).in(Product.Category.SHOPPING))
+						.withQuantity(1) // 599.00
 		);
 
 		PurchaseOrder purchaseOrder = (PurchaseOrder) ((PdxInstance) value).getObject();
@@ -376,11 +363,10 @@ public class JsonCacheDataImporterExporterIntegrationTests extends SpringApplica
 			String actualJson = StringUtils.trimAllWhitespace(writer.toString());
 
 			String expectedJson = String.format("[{\"@type\":\"%s\",\"id\":42,\"name\":\"PlayDoe\"}]",
-				playDoe.getClass().getName());
+					playDoe.getClass().getName());
 
 			assertThat(actualJson).isEqualTo(expectedJson);
-		}
-		finally {
+		} finally {
 			System.clearProperty(EXPORT_ENABLED_PROPERTY);
 		}
 	}
@@ -400,24 +386,20 @@ public class JsonCacheDataImporterExporterIntegrationTests extends SpringApplica
 		assertExampleRegion(example);
 		assertThat(example).isEmpty();
 
-		Product golfBalls = Product.newProduct("Titliest ProV1x Golf Balls")
-			.havingPrice(BigDecimal.valueOf(34.99d))
-			.in(Product.Category.SPECIALTY);
+		Product golfBalls = Product.newProduct("Titliest ProV1x Golf Balls").havingPrice(BigDecimal.valueOf(34.99d))
+				.in(Product.Category.SPECIALTY);
 
-		LineItem lineItem = LineItem.newLineItem(golfBalls)
-			.withQuantity(1);
+		LineItem lineItem = LineItem.newLineItem(golfBalls).withQuantity(1);
 
-		PurchaseOrder purchaseOrder = new PurchaseOrder()
-			.identifiedAs(72L)
-			.add(lineItem);
+		PurchaseOrder purchaseOrder = new PurchaseOrder().identifiedAs(72L).add(lineItem);
 
 		assertThat(example.put(purchaseOrder.getId(), purchaseOrder)).isNull();
 		assertThat(example).hasSize(1);
-		assertPurchaseOrder(example.get(purchaseOrder.getId()), purchaseOrder.getId(),
-			Collections.singletonList(lineItem), golfBalls.getPrice());
+		assertPurchaseOrder(example.get(purchaseOrder.getId()), purchaseOrder.getId(), Collections.singletonList(lineItem),
+				golfBalls.getPrice());
 
-		//log("JSON from JSONFormatter '%s'%n",
-		//	JSONFormatter.toJSON(serializeToPdx(example.getRegionService(), purchaseOrder)));
+		// log("JSON from JSONFormatter '%s'%n",
+		// JSONFormatter.toJSON(serializeToPdx(example.getRegionService(), purchaseOrder)));
 
 		closeApplicationContext();
 
@@ -425,9 +407,9 @@ public class JsonCacheDataImporterExporterIntegrationTests extends SpringApplica
 
 		assertThat(json).isNotEmpty();
 
-		//log("JSON '%s'%n", json);
-		//log("PurchaseOrder from JSON [%s]%n",
-		//	newObjectMapper().readValue(json.substring(1, json.length() - 1), PurchaseOrder.class));
+		// log("JSON '%s'%n", json);
+		// log("PurchaseOrder from JSON [%s]%n",
+		// newObjectMapper().readValue(json.substring(1, json.length() - 1), PurchaseOrder.class));
 
 		// IMPORT
 		Resource mockResource = mock(Resource.class, withSettings().lenient());
@@ -439,8 +421,8 @@ public class JsonCacheDataImporterExporterIntegrationTests extends SpringApplica
 		importEnabledSupplier = () -> true;
 		importResourceResolverSupplier = () -> (ImportResourceResolver) region -> Optional.of(mockResource);
 
-		example = getExampleRegion(newApplicationContext(TestGeodeConfiguration.class,
-			TestImportResourceResolverGeodeConfiguration.class));
+		example = getExampleRegion(
+				newApplicationContext(TestGeodeConfiguration.class, TestImportResourceResolverGeodeConfiguration.class));
 
 		assertExampleRegion(example);
 		assertThat(example).hasSize(1);
@@ -449,8 +431,8 @@ public class JsonCacheDataImporterExporterIntegrationTests extends SpringApplica
 
 		assertThat(value).isInstanceOf(PdxInstance.class);
 
-		assertPurchaseOrder(ObjectUtils.asType(value, PurchaseOrder.class),
-			purchaseOrder.getId(), Collections.singletonList(lineItem), golfBalls.getPrice());
+		assertPurchaseOrder(ObjectUtils.asType(value, PurchaseOrder.class), purchaseOrder.getId(),
+				Collections.singletonList(lineItem), golfBalls.getPrice());
 	}
 
 	@Test
@@ -497,7 +479,7 @@ public class JsonCacheDataImporterExporterIntegrationTests extends SpringApplica
 
 		example = getExampleRegion(newApplicationContext(TestGeodeConfiguration.class,
 
-			TestImportResourceResolverGeodeConfiguration.class));
+				TestImportResourceResolverGeodeConfiguration.class));
 		assertExampleRegion(example);
 		assertThat(example).hasSize(2);
 
@@ -516,8 +498,8 @@ public class JsonCacheDataImporterExporterIntegrationTests extends SpringApplica
 
 		ConfigurableApplicationContext configurableApplicationContext = newApplicationContext(TestGeodeConfiguration.class);
 		try {
-			byte[] json = FileCopyUtils.copyToByteArray(
-				new ClassPathResource("data-example-doefamily.json").getInputStream());
+			byte[] json = FileCopyUtils
+					.copyToByteArray(new ClassPathResource("data-example-doefamily.json").getInputStream());
 
 			assertThat(json).isNotNull();
 			assertThat(json).isNotEmpty();
@@ -564,93 +546,62 @@ public class JsonCacheDataImporterExporterIntegrationTests extends SpringApplica
 
 		assertThat(value).isInstanceOf(PdxInstance.class);
 		assertThat(value).isNotEqualTo(doeDoe);
-
-		// Causes ClassCastException!
-		// Bug caused by the JSONFormatter.toJSON(:PdxInstance) method not properly setting the '@type' JSON object
-		// property from the PdxInstance.getClassName() when the class name is a valid Java class!
-		//Customer jonDoeAgain = (Customer) value;
 	}
 
-	// APACHE GEODE BUG 3!!!
-	@Test(expected = PdxSerializationException.class)
-	public void geodePdxInstanceObjectMapperCannotDeserializeJava8Types() {
+	@Test
+	public void geodePdxInstanceObjectMapperDeserializeJava8Types() {
+		ClientCache clientCache = newApplicationContext(TestGeodeConfiguration.class).getBean(ClientCache.class);
 
-		try {
+		ObjectMapper objectMapper = newObjectMapper();
 
-			ClientCache clientCache = newApplicationContext(TestGeodeConfiguration.class).getBean(ClientCache.class);
+		TimedType value = TimedType.create().with(LocalDate.now());
 
-			ObjectMapper objectMapper = newObjectMapper();
+		ObjectNode objectNode = objectMapper.valueToTree(value);
 
-			TimedType value = TimedType.create().with(LocalDate.now());
+		objectNode.put("@type", value.getClass().getName());
 
-			ObjectNode objectNode = objectMapper.valueToTree(value);
+		String json = objectNode.toString();
 
-			objectNode.put("@type", value.getClass().getName());
+		PdxInstance pdx = JSONFormatter.fromJSON(json);
 
-			String json = objectNode.toString();
+		Object object = pdx.getObject();
 
-			PdxInstance pdx = JSONFormatter.fromJSON(json);
-
-			// BOOM!
-			Object object = pdx.getObject();
-		}
-		catch (PdxSerializationException expected) {
-
-			// Caused because the PdxInstance ObjectMapper is not properly configured (to findAndRegisterModules()
-			// or Jackson Module Extensions on the classpath)!
-
-			assertThat(expected).hasMessageStartingWith("Could not deserialize as java class '%s'",
-				TimedType.class.getName());
-			assertThat(expected.getCause()).isInstanceOf(InvalidDefinitionException.class);
-			assertThat(expected.getCause())
-				.hasMessageStartingWith("Java 8 date/time type `java.time.LocalDate` not supported by default:"
-					+ " add Module \"com.fasterxml.jackson.datatype:jackson-datatype-jsr310\" to enable handling");
-			assertThat(expected.getCause()).hasNoCause();
-
-			throw expected;
-		}
 	}
 
 	// APACHE GEODE BUG 4!!!
 	@Test(expected = PdxSerializationException.class)
-	public void geodePdxInstanceObjectMapperCannotDeserializeTypedJsonObjects()
-			throws JsonProcessingException {
+	public void geodePdxInstanceObjectMapperCannotDeserializeTypedJsonObjects() throws JsonProcessingException {
 
 		try {
 
 			ClientCache clientCache = newApplicationContext(TestGeodeConfiguration.class).getBean(ClientCache.class);
 
-			PurchaseOrder purchaseOrder = new PurchaseOrder()
-				.add(LineItem.newLineItem(Product.newProduct("Test Product")
-					.havingPrice(BigDecimal.valueOf(39.99))
-					.in(Product.Category.UNSOUGHT))
-					.withQuantity(2))
-				.identifiedAs(1L);
+			PurchaseOrder purchaseOrder = new PurchaseOrder().add(LineItem
+					.newLineItem(
+							Product.newProduct("Test Product").havingPrice(BigDecimal.valueOf(39.99)).in(Product.Category.UNSOUGHT))
+					.withQuantity(2)).identifiedAs(1L);
 
-			ObjectMapper objectMapper = newObjectMapper()
-				.activateDefaultTypingAsProperty(new DefaultBaseTypeLimitingValidator(),
-					ObjectMapper.DefaultTyping.EVERYTHING, "@type");
+			ObjectMapper objectMapper = newObjectMapper().activateDefaultTypingAsProperty(
+					new DefaultBaseTypeLimitingValidator(), ObjectMapper.DefaultTyping.EVERYTHING, "@type");
 
 			String json = objectMapper.writeValueAsString(purchaseOrder);
 
 			assertThat(json).isNotEmpty();
 			assertThat(json).describedAs("Actual JSON [%s]", json)
-				.contains(String.format("\"@type\":\"%s\"", purchaseOrder.getClass().getName()));
+					.contains(String.format("\"@type\":\"%s\"", purchaseOrder.getClass().getName()));
 
 			PdxInstance pdx = JSONFormatter.fromJSON(json);
 
 			// BOOM!
 			pdx.getObject();
-		}
-		catch (PdxSerializationException expected) {
+		} catch (PdxSerializationException expected) {
 
 			// Caused because the PdxInstance.getObject() method's ObjectMapper is not properly configured!
 
 			assertThat(expected).hasMessageStartingWith("Could not deserialize as java class '%s'",
-				PurchaseOrder.class.getName());
-			assertThat(expected.getCause()).isInstanceOf(MismatchedInputException.class);
-			assertThat(expected.getCause())
-				.hasMessageStartingWith("Cannot deserialize value of type `java.lang.Long` from Array value (token `JsonToken.START_ARRAY`)");
+					PurchaseOrder.class.getName());
+			assertThat(expected.getCause()).hasMessageStartingWith(
+					"Cannot deserialize value of type `java.lang.Long` from Array value (token `JsonToken.START_ARRAY`)");
 			assertThat(expected.getCause()).hasNoCause();
 
 			throw expected;
@@ -658,7 +609,6 @@ public class JsonCacheDataImporterExporterIntegrationTests extends SpringApplica
 	}
 
 	@ClientCacheApplication
-//	@EnablePool(name = "gemfirePool")
 	@EnablePdx(readSerialized = true)
 	static class TestGeodeConfiguration {
 
@@ -690,10 +640,9 @@ public class JsonCacheDataImporterExporterIntegrationTests extends SpringApplica
 				try {
 					writer.write(json, 0, data.length);
 					writer.flush();
-				}
-				catch (IOException cause) {
-					throw new ResourceWriteException(String.format("Failed to write data [%s] to Resource [%s]",
-						json, resource.getDescription()), cause);
+				} catch (IOException cause) {
+					throw new ResourceWriteException(
+							String.format("Failed to write data [%s] to Resource [%s]", json, resource.getDescription()), cause);
 				}
 			};
 		}

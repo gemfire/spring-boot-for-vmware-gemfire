@@ -1,5 +1,5 @@
 /*
- * Copyright 2024-2025 Broadcom. All rights reserved.
+ * Copyright $originalComment.match(" (\d+)", 1, "-", $today.year)2026 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -25,10 +25,9 @@ publishingDetails {
   description.set(project.description)
 }
 
-project.ext.set("testcontainers.version", "1.21.3")
-
 dependencies {
   implementation(platform(bom.testcontainers.dependencies.bom))
+  testImplementation(platform(bom.testcontainers.dependencies.bom))
 
   api(project(":spring-gemfire-extensions"))
 
@@ -54,12 +53,8 @@ dependencies {
   testImplementation("org.springframework.boot:spring-boot-starter-data-cassandra")
   testImplementation(libs.spring.data.gemfire.test.framework)
   testImplementation(libs.gemfire.core)
-  testImplementation("org.testcontainers:testcontainers") {
-    version {
-      strictly(bom.versions.testcontainersVersion.get())
-    }
-  }
-  testImplementation("org.testcontainers:cassandra")
+  testImplementation("org.testcontainers:testcontainers")
+  testImplementation("org.testcontainers:testcontainers-cassandra")
   testImplementation(libs.mockito.core)
   testImplementation(libs.mockito.subclass)
   testImplementation(libs.multithreadedtc)

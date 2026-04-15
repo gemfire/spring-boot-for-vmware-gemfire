@@ -2,7 +2,7 @@
 aspectjToolsVersion = "1.9.22.1"
 benManesVersions = "0.50.0"
 findbugsVersion = "3.0.2"
-gemFireTestContainersVersion = "2.3.1"
+gemFireTestContainersVersion = "3.0.0"
 littlerobotsVersionCatalogUpdate = "0.8.5"
 lombokVersion = "1.18.36"
 mockitoCoreVersion = { strictly = "5.18.0" }
