@@ -1,5 +1,5 @@
 /*
- * Copyright 2024-2025 Broadcom. All rights reserved.
+ * Copyright $originalComment.match(" (\d+)", 1, "-", $today.year)2026 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -28,11 +28,6 @@ dependencies {
   api(platform("org.springframework:spring-framework-bom:${project.ext.get("spring-framework.version")}"))
   api(platform("org.springframework.security:spring-security-bom:${project.ext.get("spring-security.version")}"))
   api(platform("org.springframework.session:spring-session-bom:${project.ext.get("spring-session.version")}"))
-  testImplementation("org.testcontainers:testcontainers") {
-    version {
-      strictly("1.21.3")
-    }
-  }
 }
 
 repositories {
