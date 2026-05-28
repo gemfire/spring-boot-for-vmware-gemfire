@@ -1,5 +1,5 @@
 /*
- * Copyright $originalComment.match(" (\d+)", 1, "-", $today.year)2026 Broadcom. All rights reserved.
+ * Copyright 2024-2026 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -53,11 +53,6 @@ dependencies {
   testImplementation("org.springframework.boot:spring-boot-starter-data-cassandra")
   testImplementation(libs.spring.data.gemfire.test.framework)
   testImplementation(libs.gemfire.core)
-  testImplementation("org.testcontainers:testcontainers") {
-    version {
-      strictly(bom.versions.testcontainersVersion.get())
-    }
-  }
   testImplementation("org.testcontainers:testcontainers-cassandra")
   testImplementation(libs.mockito.core)
   testImplementation(libs.mockito.subclass)
