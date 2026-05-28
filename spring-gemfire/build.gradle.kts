@@ -1,5 +1,5 @@
 /*
- * Copyright $originalComment.match(" (\d+)", 1, "-", $today.year)2026 Broadcom. All rights reserved.
+ * Copyright 2022-2026 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -32,6 +32,7 @@ dependencies {
   api(project(":spring-gemfire-extensions"))
 
   api("org.springframework:spring-context-support")
+  api("org.springframework:spring-tx")
   api("org.springframework.boot:spring-boot-starter")
   api(libs.spring.data.gemfire)
 
@@ -53,7 +54,6 @@ dependencies {
   testImplementation("org.springframework.boot:spring-boot-starter-data-cassandra")
   testImplementation(libs.spring.data.gemfire.test.framework)
   testImplementation(libs.gemfire.core)
-  testImplementation("org.testcontainers:testcontainers")
   testImplementation("org.testcontainers:testcontainers-cassandra")
   testImplementation(libs.mockito.core)
   testImplementation(libs.mockito.subclass)
