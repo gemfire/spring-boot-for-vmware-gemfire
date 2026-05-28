@@ -1,12 +1,15 @@
 [versions]
 aspectjToolsVersion = "1.9.22.1"
-benManesVersions = "0.50.0"
+benManesVersions = "0.54.0"
 findbugsVersion = "3.0.2"
-gemFireTestContainersVersion = "2.3.3"
-littlerobotsVersionCatalogUpdate = "0.8.5"
+gemFireTestContainersVersion = "3.0.0"
+gemfireVersion = "10.2.4"
+littlerobotsVersionCatalogUpdate = "1.1.0"
 lombokPlugin = "8.6"
 mockitoCoreVersion = { strictly = "5.14.2" }
 multithreadedtcVersion = "1.01"
+springDataGemFireVersion = "2.0.0"
+springSessionDataGemFireVersion = "2.0.0"
 springShellVersion = "1.2.0.RELEASE"
 
 [libraries]
