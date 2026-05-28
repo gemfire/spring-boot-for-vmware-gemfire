@@ -1,9 +1,10 @@
 /*
- * Copyright 2023-2025 Broadcom. All rights reserved.
+ * Copyright 2023-2026 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
+import nl.littlerobots.vcu.plugin.versionSelector
 
 plugins {
   id("java")
@@ -13,6 +14,13 @@ plugins {
   alias(libs.plugins.ben.manes.versions)
   alias(libs.plugins.littlerobots.version.catalog.update)
   id("gemfire-artifactory")
+}
+
+repositories {
+  addGemFireRepositories(
+    providers,
+    addMavenCentral = providers.gradleProperty("useMavenCentral").getOrElse("false").toBoolean()
+  )
 }
 
 // Suppress warning from gemfire-artifactory plugin. We need the module to be on this project in order to get buildInfo
@@ -44,10 +52,9 @@ versionCatalogUpdate {
   }
   keep {
     keepUnusedVersions = true
-    // keep all libraries that aren't used in the project
-    keepUnusedLibraries = true
-    // keep all plugins that aren't used in the project
-    keepUnusedPlugins = true
+  }
+  versionSelector {
+    isPatch(it.candidate.version, it.currentVersion)
   }
   versionCatalogs{
     create("bom"){
@@ -70,15 +77,21 @@ fun isPatch(candidateVersion: String, currentVersion: String): Boolean {
   val candidateSplit = candidateVersion.split(".")
   val currentSplit = currentVersion.split(".")
 
+  val strings = listOf("rc", "alpha", "beta")
+
+  if (strings.filter { candidateVersion.lowercase().contains(it) }.toList().isNotEmpty()) {
+    return false
+  }
+
   if (currentSplit.size == 3) {
     if (candidateSplit.size == currentSplit.size) {
-      if (candidateSplit[0] != currentSplit[0]) {
-        return false
+      return if (candidateSplit[0] != currentSplit[0]) {
+        false
+      } else if (candidateSplit[1] != currentSplit[1]) {
+        false
+      } else {
+        true
       }
-      if (candidateSplit[1] != currentSplit[1]) {
-        return false
-      }
-      return true
     }
   } else {
     return false
