@@ -1,14 +1,9 @@
 /*
- * Copyright 2024 Broadcom. All rights reserved.
+ * Copyright 2024-2026 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
 import java.util.LinkedList
-
-/*
- * Copyright 2024 Broadcom. All rights reserved.
- * SPDX-License-Identifier: Apache-2.0
- */
 
 plugins {
   id("java-library")
@@ -40,7 +35,9 @@ dependencies {
 }
 
 repositories {
-  mavenCentral()
+  if (providers.gradleProperty("useMavenCentral").getOrElse("false").toBoolean()) {
+    mavenCentral()
+  }
   val additionalMavenRepoURLs = project.findProperty("additionalMavenRepoURLs").toString()
   if (!additionalMavenRepoURLs.isNullOrBlank() && additionalMavenRepoURLs.isNotEmpty()) {
     additionalMavenRepoURLs.split(",").forEach {
@@ -49,7 +46,7 @@ repositories {
       }
     }
   }
-  val listOrderedRepos= LinkedList<ArtifactRepository>()
+  val listOrderedRepos = LinkedList<ArtifactRepository>()
   val values = project.repositories.asMap.values
   values.forEach { artifactRepository ->
     if (artifactRepository is MavenArtifactRepository) {
@@ -60,7 +57,6 @@ repositories {
       }
     }
   }
-
   project.repositories.clear()
   project.repositories.addAll(listOrderedRepos)
 }
