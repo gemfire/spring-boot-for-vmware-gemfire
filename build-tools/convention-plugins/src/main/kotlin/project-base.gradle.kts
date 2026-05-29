@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Broadcom. All rights reserved.
+ * Copyright 2024-2026 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -40,7 +40,9 @@ dependencies {
 }
 
 repositories {
-  mavenCentral()
+  if (providers.gradleProperty("useMavenCentral").getOrElse("false").toBoolean()) {
+    mavenCentral()
+  }
   val additionalMavenRepoURLs = project.findProperty("additionalMavenRepoURLs").toString()
   if (!additionalMavenRepoURLs.isNullOrBlank() && additionalMavenRepoURLs.isNotEmpty()) {
     additionalMavenRepoURLs.split(",").forEach {
