@@ -1,7 +1,9 @@
 /*
- * Copyright 2024-2025 Broadcom. All rights reserved.
+ * Copyright 2024-2026 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
+
+import java.util.LinkedList
 
 plugins {
   id("java-library")
@@ -33,9 +35,9 @@ dependencies {
 }
 
 repositories {
-  mavenLocal()
-  mavenCentral()
-  maven { url = uri("https://repo.spring.io/milestone") }
+  if (providers.gradleProperty("useMavenCentral").getOrElse("false").toBoolean()) {
+    mavenCentral()
+  }
   val additionalMavenRepoURLs = project.findProperty("additionalMavenRepoURLs").toString()
   if (!additionalMavenRepoURLs.isNullOrBlank() && additionalMavenRepoURLs.isNotEmpty()) {
     additionalMavenRepoURLs.split(",").forEach {
@@ -44,6 +46,19 @@ repositories {
       }
     }
   }
+  val listOrderedRepos = LinkedList<ArtifactRepository>()
+  val values = project.repositories.asMap.values
+  values.forEach { artifactRepository ->
+    if (artifactRepository is MavenArtifactRepository) {
+      if (artifactRepository.url.toString().startsWith("gcs:")) {
+        listOrderedRepos.addFirst(artifactRepository)
+      } else {
+        listOrderedRepos.add(artifactRepository)
+      }
+    }
+  }
+  project.repositories.clear()
+  project.repositories.addAll(listOrderedRepos)
 }
 
 configurations.all {
