@@ -22,7 +22,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.cassandra.core.CassandraTemplate;
 import org.springframework.lang.NonNull;
 
-import org.testcontainers.containers.CassandraContainer;
+import org.testcontainers.cassandra.CassandraContainer;
 import org.testcontainers.containers.GenericContainer;
 
 import example.app.crm.model.Customer;
@@ -63,7 +63,7 @@ public class TestcontainersCassandraConfiguration extends TestCassandraConfigura
 
 	private @NonNull GenericContainer<?> newCassandraContainer() {
 
-		return new CassandraContainer<>(CASSANDRA_DOCKER_IMAGE_NAME)
+		return new CassandraContainer(CASSANDRA_DOCKER_IMAGE_NAME)
 			.withInitScript(CASSANDRA_SCHEMA_CQL)
 			//.withInitScript(CASSANDRA_INIT_CQL)
 			.withExposedPorts(CASSANDRA_DEFAULT_PORT)
