@@ -45,7 +45,7 @@ dependencies {
   testImplementation("org.springframework.boot:spring-boot-starter-data-cassandra")
   testImplementation(libs.spring.data.gemfire.test.framework)
   testImplementation(libs.gemfire.core)
-  testImplementation("org.testcontainers:cassandra")
+  testImplementation("org.testcontainers:testcontainers-cassandra")
   testImplementation(libs.mockito.core)
   testImplementation(libs.mockito.subclass)
   testImplementation(libs.multithreadedtc)
