@@ -9,6 +9,9 @@ import com.google.cloud.storage.BlobId
 import com.google.cloud.storage.BlobInfo
 import com.google.cloud.storage.StorageOptions
 import java.io.FileInputStream
+import org.gradle.api.attributes.Category
+import org.gradle.api.attributes.LibraryElements
+import org.gradle.api.attributes.Usage
 
 buildscript {
   dependencies {
@@ -32,14 +35,17 @@ publishingDetails {
   description.set(project.description)
 }
 
-dependencies {
-  implementation(platform(bom.testcontainers.dependencies.bom))
-  api("org.springframework.boot:spring-boot-starter")
-
-  api(project(":spring-gemfire"))
-  api(project(":spring-gemfire-autoconfigure"))
-
-  runtimeOnly(libs.spring.shell)
+configurations{
+  create("combinedJavaDocsConfig") {
+    isCanBeConsumed = false
+    isCanBeResolved = true
+    extendsFrom(configurations.getByName("compileClasspath"))
+    attributes {
+      attribute(Usage.USAGE_ATTRIBUTE, project.objects.named(Usage.JAVA_API))
+      attribute(Category.CATEGORY_ATTRIBUTE, project.objects.named(Category.LIBRARY))
+      attribute(LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE, project.objects.named(LibraryElements.JAR))
+    }
+  }
 }
 
 val exportedProjects = arrayOf(
@@ -54,12 +60,25 @@ val exportedProjects = arrayOf(
   ":spring-gemfire-starter-test"
 )
 
+dependencies {
+  implementation(platform(bom.testcontainers.dependencies.bom))
+  api("org.springframework.boot:spring-boot-starter")
+
+  api(project(":spring-gemfire"))
+  api(project(":spring-gemfire-autoconfigure"))
+
+  runtimeOnly(libs.spring.shell)
+
+  exportedProjects
+    .filter { it != project.path }
+    .forEach { add("combinedJavaDocsConfig", project(it)) }
+}
 
 tasks {
   register<Javadoc>("combinedJavadoc") {
     source(exportedProjects.map { project(it).sourceSets["main"].allJava })
     title = "Spring Boot 4.0 for VMware GemFire $gemfireVersion Java API Reference"
-    classpath = files(exportedProjects.map { project(it).sourceSets["main"].compileClasspath })
+    classpath = configurations["combinedJavaDocsConfig"]
     setDestinationDir(file("${layout.buildDirectory}/docs/javadoc"))
   }
   register("combinedJavadocJar", Jar::class.java) {
