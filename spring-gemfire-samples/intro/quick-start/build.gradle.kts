@@ -20,6 +20,7 @@ dependencies {
   //runtime project(":spring-gemfire-starter-logging")
 
   testImplementation(project(":spring-gemfire-starter-test"))
+  testImplementation(libs.gemfire.core)
 
   testImplementation("org.springframework.boot:spring-boot-starter-test")
 

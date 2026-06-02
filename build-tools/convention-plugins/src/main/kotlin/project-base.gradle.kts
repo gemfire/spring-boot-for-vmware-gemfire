@@ -37,6 +37,13 @@ dependencies {
   api(platform("org.springframework:spring-framework-bom:${project.findProperty("spring-framework.version")}"))
   api(platform("org.springframework.security:spring-security-bom:${project.findProperty("spring-security.version")}"))
   api(platform("org.springframework.session:spring-session-bom:${project.findProperty("spring-session.version")}"))
+
+  testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+  testRuntimeOnly("org.junit.vintage:junit-vintage-engine")
+}
+
+tasks.withType<Test>().configureEach {
+  useJUnitPlatform()
 }
 
 repositories {
