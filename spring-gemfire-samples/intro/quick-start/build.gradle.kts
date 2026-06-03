@@ -19,8 +19,15 @@ dependencies {
 
   //runtime project(":spring-gemfire-starter-logging")
 
+  testImplementation(libs.gemfire.core)
   testImplementation(project(":spring-gemfire-starter-test"))
 
   testImplementation("org.springframework.boot:spring-boot-starter-test")
 
+  testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+}
+
+tasks.withType<Test>().configureEach {
+  useJUnitPlatform()
 }
