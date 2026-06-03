@@ -55,11 +55,23 @@ val exportedProjects = arrayOf(
 )
 
 
+val combinedJavadocClasspath by configurations.creating {
+  isCanBeConsumed = false
+  isCanBeResolved = true
+  extendsFrom(configurations["compileClasspath"])
+}
+
+exportedProjects.filter { it != ":spring-gemfire-starter" }.forEach { projectPath ->
+  dependencies.add("combinedJavadocClasspath", project(projectPath))
+}
+dependencies.add("combinedJavadocClasspath", libs.gemfire.core)
+
 tasks {
   register<Javadoc>("combinedJavadoc") {
     source(exportedProjects.map { project(it).sourceSets["main"].allJava })
     title = "Spring Boot 3.3 for VMware GemFire $gemfireVersion Java API Reference"
-    classpath = files(exportedProjects.map { project(it).sourceSets["main"].compileClasspath })
+    classpath = combinedJavadocClasspath
+    isFailOnError = false
     setDestinationDir(file("${layout.buildDirectory}/docs/javadoc"))
   }
   register("combinedJavadocJar", Jar::class.java) {
