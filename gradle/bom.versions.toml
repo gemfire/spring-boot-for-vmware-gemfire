@@ -1,5 +1,5 @@
 [versions]
-testcontainersVersion="1.20.4"
+testcontainersVersion = "1.21.3"
 
 [libraries]
 testcontainers-dependencies-bom={module="org.testcontainers:testcontainers-bom", version.ref="testcontainersVersion"}
