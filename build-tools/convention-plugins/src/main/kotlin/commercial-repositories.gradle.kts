@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Broadcom. All rights reserved.
+ * Copyright 2024-2026 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -12,7 +12,9 @@ plugins {
 }
 
 repositories {
-  mavenCentral()
+  if (providers.gradleProperty("useMavenCentral").getOrElse("false").toBoolean()) {
+    mavenCentral()
+  }
   val repositoryConfigFilePath = providers.gradleProperty("spring.gemfire.repositories").getOrElse(
     providers.environmentVariable("HOME").get() + "/.gradle/gradleRepositories.json"
   )

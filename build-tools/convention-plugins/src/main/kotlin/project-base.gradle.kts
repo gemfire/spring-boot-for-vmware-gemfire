@@ -1,17 +1,9 @@
 /*
- * Copyright 2024 Broadcom. All rights reserved.
+ * Copyright 2024-2026 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import gradle.kotlin.dsl.accessors._47bddfe2709b17d87106a3017b4e6c2a.api
-import gradle.kotlin.dsl.accessors._47bddfe2709b17d87106a3017b4e6c2a.ext
-import gradle.kotlin.dsl.accessors._47bddfe2709b17d87106a3017b4e6c2a.java
 import java.util.LinkedList
-
-/*
- * Copyright 2024 Broadcom. All rights reserved.
- * SPDX-License-Identifier: Apache-2.0
- */
 
 plugins {
   id("java-library")
@@ -43,7 +35,9 @@ dependencies {
 }
 
 repositories {
-  mavenCentral()
+  if (providers.gradleProperty("useMavenCentral").getOrElse("false").toBoolean()) {
+    mavenCentral()
+  }
   val additionalMavenRepoURLs = project.findProperty("additionalMavenRepoURLs").toString()
   if (!additionalMavenRepoURLs.isNullOrBlank() && additionalMavenRepoURLs.isNotEmpty()) {
     additionalMavenRepoURLs.split(",").forEach {
@@ -52,7 +46,7 @@ repositories {
       }
     }
   }
-  val listOrderedRepos= LinkedList<ArtifactRepository>()
+  val listOrderedRepos = LinkedList<ArtifactRepository>()
   val values = project.repositories.asMap.values
   values.forEach { artifactRepository ->
     if (artifactRepository is MavenArtifactRepository) {
