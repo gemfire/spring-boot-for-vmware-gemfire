@@ -20,11 +20,13 @@
  */
 package example.app.user;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.gemfire.tests.integration.IntegrationTestsSupport;
 import org.springframework.data.gemfire.tests.mock.annotation.EnableGemFireMockObjects;
+import org.springframework.test.context.junit4.SpringRunner;
 
 /**
  * Integration Tests for {@link UserApplication}.
@@ -37,6 +39,7 @@ import org.springframework.data.gemfire.tests.mock.annotation.EnableGemFireMockO
  * @see example.app.user.UserApplication
  * @since 1.5.0
  */
+@RunWith(SpringRunner.class)
 @SpringBootTest
 @EnableGemFireMockObjects
 public class UserApplicationIntegrationTests extends IntegrationTestsSupport {
