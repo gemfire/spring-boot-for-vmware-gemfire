@@ -44,7 +44,7 @@ dependencies {
   testImplementation(libs.spring.data.gemfire.test.framework)
   testImplementation(libs.gemfire.core)
   testImplementation("org.testcontainers:testcontainers")
-  testImplementation("org.testcontainers:cassandra")
+  testImplementation("org.testcontainers:testcontainers-cassandra")
   testImplementation(libs.mockito.core)
   testImplementation(libs.multithreadedtc)
   testImplementation(libs.gemfire.testcontainers)
