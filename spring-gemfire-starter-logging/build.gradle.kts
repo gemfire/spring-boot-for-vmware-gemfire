@@ -1,19 +1,20 @@
 /*
- * Copyright 2024 Broadcom. All rights reserved.
+ * Copyright $originalComment.match(" (\d+)", 1, "-", $today.year)2026 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
-
-import ProjectUtils.getBaseVersion
 
 plugins {
     id("project-base")
     id("gemfire-repo-artifact-publishing")
   id("gemfire-artifactory")
 }
-description="Spring Boot Logging Starter for VMware GemFire"
+description = "Spring Boot Logging Starter for VMware GemFire"
+
+val baseGemFireVersion: String by project
+val baseSpringVersion: String by project
 
 publishingDetails {
-    artifactName.set("spring-boot-logging-${getBaseVersion(property("spring-boot.version").toString())}-gemfire-${getBaseVersion(property("gemfireVersion").toString())}")
+    artifactName.set("spring-boot-logging-$baseSpringVersion-gemfire-$baseGemFireVersion")
     longName.set(project.description)
     description.set("Spring Boot Logging Starter for VMware GemFire with Logback as the logging provider and adaptation of Log4j to SLF4J")
 }

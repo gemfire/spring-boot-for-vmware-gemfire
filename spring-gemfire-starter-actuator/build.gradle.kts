@@ -1,9 +1,7 @@
 /*
- * Copyright 2024 Broadcom. All rights reserved.
+ * Copyright $originalComment.match(" (\d+)", 1, "-", $today.year)2026 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
-
-import ProjectUtils.getBaseVersion
 
 plugins {
   id("project-base")
@@ -13,8 +11,11 @@ plugins {
 
 description = "Spring Boot Actuator Starter for VMware GemFire"
 
+val baseGemFireVersion: String by project
+val baseSpringVersion: String by project
+
 publishingDetails {
-  artifactName.set("spring-boot-actuator-${getBaseVersion(property("spring-boot.version").toString())}-gemfire-${getBaseVersion(property("gemfireVersion").toString())}")
+  artifactName.set("spring-boot-actuator-$baseSpringVersion-gemfire-$baseGemFireVersion")
   longName.set(project.description)
   description.set(project.description)
 }

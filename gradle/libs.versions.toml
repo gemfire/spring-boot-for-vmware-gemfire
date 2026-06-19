@@ -1,5 +1,5 @@
 [versions]
-aspectjToolsVersion = "1.9.22.1"
+aspectjToolsVersion = "1.9.25.1"
 benManesVersions = "0.54.0"
 findbugsVersion = "3.0.2"
 gemFireTestContainersVersion = "3.0.0"
@@ -8,8 +8,13 @@ littlerobotsVersionCatalogUpdate = "1.1.0"
 lombokVersion = "1.18.46"
 mockitoCoreVersion = { strictly = "5.18.0" }
 multithreadedtcVersion = "1.01"
-springDataGemFireVersion = "2.0.0"
-springSessionDataGemFireVersion = "2.0.0"
+springBootVersion = "4.1.0"
+springDataBomVersion = "2025.1.6"
+springDataGemFireVersion = "2.0.0-build.9999"
+springFrameworkVersion = "7.0.8"
+springSecurityVersion = "7.1.0"
+springSessionBomVersion = "4.1.0"
+springSessionDataGemFireVersion = "2.0.0-build.9999"
 springShellVersion = "1.2.0.RELEASE"
 
 [libraries]
@@ -28,9 +33,14 @@ lombok = { module = "org.projectlombok:lombok", version.ref = "lombokVersion" }
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoCoreVersion" }
 mockito-subclass = { module = "org.mockito:mockito-subclass", version.ref = "mockitoCoreVersion" }
 multithreadedtc = { module = "edu.umd.cs.mtc:multithreadedtc", version.ref = "multithreadedtcVersion" }
-spring-data-gemfire = { module = "com.vmware.gemfire:spring-data-4.0-gemfire-10.2", version.ref = "springDataGemFireVersion" }
-spring-data-gemfire-test-framework = { module = "com.vmware.gemfire:spring-data-4.0-gemfire-test-framework-10.2", version.ref = "springDataGemFireVersion" }
-spring-session-gemfire = { module = "com.vmware.gemfire:spring-session-4.0-gemfire-10.2", version.ref = "springSessionDataGemFireVersion" }
+spring-boot-bom = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "springBootVersion" }
+spring-data-bom = { module = "org.springframework.data:spring-data-bom", version.ref = "springDataBomVersion" }
+spring-data-gemfire = { module = "com.vmware.gemfire:spring-data-4.1-gemfire-10.2", version.ref = "springDataGemFireVersion" }
+spring-data-gemfire-test-framework = { module = "com.vmware.gemfire:spring-data-4.1-gemfire-test-framework-10.2", version.ref = "springDataGemFireVersion" }
+spring-framework-bom = { module = "org.springframework:spring-framework-bom", version.ref = "springFrameworkVersion" }
+spring-security-bom = { module = "org.springframework.security:spring-security-bom", version.ref = "springSecurityVersion" }
+spring-session-bom = { module = "org.springframework.session:spring-session-bom", version.ref = "springSessionBomVersion" }
+spring-session-gemfire = { module = "com.vmware.gemfire:spring-session-4.1-gemfire-10.2", version.ref = "springSessionDataGemFireVersion" }
 spring-shell = { module = "org.springframework.shell:spring-shell", version.ref = "springShellVersion" }
 
 [plugins]

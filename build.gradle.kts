@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2026 Broadcom. All rights reserved.
+ * Copyright $originalComment.match(" (\d+)", 1, "-", $today.year)2026 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -16,12 +16,6 @@ plugins {
   id("gemfire-artifactory")
 }
 
-repositories {
-  addGemFireRepositories(
-    providers,
-    addMavenCentral = providers.gradleProperty("useMavenCentral").getOrElse("false").toBoolean()
-  )
-}
 
 // Suppress warning from gemfire-artifactory plugin. We need the module to be on this project in order to get buildInfo
 // uploaded, but there is no artifact on the root project, so we skip that part.
@@ -53,8 +47,14 @@ versionCatalogUpdate {
   keep {
     keepUnusedVersions = true
   }
+  // vCU v1.x resolves catalog entries directly via its own detached configurations,
+  // independently of DependencyUpdatesTask. Without this selector the rejectVersionIf
+  // filter is bypassed for that second resolution path. Mirror the same logic here so
+  // both paths apply isAllowedUpdate consistently.
   versionSelector {
-    isPatch(it.candidate.version, it.currentVersion)
+    val allowMajor = project.hasProperty("updateMajor")
+    val allowMinor = project.hasProperty("updateMinor")
+    isAllowedUpdate(it.candidate.version, it.currentVersion, allowMajor, allowMinor)
   }
   versionCatalogs{
     create("bom"){
@@ -69,32 +69,48 @@ versionCatalogUpdate {
 
 tasks.withType<DependencyUpdatesTask> {
   rejectVersionIf {
-    !isPatch(candidate.version, currentVersion)
+    val allowMajor = project.hasProperty("updateMajor")
+    val allowMinor = project.hasProperty("updateMinor")
+    !isAllowedUpdate(candidate.version, currentVersion, allowMajor, allowMinor)
   }
 }
 
-fun isPatch(candidateVersion: String, currentVersion: String): Boolean {
-  val candidateSplit = candidateVersion.split(".")
-  val currentSplit = currentVersion.split(".")
-
-  val strings = listOf("rc", "alpha", "beta")
-
-  if (strings.filter { candidateVersion.lowercase().contains(it) }.toList().isNotEmpty()) {
+fun isAllowedUpdate(
+  candidateVersion: String,
+  currentVersion: String,
+  allowMajor: Boolean,
+  allowMinor: Boolean
+): Boolean {
+  val nonStableMarkers = listOf("alpha", "beta", "rc", "snapshot", "dev", "preview", "build", "milestone")
+  if (nonStableMarkers.any { candidateVersion.contains(it, ignoreCase = true) }) {
+    return false
+  }
+  if (candidateVersion.contains(Regex("""[.\-][Mm]\d"""))) {
     return false
   }
 
-  if (currentSplit.size == 3) {
-    if (candidateSplit.size == currentSplit.size) {
-      return if (candidateSplit[0] != currentSplit[0]) {
-        false
-      } else if (candidateSplit[1] != currentSplit[1]) {
-        false
-      } else {
-        true
-      }
-    }
+  // Normalize Gradle version ranges (e.g., "[4.0,4.1)" -> "4.0").
+  val cleanCurrentVersion = if (currentVersion.startsWith("[") || currentVersion.startsWith("(")) {
+    currentVersion
+      .replace("[", "").replace("]", "").replace("(", "").replace(")", "")
+      .split(",").first().trim()
   } else {
-    return false
+    currentVersion
   }
-  return false
+
+  if (allowMajor) return true
+
+  fun parseMajorMinor(v: String): Pair<Int, Int>? {
+    val parts = v.split(".")
+    val major = parts.getOrNull(0)?.takeWhile { it.isDigit() }?.toIntOrNull() ?: return null
+    val minor = parts.getOrNull(1)?.takeWhile { it.isDigit() }?.toIntOrNull() ?: return null
+    return major to minor
+  }
+
+  val (currentMajor, currentMinor) = parseMajorMinor(cleanCurrentVersion) ?: return false
+  val (candidateMajor, candidateMinor) = parseMajorMinor(candidateVersion) ?: return false
+
+  if (currentMajor != candidateMajor) return false
+  if (allowMinor) return true
+  return currentMinor == candidateMinor
 }
