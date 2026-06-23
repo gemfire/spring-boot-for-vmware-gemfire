@@ -19,7 +19,6 @@ publishingDetails {
 }
 
 dependencies {
-  implementation(platform(bom.testcontainers.dependencies.bom))
   api(project(":spring-gemfire"))
   implementation(project(":spring-gemfire-extensions"))
   compileOnly(libs.gemfire.core)

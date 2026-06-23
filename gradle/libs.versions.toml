@@ -1,16 +1,17 @@
 [versions]
 antlrVersion = "2.7.7"
+jettyVersion = "12.0.34"
 aspectjToolsVersion = "1.9.22.1"
 awaitilityVersion = "4.2.2"
 benManesVersions = "0.54.0"
 findbugsVersion = "3.0.2"
 gemFireTestContainersVersion = "2.3.3"
-gemfireVersion = "10.1.7"
+gemfireVersion = "10.1.8"
 littlerobotsVersionCatalogUpdate = "1.1.0"
 lombokPlugin = "8.6"
 mockitoCoreVersion = { strictly = "5.14.2" }
 multithreadedtcVersion = "1.01"
-springBootVersion = "3.5.14"
+springBootVersion = "3.5.15"
 springDataGemFireVersion = "1.0.0"
 springSessionDataGemFireVersion = "1.0.0"
 springShellVersion = "1.2.0.RELEASE"
@@ -21,6 +22,9 @@ aspectj-tools = { module = "org.aspectj:aspectjtools", version.ref = "aspectjToo
 awaitility = { module = "org.awaitility:awaitility", version.ref = "awaitilityVersion" }
 findbugs-jsr305 = { module = "com.google.code.findbugs:jsr305", version.ref = "findbugsVersion" }
 gemfire-core = { module = "com.vmware.gemfire:gemfire-core", version.ref = "gemfireVersion" }
+jetty-ee8-apache-jsp = { module = "org.eclipse.jetty.ee8:jetty-ee8-apache-jsp", version.ref = "jettyVersion" }
+jetty-ee8-webapp = { module = "org.eclipse.jetty.ee8:jetty-ee8-webapp", version.ref = "jettyVersion" }
+jetty-ee10-webapp = { module = "org.eclipse.jetty.ee10:jetty-ee10-webapp", version.ref = "jettyVersion" }
 gemfire-cq = { module = "com.vmware.gemfire:gemfire-cq", version.ref = "gemfireVersion" }
 gemfire-deployment-chained-classloader = { module = "com.vmware.gemfire:gemfire-deployment-chained-classloader", version.ref = "gemfireVersion" }
 gemfire-gfsh = { module = "com.vmware.gemfire:gemfire-gfsh", version.ref = "gemfireVersion" }

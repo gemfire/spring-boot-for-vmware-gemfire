@@ -18,7 +18,6 @@ publishingDetails {
 }
 
 dependencies {
-  implementation(platform(bom.testcontainers.dependencies.bom))
   api(project(":spring-gemfire-starter"))
   api(project(":spring-gemfire-actuator-autoconfigure"))
 }
