@@ -1,5 +1,5 @@
 /*
- * Copyright 2024-2025 Broadcom. All rights reserved.
+ * Copyright 2024-2026 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -18,7 +18,6 @@ publishingDetails {
 }
 
 dependencies {
-  implementation(platform(bom.testcontainers.dependencies.bom))
   compileOnly(libs.gemfire.core)
 
   api(project(":spring-gemfire-extensions"))
@@ -29,9 +28,15 @@ dependencies {
   }
 
   implementation("org.apache.commons:commons-lang3")
-  implementation("org.apache.tomcat:jakartaee-migration:1.0.7")
   implementation("org.eclipse.jetty:jetty-server")
+  implementation(libs.jetty.ee8.webapp)
   implementation("org.slf4j:slf4j-api")
 
-  runtimeOnly("org.eclipse.jetty.ee10:jetty-ee10-apache-jsp")
+  runtimeOnly(libs.jetty.ee8.apache.jsp)
+
+  testImplementation("junit:junit")
+  testImplementation("org.assertj:assertj-core")
+  testImplementation(libs.mockito.core)
+  testImplementation(libs.gemfire.core)
+  testImplementation(libs.jetty.ee10.webapp)
 }

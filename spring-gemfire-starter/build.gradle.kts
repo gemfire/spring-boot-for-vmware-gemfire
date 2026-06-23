@@ -32,7 +32,6 @@ publishingDetails {
 }
 
 dependencies {
-  implementation(platform(bom.testcontainers.dependencies.bom))
   api("org.springframework.boot:spring-boot-starter")
 
   api(project(":spring-gemfire"))
