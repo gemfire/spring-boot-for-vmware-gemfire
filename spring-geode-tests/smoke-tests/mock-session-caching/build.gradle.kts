@@ -11,7 +11,6 @@ plugins {
 description = "Smoke Tests to assert (Spring) Session state caching using Apache Geode with Mock Objects auto-configured by Spring Boot."
 
 dependencies {
-	implementation(platform(bom.testcontainers.dependencies.bom))
 
 	compileOnly(libs.findbugs.jsr305)
 

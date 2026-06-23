@@ -3,13 +3,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import java.util.LinkedList
-
 plugins {
   id("java-library")
   id("idea")
   id("eclipse")
-  id("commercial-repositories")
 }
 
 group = "com.vmware.gemfire"
@@ -26,39 +23,14 @@ tasks.named<Javadoc>("javadoc") {
   isFailOnError = false
 }
 
-dependencies {
-  api(platform("org.springframework.boot:spring-boot-dependencies:${project.findProperty("spring-boot.version")}"))
-  api(platform("org.springframework.data:spring-data-bom:${project.findProperty("spring-data-bom.version")}"))
-  api(platform("org.springframework:spring-framework-bom:${project.findProperty("spring-framework.version")}"))
-  api(platform("org.springframework.security:spring-security-bom:${project.findProperty("spring-security.version")}"))
-  api(platform("org.springframework.session:spring-session-bom:${project.findProperty("spring-session.version")}"))
-}
+val catalog = versionCatalogs.named("libs")
 
-repositories {
-  if (providers.gradleProperty("useMavenCentral").getOrElse("false").toBoolean()) {
-    mavenCentral()
-  }
-  val additionalMavenRepoURLs = project.findProperty("additionalMavenRepoURLs").toString()
-  if (!additionalMavenRepoURLs.isNullOrBlank() && additionalMavenRepoURLs.isNotEmpty()) {
-    additionalMavenRepoURLs.split(",").forEach {
-      project.repositories.maven {
-        this.url = uri(it)
-      }
-    }
-  }
-  val listOrderedRepos = LinkedList<ArtifactRepository>()
-  val values = project.repositories.asMap.values
-  values.forEach { artifactRepository ->
-    if (artifactRepository is MavenArtifactRepository) {
-      if (artifactRepository.url.toString().startsWith("gcs:")) {
-        listOrderedRepos.addFirst(artifactRepository)
-      } else {
-        listOrderedRepos.add(artifactRepository)
-      }
-    }
-  }
-  project.repositories.clear()
-  project.repositories.addAll(listOrderedRepos)
+dependencies {
+  api(platform(catalog.findLibrary("spring-boot-bom").get()))
+  api(platform(catalog.findLibrary("spring-data-bom").get()))
+  api(platform(catalog.findLibrary("spring-framework-bom").get()))
+  api(platform(catalog.findLibrary("spring-security-bom").get()))
+  api(platform(catalog.findLibrary("spring-session-bom").get()))
 }
 
 configurations.all {

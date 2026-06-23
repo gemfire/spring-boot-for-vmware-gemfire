@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2026 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 package org.springframework.geode.cache.service.classloader;
@@ -13,13 +13,13 @@ import java.util.Enumeration;
 import java.util.stream.Stream;
 
 /**
- * A custom {@link ClassLoader} set in {@link org.eclipse.jetty.ee10.webapp.WebAppContext#setClassLoader(ClassLoader)}
+ * A custom {@link ClassLoader} set in {@link org.eclipse.jetty.ee8.webapp.WebAppContext#setClassLoader(ClassLoader)}
  * in {@link org.springframework.geode.cache.service.Jetty12HttpService} to restrict what resources can be loaded from
  * the parent classloader to avoid Spring version conflicts between the web WAR and the application classpath.
  *
  * @author Patrick Johnson
  * @see org.springframework.geode.cache.service.Jetty12HttpService
- * @see org.eclipse.jetty.ee10.webapp.WebAppContext
+ * @see org.eclipse.jetty.ee8.webapp.WebAppContext
  * @see URLClassLoader
  */
 public class JettyRestrictedParentResourcesClassLoader extends URLClassLoader {

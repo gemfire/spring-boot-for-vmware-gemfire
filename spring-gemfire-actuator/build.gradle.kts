@@ -18,7 +18,6 @@ publishingDetails {
 }
 
 dependencies {
-  implementation(platform(bom.testcontainers.dependencies.bom))
   api(project(":spring-gemfire"))
 
   api("org.springframework.boot:spring-boot-starter-actuator")

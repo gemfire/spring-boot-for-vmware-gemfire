@@ -10,7 +10,6 @@ plugins {
 description = "Spring Geode Sample demonstrating Spring Session with Apache Geode for HTTP Session Caching."
 
 dependencies {
-	implementation(platform(bom.testcontainers.dependencies.bom))
 	compileOnly(libs.gemfire.core)
 
 	implementation(project(":spring-gemfire-starter"))
