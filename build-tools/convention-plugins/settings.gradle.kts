@@ -5,13 +5,11 @@
 
 import org.gradle.kotlin.dsl.create
 
-/*
- * Copyright 2024 Broadcom. All rights reserved.
- * SPDX-License-Identifier: Apache-2.0
- */
-
 pluginManagement {
   repositories {
+    if (providers.gradleProperty("useMavenLocal").getOrElse("false").toBoolean()) {
+      mavenLocal()
+    }
     val repositoryConfigFilePath = providers.gradleProperty("spring.gemfire.repositories").getOrElse(
       providers.environmentVariable("HOME").get() + "/.gradle/gradleRepositories.json"
     )
@@ -44,6 +42,9 @@ plugins {
 
 dependencyResolutionManagement {
   repositories {
+    if (providers.gradleProperty("useMavenLocal").getOrElse("false").toBoolean()) {
+      mavenLocal()
+    }
     val repositoryConfigFilePath = providers.gradleProperty("spring.gemfire.repositories").getOrElse(
       providers.environmentVariable("HOME").get() + "/.gradle/gradleRepositories.json"
     )

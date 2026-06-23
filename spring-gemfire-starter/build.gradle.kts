@@ -3,7 +3,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import ProjectUtils.getBaseVersion
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.storage.BlobId
 import com.google.cloud.storage.BlobInfo
@@ -27,10 +26,11 @@ plugins {
 
 description = "Spring Boot Starter for VMware GemFire"
 
-val gemfireVersion = getBaseVersion(property("gemfireVersion").toString())
+val baseGemFireVersion: String by project
+val baseSpringVersion: String by project
 
 publishingDetails {
-  artifactName.set("spring-boot-${getBaseVersion(property("spring-boot.version").toString())}-gemfire-$gemfireVersion")
+  artifactName.set("spring-boot-$baseSpringVersion-gemfire-$baseGemFireVersion")
   longName.set(project.description)
   description.set(project.description)
 }
@@ -75,9 +75,9 @@ dependencies {
 }
 
 tasks {
-  register("combinedJavadoc", Javadoc::class) {
+  register<Javadoc>("combinedJavadoc") {
     source(exportedProjects.map { project(it).sourceSets["main"].allJava })
-    title = "Spring Boot 4.0 for VMware GemFire $gemfireVersion Java API Reference"
+    title = "Spring Boot $baseSpringVersion for VMware GemFire $baseGemFireVersion Java API Reference"
     classpath = configurations["combinedJavaDocsConfig"]
     setDestinationDir(file("${layout.buildDirectory}/docs/javadoc"))
   }
