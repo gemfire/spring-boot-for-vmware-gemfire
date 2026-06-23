@@ -11,7 +11,6 @@ plugins {
 description = "Spring Geode Sample for Multi-Site Caching."
 
 dependencies {
-  implementation(platform(bom.testcontainers.dependencies.bom))
 
   compileOnly(libs.gemfire.core)
 

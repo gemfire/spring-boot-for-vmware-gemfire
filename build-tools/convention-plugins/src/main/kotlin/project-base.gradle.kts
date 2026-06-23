@@ -3,18 +3,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import java.util.LinkedList
-
-/*
- * Copyright 2024 Broadcom. All rights reserved.
- * SPDX-License-Identifier: Apache-2.0
- */
-
 plugins {
   id("java-library")
   id("idea")
   id("eclipse")
-  id("commercial-repositories")
 }
 
 group = "com.vmware.gemfire"
@@ -44,34 +36,6 @@ dependencies {
 
 tasks.withType<Test>().configureEach {
   useJUnitPlatform()
-}
-
-repositories {
-  if (providers.gradleProperty("useMavenCentral").getOrElse("false").toBoolean()) {
-    mavenCentral()
-  }
-  val additionalMavenRepoURLs = project.findProperty("additionalMavenRepoURLs").toString()
-  if (!additionalMavenRepoURLs.isNullOrBlank() && additionalMavenRepoURLs.isNotEmpty()) {
-    additionalMavenRepoURLs.split(",").forEach {
-      project.repositories.maven {
-        this.url = uri(it)
-      }
-    }
-  }
-  val listOrderedRepos= LinkedList<ArtifactRepository>()
-  val values = project.repositories.asMap.values
-  values.forEach { artifactRepository ->
-    if (artifactRepository is MavenArtifactRepository) {
-      if (artifactRepository.url.toString().startsWith("gcs:")) {
-        listOrderedRepos.addFirst(artifactRepository)
-      } else {
-        listOrderedRepos.add(artifactRepository)
-      }
-    }
-  }
-
-  project.repositories.clear()
-  project.repositories.addAll(listOrderedRepos)
 }
 
 configurations.all {

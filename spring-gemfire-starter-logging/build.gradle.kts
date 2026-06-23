@@ -18,7 +18,6 @@ publishingDetails {
 }
 
 dependencies {
-  api(platform(bom.testcontainers.dependencies.bom))
   api("ch.qos.logback:logback-classic")
   api("org.apache.logging.log4j:log4j-to-slf4j")
 

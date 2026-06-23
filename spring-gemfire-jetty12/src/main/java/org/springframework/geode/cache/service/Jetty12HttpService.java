@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2026 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 package org.springframework.geode.cache.service;
@@ -17,8 +17,8 @@ import org.apache.geode.internal.net.SSLConfigurationFactory;
 import org.apache.geode.internal.net.SSLUtil;
 import org.apache.geode.internal.security.SecurableCommunicationChannel;
 import org.apache.geode.management.internal.beans.CacheServiceMBeanBase;
-import org.eclipse.jetty.ee10.webapp.ClassMatcher;
-import org.eclipse.jetty.ee10.webapp.WebAppContext;
+import org.eclipse.jetty.ee8.webapp.ClassMatcher;
+import org.eclipse.jetty.ee8.webapp.WebAppContext;
 import org.eclipse.jetty.server.ConnectionFactory;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Handler;
@@ -39,7 +39,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.helpers.MessageFormatter;
 import org.springframework.geode.cache.service.classloader.JettyRestrictedParentResourcesClassLoader;
-import org.springframework.geode.cache.service.support.JakartaEEMigrationService;
 import org.springframework.geode.util.CacheUtils;
 
 import java.io.File;
@@ -359,14 +358,12 @@ public class Jetty12HttpService implements HttpService {
 			logInfo("Adding Web application from path [{}] using context [{}]"
 				+ " to Apache Geode's embedded HTTP service", warFilePath, contextPath);
 
-			Path resolveWarFilePath = JakartaEEMigrationService.INSTANCE.migrate(warFilePath);
-
-			logInfo("Resolved WAR file path [{}]", resolveWarFilePath);
+			logInfo("Resolved WAR file path [{}]", warFilePath);
 
 			WebAppContext webAppContext =
-				getWebAppContextConfigurationFunction().apply(newWebAppContext(server, resolveWarFilePath, contextPath));
+				getWebAppContextConfigurationFunction().apply(newWebAppContext(server, warFilePath, contextPath));
 
-			webAppContext.setAttribute("org.eclipse.jetty.websocket.jakarta", false);
+			webAppContext.setAttribute("org.eclipse.jetty.websocket.javax", false);
 
 			nullSafeMap(attributeNameValuePairs)
 				.forEach(webAppContext::setAttribute);
@@ -396,7 +393,7 @@ public class Jetty12HttpService implements HttpService {
 
 		WebAppContext webAppContext = new WebAppContext(webApp, contextPath);
 
-		webAppContext.addAliasCheck(new SymlinkAllowedResourceAliasChecker(webAppContext));
+		webAppContext.addAliasCheck(new SymlinkAllowedResourceAliasChecker(webAppContext.getCoreContextHandler()));
 		webAppContext.setInitParameter("org.eclipse.jetty.servlet.Default.dirAllowed", "false");
 		webAppContext.setParentLoaderPriority(JETTY_WEBAPP_PARENT_LOADER_PRIORITY);
 		webAppContext.setServer(server);

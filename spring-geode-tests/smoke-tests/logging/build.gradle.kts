@@ -10,7 +10,6 @@ plugins {
 description = "Smoke Tests to assert that Spring for Apache Geode logging functions as expected."
 
 dependencies {
-	implementation(platform(bom.testcontainers.dependencies.bom))
 
 	implementation("org.assertj:assertj-core")
 
