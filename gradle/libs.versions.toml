@@ -35,12 +35,12 @@ mockito-subclass = { module = "org.mockito:mockito-subclass", version.ref = "moc
 multithreadedtc = { module = "edu.umd.cs.mtc:multithreadedtc", version.ref = "multithreadedtcVersion" }
 spring-boot-bom = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "springBootVersion" }
 spring-data-bom = { module = "org.springframework.data:spring-data-bom", version.ref = "springDataBomVersion" }
-spring-data-gemfire = { module = "com.vmware.gemfire:spring-data-4.1-gemfire-10.3", version.ref = "springDataGemFireVersion" }
-spring-data-gemfire-test-framework = { module = "com.vmware.gemfire:spring-data-4.1-gemfire-test-framework-10.3", version.ref = "springDataGemFireVersion" }
+spring-data-gemfire = { module = "com.vmware.gemfire:spring-data-4.1-gemfire-10.4", version.ref = "springDataGemFireVersion" }
+spring-data-gemfire-test-framework = { module = "com.vmware.gemfire:spring-data-4.1-gemfire-test-framework-10.4", version.ref = "springDataGemFireVersion" }
 spring-framework-bom = { module = "org.springframework:spring-framework-bom", version.ref = "springFrameworkVersion" }
 spring-security-bom = { module = "org.springframework.security:spring-security-bom", version.ref = "springSecurityVersion" }
 spring-session-bom = { module = "org.springframework.session:spring-session-bom", version.ref = "springSessionBomVersion" }
-spring-session-gemfire = { module = "com.vmware.gemfire:spring-session-4.1-gemfire-10.3", version.ref = "springSessionDataGemFireVersion" }
+spring-session-gemfire = { module = "com.vmware.gemfire:spring-session-4.1-gemfire-10.4", version.ref = "springSessionDataGemFireVersion" }
 spring-shell = { module = "org.springframework.shell:spring-shell", version.ref = "springShellVersion" }
 
 [plugins]
