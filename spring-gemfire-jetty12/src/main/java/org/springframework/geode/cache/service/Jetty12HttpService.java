@@ -17,8 +17,6 @@ import org.apache.geode.internal.net.SSLConfigurationFactory;
 import org.apache.geode.internal.net.SSLUtil;
 import org.apache.geode.internal.security.SecurableCommunicationChannel;
 import org.apache.geode.management.internal.beans.CacheServiceMBeanBase;
-import org.eclipse.jetty.ee8.webapp.ClassMatcher;
-import org.eclipse.jetty.ee8.webapp.WebAppContext;
 import org.eclipse.jetty.server.ConnectionFactory;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Handler;
@@ -26,10 +24,11 @@ import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;
 import org.eclipse.jetty.server.SecureRequestCustomizer;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.SslConnectionFactory;
+import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.SymlinkAllowedResourceAliasChecker;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
+import org.eclipse.jetty.util.component.LifeCycle;
 import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.util.resource.ResourceFactory;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
@@ -44,7 +43,9 @@ import org.springframework.geode.util.CacheUtils;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -54,24 +55,25 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /**
- * An Apache Geode {@link HttpService} implementation using Eclipse Jetty 11 HTTP server and Servlet container.
+ * An Apache Geode {@link HttpService} implementation using Eclipse Jetty 12 HTTP server and Servlet container.
+ *
+ * <p>WAR deployment is transparent with respect to the Servlet API generation: if the WAR's
+ * {@code WEB-INF/web.xml} declares the Jakarta EE namespace
+ * ({@code https://jakarta.ee/xml/ns/jakartaee}) then an EE10
+ * {@link org.eclipse.jetty.ee10.webapp.WebAppContext} is used; otherwise an EE8
+ * {@link org.eclipse.jetty.ee8.webapp.WebAppContext} is used, which natively understands
+ * {@code javax.servlet.*} WARs without any bytecode migration.
  *
  * @author John Blum
  * @see org.apache.geode.cache.Cache
  * @see org.apache.geode.cache.internal.HttpService
- * @see org.apache.geode.distributed.internal.DistributionConfig
- * @see org.apache.geode.distributed.internal.InternalDistributedSystem
- * @see org.apache.geode.internal.cache.CacheService
- * @see org.apache.geode.internal.net.SSLConfig
- * @see org.apache.geode.internal.security.SecurableCommunicationChannel
- * @see org.eclipse.jetty.server.HttpConfiguration
  * @see org.eclipse.jetty.server.Server
  * @see org.eclipse.jetty.ee8.webapp.WebAppContext
+ * @see org.eclipse.jetty.ee10.webapp.WebAppContext
  * @since 2.0.0
  */
 public class Jetty12HttpService implements HttpService {
@@ -82,6 +84,7 @@ public class Jetty12HttpService implements HttpService {
 	private static final String APACHE_GEODE_ANY_SSL_CIPHERS = "any";
 	private static final String APACHE_GEODE_CONFIGURATION_ATTRIBUTE_NAME = "apache.geode.cache.configuration";
 	private static final String APACHE_GEODE_JETTY_THREAD_POOL_NAME = "ApacheGeode-EclipseJetty-ThreadPool";
+	private static final String JAKARTA_EE_NAMESPACE = "https://jakarta.ee/xml/ns/jakartaee";
 	private static final String UNDERSCORE = "_";
 
 	private static <K, V> Map<K, V> nullSafeMap(Map<K, V> map) {
@@ -111,7 +114,7 @@ public class Jetty12HttpService implements HttpService {
 		return lambda;
 	}
 
-	private final List<WebAppContext> webApplications = new CopyOnWriteArrayList<>();
+	private final List<Object> webApplications = new CopyOnWriteArrayList<>();
 
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -171,25 +174,63 @@ public class Jetty12HttpService implements HttpService {
 	}
 
 	/**
-	 * Gets a reference to the {@link List} of {@link WebAppContext Web applications} being run on
-	 * this Jetty HTTP server.
+	 * Gets the list of deployed web application {@link Handler} instances.
 	 *
-	 * @return a reference to the {@link List} of {@link WebAppContext Web applications} being run on
-	 * this Jetty HTTP server.
-	 * @see org.eclipse.jetty.ee8.webapp.WebAppContext
+	 * <p>Each entry is either an {@link org.eclipse.jetty.ee8.webapp.WebAppContext} (for
+	 * {@code javax.servlet}-based WARs) or an {@link org.eclipse.jetty.ee10.webapp.WebAppContext}
+	 * (for {@code jakarta.servlet}-based WARs), chosen transparently based on the WAR's
+	 * {@code WEB-INF/web.xml} namespace.
+	 *
+	 * @return an unmodifiable view of the deployed web application handlers.
+	 * @see org.eclipse.jetty.server.Handler
 	 * @see java.util.List
 	 */
-	protected List<WebAppContext> getWebApplications() {
+	protected List<Object> getWebApplications() {
 		return Collections.unmodifiableList(this.webApplications);
 	}
 
 	/**
+	 * Detects whether the WAR at the given path is a Jakarta EE (EE10) WAR by inspecting
+	 * the XML namespace declared in {@code WEB-INF/web.xml}.
+	 *
+	 * <p>Returns {@code true} only when the web.xml declares
+	 * {@value #JAKARTA_EE_NAMESPACE} as a quote-delimited XML namespace value (i.e. the
+	 * root element's {@code xmlns} default namespace). A namespace that merely appears
+	 * inside an {@code xsi:schemaLocation} pair — where it is followed by a whitespace and
+	 * the schema URL rather than a closing quote — does not count, since that does not
+	 * determine the servlet API generation. Returns {@code false} for Java EE /
+	 * javax.servlet WARs, WARs with no {@code web.xml}, and any WAR that cannot be opened.
+	 *
+	 * @param warFilePath path to the WAR file to inspect; must not be {@literal null}.
+	 * @return {@code true} if the WAR targets the Jakarta EE servlet API; {@code false} otherwise.
+	 */
+	boolean isJakartaEEWar(Path warFilePath) {
+		try (FileSystem zip = FileSystems.newFileSystem(warFilePath)) {
+			Path webXml = zip.getPath("WEB-INF/web.xml");
+			if (!Files.exists(webXml)) {
+				return false;
+			}
+			String content = Files.readString(webXml);
+			// Match the namespace only when quote-delimited (a default-namespace declaration),
+			// not when it merely occurs as the first token of an xsi:schemaLocation pair.
+			return content.contains("\"" + JAKARTA_EE_NAMESPACE + "\"")
+				|| content.contains("'" + JAKARTA_EE_NAMESPACE + "'");
+		}
+		// IOException covers unreadable/corrupt WARs; FileSystemAlreadyExistsException (a
+		// RuntimeException, thrown if the WAR's zip FileSystem is already open) and any other
+		// runtime failure must also fall back to the safe EE8 default rather than propagate.
+		catch (IOException | RuntimeException e) {
+			return false;
+		}
+	}
+
+	/**
 	 * Initializes the internal, embedded Apache Geode {@link HttpService} by creating an instance of
-	 * the Eclipse Jetty 11 HTTP server and Servlet container.
+	 * the Eclipse Jetty 12 HTTP server and Servlet container.
 	 *
 	 * @param cache reference to the {@literal peer} {@link Cache} instance
 	 * in which this embedded {@link HttpService} will be running.
-	 * @return a boolean value indicating whether the Eclipse Jetty 11 based {@link HttpService} constructed,
+	 * @return a boolean value indicating whether the Eclipse Jetty 12 based {@link HttpService} constructed,
 	 * configured and initialized.
 	 * @see org.apache.geode.cache.Cache
 	 */
@@ -339,14 +380,17 @@ public class Jetty12HttpService implements HttpService {
 	}
 
 	/**
-	 * Adds Web applications to Apache Geode's embedded HTTP service (HTTP server) making them available for service.
+	 * Adds a Web application to Apache Geode's embedded HTTP service.
 	 *
-	 * @param contextPath {@link String} containing the Web application context path
-	 * in which to bind the Web application.
+	 * <p>The Servlet API generation (EE8 / {@code javax.servlet} vs EE10 / {@code jakarta.servlet})
+	 * is detected automatically from the WAR's {@code WEB-INF/web.xml} namespace — no explicit
+	 * configuration is required.
+	 *
+	 * @param contextPath {@link String} containing the Web application context path.
 	 * @param warFilePath {@link Path} to the Java Web Application Archive (WAR) file.
-	 * @param attributeNameValuePairs {@link Map} of Web application, {@link javax.servlet.ServletContext}
-	 * attributes to set in the {@link WebAppContext}.
-	 * @see org.eclipse.jetty.ee8.webapp.WebAppContext
+	 * @param attributeNameValuePairs {@link Map} of {@link javax.servlet.ServletContext} or
+	 * {@link jakarta.servlet.ServletContext} attributes to set on the deployed context.
+	 * @see org.eclipse.jetty.server.Handler
 	 * @see org.eclipse.jetty.server.Server
 	 * @see #getOptionalServer()
 	 */
@@ -360,17 +404,21 @@ public class Jetty12HttpService implements HttpService {
 
 			logInfo("Resolved WAR file path [{}]", warFilePath);
 
-			WebAppContext webAppContext =
-				getWebAppContextConfigurationFunction().apply(newWebAppContext(server, warFilePath, contextPath));
+			Object webApp;
+			if (isJakartaEEWar(warFilePath)) {
+				org.eclipse.jetty.ee10.webapp.WebAppContext ee10 =
+					buildEe10WebApp(server, warFilePath, contextPath, attributeNameValuePairs);
+				((Handler.Collection) server.getHandler()).addHandler(ee10);
+				webApp = ee10;
+			}
+			else {
+				org.eclipse.jetty.ee8.webapp.WebAppContext ee8 =
+					buildEe8WebApp(server, warFilePath, contextPath, attributeNameValuePairs);
+				((Handler.Collection) server.getHandler()).addHandler(ee8);
+				webApp = ee8;
+			}
 
-			webAppContext.setAttribute("org.eclipse.jetty.websocket.javax", false);
-
-			nullSafeMap(attributeNameValuePairs)
-				.forEach(webAppContext::setAttribute);
-
-			((Handler.Collection) server.getHandler()).addHandler(webAppContext);
-
-			startWebApplication(server, webAppContext);
+			startWebApplication(server, webApp, contextPath);
 
 			return true;
 		})
@@ -383,62 +431,134 @@ public class Jetty12HttpService implements HttpService {
 		});
 	}
 
-	private WebAppContext newWebAppContext(Server server, Path warFilePath, String contextPath) {
+	// -------------------------------------------------------------------------
+	// EE8 (javax.servlet) WAR deployment
+	// -------------------------------------------------------------------------
 
-		Resource webApp;
-		try (ResourceFactory.Closeable resourceFactory = ResourceFactory.closeable()) {
-			webApp = resourceFactory.newResource(requireObject(warFilePath,
-					String.format("WAR file path of the Web application [%s] to add must not be null", contextPath)));
-		}
+	private org.eclipse.jetty.ee8.webapp.WebAppContext buildEe8WebApp(Server server, Path warFilePath, String contextPath,
+			Map<String, Object> extraAttributes) {
 
-		WebAppContext webAppContext = new WebAppContext(webApp, contextPath);
+		Resource webApp = openWarResource(warFilePath, contextPath);
 
-		webAppContext.addAliasCheck(new SymlinkAllowedResourceAliasChecker(webAppContext.getCoreContextHandler()));
-		webAppContext.setInitParameter("org.eclipse.jetty.servlet.Default.dirAllowed", "false");
-		webAppContext.setParentLoaderPriority(JETTY_WEBAPP_PARENT_LOADER_PRIORITY);
-		webAppContext.setServer(server);
+		org.eclipse.jetty.ee8.webapp.WebAppContext ctx =
+			new org.eclipse.jetty.ee8.webapp.WebAppContext(webApp, contextPath);
+
+		ctx.addAliasCheck(new SymlinkAllowedResourceAliasChecker(ctx.getCoreContextHandler()));
+		ctx.setInitParameter("org.eclipse.jetty.servlet.Default.dirAllowed", "false");
+		ctx.setParentLoaderPriority(JETTY_WEBAPP_PARENT_LOADER_PRIORITY);
+		ctx.setServer(server);
 
 		try {
-			webAppContext.setClassLoader(new JettyRestrictedParentResourcesClassLoader(new URL[]{warFilePath.toUri().toURL()}, this.getClass().getClassLoader()));
-		} catch (IOException e) {
+			ctx.setClassLoader(new JettyRestrictedParentResourcesClassLoader(
+				new URL[]{warFilePath.toUri().toURL()}, this.getClass().getClassLoader()));
+		}
+		catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 
-		return webAppContext;
+		configureEe8Classpath(ctx);
+		configureTempDirectory(ctx, server, contextPath);
+
+		// Disable javax WebSocket scanning to avoid conflicts with GemFire management WARs
+		ctx.setAttribute("org.eclipse.jetty.websocket.javax", false);
+
+		nullSafeMap(extraAttributes).forEach(ctx::setAttribute);
+
+		return ctx;
 	}
 
-	private Function<WebAppContext, WebAppContext> getWebAppContextConfigurationFunction() {
+	private void configureEe8Classpath(org.eclipse.jetty.ee8.webapp.WebAppContext ctx) {
 
-		Function<WebAppContext, WebAppContext> function = this::configureWebApplicationClasspath;
-
-		return function.andThen(this::configureWebApplicationTempDirectory);
-	}
-
-	private WebAppContext configureWebApplicationClasspath(WebAppContext webAppContext) {
-
-		ClassMatcher classMatcher = webAppContext.getServerClassMatcher();
-
+		org.eclipse.jetty.ee8.webapp.ClassMatcher classMatcher = ctx.getServerClassMatcher();
 		classMatcher.include("com.fasterxml.jackson.");
 		classMatcher.exclude("com.fasterxml.jackson.annotation.");
 
 		File workingDirectory = new File(System.getProperty("user.dir")).getAbsoluteFile();
 
 		try (ResourceFactory.Closeable resourceFactory = ResourceFactory.closeable()) {
-			webAppContext.setExtraClasspath(Collections.singletonList(resourceFactory.newResource(workingDirectory.toPath())));
+			ctx.setExtraClasspath(Collections.singletonList(
+				resourceFactory.newResource(workingDirectory.toPath())));
 		}
-
-		return webAppContext;
 	}
 
-	private WebAppContext configureWebApplicationTempDirectory(WebAppContext webAppContext) {
+	// -------------------------------------------------------------------------
+	// EE10 (jakarta.servlet) WAR deployment
+	// -------------------------------------------------------------------------
 
-		DistributionConfig configuration = requireObject((DistributionConfig)
-			webAppContext.getServer().getAttribute(APACHE_GEODE_CONFIGURATION_ATTRIBUTE_NAME),
+	private org.eclipse.jetty.ee10.webapp.WebAppContext buildEe10WebApp(Server server, Path warFilePath, String contextPath,
+			Map<String, Object> extraAttributes) {
+
+		Resource webApp = openWarResource(warFilePath, contextPath);
+
+		org.eclipse.jetty.ee10.webapp.WebAppContext ctx =
+			new org.eclipse.jetty.ee10.webapp.WebAppContext(webApp, contextPath);
+
+		ctx.addAliasCheck(new SymlinkAllowedResourceAliasChecker(ctx));
+		ctx.setInitParameter("org.eclipse.jetty.servlet.Default.dirAllowed", "false");
+		ctx.setParentLoaderPriority(JETTY_WEBAPP_PARENT_LOADER_PRIORITY);
+		ctx.setServer(server);
+
+		try {
+			ctx.setClassLoader(new JettyRestrictedParentResourcesClassLoader(
+				new URL[]{warFilePath.toUri().toURL()}, this.getClass().getClassLoader()));
+		}
+		catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+
+		configureEe10Classpath(ctx);
+		configureTempDirectory(ctx, server, contextPath);
+
+		// Disable jakarta WebSocket scanning to avoid conflicts with GemFire management WARs
+		ctx.setAttribute("org.eclipse.jetty.websocket.jakarta", false);
+
+		nullSafeMap(extraAttributes).forEach(ctx::setAttribute);
+
+		return ctx;
+	}
+
+	private void configureEe10Classpath(org.eclipse.jetty.ee10.webapp.WebAppContext ctx) {
+
+		org.eclipse.jetty.ee10.webapp.ClassMatcher classMatcher = ctx.getServerClassMatcher();
+		classMatcher.include("com.fasterxml.jackson.");
+		classMatcher.exclude("com.fasterxml.jackson.annotation.");
+
+		File workingDirectory = new File(System.getProperty("user.dir")).getAbsoluteFile();
+
+		try (ResourceFactory.Closeable resourceFactory = ResourceFactory.closeable()) {
+			ctx.setExtraClasspath(Collections.singletonList(
+				resourceFactory.newResource(workingDirectory.toPath())));
+		}
+	}
+
+	// -------------------------------------------------------------------------
+	// Shared helpers
+	// -------------------------------------------------------------------------
+
+	private Resource openWarResource(Path warFilePath, String contextPath) {
+		try (ResourceFactory.Closeable resourceFactory = ResourceFactory.closeable()) {
+			return resourceFactory.newResource(requireObject(warFilePath,
+				String.format("WAR file path of the Web application [%s] to add must not be null", contextPath)));
+		}
+	}
+
+	/**
+	 * Configures a temp directory on either an EE8 or EE10 {@link Handler} that is also a
+	 * Jetty context.  Both {@code org.eclipse.jetty.ee8.webapp.WebAppContext} and
+	 * {@code org.eclipse.jetty.ee10.webapp.WebAppContext} expose a {@code setTempDirectory(File)}
+	 * method; this helper dispatches to the correct one via pattern matching.
+	 */
+	private void configureTempDirectory(Object handler, Server server, String contextPath) {
+
+		DistributionConfig configuration = requireObject(
+			(DistributionConfig) server.getAttribute(APACHE_GEODE_CONFIGURATION_ATTRIBUTE_NAME),
 			"DistributionConfig was not stored in the Server Attributes");
 
-		String contextPath = nullSafeString(webAppContext.getContextPath(), "defaultContext");
+		// Preserve the original null/blank fallback so a missing context path cannot NPE here.
+		String resolvedContextPath = nullSafeString(contextPath, "defaultContext");
 
-		contextPath = (contextPath.startsWith(File.separator) ? contextPath.substring(1) : contextPath)
+		String safeContextPath = (resolvedContextPath.startsWith(File.separator)
+			? resolvedContextPath.substring(1) : resolvedContextPath)
 			.replace(File.separator, UNDERSCORE);
 
 		String hostPort = nullSafeString(configuration.getHttpServiceBindAddress(), "0.0.0.0")
@@ -447,45 +567,38 @@ public class Jetty12HttpService implements HttpService {
 
 		String uuid = UUID.randomUUID().toString().substring(0, 8);
 
-		String[] tempDirectoryPathElements = {
-			"temp",
-			System.getProperty("user.name"),
-			"geode",
-			"services",
-			"http",
-			hostPort,
-			contextPath,
-			uuid
-		};
+		String[] tempPathElements = {"temp", System.getProperty("user.name"), "geode",
+			"services", "http", hostPort, safeContextPath, uuid};
 
 		Path tempDirectoryPath = FileSystems.getDefault()
-			.getPath(System.getProperty("user.dir"), tempDirectoryPathElements);
+			.getPath(System.getProperty("user.dir"), tempPathElements);
 
 		File tempDirectory = tempDirectoryPath.toFile();
-
 		tempDirectory.mkdirs();
 		tempDirectory.deleteOnExit();
-		webAppContext.setTempDirectory(tempDirectory);
 
-		return webAppContext;
+		if (handler instanceof org.eclipse.jetty.ee8.webapp.WebAppContext ee8) {
+			ee8.setTempDirectory(tempDirectory);
+		}
+		else if (handler instanceof org.eclipse.jetty.ee10.webapp.WebAppContext ee10) {
+			ee10.setTempDirectory(tempDirectory);
+		}
 	}
 
-	private WebAppContext startWebApplication(Server server, WebAppContext webApplication) {
+	private Object startWebApplication(Server server, Object webApp, String contextPath) {
 
-		logInfo("Starting Web application in context [{}]...", webApplication.getContextPath());
+		logInfo("Starting Web application in context [{}]...", contextPath);
 
-		// Lazily start the Jetty HTTP server on first Web application start,
-		// which will start all the added Web applications
 		if (!server.isStarted()) {
 			SafeServerWrapper.from(server).safeStart();
 		}
 		else {
-			SafeWebApplicationWrapper.from(webApplication).safeStart();
+			SafeWebApplicationWrapper.from(webApp, contextPath).safeStart();
 		}
 
-		this.webApplications.add(webApplication);
+		this.webApplications.add(webApp);
 
-		return webApplication;
+		return webApp;
 	}
 
 	/**
@@ -612,52 +725,65 @@ public class Jetty12HttpService implements HttpService {
 		}
 	}
 
-	protected static class SafeWebApplicationWrapper extends WebAppContext {
-
-		protected static SafeWebApplicationWrapper from(WebAppContext webAppContext) {
-			return new SafeWebApplicationWrapper(webAppContext);
-		}
+	protected static class SafeWebApplicationWrapper {
 
 		private final Logger logger = LoggerFactory.getLogger(Jetty12HttpService.class);
 
-		private final WebAppContext webAppContext;
+		private final Object webApp;
+		private final String contextPath;
 
-		private SafeWebApplicationWrapper(WebAppContext webAppContext) {
-			this.webAppContext = requireObject(webAppContext, "WebAppContext must not be null");
+		private SafeWebApplicationWrapper(Object webApp, String contextPath) {
+			this.webApp = requireObject(webApp, "WebApp must not be null");
+			this.contextPath = contextPath;
 		}
 
 		/**
-		 * {@inheritDoc}
+		 * Creates a wrapper with an explicit context path (used during deployment, where the
+		 * path is already known without inspecting the handler).
 		 */
-		@Override
-		public Logger getLogger() {
-			return this.logger;
+		public static SafeWebApplicationWrapper from(Object webApp, String contextPath) {
+			return new SafeWebApplicationWrapper(webApp, contextPath);
+		}
+
+		/**
+		 * Creates a wrapper extracting the context path from the handler type (used during
+		 * shutdown, where only the stored web application object is available).
+		 */
+		public static SafeWebApplicationWrapper from(Object webApp) {
+			String path;
+			if (webApp instanceof org.eclipse.jetty.ee8.webapp.WebAppContext ee8) {
+				path = ee8.getContextPath();
+			}
+			else if (webApp instanceof org.eclipse.jetty.ee10.webapp.WebAppContext ee10) {
+				path = ee10.getContextPath();
+			}
+			else {
+				path = "unknown";
+			}
+			return new SafeWebApplicationWrapper(webApp, path);
 		}
 
 		public void safeStart() {
 
 			try {
-				this.webAppContext.start();
-				getLogger().info("Started Web application in context [{}]", this.webAppContext.getContextPath());
+				((LifeCycle) this.webApp).start();
+				this.logger.info("Started Web application in context [{}]", this.contextPath);
 			}
 			catch (Exception cause) {
-
-				getLogger().error("Failed to start Web application in context [{}]",
-					this.webAppContext.getContextPath(), cause);
-
-				throw new WebApplicationException(String.format("Failed to start Web application in context [%s]",
-					this.webAppContext.getContextPath()), cause);
+				this.logger.error("Failed to start Web application in context [{}]", this.contextPath, cause);
+				throw new WebApplicationException(
+					String.format("Failed to start Web application in context [%s]", this.contextPath), cause);
 			}
 		}
 
 		public void safeStop() {
 
 			try {
-				this.webAppContext.stop();
+				((LifeCycle) this.webApp).stop();
 			}
 			catch (Exception cause) {
-				getLogger().warn("Failed to stop Web application in context [{}]", this.webAppContext.getContextPath());
-				getLogger().debug("", cause);
+				this.logger.warn("Failed to stop Web application in context [{}]", this.contextPath);
+				this.logger.debug("", cause);
 			}
 		}
 	}
