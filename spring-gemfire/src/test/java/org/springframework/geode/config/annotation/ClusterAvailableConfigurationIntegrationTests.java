@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2026 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 package org.springframework.geode.config.annotation;
@@ -73,7 +73,7 @@ public class ClusterAvailableConfigurationIntegrationTests {
 	@BeforeClass
 	public static void runGemFireServer() throws IOException {
 		String dockerImage = System.getProperty("spring.test.gemfire.docker.image");
-		gemFireCluster = new GemFireCluster(dockerImage,1,1);
+		gemFireCluster = new GemFireCluster(dockerImage,1,1).withConfiguration("server-*", container -> container.withStartupAttempts(3));;
 		gemFireCluster.acceptLicense();
 		gemFireCluster.start();
 		System.setProperty("spring.data.gemfire.pool.locators", "127.0.0.1["+gemFireCluster.getLocatorPort()+"]");

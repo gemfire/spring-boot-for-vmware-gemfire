@@ -12,8 +12,11 @@ plugins {
 
 description = "Spring Boot Auto-Configuration for VMware GemFire"
 
+val baseGemFireVersion: String by project
+val baseSpringVersion: String by project
+
 publishingDetails {
-  artifactName.set("spring-boot-3.5-gemfire-autoconfigure-${ProjectUtils.getGemFireBaseVersion(property("gemfireVersion").toString())}")
+  artifactName.set("spring-boot-$baseSpringVersion-gemfire-autoconfigure-$baseGemFireVersion")
   longName.set(project.description)
   description.set(project.description)
 }
@@ -39,8 +42,6 @@ dependencies {
   testImplementation("org.springframework.boot:spring-boot-starter-test")
   testImplementation("org.springframework.boot:spring-boot-starter-web")
   testCompileOnly(libs.findbugs.jsr305)
-
-  testRuntimeOnly(project(":spring-gemfire-jetty12"))
 
   testRuntimeOnly("javax.cache:cache-api")
   testRuntimeOnly(libs.gemfire.web)

@@ -72,6 +72,21 @@ include("spring-geode-tests:smoke-tests:mock-session-caching")
 include("spring-geode-tests:smoke-tests:multi-store")
 include("spring-geode-tests:smoke-tests:peer-cache-application")
 
+project(":spring-gemfire").name = "spring-gemfire"
+project(":spring-gemfire-jetty12").name = "spring-gemfire-jetty12"
+project(":spring-gemfire-autoconfigure").name = "spring-gemfire-autoconfigure"
+project(":spring-gemfire-extensions").name = "spring-gemfire-extensions"
+
+project(":spring-gemfire-starter").name = "spring-gemfire-starter"
+project(":spring-gemfire-actuator").name = "spring-gemfire-actuator"
+project(":spring-gemfire-actuator-autoconfigure").name = "spring-gemfire-actuator-autoconfigure"
+project(":spring-gemfire-starter-logging").name = "spring-gemfire-starter-logging"
+project(":spring-gemfire-starter-session").name = "spring-gemfire-starter-session"
+project(":spring-gemfire-starter-actuator").name = "spring-gemfire-starter-actuator"
+project(":spring-gemfire-starter-test").name = "spring-gemfire-starter-test"
+
+val settingsProviders = providers
+val settingsLogger = logger
 
 dependencyResolutionManagement {
   repositories {
@@ -104,28 +119,29 @@ dependencyResolutionManagement {
   }
   versionCatalogs {
     create("libs") {
-      overrideProperty("gemfireVersion")
-      overrideProperty("springDataGemFireVersion")
-      overrideProperty("springSessionDataGemFireVersion")
-      overrideProperty("springBootVersion")
-      overrideProperty("springDataBomVersion")
-      overrideProperty("springFrameworkVersion")
-      overrideProperty("springSecurityVersion")
-      overrideProperty("springSessionBomVersion")
+      overrideProperty("gemfireVersion",                  providers = settingsProviders, logger = settingsLogger)
+      overrideProperty("springDataGemFireVersion",        providers = settingsProviders, logger = settingsLogger)
+      overrideProperty("springSessionDataGemFireVersion", providers = settingsProviders, logger = settingsLogger)
+      overrideProperty("spring-boot.version",      "springBootVersion",      settingsProviders, settingsLogger)
+      overrideProperty("spring-data-bom.version",  "springDataBomVersion",   settingsProviders, settingsLogger)
+      overrideProperty("spring-framework.version", "springFrameworkVersion",  settingsProviders, settingsLogger)
+      overrideProperty("spring-security.version",  "springSecurityVersion",   settingsProviders, settingsLogger)
+      overrideProperty("spring-session.version",   "springSessionBomVersion", settingsProviders, settingsLogger)
     }
-//    create("bom") {
-//      from(files("gradle/bom.versions.toml"))
-//    }
   }
 }
 
-fun VersionCatalogBuilder.overrideProperty(property: String) {
-  val value = System.getProperty(property)
-    ?: (settings as? ExtensionAware)?.extensions?.extraProperties?.let {
-      if (it.has(property)) it.get(property) as? String else null
-    }
-  if (value != null) {
-    logger.debug("Overriding $property: $value")
-    version(property, value)
+fun VersionCatalogBuilder.overrideProperty(
+  gradlePropertyName: String,
+  catalogVersionKey: String = gradlePropertyName,
+  providers: org.gradle.api.provider.ProviderFactory,
+  logger: org.gradle.api.logging.Logger
+) {
+  val value = providers.gradleProperty(gradlePropertyName).orNull
+    ?: System.getProperty(catalogVersionKey)
+    ?: if (gradlePropertyName != catalogVersionKey) System.getProperty(gradlePropertyName) else null
+  value?.let {
+    logger.lifecycle("Overriding version catalog entry '$catalogVersionKey' = '$value'")
+    version(catalogVersionKey, value)
   }
 }

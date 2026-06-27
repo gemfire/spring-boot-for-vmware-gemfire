@@ -32,12 +32,12 @@ pluginManagement {
 
 dependencyResolutionManagement{
     versionCatalogs {
-        create("publishLibs"){
-            from(files("../../gradle/publish.versions.toml"))
+        create("libs"){
+            from(files("../../gradle/libs.versions.toml"))
         }
     }
 }
 
 plugins {
-    id("org.gradle.toolchains.foojay-resolver-convention") version "0.7.0"
+    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
 }

@@ -11,8 +11,11 @@ plugins {
 
 description = "VMware GemFire Integration with Eclipse Jetty declared and managed by Spring Boot"
 
+val baseGemFireVersion: String by project
+val baseSpringVersion: String by project
+
 publishingDetails {
-  artifactName.set("spring-boot-3.5-gemfire-jetty12-${ProjectUtils.getGemFireBaseVersion(property("gemfireVersion").toString())}")
+  artifactName.set("spring-boot-$baseSpringVersion-gemfire-jetty12-$baseGemFireVersion")
   longName.set(project.description)
   description.set(project.description)
 }
@@ -33,6 +36,7 @@ dependencies {
   implementation("org.slf4j:slf4j-api")
 
   runtimeOnly(libs.jetty.ee8.apache.jsp)
+  runtimeOnly(libs.jetty.jndi)
 
   testImplementation("junit:junit")
   testImplementation("org.assertj:assertj-core")

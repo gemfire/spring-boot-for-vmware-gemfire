@@ -23,12 +23,14 @@ tasks.named<Javadoc>("javadoc") {
   isFailOnError = false
 }
 
+val catalog = versionCatalogs.named("libs")
+
 dependencies {
-  api(platform("org.springframework.boot:spring-boot-dependencies:${project.findProperty("spring-boot.version")}"))
-  api(platform("org.springframework.data:spring-data-bom:${project.findProperty("spring-data-bom.version")}"))
-  api(platform("org.springframework:spring-framework-bom:${project.findProperty("spring-framework.version")}"))
-  api(platform("org.springframework.security:spring-security-bom:${project.findProperty("spring-security.version")}"))
-  api(platform("org.springframework.session:spring-session-bom:${project.findProperty("spring-session.version")}"))
+  api(platform(catalog.findLibrary("spring-boot-bom").get()))
+  api(platform(catalog.findLibrary("spring-data-bom").get()))
+  api(platform(catalog.findLibrary("spring-framework-bom").get()))
+  api(platform(catalog.findLibrary("spring-security-bom").get()))
+  api(platform(catalog.findLibrary("spring-session-bom").get()))
 
   testRuntimeOnly("org.junit.platform:junit-platform-launcher")
   testRuntimeOnly("org.junit.vintage:junit-vintage-engine")
