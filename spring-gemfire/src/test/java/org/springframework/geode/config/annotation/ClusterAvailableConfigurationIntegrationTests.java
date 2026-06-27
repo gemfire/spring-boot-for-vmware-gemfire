@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2026 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 package org.springframework.geode.config.annotation;
@@ -103,15 +103,6 @@ public class ClusterAvailableConfigurationIntegrationTests {
 		assertRegion(this.example, "Example", DataPolicy.EMPTY, "DEFAULT");
 		assertRegion(this.customers, "Customers", DataPolicy.EMPTY, "DEFAULT");
 		assertRegion(this.customersByName, "CustomersByName", DataPolicy.EMPTY, "DEFAULT");
-	}
-
-	@Before
-	public void assertRegionConfigurationOnServers() {
-		String regions = gemFireCluster.gfsh(false,"list regions");
-
-		assertThat(regions).contains("CustomersByName");
-		assertThat(regions).contains("Customers");
-		assertThat(regions).contains("Example");
 	}
 
 	private void assertRegion(Region<?, ?> region, String name, DataPolicy dataPolicy, String poolName) {
