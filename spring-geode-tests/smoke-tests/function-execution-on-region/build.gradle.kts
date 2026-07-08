@@ -11,7 +11,7 @@ plugins {
 description = "Smoke Tests asserting the proper execution of an Apache Geode Function using Spring Data for Apache Geode Function annotation support in a Spring Boot context."
 
 dependencies {
-	implementation(platform(bom.testcontainers.dependencies.bom))
+	implementation(platform(libs.testcontainers.dependencies.bom))
 	implementation(project(":spring-gemfire-starter"))
 
 	implementation("org.assertj:assertj-core")

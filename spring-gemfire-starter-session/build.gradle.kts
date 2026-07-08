@@ -1,9 +1,7 @@
 /*
- * Copyright 2024 Broadcom. All rights reserved.
+ * Copyright 2024-2026 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
-
-import ProjectUtils.getBaseVersion
 
 plugins {
   id("project-base")
@@ -13,14 +11,17 @@ plugins {
 
 description = "Spring Boot Starter for Spring Session using VMware GemFire"
 
+val baseGemFireVersion: String by project
+val baseSpringVersion: String by project
+
 publishingDetails {
-  artifactName.set("spring-boot-session-${getBaseVersion(property("spring-boot.version").toString())}-gemfire-${getBaseVersion(property("gemfireVersion").toString())}")
+  artifactName.set("spring-boot-session-$baseSpringVersion-gemfire-$baseGemFireVersion")
   longName.set(project.description)
   description.set(project.description)
 }
 
 dependencies {
-  implementation(platform(bom.testcontainers.dependencies.bom))
+  implementation(platform(libs.testcontainers.dependencies.bom))
   api(project(":spring-gemfire-starter"))
 
   api(libs.spring.session.gemfire)

@@ -11,7 +11,7 @@ plugins {
 description = "Spring Geode Sample demonstrating the use of Spring Boot Auto-Configuration for Apache Geode."
 
 dependencies {
-  implementation(platform(bom.testcontainers.dependencies.bom))
+  implementation(platform(libs.testcontainers.dependencies.bom))
   compileOnly(libs.gemfire.core)
 
   implementation(project(":spring-gemfire-starter"))

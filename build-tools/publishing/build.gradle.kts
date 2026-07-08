@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-    implementation(publishLibs.kotlin.gradle.plugin)
+    implementation(libs.kotlin.gradle.plugin)
 }
 
 fun RepositoryHandler.addGemFireRepositories(

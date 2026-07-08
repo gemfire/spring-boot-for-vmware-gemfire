@@ -10,7 +10,7 @@ plugins {
 description = "Spring Geode Sample demonstrating Spring's Cache Abstraction using Apache Geode as the caching provider for Look-Aside Caching."
 
 dependencies {
-	implementation(platform(bom.testcontainers.dependencies.bom))
+	implementation(platform(libs.testcontainers.dependencies.bom))
 
 	compileOnly(libs.gemfire.core)
 
