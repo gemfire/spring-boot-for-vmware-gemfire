@@ -78,16 +78,6 @@ dependencyResolutionManagement {
   }
 }
 
-fun versionOverrideFromProperty(
-  versionCatalogBuilder: VersionCatalogBuilder,
-  propertyName: String,
-  propertiesFile: Properties
-): String {
-  val propertyValue = providers.systemProperty(propertyName).getOrElse(propertiesFile.getProperty(propertyName))
-
-  return versionCatalogBuilder.version(propertyName, propertyValue)
-}
-
 fun versionOverrideFromPropertyIfPresent(
   versionCatalogBuilder: VersionCatalogBuilder,
   externalPropertyName: String,
@@ -102,9 +92,9 @@ fun versionOverrideFromPropertyIfPresent(
 }
 
 fun versionOverrideFromProperties(versionCatalogBuilder: VersionCatalogBuilder, properties: Properties) {
-  versionOverrideFromProperty(versionCatalogBuilder, "gemfireVersion", properties)
-  versionOverrideFromProperty(versionCatalogBuilder, "springDataGemFireVersion", properties)
-  versionOverrideFromProperty(versionCatalogBuilder, "springSessionDataGemFireVersion", properties)
+  versionOverrideFromPropertyIfPresent(versionCatalogBuilder, "gemfireVersion", "gemfireVersion", properties)
+  versionOverrideFromPropertyIfPresent(versionCatalogBuilder, "springDataGemFireVersion", "springDataGemFireVersion", properties)
+  versionOverrideFromPropertyIfPresent(versionCatalogBuilder, "springSessionDataGemFireVersion", "springSessionDataGemFireVersion", properties)
   versionOverrideFromPropertyIfPresent(versionCatalogBuilder, "spring-boot.version", "springBootVersion", properties)
   versionOverrideFromPropertyIfPresent(versionCatalogBuilder, "spring-data-bom.version", "springDataBomVersion", properties)
   versionOverrideFromPropertyIfPresent(versionCatalogBuilder, "spring-framework.version", "springFrameworkVersion", properties)
