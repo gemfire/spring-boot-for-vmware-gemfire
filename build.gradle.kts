@@ -1,4 +1,9 @@
 /*
+ * Copyright 2026 Broadcom. All rights reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+/*
  * Copyright $originalComment.match(" (\d+)", 1, "-", $today.year)2026 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -55,14 +60,6 @@ versionCatalogUpdate {
     val allowMajor = project.hasProperty("updateMajor")
     val allowMinor = project.hasProperty("updateMinor")
     isAllowedUpdate(it.candidate.version, it.currentVersion, allowMajor, allowMinor)
-  }
-  versionCatalogs{
-    create("bom"){
-      catalogFile.set(file("gradle/bom.versions.toml"))
-    }
-    create("publish"){
-      catalogFile.set(file("gradle/publish.versions.toml"))
-    }
   }
 
 }

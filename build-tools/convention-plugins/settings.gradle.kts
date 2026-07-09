@@ -1,4 +1,9 @@
 /*
+ * Copyright 2026 Broadcom. All rights reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+/*
  * Copyright $originalComment.match(" (\d+)", 1, "-", $today.year)2026 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -71,7 +76,7 @@ dependencyResolutionManagement {
   }
   versionCatalogs {
     create("libs") {
-      from(files("../../gradle/publish.versions.toml"))
+      from(files("../../gradle/libs.versions.toml"))
     }
   }
 }

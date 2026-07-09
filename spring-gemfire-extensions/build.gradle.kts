@@ -21,7 +21,7 @@ publishingDetails {
 }
 
 dependencies {
-  implementation(platform(bom.testcontainers.dependencies.bom))
+  implementation(platform(libs.testcontainers.dependencies.bom))
   api("org.springframework:spring-web")
 
   compileOnly(libs.gemfire.core)

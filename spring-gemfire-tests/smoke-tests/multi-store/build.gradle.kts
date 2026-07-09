@@ -11,7 +11,7 @@ description = "Smoke Tests to assert that a multi-store Spring Data project usin
 
 dependencies {
 
-	implementation(platform(bom.testcontainers.dependencies.bom))
+	implementation(platform(libs.testcontainers.dependencies.bom))
 	compileOnly(libs.gemfire.core)
 
 	testCompileOnly(libs.lombok)

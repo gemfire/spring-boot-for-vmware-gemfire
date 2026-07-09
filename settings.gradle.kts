@@ -1,4 +1,9 @@
 /*
+ * Copyright 2026 Broadcom. All rights reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+/*
  * Copyright $originalComment.match(" (\d+)", 1, "-", $today.year)2026 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -117,9 +122,6 @@ dependencyResolutionManagement {
       overrideProperty("springFrameworkVersion")
       overrideProperty("springSecurityVersion")
       overrideProperty("springSessionBomVersion")
-    }
-    create("bom") {
-      from(files("gradle/bom.versions.toml"))
     }
   }
 }
