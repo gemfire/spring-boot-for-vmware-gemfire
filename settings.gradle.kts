@@ -1,5 +1,5 @@
 /*
- * Copyright 2024-2025 Broadcom. All rights reserved.
+ * Copyright 2024-2026 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -86,24 +86,29 @@ dependencyResolutionManagement {
       properties.load(FileInputStream("gradle.properties"))
       versionOverrideFromProperties(this, properties)
     }
-    create("bom") {
-      from(files("gradle/bom.versions.toml"))
-    }
   }
 }
 
-fun versionOverrideFromProperty(
+fun versionOverrideFromPropertyIfPresent(
   versionCatalogBuilder: VersionCatalogBuilder,
-  propertyName: String,
+  externalPropertyName: String,
+  catalogVersionKey: String,
   propertiesFile: Properties
-): String {
-  val propertyValue = providers.systemProperty(propertyName).getOrElse(propertiesFile.getProperty(propertyName))
-
-  return versionCatalogBuilder.version(propertyName, propertyValue)
+) {
+  val propertyValue = providers.systemProperty(externalPropertyName).orNull
+    ?: propertiesFile.getProperty(externalPropertyName)
+  if (propertyValue != null) {
+    versionCatalogBuilder.version(catalogVersionKey, propertyValue)
+  }
 }
 
 fun versionOverrideFromProperties(versionCatalogBuilder: VersionCatalogBuilder, properties: Properties) {
-  versionOverrideFromProperty(versionCatalogBuilder, "gemfireVersion", properties)
-  versionOverrideFromProperty(versionCatalogBuilder, "springDataGemFireVersion", properties)
-  versionOverrideFromProperty(versionCatalogBuilder, "springSessionDataGemFireVersion", properties)
+  versionOverrideFromPropertyIfPresent(versionCatalogBuilder, "gemfireVersion", "gemfireVersion", properties)
+  versionOverrideFromPropertyIfPresent(versionCatalogBuilder, "springDataGemFireVersion", "springDataGemFireVersion", properties)
+  versionOverrideFromPropertyIfPresent(versionCatalogBuilder, "springSessionDataGemFireVersion", "springSessionDataGemFireVersion", properties)
+  versionOverrideFromPropertyIfPresent(versionCatalogBuilder, "spring-boot.version", "springBootVersion", properties)
+  versionOverrideFromPropertyIfPresent(versionCatalogBuilder, "spring-data-bom.version", "springDataBomVersion", properties)
+  versionOverrideFromPropertyIfPresent(versionCatalogBuilder, "spring-framework.version", "springFrameworkVersion", properties)
+  versionOverrideFromPropertyIfPresent(versionCatalogBuilder, "spring-security.version", "springSecurityVersion", properties)
+  versionOverrideFromPropertyIfPresent(versionCatalogBuilder, "spring-session.version", "springSessionBomVersion", properties)
 }

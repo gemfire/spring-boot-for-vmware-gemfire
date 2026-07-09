@@ -56,15 +56,6 @@ versionCatalogUpdate {
   versionSelector {
     isPatch(it.candidate.version, it.currentVersion)
   }
-  versionCatalogs{
-    create("bom"){
-      catalogFile.set(file("gradle/bom.versions.toml"))
-    }
-    create("publish"){
-      catalogFile.set(file("gradle/publish.versions.toml"))
-    }
-  }
-
 }
 
 tasks.withType<DependencyUpdatesTask> {

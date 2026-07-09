@@ -1,9 +1,7 @@
 /*
- * Copyright 2024-2025 Broadcom. All rights reserved.
+ * Copyright 2024-2026 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
-
-import ProjectUtils.getBaseVersion
 
 plugins {
   id("project-base")
@@ -13,15 +11,17 @@ plugins {
 
 description = "Spring Boot Actuator Auto-Configuration for VMware GemFire"
 
+val baseGemFireVersion: String by project
+val baseSpringVersion: String by project
 
 publishingDetails {
-  artifactName.set("spring-boot-${getBaseVersion(property("spring-boot.version").toString())}-gemfire-actuator-autoconfigure-${getBaseVersion(property("gemfireVersion").toString())}")
+  artifactName.set("spring-boot-$baseSpringVersion-gemfire-actuator-autoconfigure-$baseGemFireVersion")
   longName.set(project.description)
   description.set(project.description)
 }
 
 dependencies {
-  implementation(platform(bom.testcontainers.dependencies.bom))
+  implementation(platform(libs.testcontainers.dependencies.bom))
     api(project(":spring-gemfire-actuator"))
     api(project(":spring-gemfire-autoconfigure"))
 

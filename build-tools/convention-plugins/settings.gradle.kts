@@ -6,7 +6,7 @@
 import org.gradle.kotlin.dsl.create
 
 /*
- * Copyright 2024 Broadcom. All rights reserved.
+ * Copyright 2024-2026 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -70,7 +70,7 @@ dependencyResolutionManagement {
   }
   versionCatalogs {
     create("libs") {
-      from(files("../../gradle/publish.versions.toml"))
+      from(files("../../gradle/libs.versions.toml"))
     }
   }
 }
