@@ -119,9 +119,6 @@ dependencyResolutionManagement {
       overrideProperty("springSecurityVersion")
       overrideProperty("springSessionBomVersion")
     }
-    create("bom") {
-      from(files("gradle/bom.versions.toml"))
-    }
   }
 }
 

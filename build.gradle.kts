@@ -56,14 +56,6 @@ versionCatalogUpdate {
     val allowMinor = project.hasProperty("updateMinor")
     isAllowedUpdate(it.candidate.version, it.currentVersion, allowMajor, allowMinor)
   }
-  versionCatalogs{
-    create("bom"){
-      catalogFile.set(file("gradle/bom.versions.toml"))
-    }
-    create("publish"){
-      catalogFile.set(file("gradle/publish.versions.toml"))
-    }
-  }
 
 }
 

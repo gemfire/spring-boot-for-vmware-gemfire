@@ -3,7 +3,8 @@ aspectjToolsVersion = "1.9.25.1"
 benManesVersions = "0.54.0"
 findbugsVersion = "3.0.2"
 gemFireTestContainersVersion = "3.0.0"
-gemfireVersion = "10.3.0"
+gemfireVersion = "10.3.0-build.2955.866c6ebb"
+kotlinGradlePluginVersion = "2.2.21"
 littlerobotsVersionCatalogUpdate = "1.1.0"
 lombokVersion = "1.18.46"
 mockitoCoreVersion = "5.23.0"
@@ -16,6 +17,7 @@ springSecurityVersion = "7.1.0"
 springSessionBomVersion = "4.1.0"
 springSessionDataGemFireVersion = "2.0.0"
 springShellVersion = "1.2.0.RELEASE"
+testcontainersVersion = "2.0.5"
 
 [libraries]
 aspectj-tools = { module = "org.aspectj:aspectjtools", version.ref = "aspectjToolsVersion" }
@@ -29,6 +31,7 @@ gemfire-serialization = { module = "com.vmware.gemfire:gemfire-serialization", v
 gemfire-tcp-server = { module = "com.vmware.gemfire:gemfire-tcp-server", version.ref = "gemfireVersion" }
 gemfire-testcontainers = { module = "dev.gemfire:gemfire-testcontainers", version.ref = "gemFireTestContainersVersion" }
 gemfire-web = { module = "com.vmware.gemfire:gemfire-web", version.ref = "gemfireVersion" }
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlinGradlePluginVersion" }
 lombok = { module = "org.projectlombok:lombok", version.ref = "lombokVersion" }
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoCoreVersion" }
 mockito-subclass = { module = "org.mockito:mockito-subclass", version.ref = "mockitoCoreVersion" }
@@ -42,6 +45,7 @@ spring-security-bom = { module = "org.springframework.security:spring-security-b
 spring-session-bom = { module = "org.springframework.session:spring-session-bom", version.ref = "springSessionBomVersion" }
 spring-session-gemfire = { module = "com.vmware.gemfire:spring-session-4.1-gemfire-10.3", version.ref = "springSessionDataGemFireVersion" }
 spring-shell = { module = "org.springframework.shell:spring-shell", version.ref = "springShellVersion" }
+testcontainers-dependencies-bom = { module = "org.testcontainers:testcontainers-bom", version.ref = "testcontainersVersion" }
 
 [plugins]
 ben-manes-versions = { id = "com.github.ben-manes.versions", version.ref = "benManesVersions" }

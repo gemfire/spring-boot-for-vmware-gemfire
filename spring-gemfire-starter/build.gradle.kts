@@ -61,7 +61,7 @@ val exportedProjects = arrayOf(
 )
 
 dependencies {
-  implementation(platform(bom.testcontainers.dependencies.bom))
+  implementation(platform(libs.testcontainers.dependencies.bom))
   api("org.springframework.boot:spring-boot-starter")
 
   api(project(":spring-gemfire"))
