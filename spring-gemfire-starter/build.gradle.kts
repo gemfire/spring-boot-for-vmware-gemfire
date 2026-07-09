@@ -1,9 +1,8 @@
 /*
- * Copyright 2024-2025 Broadcom. All rights reserved.
+ * Copyright 2024-2026 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import ProjectUtils.getBaseVersion
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.storage.BlobId
 import com.google.cloud.storage.BlobInfo
@@ -24,16 +23,17 @@ plugins {
 
 description = "Spring Boot Starter for VMware GemFire"
 
-val gemfireVersion = getBaseVersion(property("gemfireVersion").toString())
+val baseGemFireVersion: String by project
+val baseSpringVersion: String by project
 
 publishingDetails {
-  artifactName.set("spring-boot-${getBaseVersion(property("spring-boot.version").toString())}-gemfire-$gemfireVersion")
+  artifactName.set("spring-boot-$baseSpringVersion-gemfire-$baseGemFireVersion")
   longName.set(project.description)
   description.set(project.description)
 }
 
 dependencies {
-  implementation(platform(bom.testcontainers.dependencies.bom))
+  implementation(platform(libs.testcontainers.dependencies.bom))
   api("org.springframework.boot:spring-boot-starter")
 
   api(project(":spring-gemfire"))
@@ -68,7 +68,7 @@ dependencies.add("combinedJavadocClasspath", libs.gemfire.core)
 tasks {
   register<Javadoc>("combinedJavadoc") {
     source(exportedProjects.map { project(it).sourceSets["main"].allJava })
-    title = "Spring Boot 3.2 for VMware GemFire $gemfireVersion Java API Reference"
+    title = "Spring Boot 3.2 for VMware GemFire $baseGemFireVersion Java API Reference"
     classpath = combinedJavadocClasspath
     isFailOnError = false
     setDestinationDir(file("${layout.buildDirectory}/docs/javadoc"))

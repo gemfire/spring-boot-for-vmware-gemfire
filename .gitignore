@@ -29,3 +29,6 @@ tmp
 **/.idea
 
 generated-pipeline.yml
+*.salive
+
+gradle/libs.versions.updates.toml

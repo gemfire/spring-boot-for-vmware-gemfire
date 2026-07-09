@@ -66,18 +66,6 @@ include("spring-geode-tests:smoke-tests:logging")
 include("spring-geode-tests:smoke-tests:mock-session-caching")
 include("spring-geode-tests:smoke-tests:multi-store")
 
-project(":spring-gemfire").name = "spring-gemfire"
-project(":spring-gemfire-autoconfigure").name = "spring-gemfire-autoconfigure"
-project(":spring-gemfire-extensions").name = "spring-gemfire-extensions"
-
-project(":spring-gemfire-starter").name = "spring-gemfire-starter"
-project(":spring-gemfire-actuator").name = "spring-gemfire-actuator"
-project(":spring-gemfire-actuator-autoconfigure").name = "spring-gemfire-actuator-autoconfigure"
-project(":spring-gemfire-starter-logging").name = "spring-gemfire-starter-logging"
-project(":spring-gemfire-starter-session").name = "spring-gemfire-starter-session"
-project(":spring-gemfire-starter-actuator").name = "spring-gemfire-starter-actuator"
-project(":spring-gemfire-starter-test").name = "spring-gemfire-starter-test"
-
 
 dependencyResolutionManagement {
   versionCatalogs {
@@ -86,9 +74,6 @@ dependencyResolutionManagement {
       val properties = Properties()
       properties.load(FileInputStream("gradle.properties"))
       versionOverrideFromProperties(this, properties)
-    }
-    create("bom") {
-      from(files("gradle/bom.versions.toml"))
     }
   }
 }
@@ -103,8 +88,26 @@ fun versionOverrideFromProperty(
   return versionCatalogBuilder.version(propertyName, propertyValue)
 }
 
+fun versionOverrideFromPropertyIfPresent(
+  versionCatalogBuilder: VersionCatalogBuilder,
+  externalPropertyName: String,
+  catalogVersionKey: String,
+  propertiesFile: Properties
+) {
+  val propertyValue = providers.systemProperty(externalPropertyName).orNull
+    ?: propertiesFile.getProperty(externalPropertyName)
+  if (propertyValue != null) {
+    versionCatalogBuilder.version(catalogVersionKey, propertyValue)
+  }
+}
+
 fun versionOverrideFromProperties(versionCatalogBuilder: VersionCatalogBuilder, properties: Properties) {
   versionOverrideFromProperty(versionCatalogBuilder, "gemfireVersion", properties)
   versionOverrideFromProperty(versionCatalogBuilder, "springDataGemFireVersion", properties)
   versionOverrideFromProperty(versionCatalogBuilder, "springSessionDataGemFireVersion", properties)
+  versionOverrideFromPropertyIfPresent(versionCatalogBuilder, "spring-boot.version", "springBootVersion", properties)
+  versionOverrideFromPropertyIfPresent(versionCatalogBuilder, "spring-data-bom.version", "springDataBomVersion", properties)
+  versionOverrideFromPropertyIfPresent(versionCatalogBuilder, "spring-framework.version", "springFrameworkVersion", properties)
+  versionOverrideFromPropertyIfPresent(versionCatalogBuilder, "spring-security.version", "springSecurityVersion", properties)
+  versionOverrideFromPropertyIfPresent(versionCatalogBuilder, "spring-session.version", "springSessionBomVersion", properties)
 }

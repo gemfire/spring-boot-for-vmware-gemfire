@@ -12,7 +12,7 @@ description = "Spring Boot Test Starter for VMware GemFire"
 
 
 dependencies {
-	api(platform(bom.testcontainers.dependencies.bom))
+	api(platform(libs.testcontainers.dependencies.bom))
 	api(project(":spring-gemfire-starter"))
 	api("org.springframework.boot:spring-boot-starter-test")
 	api(libs.spring.data.gemfire.test.framework)

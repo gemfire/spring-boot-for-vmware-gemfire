@@ -3,14 +3,21 @@ aspectjToolsVersion = "1.9.22.1"
 benManesVersions = "0.54.0"
 findbugsVersion = "3.0.2"
 gemFireTestContainersVersion = "3.0.0"
-gemfireVersion = "10.2.4"
+gemfireVersion = "10.2.5"
+kotlinGradlePluginVersion = "2.1.21"
 littlerobotsVersionCatalogUpdate = "1.1.0"
 lombokPlugin = "8.6"
 mockitoCoreVersion = { strictly = "5.14.2" }
 multithreadedtcVersion = "1.01"
+springBootVersion = "3.5.16"
+springDataBomVersion = "2025.0.13"
 springDataGemFireVersion = "2.0.0"
+springFrameworkVersion = "6.2.19"
+springSecurityVersion = "6.5.11"
+springSessionBomVersion = "3.5.7"
 springSessionDataGemFireVersion = "2.0.0"
 springShellVersion = "1.2.0.RELEASE"
+testcontainersVersion = "2.0.5"
 
 [libraries]
 aspectj-tools = { module = "org.aspectj:aspectjtools", version.ref = "aspectjToolsVersion" }
@@ -24,13 +31,20 @@ gemfire-serialization = { module = "com.vmware.gemfire:gemfire-serialization", v
 gemfire-tcp-server = { module = "com.vmware.gemfire:gemfire-tcp-server", version.ref = "gemfireVersion" }
 gemfire-testcontainers = { module = "dev.gemfire:gemfire-testcontainers", version.ref = "gemFireTestContainersVersion" }
 gemfire-web = { module = "com.vmware.gemfire:gemfire-web", version.ref = "gemfireVersion" }
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlinGradlePluginVersion" }
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoCoreVersion" }
 mockito-subclass = { module = "org.mockito:mockito-subclass", version.ref = "mockitoCoreVersion" }
 multithreadedtc = { module = "edu.umd.cs.mtc:multithreadedtc", version.ref = "multithreadedtcVersion" }
+spring-boot-bom = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "springBootVersion" }
+spring-data-bom = { module = "org.springframework.data:spring-data-bom", version.ref = "springDataBomVersion" }
 spring-data-gemfire = { module = "com.vmware.gemfire:spring-data-3.5-gemfire-10.2", version.ref = "springDataGemFireVersion" }
 spring-data-gemfire-test-framework = { module = "com.vmware.gemfire:spring-data-3.5-gemfire-test-framework-10.2", version.ref = "springDataGemFireVersion" }
+spring-framework-bom = { module = "org.springframework:spring-framework-bom", version.ref = "springFrameworkVersion" }
+spring-security-bom = { module = "org.springframework.security:spring-security-bom", version.ref = "springSecurityVersion" }
+spring-session-bom = { module = "org.springframework.session:spring-session-bom", version.ref = "springSessionBomVersion" }
 spring-session-gemfire = { module = "com.vmware.gemfire:spring-session-3.5-gemfire-10.2", version.ref = "springSessionDataGemFireVersion" }
 spring-shell = { module = "org.springframework.shell:spring-shell", version.ref = "springShellVersion" }
+testcontainers-dependencies-bom = { module = "org.testcontainers:testcontainers-bom", version.ref = "testcontainersVersion" }
 
 [plugins]
 ben-manes-versions = { id = "com.github.ben-manes.versions", version.ref = "benManesVersions" }

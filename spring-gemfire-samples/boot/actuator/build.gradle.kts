@@ -11,7 +11,7 @@ plugins {
 description = "Spring Geode Sample demonstrating the use of Spring Boot Actuator with Apache Geode."
 
 dependencies {
-  implementation(platform(bom.testcontainers.dependencies.bom))
+  implementation(platform(libs.testcontainers.dependencies.bom))
   implementation(project(":spring-gemfire-starter-actuator"))
   implementation(project(":spring-gemfire-starter-test"))
 
