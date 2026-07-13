@@ -15,7 +15,7 @@ springDataGemFireVersion = "2.0.1"
 springFrameworkVersion = "6.2.19"
 springSecurityVersion = "6.5.11"
 springSessionBomVersion = "3.5.7"
-springSessionDataGemFireVersion = "1.0.0"
+springSessionDataGemFireVersion = "2.0.1"
 springShellVersion = "1.2.0.RELEASE"
 testcontainersVersion = "1.21.4"
 
