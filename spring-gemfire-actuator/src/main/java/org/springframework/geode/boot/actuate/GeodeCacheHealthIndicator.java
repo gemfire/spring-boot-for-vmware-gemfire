@@ -138,9 +138,7 @@ public class GeodeCacheHealthIndicator extends AbstractGeodeHealthIndicator {
 			.map(ClientCache::getResourceManager)
 			.map(resourceManager -> healthBuilder
 				.withDetail("geode.resource-manager.critical-heap-percentage", resourceManager.getCriticalHeapPercentage())
-				.withDetail("geode.resource-manager.critical-off-heap-percentage", resourceManager.getCriticalOffHeapPercentage())
 				.withDetail("geode.resource-manager.eviction-heap-percentage", resourceManager.getEvictionHeapPercentage())
-				.withDetail("geode.resource-manager.eviction-off-heap-percentage", resourceManager.getEvictionOffHeapPercentage())
 			)
 			.orElse(healthBuilder);
 	}
