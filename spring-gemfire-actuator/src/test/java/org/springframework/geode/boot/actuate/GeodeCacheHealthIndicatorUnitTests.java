@@ -2,7 +2,6 @@
  * Copyright 2023-2025 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
-
 package org.springframework.geode.boot.actuate;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -86,8 +85,7 @@ public class GeodeCacheHealthIndicatorUnitTests {
 		when(mockDistributedSystem.isConnected()).thenReturn(true);
 		when(mockDistributedSystem.isReconnecting()).thenReturn(false);
 
-		ResourceManager mockResourceManager = CacheMockObjects.mockResourceManager(0.9f,
-			0.95f, 0.85f, 0.9f);
+		ResourceManager mockResourceManager = CacheMockObjects.mockResourceManager(0.9f, 0.85f);
 
 		ClientCache mockGemFireCache = CacheMockObjects.mockGemFireCache(this.mockGemFireCache,
 			"MockGemFireCache", mockDistributedSystem, mockResourceManager);
@@ -126,9 +124,7 @@ public class GeodeCacheHealthIndicatorUnitTests {
 		//assertThat(healthDetails).containsKey("geode.distributed-member.properties-location");
 		//assertThat(healthDetails).containsKey("geode.distributed-member.security-properties-location");
 		assertThat(healthDetails).containsEntry("geode.resource-manager.critical-heap-percentage", 0.9f);
-		assertThat(healthDetails).containsEntry("geode.resource-manager.critical-off-heap-percentage", 0.95f);
 		assertThat(healthDetails).containsEntry("geode.resource-manager.eviction-heap-percentage", 0.85f);
-		assertThat(healthDetails).containsEntry("geode.resource-manager.eviction-off-heap-percentage", 0.9f);
 
 		verify(this.mockGemFireCache, times(1)).getCancelCriterion();
 		verify(this.mockGemFireCache, times(2)).getDistributedSystem();

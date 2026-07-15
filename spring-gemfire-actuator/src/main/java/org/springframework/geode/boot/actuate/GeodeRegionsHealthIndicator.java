@@ -125,7 +125,6 @@ public class GeodeRegionsHealthIndicator extends AbstractGeodeHealthIndicator {
 					.withDetail(cacheRegionKey(regionName, "initial-capacity"), regionAttributes.getInitialCapacity())
 					.withDetail(cacheRegionKey(regionName, "load-factor"), regionAttributes.getLoadFactor())
 					.withDetail(cacheRegionKey(regionName, "key-constraint"), nullSafeClassName(regionAttributes.getKeyConstraint()))
-					.withDetail(cacheRegionKey(regionName, "off-heap"), toYesNoString(regionAttributes.getOffHeap()))
 					.withDetail(cacheRegionKey(regionName, "pool-name"), emptyIfUnset(regionAttributes.getPoolName()))
 					.withDetail(cacheRegionKey(regionName, "scope"), String.valueOf(regionAttributes.getScope()))
 					.withDetail(cacheRegionKey(regionName, "statistics-enabled"), toYesNoString(regionAttributes.getStatisticsEnabled()))

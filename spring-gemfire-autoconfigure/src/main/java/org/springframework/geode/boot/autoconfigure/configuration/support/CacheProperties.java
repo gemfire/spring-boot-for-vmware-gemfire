@@ -33,18 +33,13 @@ public class CacheProperties {
 	private static final boolean DEFAULT_COPY_ON_READ = false;
 	private static final boolean DEFAULT_AUTO_REGION_LOOKUP = true;
 
-	private static final float DEFAULT_CRITICAL_OFF_HEAP_PERCENTAGE = 0.0f;
-	private static final float DEFAULT_EVICTION_OFF_HEAP_PERCENTAGE = 0.0f;
-
 	private static final String DEFAULT_LOG_LEVEL = "config";
 
 	private boolean copyOnRead = DEFAULT_COPY_ON_READ;
 	private boolean enableAutoRegionLookup = DEFAULT_AUTO_REGION_LOOKUP;
 
 	private float criticalHeapPercentage = ResourceManager.DEFAULT_CRITICAL_PERCENTAGE;
-	private float criticalOffHeapPercentage = DEFAULT_CRITICAL_OFF_HEAP_PERCENTAGE;
 	private float evictionHeapPercentage = ResourceManager.DEFAULT_EVICTION_PERCENTAGE;
-	private float evictionOffHeapPercentage = DEFAULT_EVICTION_OFF_HEAP_PERCENTAGE;
 
 	@NestedConfigurationProperty
 	private final CacheServerProperties server = new CacheServerProperties();
@@ -54,9 +49,6 @@ public class CacheProperties {
 
 	@NestedConfigurationProperty
 	private final CompressionProperties compression = new CompressionProperties();
-
-	@NestedConfigurationProperty
-	private final OffHeapProperties offHeap = new OffHeapProperties();
 
 	@NestedConfigurationProperty
 	private final PeerCacheProperties peer = new PeerCacheProperties();
@@ -88,14 +80,6 @@ public class CacheProperties {
 		this.criticalHeapPercentage = criticalHeapPercentage;
 	}
 
-	public float getCriticalOffHeapPercentage() {
-		return this.criticalOffHeapPercentage;
-	}
-
-	public void setCriticalOffHeapPercentage(float criticalOffHeapPercentage) {
-		this.criticalOffHeapPercentage = criticalOffHeapPercentage;
-	}
-
 	public boolean isEnableAutoRegionLookup() {
 		return this.enableAutoRegionLookup;
 	}
@@ -112,14 +96,6 @@ public class CacheProperties {
 		this.evictionHeapPercentage = evictionHeapPercentage;
 	}
 
-	public float getEvictionOffHeapPercentage() {
-		return this.evictionOffHeapPercentage;
-	}
-
-	public void setEvictionOffHeapPercentage(float evictionOffHeapPercentage) {
-		this.evictionOffHeapPercentage = evictionOffHeapPercentage;
-	}
-
 	public String getLogLevel() {
 		return this.logLevel;
 	}
@@ -134,10 +110,6 @@ public class CacheProperties {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public OffHeapProperties getOffHeap() {
-		return this.offHeap;
 	}
 
 	public PeerCacheProperties getPeer() {
@@ -160,29 +132,6 @@ public class CacheProperties {
 
 		public void setCompressorBeanName(String compressorBeanName) {
 			this.compressorBeanName = compressorBeanName;
-		}
-
-		public String[] getRegionNames() {
-			return this.regionNames;
-		}
-
-		public void setRegionNames(String[] regionNames) {
-			this.regionNames = regionNames;
-		}
-	}
-
-	public static class OffHeapProperties {
-
-		private String memorySize;
-
-		private String[] regionNames = {};
-
-		public String getMemorySize() {
-			return this.memorySize;
-		}
-
-		public void setMemorySize(String memorySize) {
-			this.memorySize = memorySize;
 		}
 
 		public String[] getRegionNames() {

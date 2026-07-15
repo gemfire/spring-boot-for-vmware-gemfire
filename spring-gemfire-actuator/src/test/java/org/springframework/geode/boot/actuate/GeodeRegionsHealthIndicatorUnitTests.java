@@ -74,7 +74,6 @@ public class GeodeRegionsHealthIndicatorUnitTests {
 		when(mockRegionOne.getAttributes().getInitialCapacity()).thenReturn(101);
 		when(mockRegionOne.getAttributes().getLoadFactor()).thenReturn(0.75f);
 		when(mockRegionOne.getAttributes().getKeyConstraint()).thenReturn((Class) Long.class);
-		when(mockRegionOne.getAttributes().getOffHeap()).thenReturn(true);
 		when(mockRegionOne.getAttributes().getPoolName()).thenReturn("");
 		when(mockRegionOne.getAttributes().getScope()).thenReturn(Scope.DISTRIBUTED_ACK);
 		when(mockRegionOne.getAttributes().getStatisticsEnabled()).thenReturn(false);
@@ -102,7 +101,6 @@ public class GeodeRegionsHealthIndicatorUnitTests {
 		when(mockRegionTwo.getAttributes().getInitialCapacity()).thenReturn(0);
 		when(mockRegionTwo.getAttributes().getLoadFactor()).thenReturn(0.0f);
 		when(mockRegionTwo.getAttributes().getKeyConstraint()).thenReturn((Class) Integer.class);
-		when(mockRegionTwo.getAttributes().getOffHeap()).thenReturn(false);
 		when(mockRegionTwo.getAttributes().getPoolName()).thenReturn("TestPool");
 		when(mockRegionTwo.getAttributes().getScope()).thenReturn(Scope.DISTRIBUTED_NO_ACK);
 		when(mockRegionTwo.getAttributes().getStatisticsEnabled()).thenReturn(true);
@@ -155,7 +153,6 @@ public class GeodeRegionsHealthIndicatorUnitTests {
 		assertThat(healthDetails).containsEntry("geode.cache.regions.MockRegionOne.initial-capacity", 101);
 		assertThat(healthDetails).containsEntry("geode.cache.regions.MockRegionOne.load-factor", 0.75f);
 		assertThat(healthDetails).containsEntry("geode.cache.regions.MockRegionOne.key-constraint", Long.class.getName());
-		assertThat(healthDetails).containsEntry("geode.cache.regions.MockRegionOne.off-heap", "Yes");
 		assertThat(healthDetails).containsEntry("geode.cache.regions.MockRegionOne.eviction.action", EvictionAction.LOCAL_DESTROY.toString());
 		assertThat(healthDetails).containsEntry("geode.cache.regions.MockRegionOne.eviction.algorithm", EvictionAlgorithm.LRU_ENTRY.toString());
 		assertThat(healthDetails).containsEntry("geode.cache.regions.MockRegionOne.eviction.maximum", 10000);
@@ -173,7 +170,6 @@ public class GeodeRegionsHealthIndicatorUnitTests {
 		assertThat(healthDetails).containsEntry("geode.cache.regions.MockRegionTwo.initial-capacity", 0);
 		assertThat(healthDetails).containsEntry("geode.cache.regions.MockRegionTwo.load-factor", 0.0f);
 		assertThat(healthDetails).containsEntry("geode.cache.regions.MockRegionTwo.key-constraint", Integer.class.getName());
-		assertThat(healthDetails).containsEntry("geode.cache.regions.MockRegionTwo.off-heap", "No");
 		assertThat(healthDetails).containsEntry("geode.cache.regions.MockRegionTwo.pool-name", "TestPool");
 		assertThat(healthDetails).containsEntry("geode.cache.regions.MockRegionTwo.scope", Scope.DISTRIBUTED_NO_ACK.toString());
 		assertThat(healthDetails).containsEntry("geode.cache.regions.MockRegionTwo.statistics-enabled", "Yes");

@@ -75,10 +75,8 @@ public class GemFirePropertiesIntegrationTests extends IntegrationTestsSupport {
 		assertThat(cacheProperties).isNotNull();
 		assertThat(cacheProperties.isCopyOnRead()).isTrue();
 		assertThat(cacheProperties.getCriticalHeapPercentage()).isEqualTo(85.5f);
-		assertThat(cacheProperties.getCriticalOffHeapPercentage()).isEqualTo(95.0f);
 		assertThat(cacheProperties.isEnableAutoRegionLookup()).isFalse();
 		assertThat(cacheProperties.getEvictionHeapPercentage()).isEqualTo(50.0f);
-		assertThat(cacheProperties.getEvictionOffHeapPercentage()).isEqualTo(75.5f);
 		assertThat(cacheProperties.getLogLevel()).isEqualTo("TRACE");
 		assertThat(cacheProperties.getName()).isEqualTo("AnotherName");
 	}
@@ -103,16 +101,6 @@ public class GemFirePropertiesIntegrationTests extends IntegrationTestsSupport {
 		assertThat(compressionProperties).isNotNull();
 		assertThat(compressionProperties.getCompressorBeanName()).isEqualTo("TestCompressor");
 		assertThat(compressionProperties.getRegionNames()).containsExactly("TestRegionOne", "TestRegionTwo");
-	}
-
-	@Test
-	public void cacheOffHeapConfigurationIsCorrect() {
-
-		CacheProperties.OffHeapProperties offHeapProperties = this.gemfireProperties.getCache().getOffHeap();
-
-		assertThat(offHeapProperties).isNotNull();
-		assertThat(offHeapProperties.getMemorySize()).isEqualTo("65535g");
-		assertThat(offHeapProperties.getRegionNames()).containsExactly("TestRegionTwo", "TestRegionFour");
 	}
 
 	@Test
