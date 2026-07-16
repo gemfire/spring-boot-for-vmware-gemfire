@@ -110,14 +110,6 @@
       "description": "Percentage of heap at or above which the cache is considered in danger of becoming inoperable."
     },
     {
-      "name": "spring.data.gemfire.cache.critical-off-heap-percentage",
-      "type": "java.lang.Float",
-      "description": "Percentage of off-heap at or above which the cache is considered in danger of becoming inoperable.",
-      "deprecation": {
-        "reason": "Off-heap memory support has been removed in GemFire 10.4."
-      }
-    },
-    {
       "name": "spring.data.gemfire.cache.enable-auto-region-lookup",
       "type": "java.lang.Boolean",
       "default": false,
@@ -127,14 +119,6 @@
       "name": "spring.data.gemfire.cache.eviction-heap-percentage",
       "type": "java.lang.Float",
       "description": "Percentage of heap at or above which the eviction should begin on Regions configured for HeapLRU eviction."
-    },
-    {
-      "name": "spring.data.gemfire.cache.eviction-off-heap-percentage",
-      "type": "java.lang.Float",
-      "description": "Percentage of off-heap at or above which the eviction should begin on Regions configured for HeapLRU eviction.",
-      "deprecation": {
-        "reason": "Off-heap memory support has been removed in GemFire 10.4."
-      }
     },
     {
       "name": "spring.data.gemfire.cache.log-level",
@@ -173,22 +157,6 @@
       "name": "spring.data.gemfire.cache.compression.region-names",
       "type": "java.lang.String",
       "description": "Comma-delimited list of Region names for which compression will be configured."
-    },
-    {
-      "name": "spring.data.gemfire.cache.off-heap.memory-size",
-      "type": "java.lang.String",
-      "description": "Determines the size of off-heap memory used by GemFire/Geode in megabytes (m) or gigabytes (g); for example 120g.",
-      "deprecation": {
-        "reason": "Off-heap memory support has been removed in GemFire 10.4."
-      }
-    },
-    {
-      "name": "spring.data.gemfire.cache.off-heap.region-names",
-      "type": "java.lang.String",
-      "description": "Comma-delimited list of Region names for which off-heap will be configured.",
-      "deprecation": {
-        "reason": "Off-heap memory support has been removed in GemFire 10.4."
-      }
     },
     {
       "name": "spring.data.gemfire.disk.store.allow-force-compaction",
