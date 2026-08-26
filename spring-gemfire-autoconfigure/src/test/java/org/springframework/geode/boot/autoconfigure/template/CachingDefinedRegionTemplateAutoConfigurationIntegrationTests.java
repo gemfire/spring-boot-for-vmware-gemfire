@@ -9,7 +9,7 @@ import example.app.books.NonBeanType;
 import example.app.books.model.Author;
 import example.app.books.model.Book;
 import example.app.library.service.LibraryService;
-import jakarta.annotation.Resource;
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.apache.geode.cache.Region;

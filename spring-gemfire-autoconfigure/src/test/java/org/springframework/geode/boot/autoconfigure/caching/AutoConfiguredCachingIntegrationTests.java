@@ -6,7 +6,7 @@ package org.springframework.geode.boot.autoconfigure.caching;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import jakarta.annotation.Resource;
+import javax.annotation.Resource;
 
 import org.junit.FixMethodOrder;
 import org.junit.Test;

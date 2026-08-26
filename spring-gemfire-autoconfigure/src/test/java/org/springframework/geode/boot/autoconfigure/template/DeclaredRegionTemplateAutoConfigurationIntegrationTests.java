@@ -5,7 +5,7 @@
 package org.springframework.geode.boot.autoconfigure.template;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import jakarta.annotation.Resource;
+import javax.annotation.Resource;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2026 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 package org.springframework.geode.boot.autoconfigure;
@@ -97,7 +97,9 @@ public class RegionTemplateAutoConfiguration extends TypelessAnnotationConfigSup
 
 		return beanFactory -> {
 
-			if (beanFactory instanceof BeanDefinitionRegistry registry) {
+			if (beanFactory instanceof BeanDefinitionRegistry) {
+
+				BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
 
 				List<String> beanDefinitionNames =
 					Arrays.asList(ArrayUtils.nullSafeArray(registry.getBeanDefinitionNames(), String.class));
@@ -236,8 +238,8 @@ public class RegionTemplateAutoConfiguration extends TypelessAnnotationConfigSup
 			@Override
 			public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
 
-				if (bean instanceof ClientCache cache) {
-					registerRegionTemplatesForCacheRegions(applicationContext, cache);
+				if (bean instanceof ClientCache) {
+					registerRegionTemplatesForCacheRegions(applicationContext, (ClientCache) bean);
 				}
 
 				return bean;
@@ -260,7 +262,9 @@ public class RegionTemplateAutoConfiguration extends TypelessAnnotationConfigSup
 
 		ApplicationContext applicationContext = event.getApplicationContext();
 
-		if (applicationContext instanceof ConfigurableApplicationContext configurableApplicationContext) {
+		if (applicationContext instanceof ConfigurableApplicationContext) {
+
+			ConfigurableApplicationContext configurableApplicationContext = (ConfigurableApplicationContext) applicationContext;
 
 			ClientCache cache = configurableApplicationContext.getBean(ClientCache.class);
 

@@ -6,7 +6,7 @@ package org.springframework.geode.boot.autoconfigure.topology.clientserver;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import com.vmware.gemfire.testcontainers.GemFireCluster;
-import jakarta.annotation.Resource;
+import javax.annotation.Resource;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

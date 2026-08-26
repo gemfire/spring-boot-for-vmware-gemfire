@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.http.HttpSession;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,7 +47,7 @@ import lombok.ToString;
  * with Spring Session auto-configured with Spring Boot.
  *
  * @author John Blum
- * @see jakarta.servlet.http.HttpSession
+ * @see javax.servlet.http.HttpSession
  * @see org.junit.Test
  * @see org.springframework.boot.autoconfigure.SpringBootApplication
  * @see org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc

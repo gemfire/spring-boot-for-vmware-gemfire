@@ -5,7 +5,7 @@
 package org.springframework.geode.boot.autoconfigure;
 
 import static org.springframework.data.gemfire.util.CollectionUtils.asSet;
-import jakarta.annotation.PostConstruct;
+import javax.annotation.PostConstruct;
 import java.util.Optional;
 import java.util.Set;
 import org.apache.geode.cache.client.ClientCache;
@@ -33,7 +33,7 @@ import org.springframework.util.StringUtils;
  * using Apache Geode as the caching provider.
  *
  * @author John Blum
- * @see jakarta.annotation.PostConstruct
+ * @see javax.annotation.PostConstruct
  * @see org.apache.geode.cache.client.ClientCache
  * @see org.springframework.boot.SpringBootConfiguration
  * @see org.springframework.boot.autoconfigure.EnableAutoConfiguration

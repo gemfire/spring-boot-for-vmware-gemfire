@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Broadcom. All rights reserved.
+ * Copyright 2024-2026 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -18,6 +18,7 @@ dependencies {
 	implementation("org.projectlombok:lombok")
 
 	testImplementation(project(":spring-gemfire-starter-test"))
+	testImplementation(libs.awaitility)
 	testImplementation(libs.gemfire.core)
 	testImplementation(libs.gemfire.testcontainers)
 

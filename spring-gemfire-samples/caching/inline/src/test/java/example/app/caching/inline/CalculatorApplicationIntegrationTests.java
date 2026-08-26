@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import jakarta.annotation.Resource;
+import javax.annotation.Resource;
 
 import org.junit.Before;
 import org.junit.Test;

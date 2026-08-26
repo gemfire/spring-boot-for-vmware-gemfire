@@ -6,8 +6,8 @@ package org.springframework.web.servlet.http;
 
 import java.util.Enumeration;
 
-import jakarta.servlet.ServletContext;
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
@@ -17,8 +17,8 @@ import org.springframework.util.Assert;
  * {@link HttpSession} implementation wrapping and proxying for an existing {@link HttpSession} instance.
  *
  * @author John Blum
- * @see jakarta.servlet.ServletContext
- * @see jakarta.servlet.http.HttpSession
+ * @see javax.servlet.ServletContext
+ * @see javax.servlet.http.HttpSession
  * @see org.springframework.web.servlet.http.AbstractHttpSession
  * @since 1.4.0
  */

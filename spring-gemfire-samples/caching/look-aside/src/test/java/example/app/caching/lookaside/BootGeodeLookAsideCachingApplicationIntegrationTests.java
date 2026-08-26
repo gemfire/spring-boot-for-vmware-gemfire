@@ -22,7 +22,7 @@ package example.app.caching.lookaside;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import jakarta.annotation.Resource;
+import javax.annotation.Resource;
 
 import org.apache.geode.cache.Region;
 

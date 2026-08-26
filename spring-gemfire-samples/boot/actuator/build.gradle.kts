@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Broadcom. All rights reserved.
+ * Copyright 2024-2026 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -20,6 +20,7 @@ dependencies {
   implementation(libs.gemfire.core)
   implementation(libs.gemfire.cq)
 
+  testImplementation(libs.awaitility)
   testImplementation(libs.gemfire.testcontainers)
 }
 

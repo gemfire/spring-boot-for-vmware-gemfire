@@ -9,7 +9,7 @@ import static org.mockito.Mockito.spy;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpSession;

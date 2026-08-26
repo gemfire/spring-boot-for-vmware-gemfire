@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
-import jakarta.annotation.Resource;
+import javax.annotation.Resource;
 
 import org.junit.Before;
 import org.junit.Test;

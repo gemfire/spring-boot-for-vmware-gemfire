@@ -24,8 +24,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.Instant;
 
-import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpSession;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 
 import org.apache.geode.cache.DataPolicy;
 import org.apache.geode.cache.Region;

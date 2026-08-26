@@ -26,7 +26,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,7 +38,7 @@ import org.springframework.web.servlet.ModelAndView;
  * and the number of HTTP Sessions.
  *
  * @author John Blum
- * @see jakarta.servlet.http.HttpSession
+ * @see javax.servlet.http.HttpSession
  * @see org.springframework.stereotype.Controller
  * @see org.springframework.web.bind.annotation.GetMapping
  * @see org.springframework.web.bind.annotation.ResponseBody

@@ -8,7 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.vmware.gemfire.testcontainers.GemFireCluster;
 import example.geode.query.cq.event.TemperatureReading;
 import example.geode.query.cq.event.TemperatureReadingsContinuousQueriesHandler;
-import jakarta.annotation.Resource;
+import javax.annotation.Resource;
 import java.io.IOException;
 import org.apache.geode.cache.Region;
 import org.apache.geode.cache.client.ClientCache;

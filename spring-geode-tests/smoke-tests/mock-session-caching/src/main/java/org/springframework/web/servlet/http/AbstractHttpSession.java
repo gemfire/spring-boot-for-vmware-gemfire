@@ -1,13 +1,14 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2026 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 package org.springframework.web.servlet.http;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Collections;
 
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.util.StringUtils;
 
@@ -17,7 +18,7 @@ import org.springframework.util.StringUtils;
  * @author John Blum
  * @see java.time.Duration
  * @see java.time.Instant
- * @see jakarta.servlet.http.HttpSession
+ * @see javax.servlet.http.HttpSession
  * @since 1.4.0
  */
 public abstract class AbstractHttpSession implements HttpSession {
@@ -33,7 +34,7 @@ public abstract class AbstractHttpSession implements HttpSession {
 
 	@Override
 	public int getMaxInactiveInterval() {
-		return Long.valueOf(this.maxInactiveInterval.toSeconds()).intValue();
+		return Long.valueOf(this.maxInactiveInterval.getSeconds()).intValue();
 	}
 
 	@Override
@@ -45,5 +46,35 @@ public abstract class AbstractHttpSession implements HttpSession {
 	@Override
 	public boolean isNew() {
 		return !StringUtils.hasText(getId());
+	}
+
+	@Override
+	@Deprecated
+	public Object getValue(String name) {
+		return getAttribute(name);
+	}
+
+	@Override
+	@Deprecated
+	public String[] getValueNames() {
+		return Collections.list(getAttributeNames()).toArray(new String[0]);
+	}
+
+	@Override
+	@Deprecated
+	public void putValue(String name, Object value) {
+		setAttribute(name, value);
+	}
+
+	@Override
+	@Deprecated
+	public void removeValue(String name) {
+		removeAttribute(name);
+	}
+
+	@Override
+	@Deprecated
+	public javax.servlet.http.HttpSessionContext getSessionContext() {
+		return null;
 	}
 }

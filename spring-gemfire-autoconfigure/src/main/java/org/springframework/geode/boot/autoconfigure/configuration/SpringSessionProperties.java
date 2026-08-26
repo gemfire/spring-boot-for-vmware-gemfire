@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2026 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 package org.springframework.geode.boot.autoconfigure.configuration;
@@ -186,7 +186,7 @@ public class SpringSessionProperties {
 		public void setMaxInactiveInterval(Duration duration) {
 
 			int maxInactiveIntervalInSeconds = duration != null
-				? Long.valueOf(duration.toSeconds()).intValue()
+				? Long.valueOf(duration.getSeconds()).intValue()
 				: GemFireHttpSessionConfiguration.DEFAULT_MAX_INACTIVE_INTERVAL_IN_SECONDS;
 
 			setMaxInactiveIntervalSeconds(maxInactiveIntervalInSeconds);

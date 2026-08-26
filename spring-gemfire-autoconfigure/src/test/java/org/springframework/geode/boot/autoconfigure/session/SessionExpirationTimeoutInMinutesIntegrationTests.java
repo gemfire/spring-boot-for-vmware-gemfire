@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2026 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 package org.springframework.geode.boot.autoconfigure.session;
@@ -34,6 +34,6 @@ public class SessionExpirationTimeoutInMinutesIntegrationTests
 
 	@Override
 	protected int getExpectedMaxInactiveIntervalInSeconds() {
-		return Long.valueOf(Duration.ofMinutes(5).toSeconds()).intValue();
+		return Long.valueOf(Duration.ofMinutes(5).getSeconds()).intValue();
 	}
 }

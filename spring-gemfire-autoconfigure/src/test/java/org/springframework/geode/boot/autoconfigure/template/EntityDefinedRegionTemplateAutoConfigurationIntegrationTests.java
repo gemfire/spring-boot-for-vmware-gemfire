@@ -8,7 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import example.app.books.model.Author;
 import example.app.books.model.Book;
 import example.app.books.model.ISBN;
-import jakarta.annotation.Resource;
+import javax.annotation.Resource;
 import java.util.stream.Collectors;
 import org.apache.geode.cache.Region;
 import org.apache.geode.cache.client.ClientCache;

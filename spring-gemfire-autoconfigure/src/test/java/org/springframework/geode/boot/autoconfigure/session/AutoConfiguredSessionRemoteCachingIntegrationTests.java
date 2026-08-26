@@ -6,8 +6,8 @@ package org.springframework.geode.boot.autoconfigure.session;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import com.vmware.gemfire.testcontainers.GemFireCluster;
-import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpSession;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URI;
 import java.util.concurrent.atomic.AtomicReference;
@@ -44,7 +44,7 @@ import org.springframework.web.client.RestTemplate;
  *
  * @author John Blum
  * @see java.net.URI
- * @see jakarta.servlet.http.HttpSession
+ * @see javax.servlet.http.HttpSession
  * @see org.junit.Test
  * @see org.apache.geode.cache.Region
  * @see org.apache.geode.cache.client.ClientCache

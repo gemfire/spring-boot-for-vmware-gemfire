@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Broadcom. All rights reserved.
+ * Copyright 2023-2026 Broadcom. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  */
 package example.app.crm.config;
@@ -106,7 +106,9 @@ public abstract class TestCassandraConfiguration {
 			@Override
 			public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
 
-				if (bean instanceof CassandraTemplate cassandraTemplate) {
+				if (bean instanceof CassandraTemplate) {
+
+					CassandraTemplate cassandraTemplate = (CassandraTemplate) bean;
 
 					Consumer<CassandraTemplate> cassandraTemplateConsumer = noopCassandraTemplateConsumer()
 						.andThen(insertEntityObjectCassandraTemplateConsumer())

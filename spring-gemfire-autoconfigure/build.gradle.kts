@@ -34,12 +34,13 @@ dependencies {
 
   implementation(libs.aspectj.tools)
 
+  testImplementation(libs.awaitility)
   testImplementation(libs.gemfire.core)
   testImplementation(libs.gemfire.cq)
   testImplementation(libs.gemfire.gfsh)
   testImplementation(libs.spring.session.gemfire)
   testImplementation("jakarta.servlet:jakarta.servlet-api")
-  testImplementation("org.apache.httpcomponents.client5:httpclient5")
+  testImplementation("org.apache.httpcomponents:httpclient")
   testImplementation("org.springframework.boot:spring-boot-starter-test")
   testImplementation("org.springframework.boot:spring-boot-starter-web")
   testCompileOnly(libs.findbugs.jsr305)

@@ -8,7 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.vmware.gemfire.testcontainers.GemFireCluster;
 import example.app.crm.model.Customer;
 import example.app.crm.service.CustomerService;
-import jakarta.annotation.Resource;
+import javax.annotation.Resource;
 import java.io.IOException;
 import org.apache.geode.cache.DataPolicy;
 import org.apache.geode.cache.Region;
